@@ -15,7 +15,15 @@ namespace SabreTools.IO
         /// </summary>
         public static byte ReadByte(this byte[] content, ref int offset)
         {
-            return content[offset++];
+#if NET48
+            byte[] buffer = content.ReadBytes(ref offset, 1);
+#else
+            byte[]? buffer = content.ReadBytes(ref offset, 1);
+#endif
+            if (buffer == null)
+                return default;
+
+            return buffer[0];
         }
 
         /// <summary>
@@ -24,15 +32,29 @@ namespace SabreTools.IO
 #if NET48
         public static byte[] ReadBytes(this byte[] content, ref int offset, int count)
 #else
-        public static byte[]? ReadBytes(this byte[] content, ref int offset, int count)
+        public static byte[]? ReadBytes(this byte[]? content, ref int offset, int count)
 #endif
         {
-            // If there's an invalid byte count, don't do anything
-            if (count <= 0)
+            // If the byte array is invalid, don't do anything
+            if (content == null)
                 return null;
 
+            // If there's an invalid byte count, don't do anything
+            if (count <= 0 || offset >= content.Length)
+                return null;
+
+            // Allocate enough space for the data requested
             byte[] buffer = new byte[count];
-            Array.Copy(content, offset, buffer, 0, Math.Min(count, content.Length - offset));
+
+            // If we have less data left than requested, only read until the end
+            if (offset + count >= content.Length)
+                count = content.Length - offset;
+
+            // If we have a non-zero count, copy the data into the array
+            if (count > 0)
+                Array.Copy(content, offset, buffer, 0, Math.Min(count, content.Length - offset));
+
+            // Increment the offset and return
             offset += count;
             return buffer;
         }
@@ -42,7 +64,15 @@ namespace SabreTools.IO
         /// </summary>
         public static sbyte ReadSByte(this byte[] content, ref int offset)
         {
-            return (sbyte)content[offset++];
+#if NET48
+            byte[] buffer = content.ReadBytes(ref offset, 1);
+#else
+            byte[]? buffer = content.ReadBytes(ref offset, 1);
+#endif
+            if (buffer == null)
+                return default;
+
+            return (sbyte)buffer[0];
         }
 
         /// <summary>
@@ -50,7 +80,15 @@ namespace SabreTools.IO
         /// </summary>
         public static char ReadChar(this byte[] content, ref int offset)
         {
-            return (char)content[offset++];
+#if NET48
+            byte[] buffer = content.ReadBytes(ref offset, 1);
+#else
+            byte[]? buffer = content.ReadBytes(ref offset, 1);
+#endif
+            if (buffer == null)
+                return default;
+
+            return (char)buffer[0];
         }
 
         /// <summary>
@@ -58,9 +96,15 @@ namespace SabreTools.IO
         /// </summary>
         public static short ReadInt16(this byte[] content, ref int offset)
         {
-            short value = BitConverter.ToInt16(content, offset);
-            offset += 2;
-            return value;
+#if NET48
+            byte[] buffer = content.ReadBytes(ref offset, 2);
+#else
+            byte[]? buffer = content.ReadBytes(ref offset, 2);
+#endif
+            if (buffer == null)
+                return default;
+
+            return BitConverter.ToInt16(buffer, 0);
         }
 
         /// <summary>
@@ -85,9 +129,15 @@ namespace SabreTools.IO
         /// </summary>
         public static ushort ReadUInt16(this byte[] content, ref int offset)
         {
-            ushort value = BitConverter.ToUInt16(content, offset);
-            offset += 2;
-            return value;
+#if NET48
+            byte[] buffer = content.ReadBytes(ref offset, 2);
+#else
+            byte[]? buffer = content.ReadBytes(ref offset, 2);
+#endif
+            if (buffer == null)
+                return default;
+
+            return BitConverter.ToUInt16(buffer, 0);
         }
 
         /// <summary>
@@ -95,7 +145,7 @@ namespace SabreTools.IO
         /// </summary>
         public static ushort ReadUInt16BigEndian(this byte[] content, ref int offset)
         {
-            #if NET48
+#if NET48
             byte[] buffer = content.ReadBytes(ref offset, 2);
 #else
             byte[]? buffer = content.ReadBytes(ref offset, 2);
@@ -112,9 +162,15 @@ namespace SabreTools.IO
         /// </summary>
         public static int ReadInt32(this byte[] content, ref int offset)
         {
-            int value = BitConverter.ToInt32(content, offset);
-            offset += 4;
-            return value;
+#if NET48
+            byte[] buffer = content.ReadBytes(ref offset, 4);
+#else
+            byte[]? buffer = content.ReadBytes(ref offset, 4);
+#endif
+            if (buffer == null)
+                return default;
+
+            return BitConverter.ToInt32(buffer, 0);
         }
 
         /// <summary>
@@ -122,7 +178,7 @@ namespace SabreTools.IO
         /// </summary>
         public static int ReadInt32BigEndian(this byte[] content, ref int offset)
         {
-            #if NET48
+#if NET48
             byte[] buffer = content.ReadBytes(ref offset, 4);
 #else
             byte[]? buffer = content.ReadBytes(ref offset, 4);
@@ -139,9 +195,15 @@ namespace SabreTools.IO
         /// </summary>
         public static uint ReadUInt32(this byte[] content, ref int offset)
         {
-            uint value = BitConverter.ToUInt32(content, offset);
-            offset += 4;
-            return value;
+#if NET48
+            byte[] buffer = content.ReadBytes(ref offset, 4);
+#else
+            byte[]? buffer = content.ReadBytes(ref offset, 4);
+#endif
+            if (buffer == null)
+                return default;
+
+            return BitConverter.ToUInt32(buffer, 0);
         }
 
         /// <summary>
@@ -149,7 +211,7 @@ namespace SabreTools.IO
         /// </summary>
         public static uint ReadUInt32BigEndian(this byte[] content, ref int offset)
         {
-            #if NET48
+#if NET48
             byte[] buffer = content.ReadBytes(ref offset, 4);
 #else
             byte[]? buffer = content.ReadBytes(ref offset, 4);
@@ -166,9 +228,15 @@ namespace SabreTools.IO
         /// </summary>
         public static long ReadInt64(this byte[] content, ref int offset)
         {
-            long value = BitConverter.ToInt64(content, offset);
-            offset += 8;
-            return value;
+#if NET48
+            byte[] buffer = content.ReadBytes(ref offset, 8);
+#else
+            byte[]? buffer = content.ReadBytes(ref offset, 8);
+#endif
+            if (buffer == null)
+                return default;
+
+            return BitConverter.ToInt64(buffer, 0);
         }
 
         /// <summary>
@@ -176,7 +244,7 @@ namespace SabreTools.IO
         /// </summary>
         public static long ReadInt64BigEndian(this byte[] content, ref int offset)
         {
-            #if NET48
+#if NET48
             byte[] buffer = content.ReadBytes(ref offset, 8);
 #else
             byte[]? buffer = content.ReadBytes(ref offset, 8);
@@ -193,9 +261,15 @@ namespace SabreTools.IO
         /// </summary>
         public static ulong ReadUInt64(this byte[] content, ref int offset)
         {
-            ulong value = BitConverter.ToUInt64(content, offset);
-            offset += 8;
-            return value;
+#if NET48
+            byte[] buffer = content.ReadBytes(ref offset, 8);
+#else
+            byte[]? buffer = content.ReadBytes(ref offset, 8);
+#endif
+            if (buffer == null)
+                return default;
+
+            return BitConverter.ToUInt64(buffer, 0);
         }
 
         /// <summary>
@@ -203,7 +277,7 @@ namespace SabreTools.IO
         /// </summary>
         public static ulong ReadUInt64BigEndian(this byte[] content, ref int offset)
         {
-            #if NET48
+#if NET48
             byte[] buffer = content.ReadBytes(ref offset, 8);
 #else
             byte[]? buffer = content.ReadBytes(ref offset, 8);
@@ -236,7 +310,7 @@ namespace SabreTools.IO
         /// </summary>
         public static Guid ReadGuidBigEndian(this byte[] content, ref int offset)
         {
-            #if NET48
+#if NET48
             byte[] buffer = content.ReadBytes(ref offset, 16);
 #else
             byte[]? buffer = content.ReadBytes(ref offset, 16);
