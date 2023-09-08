@@ -8,11 +8,10 @@ namespace SabreTools.IO
     /// Extensions for byte arrays
     /// </summary>
     /// <remarks>TODO: Add U/Int24 and U/Int48 methods</remarks>
-    /// <remarks>TODO: Add big-endian methods</remarks>
     public static class ByteArrayExtensions
     {
         /// <summary>
-        /// Read a byte and increment the pointer to an array
+        /// Read a UInt8 and increment the pointer to an array
         /// </summary>
         public static byte ReadByte(this byte[] content, ref int offset)
         {
@@ -20,7 +19,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a byte array and increment the pointer to an array
+        /// Read a UInt8[] and increment the pointer to an array
         /// </summary>
 #if NET48
         public static byte[] ReadBytes(this byte[] content, ref int offset, int count)
@@ -39,7 +38,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read an sbyte and increment the pointer to an array
+        /// Read a Int8 and increment the pointer to an array
         /// </summary>
         public static sbyte ReadSByte(this byte[] content, ref int offset)
         {
@@ -47,7 +46,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a char and increment the pointer to an array
+        /// Read a Char and increment the pointer to an array
         /// </summary>
         public static char ReadChar(this byte[] content, ref int offset)
         {
@@ -55,7 +54,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a short and increment the pointer to an array
+        /// Read a Int16 and increment the pointer to an array
         /// </summary>
         public static short ReadInt16(this byte[] content, ref int offset)
         {
@@ -65,7 +64,24 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a ushort and increment the pointer to an array
+        /// Read a Int16 in big-endian format and increment the pointer to an array
+        /// </summary>
+        public static short ReadInt16BigEndian(this byte[] content, ref int offset)
+        {
+#if NET48
+            byte[] buffer = content.ReadBytes(ref offset, 2);
+#else
+            byte[]? buffer = content.ReadBytes(ref offset, 2);
+#endif
+            if (buffer == null)
+                return default;
+
+            Array.Reverse(buffer);
+            return BitConverter.ToInt16(buffer, 0);
+        }
+
+        /// <summary>
+        /// Read a UInt16 and increment the pointer to an array
         /// </summary>
         public static ushort ReadUInt16(this byte[] content, ref int offset)
         {
@@ -75,7 +91,24 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a int and increment the pointer to an array
+        /// Read a UInt16 in big-endian format and increment the pointer to an array
+        /// </summary>
+        public static ushort ReadUInt16BigEndian(this byte[] content, ref int offset)
+        {
+            #if NET48
+            byte[] buffer = content.ReadBytes(ref offset, 2);
+#else
+            byte[]? buffer = content.ReadBytes(ref offset, 2);
+#endif
+            if (buffer == null)
+                return default;
+
+            Array.Reverse(buffer);
+            return BitConverter.ToUInt16(buffer, 0);
+        }
+
+        /// <summary>
+        /// Read a Int32 and increment the pointer to an array
         /// </summary>
         public static int ReadInt32(this byte[] content, ref int offset)
         {
@@ -85,7 +118,24 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a uint and increment the pointer to an array
+        /// Read a Int32 in big-endian format and increment the pointer to an array
+        /// </summary>
+        public static int ReadInt32BigEndian(this byte[] content, ref int offset)
+        {
+            #if NET48
+            byte[] buffer = content.ReadBytes(ref offset, 4);
+#else
+            byte[]? buffer = content.ReadBytes(ref offset, 4);
+#endif
+            if (buffer == null)
+                return default;
+
+            Array.Reverse(buffer);
+            return BitConverter.ToInt32(buffer, 0);
+        }
+
+        /// <summary>
+        /// Read a UInt32 and increment the pointer to an array
         /// </summary>
         public static uint ReadUInt32(this byte[] content, ref int offset)
         {
@@ -95,7 +145,24 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a long and increment the pointer to an array
+        /// Read a UInt32 in big-endian format and increment the pointer to an array
+        /// </summary>
+        public static uint ReadUInt32BigEndian(this byte[] content, ref int offset)
+        {
+            #if NET48
+            byte[] buffer = content.ReadBytes(ref offset, 4);
+#else
+            byte[]? buffer = content.ReadBytes(ref offset, 4);
+#endif
+            if (buffer == null)
+                return default;
+
+            Array.Reverse(buffer);
+            return BitConverter.ToUInt32(buffer, 0);
+        }
+
+        /// <summary>
+        /// Read a Int64 and increment the pointer to an array
         /// </summary>
         public static long ReadInt64(this byte[] content, ref int offset)
         {
@@ -105,7 +172,24 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a ulong and increment the pointer to an array
+        /// Read a Int64 in big-endian format and increment the pointer to an array
+        /// </summary>
+        public static long ReadInt64BigEndian(this byte[] content, ref int offset)
+        {
+            #if NET48
+            byte[] buffer = content.ReadBytes(ref offset, 8);
+#else
+            byte[]? buffer = content.ReadBytes(ref offset, 8);
+#endif
+            if (buffer == null)
+                return default;
+
+            Array.Reverse(buffer);
+            return BitConverter.ToInt64(buffer, 0);
+        }
+
+        /// <summary>
+        /// Read a UInt64 and increment the pointer to an array
         /// </summary>
         public static ulong ReadUInt64(this byte[] content, ref int offset)
         {
@@ -115,13 +199,52 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a Guid from the stream
+        /// Read a UInt64 in big-endian format and increment the pointer to an array
+        /// </summary>
+        public static ulong ReadUInt64BigEndian(this byte[] content, ref int offset)
+        {
+            #if NET48
+            byte[] buffer = content.ReadBytes(ref offset, 8);
+#else
+            byte[]? buffer = content.ReadBytes(ref offset, 8);
+#endif
+            if (buffer == null)
+                return default;
+
+            Array.Reverse(buffer);
+            return BitConverter.ToUInt64(buffer, 0);
+        }
+
+        /// <summary>
+        /// Read a Guid and increment the pointer to an array
         /// </summary>
         public static Guid ReadGuid(this byte[] content, ref int offset)
         {
-            byte[] buffer = new byte[16];
-            Array.Copy(content, offset, buffer, 0, 16);
-            offset += 16;
+#if NET48
+            byte[] buffer = content.ReadBytes(ref offset, 16);
+#else
+            byte[]? buffer = content.ReadBytes(ref offset, 16);
+#endif
+            if (buffer == null)
+                return default;
+
+            return new Guid(buffer);
+        }
+
+        /// <summary>
+        /// Read a Guid in big-endian format and increment the pointer to an array
+        /// </summary>
+        public static Guid ReadGuidBigEndian(this byte[] content, ref int offset)
+        {
+            #if NET48
+            byte[] buffer = content.ReadBytes(ref offset, 16);
+#else
+            byte[]? buffer = content.ReadBytes(ref offset, 16);
+#endif
+            if (buffer == null)
+                return default;
+
+            Array.Reverse(buffer);
             return new Guid(buffer);
         }
 

@@ -13,7 +13,7 @@ namespace SabreTools.IO
     public static class StreamExtensions
     {
         /// <summary>
-        /// Read a byte from the stream
+        /// Read a UInt8 from the stream
         /// </summary>
         public static byte ReadByteValue(this Stream stream)
         {
@@ -23,7 +23,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a byte array from the stream
+        /// Read a UInt8[] from the stream
         /// </summary>
 #if NET48
         public static byte[] ReadBytes(this Stream stream, int count)
@@ -41,7 +41,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read an sbyte from the stream
+        /// Read a Int8 from the stream
         /// </summary>
         public static sbyte ReadSByte(this Stream stream)
         {
@@ -51,7 +51,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a character from the stream
+        /// Read a Char from the stream
         /// </summary>
         public static char ReadChar(this Stream stream)
         {
@@ -61,7 +61,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a short from the stream
+        /// Read a Int16 from the stream
         /// </summary>
         public static short ReadInt16(this Stream stream)
         {
@@ -71,7 +71,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a short from the stream in big-endian format
+        /// Read a Int16 from the stream in big-endian format
         /// </summary>
         public static short ReadInt16BigEndian(this Stream stream)
         {
@@ -82,7 +82,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a ushort from the stream
+        /// Read a UInt16 from the stream
         /// </summary>
         public static ushort ReadUInt16(this Stream stream)
         {
@@ -92,7 +92,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a ushort from the stream in big-endian format
+        /// Read a UInt16 from the stream in big-endian format
         /// </summary>
         public static ushort ReadUInt16BigEndian(this Stream stream)
         {
@@ -103,7 +103,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read an int from the stream
+        /// Read an Int32 from the stream
         /// </summary>
         public static int ReadInt32(this Stream stream)
         {
@@ -113,7 +113,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read an int from the stream in big-endian format
+        /// Read an Int32 from the stream in big-endian format
         /// </summary>
         public static int ReadInt32BigEndian(this Stream stream)
         {
@@ -124,7 +124,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a uint from the stream
+        /// Read a UInt32 from the stream
         /// </summary>
         public static uint ReadUInt32(this Stream stream)
         {
@@ -134,7 +134,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a uint from the stream in big-endian format
+        /// Read a UInt32 from the stream in big-endian format
         /// </summary>
         public static uint ReadUInt32BigEndian(this Stream stream)
         {
@@ -145,7 +145,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a long from the stream
+        /// Read a Int64 from the stream
         /// </summary>
         public static long ReadInt64(this Stream stream)
         {
@@ -155,7 +155,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a long from the stream in big-endian format
+        /// Read a Int64 from the stream in big-endian format
         /// </summary>
         public static long ReadInt64BigEndian(this Stream stream)
         {
@@ -166,7 +166,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a ulong from the stream
+        /// Read a UInt64 from the stream
         /// </summary>
         public static ulong ReadUInt64(this Stream stream)
         {
@@ -176,7 +176,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read a ulong from the stream in big-endian format
+        /// Read a UInt64 from the stream in big-endian format
         /// </summary>
         public static ulong ReadUInt64BigEndian(this Stream stream)
         {
