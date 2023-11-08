@@ -32,7 +32,7 @@ namespace SabreTools.IO
                 if (input.Contains('*') || input.Contains('?'))
                 {
                     pattern = Path.GetFileName(input);
-#if NET48
+#if NETFRAMEWORK
                     input = input.Substring(0, input.Length - pattern.Length);
 #else
                     input = input[..^pattern.Length];
@@ -111,7 +111,7 @@ namespace SabreTools.IO
                 if (input.Contains('*') || input.Contains('?'))
                 {
                     pattern = Path.GetFileName(input);
-#if NET48
+#if NETFRAMEWORK
                     input = input.Substring(0, input.Length - pattern.Length);
 #else
                     input = input[..^pattern.Length];

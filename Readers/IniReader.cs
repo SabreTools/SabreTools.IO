@@ -11,11 +11,7 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Internal stream reader for inputting
         /// </summary>
-#if NET48
-        private readonly StreamReader sr;
-#else
         private readonly StreamReader? sr;
-#endif
 
         /// <summary>
         /// Get if at end of stream
@@ -36,11 +32,7 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Contents of the current line, unprocessed
         /// </summary>
-#if NET48
-        public string CurrentLine { get; private set; } = string.Empty;
-#else
         public string? CurrentLine { get; private set; } = string.Empty;
-#endif
 
         /// <summary>
         /// Get the current line number
@@ -55,11 +47,7 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Current section being read
         /// </summary>
-#if NET48
-        public string Section { get; private set; } = string.Empty;
-#else
         public string? Section { get; private set; } = string.Empty;
-#endif
 
         /// <summary>
         /// Validate that rows are in key=value format

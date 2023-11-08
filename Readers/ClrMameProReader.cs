@@ -23,20 +23,12 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Internal stream reader for inputting
         /// </summary>
-#if NET48
-        private readonly StreamReader sr;
-#else
         private readonly StreamReader? sr;
-#endif
 
         /// <summary>
         /// Contents of the current line, unprocessed
         /// </summary>
-#if NET48
-        public string CurrentLine { get; private set; } = string.Empty;
-#else
         public string? CurrentLine { get; private set; } = string.Empty;
-#endif
 
         /// <summary>
         /// Get the current line number
@@ -57,20 +49,12 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Contents of the currently read line as an internal item
         /// </summary>
-#if NET48
-        public Dictionary<string, string> Internal { get; private set; } = new Dictionary<string, string>();
-#else
         public Dictionary<string, string>? Internal { get; private set; } = new Dictionary<string, string>();
-#endif
 
         /// <summary>
         /// Current internal item name
         /// </summary>
-#if NET48
-        public string InternalName { get; private set; }
-#else
         public string? InternalName { get; private set; }
-#endif
 
         /// <summary>
         /// Get if we should be making DosCenter exceptions
@@ -101,11 +85,7 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Current top-level being read
         /// </summary>
-#if NET48
-        public string TopLevel { get; private set; } = string.Empty;
-#else
         public string? TopLevel { get; private set; } = string.Empty;
-#endif
 
         /// <summary>
         /// Constructor for opening a write from a file
@@ -151,7 +131,7 @@ namespace SabreTools.IO.Readers
             // Standalone (special case for DC dats)
             if (CurrentLine.StartsWith("Name:"))
             {
-#if NET48
+#if NETFRAMEWORK
                 string temp = CurrentLine.Substring("Name:".Length).Trim();
 #else
                 string temp = CurrentLine["Name:".Length..].Trim();

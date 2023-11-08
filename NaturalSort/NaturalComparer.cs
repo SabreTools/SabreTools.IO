@@ -31,11 +31,7 @@ namespace NaturalSort
             table.Clear();
         }
 
-#if NET48
-        public override int Compare(string x, string y)
-#else
         public override int Compare(string? x, string? y)
-#endif
         {
             if (x == null || y == null)
             {
@@ -50,21 +46,13 @@ namespace NaturalSort
             {
                 return x.CompareTo(y);
             }
-#if NET48
-            if (!table.TryGetValue(x, out string[] x1))
-#else
             if (!table.TryGetValue(x, out string[]? x1))
-#endif
             {
                 //x1 = Regex.Split(x.Replace(" ", string.Empty), "([0-9]+)");
                 x1 = Regex.Split(x.ToLowerInvariant(), "([0-9]+)").Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
                 table.Add(x, x1);
             }
-#if NET48
-            if (!table.TryGetValue(y, out string[] y1))
-#else
             if (!table.TryGetValue(y, out string[]? y1))
-#endif
             {
                 //y1 = Regex.Split(y.Replace(" ", string.Empty), "([0-9]+)");
                 y1 = Regex.Split(y.ToLowerInvariant(), "([0-9]+)").Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();

@@ -11,26 +11,14 @@ namespace SabreTools.IO
         /// <summary>
         /// Current full path represented
         /// </summary>
-#if NET48
         public string CurrentPath { get; private set; }
-#else
-        public string CurrentPath { get; init; }
-#endif
 
         /// <summary>
         /// Possible parent path represented (may be null or empty)
         /// </summary>
-#if NET48
-        public string ParentPath { get; private set; }
-#else
-        public string? ParentPath { get; init; }
-#endif
+        public string? ParentPath { get; private set; }
 
-#if NET48
-        public ParentablePath(string currentPath, string parentPath = null)
-#else
         public ParentablePath(string currentPath, string? parentPath = null)
-#endif
         {
             CurrentPath = currentPath;
             ParentPath = parentPath;
@@ -41,11 +29,7 @@ namespace SabreTools.IO
         /// </summary>
         /// <param name="sanitize">True if path separators should be converted to '-', false otherwise</param>
         /// <returns>Subpath for the file</returns>
-#if NET48
-        public string GetNormalizedFileName(bool sanitize)
-#else
         public string? GetNormalizedFileName(bool sanitize)
-#endif
         {
             // If the current path is empty, we can't do anything
             if (string.IsNullOrWhiteSpace(CurrentPath))
@@ -56,7 +40,7 @@ namespace SabreTools.IO
 
             // If we have a true ParentPath, remove it from CurrentPath and return the remainder
             if (!string.IsNullOrWhiteSpace(ParentPath) && !string.Equals(CurrentPath, ParentPath, StringComparison.Ordinal))
-                filename = CurrentPath.Remove(0, ParentPath.Length + 1);
+                filename = CurrentPath.Remove(0, ParentPath!.Length + 1);
 
             // If we're sanitizing the path after, do so
             if (sanitize)
@@ -71,11 +55,7 @@ namespace SabreTools.IO
         /// <param name="outDir">Output directory to use</param>
         /// <param name="inplace">True if the output file should go to the same input folder, false otherwise</param>
         /// <returns>Complete output path</returns>
-#if NET48
-        public string GetOutputPath(string outDir, bool inplace)
-#else
         public string? GetOutputPath(string outDir, bool inplace)
-#endif
         {
             // If the current path is empty, we can't do anything
             if (string.IsNullOrWhiteSpace(CurrentPath))
@@ -105,7 +85,7 @@ namespace SabreTools.IO
                 workingParent = Path.GetDirectoryName(ParentPath ?? string.Empty) ?? string.Empty;
 
             // Determine the correct subfolder based on the working parent directory
-#if NET48
+#if NETFRAMEWORK
             int extraLength = workingParent.EndsWith(":")
                 || workingParent.EndsWith(Path.DirectorySeparatorChar.ToString())
                 || workingParent.EndsWith(Path.AltDirectorySeparatorChar.ToString()) ? 0 : 1;

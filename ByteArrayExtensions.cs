@@ -15,11 +15,7 @@ namespace SabreTools.IO
         /// </summary>
         public static byte ReadByte(this byte[] content, ref int offset)
         {
-#if NET48
-            byte[] buffer = content.ReadBytes(ref offset, 1);
-#else
             byte[]? buffer = content.ReadBytes(ref offset, 1);
-#endif
             if (buffer == null)
                 return default;
 
@@ -29,11 +25,7 @@ namespace SabreTools.IO
         /// <summary>
         /// Read a UInt8[] and increment the pointer to an array
         /// </summary>
-#if NET48
-        public static byte[] ReadBytes(this byte[] content, ref int offset, int count)
-#else
         public static byte[]? ReadBytes(this byte[]? content, ref int offset, int count)
-#endif
         {
             // If the byte array is invalid, don't do anything
             if (content == null)
@@ -64,11 +56,7 @@ namespace SabreTools.IO
         /// </summary>
         public static sbyte ReadSByte(this byte[] content, ref int offset)
         {
-#if NET48
-            byte[] buffer = content.ReadBytes(ref offset, 1);
-#else
             byte[]? buffer = content.ReadBytes(ref offset, 1);
-#endif
             if (buffer == null)
                 return default;
 
@@ -80,11 +68,7 @@ namespace SabreTools.IO
         /// </summary>
         public static char ReadChar(this byte[] content, ref int offset)
         {
-#if NET48
-            byte[] buffer = content.ReadBytes(ref offset, 1);
-#else
             byte[]? buffer = content.ReadBytes(ref offset, 1);
-#endif
             if (buffer == null)
                 return default;
 
@@ -96,11 +80,7 @@ namespace SabreTools.IO
         /// </summary>
         public static short ReadInt16(this byte[] content, ref int offset)
         {
-#if NET48
-            byte[] buffer = content.ReadBytes(ref offset, 2);
-#else
             byte[]? buffer = content.ReadBytes(ref offset, 2);
-#endif
             if (buffer == null)
                 return default;
 
@@ -112,11 +92,7 @@ namespace SabreTools.IO
         /// </summary>
         public static short ReadInt16BigEndian(this byte[] content, ref int offset)
         {
-#if NET48
-            byte[] buffer = content.ReadBytes(ref offset, 2);
-#else
             byte[]? buffer = content.ReadBytes(ref offset, 2);
-#endif
             if (buffer == null)
                 return default;
 
@@ -129,11 +105,7 @@ namespace SabreTools.IO
         /// </summary>
         public static ushort ReadUInt16(this byte[] content, ref int offset)
         {
-#if NET48
-            byte[] buffer = content.ReadBytes(ref offset, 2);
-#else
             byte[]? buffer = content.ReadBytes(ref offset, 2);
-#endif
             if (buffer == null)
                 return default;
 
@@ -145,11 +117,7 @@ namespace SabreTools.IO
         /// </summary>
         public static ushort ReadUInt16BigEndian(this byte[] content, ref int offset)
         {
-#if NET48
-            byte[] buffer = content.ReadBytes(ref offset, 2);
-#else
             byte[]? buffer = content.ReadBytes(ref offset, 2);
-#endif
             if (buffer == null)
                 return default;
 
@@ -162,11 +130,7 @@ namespace SabreTools.IO
         /// </summary>
         public static int ReadInt32(this byte[] content, ref int offset)
         {
-#if NET48
-            byte[] buffer = content.ReadBytes(ref offset, 4);
-#else
             byte[]? buffer = content.ReadBytes(ref offset, 4);
-#endif
             if (buffer == null)
                 return default;
 
@@ -178,11 +142,7 @@ namespace SabreTools.IO
         /// </summary>
         public static int ReadInt32BigEndian(this byte[] content, ref int offset)
         {
-#if NET48
-            byte[] buffer = content.ReadBytes(ref offset, 4);
-#else
             byte[]? buffer = content.ReadBytes(ref offset, 4);
-#endif
             if (buffer == null)
                 return default;
 
@@ -195,11 +155,7 @@ namespace SabreTools.IO
         /// </summary>
         public static uint ReadUInt32(this byte[] content, ref int offset)
         {
-#if NET48
-            byte[] buffer = content.ReadBytes(ref offset, 4);
-#else
             byte[]? buffer = content.ReadBytes(ref offset, 4);
-#endif
             if (buffer == null)
                 return default;
 
@@ -211,11 +167,7 @@ namespace SabreTools.IO
         /// </summary>
         public static uint ReadUInt32BigEndian(this byte[] content, ref int offset)
         {
-#if NET48
-            byte[] buffer = content.ReadBytes(ref offset, 4);
-#else
             byte[]? buffer = content.ReadBytes(ref offset, 4);
-#endif
             if (buffer == null)
                 return default;
 
@@ -228,11 +180,7 @@ namespace SabreTools.IO
         /// </summary>
         public static long ReadInt64(this byte[] content, ref int offset)
         {
-#if NET48
-            byte[] buffer = content.ReadBytes(ref offset, 8);
-#else
             byte[]? buffer = content.ReadBytes(ref offset, 8);
-#endif
             if (buffer == null)
                 return default;
 
@@ -244,11 +192,7 @@ namespace SabreTools.IO
         /// </summary>
         public static long ReadInt64BigEndian(this byte[] content, ref int offset)
         {
-#if NET48
-            byte[] buffer = content.ReadBytes(ref offset, 8);
-#else
             byte[]? buffer = content.ReadBytes(ref offset, 8);
-#endif
             if (buffer == null)
                 return default;
 
@@ -261,11 +205,7 @@ namespace SabreTools.IO
         /// </summary>
         public static ulong ReadUInt64(this byte[] content, ref int offset)
         {
-#if NET48
-            byte[] buffer = content.ReadBytes(ref offset, 8);
-#else
             byte[]? buffer = content.ReadBytes(ref offset, 8);
-#endif
             if (buffer == null)
                 return default;
 
@@ -277,11 +217,7 @@ namespace SabreTools.IO
         /// </summary>
         public static ulong ReadUInt64BigEndian(this byte[] content, ref int offset)
         {
-#if NET48
-            byte[] buffer = content.ReadBytes(ref offset, 8);
-#else
             byte[]? buffer = content.ReadBytes(ref offset, 8);
-#endif
             if (buffer == null)
                 return default;
 
@@ -294,11 +230,7 @@ namespace SabreTools.IO
         /// </summary>
         public static Guid ReadGuid(this byte[] content, ref int offset)
         {
-#if NET48
-            byte[] buffer = content.ReadBytes(ref offset, 16);
-#else
             byte[]? buffer = content.ReadBytes(ref offset, 16);
-#endif
             if (buffer == null)
                 return default;
 
@@ -310,11 +242,7 @@ namespace SabreTools.IO
         /// </summary>
         public static Guid ReadGuidBigEndian(this byte[] content, ref int offset)
         {
-#if NET48
-            byte[] buffer = content.ReadBytes(ref offset, 16);
-#else
             byte[]? buffer = content.ReadBytes(ref offset, 16);
-#endif
             if (buffer == null)
                 return default;
 
@@ -325,20 +253,12 @@ namespace SabreTools.IO
         /// <summary>
         /// Read a null-terminated string from the stream
         /// </summary>
-#if NET48
-        public static string ReadString(this byte[] content, ref int offset) => content.ReadString(ref offset, Encoding.Default);
-#else
         public static string? ReadString(this byte[] content, ref int offset) => content.ReadString(ref offset, Encoding.Default);
-#endif
 
         /// <summary>
         /// Read a null-terminated string from the stream
         /// </summary>
-#if NET48
-        public static string ReadString(this byte[] content, ref int offset, Encoding encoding)
-#else
         public static string? ReadString(this byte[] content, ref int offset, Encoding encoding)
-#endif
         {
             if (offset >= content.Length)
                 return null;

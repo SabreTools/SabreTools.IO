@@ -12,32 +12,16 @@ namespace SabreTools.IO
     /// <summary>
     /// Key-value pair INI file
     /// </summary>
-#if NET48
-    public class IniFile : IDictionary<string, string>
-#else
     public class IniFile : IDictionary<string, string?>
-#endif
     {
-#if NET48
-        private Dictionary<string, string> _keyValuePairs = new Dictionary<string, string>();
-#else
         private Dictionary<string, string?>? _keyValuePairs = new Dictionary<string, string?>();
-#endif
 
-#if NET48
-        public string this[string key]
-#else
         public string? this[string? key]
-#endif
         {
             get
             {
                 if (_keyValuePairs == null)
-#if NET48
-                    _keyValuePairs = new Dictionary<string, string>();
-#else
                     _keyValuePairs = new Dictionary<string, string?>();
-#endif
 
                 key = key?.ToLowerInvariant() ?? string.Empty;
                 if (_keyValuePairs.ContainsKey(key))
@@ -48,11 +32,7 @@ namespace SabreTools.IO
             set
             {
                 if (_keyValuePairs == null)
-#if NET48
-                    _keyValuePairs = new Dictionary<string, string>();
-#else
                     _keyValuePairs = new Dictionary<string, string?>();
-#endif
 
                 key = key?.ToLowerInvariant() ?? string.Empty;
                 _keyValuePairs[key] = value;
@@ -122,11 +102,7 @@ namespace SabreTools.IO
         /// <summary>
         /// Read an INI file from a stream
         /// </summary>
-#if NET48
-        public bool Parse(Stream stream)
-#else
         public bool Parse(Stream? stream)
-#endif
         {
             // If the stream is invalid or unreadable, we can't process it
             if (stream == null || !stream.CanRead || stream.Position >= stream.Length - 1)
@@ -138,11 +114,7 @@ namespace SabreTools.IO
                 using (var reader = new IniReader(stream, Encoding.UTF8))
                 {
                     // TODO: Can we use the section header in the reader?
-#if NET48
-                    string section = string.Empty;
-#else
                     string? section = string.Empty;
-#endif
                     while (!reader.EndOfStream)
                     {
                         // If we dont have a next line
@@ -157,11 +129,7 @@ namespace SabreTools.IO
                                 break;
 
                             case IniRowType.KeyValue:
-#if NET48
-                                string key = reader.KeyValuePair?.Key;
-#else
                                 string? key = reader.KeyValuePair?.Key;
-#endif
 
                                 // Section names are prepended to the key with a '.' separating
                                 if (!string.IsNullOrEmpty(section))
@@ -227,11 +195,7 @@ namespace SabreTools.IO
                     {
                         // Extract the key and value
                         string key = keyValuePair.Key;
-#if NET48
-                        string value = keyValuePair.Value;
-#else
                         string? value = keyValuePair.Value;
-#endif
 
                         // We assume '.' is a section name separator
                         if (key.Contains('.'))
@@ -267,58 +231,6 @@ namespace SabreTools.IO
 
         #region IDictionary Impelementations
 
-#if NET48
-        public ICollection<string> Keys => _keyValuePairs?.Keys;
-
-        public ICollection<string> Values => _keyValuePairs?.Values;
-
-        public int Count => _keyValuePairs?.Count ?? 0;
-
-        public bool IsReadOnly => false;
-
-        public void Add(string key, string value) => this[key] = value;
-
-        bool IDictionary<string, string>.Remove(string key) => Remove(key);
-
-        public bool TryGetValue(string key, out string value)
-        {
-            value = null;
-            return _keyValuePairs?.TryGetValue(key.ToLowerInvariant(), out value) ?? false;
-        }
-
-        public void Add(KeyValuePair<string, string> item) => this[item.Key] = item.Value;
-
-        public void Clear() => _keyValuePairs?.Clear();
-
-        public bool Contains(KeyValuePair<string, string> item)
-        {
-            var newItem = new KeyValuePair<string, string>(item.Key.ToLowerInvariant(), item.Value);
-            return (_keyValuePairs as ICollection<KeyValuePair<string, string>>)?.Contains(newItem) ?? false;
-        }
-
-        public bool ContainsKey(string key) => _keyValuePairs?.ContainsKey(key?.ToLowerInvariant() ?? string.Empty) ?? false;
-
-        public void CopyTo(KeyValuePair<string, string>[] array, int arrayIndex)
-        {
-            (_keyValuePairs as ICollection<KeyValuePair<string, string>>)?.CopyTo(array, arrayIndex);
-        }
-
-        public bool Remove(KeyValuePair<string, string> item)
-        {
-            var newItem = new KeyValuePair<string, string>(item.Key.ToLowerInvariant(), item.Value);
-            return (_keyValuePairs as ICollection<KeyValuePair<string, string>>)?.Remove(newItem) ?? false;
-        }
-
-        public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
-        {
-            return (_keyValuePairs as IEnumerable<KeyValuePair<string, string>>)?.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return (_keyValuePairs as IEnumerable)?.GetEnumerator();
-        }
-#else
         public ICollection<string> Keys => _keyValuePairs?.Keys?.ToArray() ?? Array.Empty<string>();
 
         public ICollection<string?> Values => _keyValuePairs?.Values?.ToArray() ?? Array.Empty<string?>();
@@ -369,7 +281,6 @@ namespace SabreTools.IO
         {
             return (_keyValuePairs as IEnumerable)!.GetEnumerator();
         }
-        #endif
 
         #endregion
     }

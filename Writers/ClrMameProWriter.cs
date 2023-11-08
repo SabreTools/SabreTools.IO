@@ -44,20 +44,6 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// Tag information for the stack
         /// </summary>
-#if NET48
-        private class TagInfo
-        {
-            public string Name { get; set; }
-            
-            public bool Mixed { get; set; }
-
-            public void Init()
-            {
-                Name = null;
-                Mixed = false;
-            }
-        }
-#else
         private record struct TagInfo(string? Name, bool Mixed)
         {
             public void Init()
@@ -66,7 +52,6 @@ namespace SabreTools.IO.Writers
                 Mixed = false;
             }
         }
-#endif
 
         /// <summary>
         /// Internal stream writer
@@ -185,11 +170,7 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// Write a complete element with content
         /// </summary>
-#if NET48
-        public void WriteElementString(string name, string value)
-#else
         public void WriteElementString(string name, string? value)
-#endif
         {
             WriteStartElement(name);
             WriteString(value);
@@ -202,11 +183,7 @@ namespace SabreTools.IO.Writers
         /// <param name="name">Name of the element</param>
         /// <param name="value">Value to write in the element</param>
         /// <param name="throwOnError">Indicates if an error should be thrown on a missing required value</param>
-#if NET48
-        public void WriteRequiredElementString(string name, string value, bool throwOnError = false)
-#else
         public void WriteRequiredElementString(string name, string? value, bool throwOnError = false)
-#endif
         {
             // Throw an exception if we are configured to
             if (value == null && throwOnError)
@@ -220,11 +197,7 @@ namespace SabreTools.IO.Writers
         /// </summary>
         /// <param name="name">Name of the element</param>
         /// <param name="value">Value to write in the element</param>
-#if NET48
-        public void WriteOptionalElementString(string name, string value)
-#else
         public void WriteOptionalElementString(string name, string? value)
-#endif
         {
             if (!string.IsNullOrEmpty(value))
                 WriteElementString(name, value);
@@ -277,11 +250,7 @@ namespace SabreTools.IO.Writers
         /// <param name="name">Name of the attribute</param>
         /// <param name="value">Value to write in the attribute</param>
         /// <param name="quoteOverride">Non-null to overwrite the writer setting, null otherwise</param>
-#if NET48
-        public void WriteAttributeString(string name, string value, bool? quoteOverride = null)
-#else
         public void WriteAttributeString(string name, string? value, bool? quoteOverride = null)
-#endif
         {
             WriteStartAttribute(name, quoteOverride);
             WriteString(value);
@@ -295,11 +264,7 @@ namespace SabreTools.IO.Writers
         /// <param name="value">Value to write in the attribute</param>
         /// <param name="quoteOverride">Non-null to overwrite the writer setting, null otherwise</param>
         /// <param name="throwOnError">Indicates if an error should be thrown on a missing required value</param>
-#if NET48
-        public void WriteRequiredAttributeString(string name, string value, bool? quoteOverride = null, bool throwOnError = false)
-#else
         public void WriteRequiredAttributeString(string name, string? value, bool? quoteOverride = null, bool throwOnError = false)
-#endif
         {
             // Throw an exception if we are configured to
             if (value == null && throwOnError)
@@ -314,11 +279,7 @@ namespace SabreTools.IO.Writers
         /// <param name="name">Name of the attribute</param>
         /// <param name="value">Value to write in the attribute</param>
         /// <param name="quoteOverride">Non-null to overwrite the writer setting, null otherwise</param>
-#if NET48
-        public void WriteOptionalAttributeString(string name, string value, bool? quoteOverride = null)
-#else
         public void WriteOptionalAttributeString(string name, string? value, bool? quoteOverride = null)
-#endif
         {
             if (!string.IsNullOrEmpty(value))
                 WriteAttributeString(name, value, quoteOverride);
@@ -330,11 +291,7 @@ namespace SabreTools.IO.Writers
         /// <param name="name">Name of the attribute</param>
         /// <param name="value">Value to write in the attribute</param>
         /// <param name="quoteOverride">Non-null to overwrite the writer setting, null otherwise</param>
-#if NET48
-        public void WriteStandalone(string name, string value, bool? quoteOverride = null)
-#else
         public void WriteStandalone(string name, string? value, bool? quoteOverride = null)
-#endif
         {
             try
             {
@@ -378,11 +335,7 @@ namespace SabreTools.IO.Writers
         /// <param name="value">Value to write in the attribute</param>
         /// <param name="quoteOverride">Non-null to overwrite the writer setting, null otherwise</param>
         /// <param name="throwOnError">Indicates if an error should be thrown on a missing required value</param>
-#if NET48
-        public void WriteRequiredStandalone(string name, string value, bool? quoteOverride = null, bool throwOnError = false)
-#else
         public void WriteRequiredStandalone(string name, string? value, bool? quoteOverride = null, bool throwOnError = false)
-#endif
         {
             // Throw an exception if we are configured to
             if (value == null && throwOnError)
@@ -397,11 +350,7 @@ namespace SabreTools.IO.Writers
         /// <param name="name">Name of the attribute</param>
         /// <param name="value">Value to write in the attribute</param>
         /// <param name="quoteOverride">Non-null to overwrite the writer setting, null otherwise</param>
-#if NET48
-        public void WriteOptionalStandalone(string name, string value, bool? quoteOverride = null)
-#else
         public void WriteOptionalStandalone(string name, string? value, bool? quoteOverride = null)
-#endif
         {
             if (!string.IsNullOrEmpty(value))
                 WriteStandalone(name, value, quoteOverride);
@@ -410,11 +359,7 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// Write a string content value
         /// </summary>
-#if NET48
-        public void WriteString(string value)
-#else
         public void WriteString(string? value)
-#endif
         {
             try
             {
@@ -424,7 +369,7 @@ namespace SabreTools.IO.Writers
 
                     // If we're writing quotes, don't write out quote characters internally
                     if (Quotes)
-                        value = value.Replace("\"", "''");
+                        value = value!.Replace("\"", "''");
 
                     sw.Write(value);
                 }

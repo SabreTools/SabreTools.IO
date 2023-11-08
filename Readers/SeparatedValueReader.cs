@@ -12,11 +12,7 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Internal stream reader for inputting
         /// </summary>
-#if NET48
-        private readonly StreamReader sr;
-#else
         private readonly StreamReader? sr;
-#endif
 
         /// <summary>
         /// Internal value to say how many fields should be written
@@ -37,11 +33,7 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Contents of the current line, unprocessed
         /// </summary>
-#if NET48
-        public string CurrentLine { get; private set; } = string.Empty;
-#else
         public string? CurrentLine { get; private set; } = string.Empty;
-#endif
 
         /// <summary>
         /// Get the current line number
@@ -56,20 +48,12 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Header row values
         /// </summary>
-#if NET48
-        public List<string> HeaderValues { get; set; } = null;
-#else
         public List<string>? HeaderValues { get; set; } = null;
-#endif
 
         /// <summary>
         /// Get the current line values
         /// </summary>
-#if NET48
-        public List<string> Line { get; private set; } = null;
-#else
         public List<string>? Line { get; private set; } = null;
-#endif
 
         /// <summary>
         /// Assume that values are wrapped in quotes
@@ -127,11 +111,7 @@ namespace SabreTools.IO.Readers
             if (!sr.BaseStream.CanRead || sr.EndOfStream)
                 return false;
 
-#if NET48
-            string fullLine = sr.ReadLine();
-#else
             string? fullLine = sr.ReadLine();
-#endif
             CurrentLine = fullLine;
             LineNumber++;
 
@@ -181,11 +161,7 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Get the value for the current line for the current key
         /// </summary>
-#if NET48
-        public string GetValue(string key)
-#else
         public string? GetValue(string key)
-#endif
         {
             // No header means no key-based indexing
             if (!Header)

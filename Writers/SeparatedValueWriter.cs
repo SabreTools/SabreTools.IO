@@ -60,11 +60,7 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// Write a header row
         /// </summary>
-#if NET48
-        public void WriteHeader(string[] headers)
-#else
         public void WriteHeader(string?[] headers)
-#endif
         {
             // If we haven't written anything out, we can write headers
             if (!header && !firstRow)
@@ -76,11 +72,7 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// Write a value row
         /// </summary>
-#if NET48
-        public void WriteValues(object[] values, bool newline = true)
-#else
         public void WriteValues(object?[] values, bool newline = true)
-#endif
         {
             // If the writer can't be used, we error
             if (sw == null || !sw.BaseStream.CanWrite)

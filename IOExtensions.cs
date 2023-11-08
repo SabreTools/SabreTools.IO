@@ -83,29 +83,21 @@ namespace SabreTools.IO
         /// </summary>
         /// <param name="path">Path to get extension from</param>
         /// <returns>Extension, if possible</returns>
-#if NET48
-        public static string GetNormalizedExtension(this string path)
-#else
         public static string? GetNormalizedExtension(this string? path)
-#endif
         {
             // Check null or empty first
             if (string.IsNullOrWhiteSpace(path))
                 return null;
 
             // Get the extension from the path, if possible
-#if NET48
-            string ext = Path.GetExtension(path)?.ToLowerInvariant();
-#else
             string? ext = Path.GetExtension(path)?.ToLowerInvariant();
-#endif
 
             // Check if the extension is null or empty
             if (string.IsNullOrWhiteSpace(ext))
                 return null;
 
             // Make sure that extensions are valid
-            ext = ext.TrimStart('.');
+            ext = ext!.TrimStart('.');
 
             return ext;
         }
@@ -115,11 +107,7 @@ namespace SabreTools.IO
         /// </summary>
         /// <param name="root">Root directory to parse</param>
         /// <returns>IEumerable containing all directories that are empty, an empty enumerable if the root is empty, null otherwise</returns>
-#if NET48
-        public static List<string> ListEmpty(this string root)
-#else
         public static List<string>? ListEmpty(this string? root)
-#endif
         {
             // Check null or empty first
             if (string.IsNullOrEmpty(root))

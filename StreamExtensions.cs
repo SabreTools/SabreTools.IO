@@ -25,11 +25,7 @@ namespace SabreTools.IO
         /// <summary>
         /// Read a UInt8[] from the stream
         /// </summary>
-#if NET48
-        public static byte[] ReadBytes(this Stream stream, int count)
-#else
         public static byte[]? ReadBytes(this Stream stream, int count)
-#endif
         {
             // If there's an invalid byte count, don't do anything
             if (count <= 0)
@@ -210,20 +206,12 @@ namespace SabreTools.IO
         /// <summary>
         /// Read a null-terminated string from the stream
         /// </summary>
-#if NET48
-        public static string ReadString(this Stream stream) => stream.ReadString(Encoding.Default);
-#else
         public static string? ReadString(this Stream stream) => stream.ReadString(Encoding.Default);
-#endif
 
         /// <summary>
         /// Read a null-terminated string from the stream
         /// </summary>
-#if NET48
-        public static string ReadString(this Stream stream, Encoding encoding)
-#else
         public static string? ReadString(this Stream stream, Encoding encoding)
-#endif
         {
             if (stream.Position >= stream.Length)
                 return null;
