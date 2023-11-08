@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+#if !NET20
 using System.Linq;
+#endif
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -131,11 +133,7 @@ namespace SabreTools.IO.Readers
             // Standalone (special case for DC dats)
             if (CurrentLine.StartsWith("Name:"))
             {
-#if NETFRAMEWORK
                 string temp = CurrentLine.Substring("Name:".Length).Trim();
-#else
-                string temp = CurrentLine["Name:".Length..].Trim();
-#endif
                 CurrentLine = $"Name: {temp}";
             }
 
@@ -172,7 +170,7 @@ namespace SabreTools.IO.Readers
                 for (int i = 0; i < linegc.Length; i++)
                 {
                     string key = linegc[i].Replace("\"", string.Empty);
-                    if (string.IsNullOrWhiteSpace(key))
+                    if (string.IsNullOrEmpty(key))
                         continue;
 
                     string value = string.Empty;

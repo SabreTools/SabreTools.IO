@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+#if !NET20
 using System.Linq;
+#endif
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -124,9 +126,11 @@ namespace SabreTools.IO.Readers
                 // https://stackoverflow.com/questions/3776458/split-a-comma-separated-string-with-both-quoted-and-unquoted-strings
                 var lineSplitRegex = new Regex($"(?:^|{Separator})(\"(?:[^\"]+|\"\")*\"|[^{Separator}]*)");
                 var temp = new List<string>();
-                foreach (Match match in lineSplitRegex.Matches(fullLine))
+                foreach (Match? match in lineSplitRegex.Matches(fullLine))
                 {
-                    string curr = match.Value;
+                    string? curr = match?.Value;
+                    if (curr == null)
+                        continue;
                     if (curr.Length == 0)
                         temp.Add("");
 
@@ -137,7 +141,7 @@ namespace SabreTools.IO.Readers
 
                 Line = temp;
             }
-            
+
             // Otherwise, just split on the delimiter
             else
             {

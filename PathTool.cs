@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
+#if !NET20
 using System.Linq;
+#endif
 using NaturalSort;
 
 namespace SabreTools.IO
@@ -29,14 +31,10 @@ namespace SabreTools.IO
 
                 // If we have a wildcard
                 string pattern = "*";
-                if (input.Contains('*') || input.Contains('?'))
+                if (input.Contains("*") || input.Contains("?"))
                 {
                     pattern = Path.GetFileName(input);
-#if NETFRAMEWORK
                     input = input.Substring(0, input.Length - pattern.Length);
-#else
-                    input = input[..^pattern.Length];
-#endif
                 }
 
                 // Get the parent path in case of appending
@@ -75,7 +73,11 @@ namespace SabreTools.IO
         private static List<string> GetDirectoriesOrderedHelper(string dir, List<string> infiles, string pattern)
         {
             // Take care of the files in the top directory
+#if NET20 || NET35
+            List<string> toadd = Directory.GetDirectories(dir, pattern).ToList();
+#else
             List<string> toadd = Directory.EnumerateDirectories(dir, pattern, SearchOption.TopDirectoryOnly).ToList();
+#endif
             toadd.Sort(new NaturalComparer());
             infiles.AddRange(toadd);
 
@@ -108,14 +110,10 @@ namespace SabreTools.IO
 
                 // If we have a wildcard
                 string pattern = "*";
-                if (input.Contains('*') || input.Contains('?'))
+                if (input.Contains("*") || input.Contains("?"))
                 {
                     pattern = Path.GetFileName(input);
-#if NETFRAMEWORK
                     input = input.Substring(0, input.Length - pattern.Length);
-#else
-                    input = input[..^pattern.Length];
-#endif
                 }
 
                 // Get the parent path in case of appending
@@ -158,12 +156,20 @@ namespace SabreTools.IO
         private static List<string> GetFilesOrderedHelper(string dir, List<string> infiles, string pattern)
         {
             // Take care of the files in the top directory
+#if NET20 || NET35
+            List<string> toadd = Directory.GetFiles(dir, pattern).ToList();
+#else
             List<string> toadd = Directory.EnumerateFiles(dir, pattern, SearchOption.TopDirectoryOnly).ToList();
+#endif
             toadd.Sort(new NaturalComparer());
             infiles.AddRange(toadd);
 
             // Then recurse through and add from the directories
+#if NET20 || NET35
+            List<string> subDirs = Directory.GetDirectories(dir, pattern).ToList();
+#else
             List<string> subDirs = Directory.EnumerateDirectories(dir, pattern, SearchOption.TopDirectoryOnly).ToList();
+#endif
             subDirs.Sort(new NaturalComparer());
             foreach (string subdir in subDirs)
             {
@@ -173,7 +179,7 @@ namespace SabreTools.IO
             // Return the new list
             return infiles;
         }
-    
+
         /// <summary>
         /// Get the current runtime directory
         /// </summary>

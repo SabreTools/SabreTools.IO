@@ -32,14 +32,14 @@ namespace SabreTools.IO
         public string? GetNormalizedFileName(bool sanitize)
         {
             // If the current path is empty, we can't do anything
-            if (string.IsNullOrWhiteSpace(CurrentPath))
+            if (string.IsNullOrEmpty(CurrentPath))
                 return null;
 
             // Assume the current path is the filename
             string filename = Path.GetFileName(CurrentPath);
 
             // If we have a true ParentPath, remove it from CurrentPath and return the remainder
-            if (!string.IsNullOrWhiteSpace(ParentPath) && !string.Equals(CurrentPath, ParentPath, StringComparison.Ordinal))
+            if (string.IsNullOrEmpty(ParentPath) && !string.Equals(CurrentPath, ParentPath, StringComparison.Ordinal))      
                 filename = CurrentPath.Remove(0, ParentPath!.Length + 1);
 
             // If we're sanitizing the path after, do so
@@ -58,15 +58,15 @@ namespace SabreTools.IO
         public string? GetOutputPath(string outDir, bool inplace)
         {
             // If the current path is empty, we can't do anything
-            if (string.IsNullOrWhiteSpace(CurrentPath))
+            if (string.IsNullOrEmpty(CurrentPath))
                 return null;
 
             // If the output dir is empty (and we're not inplace), we can't do anything
-            if (string.IsNullOrWhiteSpace(outDir) && !inplace)
+            if (string.IsNullOrEmpty(outDir) && !inplace)
                 return null;
 
             // Check if we have a split path or not
-            bool splitpath = !string.IsNullOrWhiteSpace(ParentPath);
+            bool splitpath = !string.IsNullOrEmpty(ParentPath);
 
             // If we have an inplace output, use the directory name from the input path
             if (inplace)
@@ -85,15 +85,9 @@ namespace SabreTools.IO
                 workingParent = Path.GetDirectoryName(ParentPath ?? string.Empty) ?? string.Empty;
 
             // Determine the correct subfolder based on the working parent directory
-#if NETFRAMEWORK
             int extraLength = workingParent.EndsWith(":")
                 || workingParent.EndsWith(Path.DirectorySeparatorChar.ToString())
                 || workingParent.EndsWith(Path.AltDirectorySeparatorChar.ToString()) ? 0 : 1;
-#else
-            int extraLength = workingParent.EndsWith(':')
-                || workingParent.EndsWith(Path.DirectorySeparatorChar)
-                || workingParent.EndsWith(Path.AltDirectorySeparatorChar) ? 0 : 1;
-#endif
 
             return Path.GetDirectoryName(Path.Combine(outDir, CurrentPath.Remove(0, workingParent.Length + extraLength)));
         }

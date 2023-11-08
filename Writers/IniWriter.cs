@@ -34,8 +34,8 @@ namespace SabreTools.IO.Writers
         {
             if (sw?.BaseStream == null)
                 return;
-            
-            if (string.IsNullOrWhiteSpace(value))
+
+            if (string.IsNullOrEmpty(value))
                 throw new ArgumentException("Section tag cannot be null or empty", nameof(value));
 
             sw.WriteLine($"[{value!.TrimStart('[').TrimEnd(']')}]");
@@ -48,8 +48,8 @@ namespace SabreTools.IO.Writers
         {
             if (sw?.BaseStream == null)
                 return;
-            
-            if (string.IsNullOrWhiteSpace(key))
+
+            if (string.IsNullOrEmpty(key))
                 throw new ArgumentException("Key cannot be null or empty", nameof(key));
 
             value ??= string.Empty;
@@ -63,7 +63,7 @@ namespace SabreTools.IO.Writers
         {
             if (sw?.BaseStream == null)
                 return;
-            
+
             value ??= string.Empty;
             sw.WriteLine($";{value}");
         }
@@ -75,7 +75,7 @@ namespace SabreTools.IO.Writers
         {
             if (sw?.BaseStream == null)
                 return;
-            
+
             value ??= string.Empty;
             sw.Write(value);
         }
@@ -87,7 +87,7 @@ namespace SabreTools.IO.Writers
         {
             if (sw?.BaseStream == null)
                 return;
-            
+
             sw.WriteLine();
         }
 

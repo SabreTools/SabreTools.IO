@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+#if !NET20
 using System.Linq;
+#endif
 using System.Text;
 using SabreTools.IO.Readers;
 using SabreTools.IO.Writers;
@@ -198,14 +200,14 @@ namespace SabreTools.IO
                         string? value = keyValuePair.Value;
 
                         // We assume '.' is a section name separator
-                        if (key.Contains('.'))
+                        if (key.Contains("."))
                         {
                             // Split the key by '.'
                             string[] data = keyValuePair.Key.Split('.');
 
                             // If the key contains an '.', we need to put them back in
                             string newSection = data[0].Trim();
-                            key = string.Join(".", data.Skip(1)).Trim();
+                            key = string.Join(".", data.Skip(1).ToArray()).Trim();
 
                             // If we have a new section, write it out
                             if (!string.Equals(newSection, section, StringComparison.OrdinalIgnoreCase))
@@ -231,9 +233,18 @@ namespace SabreTools.IO
 
         #region IDictionary Impelementations
 
+#if NET20 || NET35 || NET40 || NET452
+        public ICollection<string> Keys => _keyValuePairs?.Keys?.ToArray() ?? new string[0];
+#else
         public ICollection<string> Keys => _keyValuePairs?.Keys?.ToArray() ?? Array.Empty<string>();
+#endif
 
+
+#if NET20 || NET35 || NET40 || NET452
+        public ICollection<string?> Values => _keyValuePairs?.Values?.ToArray() ?? new string[0];
+#else
         public ICollection<string?> Values => _keyValuePairs?.Values?.ToArray() ?? Array.Empty<string?>();
+#endif
 
         public int Count => (_keyValuePairs as ICollection<KeyValuePair<string, string>>)?.Count ?? 0;
 

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+#if !NET20
 using System.Linq;
+#endif
 using System.Text;
 
 namespace SabreTools.IO
@@ -19,7 +21,7 @@ namespace SabreTools.IO
         public static string Ensure(this string dir, bool create = false)
         {
             // If the output directory is invalid
-            if (string.IsNullOrWhiteSpace(dir))
+            if (string.IsNullOrEmpty(dir))
                 dir = PathTool.GetRuntimeDirectory();
 
             // Get the full path for the output directory
@@ -60,7 +62,7 @@ namespace SabreTools.IO
                 file.Dispose();
 
                 // Disable warning about UTF7 usage
-                #pragma warning disable SYSLIB0001
+#pragma warning disable SYSLIB0001
 
                 // Analyze the BOM
                 if (bom[0] == 0x2b && bom[1] == 0x2f && bom[2] == 0x76) return Encoding.UTF7;
@@ -70,7 +72,7 @@ namespace SabreTools.IO
                 if (bom[0] == 0 && bom[1] == 0 && bom[2] == 0xfe && bom[3] == 0xff) return Encoding.UTF32;
                 return Encoding.Default;
 
-                #pragma warning restore SYSLIB0001
+#pragma warning restore SYSLIB0001
             }
             catch
             {
@@ -86,14 +88,14 @@ namespace SabreTools.IO
         public static string? GetNormalizedExtension(this string? path)
         {
             // Check null or empty first
-            if (string.IsNullOrWhiteSpace(path))
+            if (string.IsNullOrEmpty(path))
                 return null;
 
             // Get the extension from the path, if possible
             string? ext = Path.GetExtension(path)?.ToLowerInvariant();
 
             // Check if the extension is null or empty
-            if (string.IsNullOrWhiteSpace(ext))
+            if (string.IsNullOrEmpty(ext))
                 return null;
 
             // Make sure that extensions are valid
@@ -118,13 +120,23 @@ namespace SabreTools.IO
                 return null;
 
             // If it does and it is empty, return a blank enumerable
+#if NET20 || NET35
+            if (Directory.GetFileSystemEntries(root, "*").Length == 0)
+#else
             if (!Directory.EnumerateFileSystemEntries(root, "*", SearchOption.AllDirectories).Any())
+#endif
                 return new List<string>();
 
             // Otherwise, get the complete list
+#if NET20 || NET35
+            return Directory.GetDirectories(root, "*")
+                .Where(dir => Directory.GetFileSystemEntries(dir, "*").Length != 0)
+                .ToList();
+#else
             return Directory.EnumerateDirectories(root, "*", SearchOption.AllDirectories)
                 .Where(dir => !Directory.EnumerateFileSystemEntries(dir, "*", SearchOption.AllDirectories).Any())
                 .ToList();
+#endif
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+#if !NET20
 using System.Linq;
+#endif
 using System.Text;
 
 namespace SabreTools.IO.Readers
@@ -111,14 +113,14 @@ namespace SabreTools.IO.Readers
             }
 
             // KeyValuePair
-            else if (CurrentLine.Contains('='))
+            else if (CurrentLine.Contains("="))
             {
                 // Split the line by '=' for key-value pairs
                 string[] data = CurrentLine.Split('=');
 
                 // If the value field contains an '=', we need to put them back in
                 string key = data[0].Trim();
-                string value = string.Join("=", data.Skip(1)).Trim();
+                string value = string.Join("=", data.Skip(1).ToArray()).Trim();
 
                 KeyValuePair = new KeyValuePair<string, string>(key, value);
                 RowType = IniRowType.KeyValue;
