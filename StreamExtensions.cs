@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-#if !NET20
 using System.Linq;
-#endif
 using System.Text;
 
 namespace SabreTools.IO

@@ -4,19 +4,13 @@ using System.Text.RegularExpressions;
 
 #if NET20
 
-namespace System.Runtime.CompilerServices
+namespace System.Linq
 {
-    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Class | AttributeTargets.Method)]
-    internal sealed class ExtensionAttribute : Attribute {}
-}
+    public delegate U LinqSelectDelegate<T, U>(T str);
 
-namespace SabreTools.IO
-{
-    internal delegate U LinqSelectDelegate<T, U>(T str);
-
-    internal delegate bool LinqWhereDelegate<T>(T str);
-
-    internal static partial class EnumerationExtensions
+    public delegate bool LinqWhereDelegate<T>(T str);
+    
+    public static partial class EnumerationExtensions
     {
         public static IEnumerable<T> Cast<T>(this MatchCollection arr)
         {
@@ -139,6 +133,12 @@ namespace SabreTools.IO
             return output;
         }
     }
+}
+
+namespace System.Runtime.CompilerServices
+{
+    [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Class | AttributeTargets.Method)]
+    internal sealed class ExtensionAttribute : Attribute {}
 }
 
 #endif

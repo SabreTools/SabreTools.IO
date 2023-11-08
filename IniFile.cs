@@ -2,9 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-#if !NET20
 using System.Linq;
-#endif
 using System.Text;
 using SabreTools.IO.Readers;
 using SabreTools.IO.Writers;

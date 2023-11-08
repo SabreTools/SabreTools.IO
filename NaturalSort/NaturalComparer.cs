@@ -11,13 +11,8 @@
 
 using System;
 using System.Collections.Generic;
-#if !NET20
 using System.Linq;
-#endif
 using System.Text.RegularExpressions;
-#if NET20
-using SabreTools.IO;
-#endif
 
 /// TODO: Make this namespace a separate library
 namespace NaturalSort
