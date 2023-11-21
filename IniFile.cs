@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+#if NET35_OR_GREATER || NETCOREAPP
 using System.Linq;
+#endif
 using System.Text;
 using SabreTools.IO.Readers;
 using SabreTools.IO.Writers;
@@ -221,18 +223,9 @@ namespace SabreTools.IO
 
         #region IDictionary Impelementations
 
-#if NET35 || NET40 || NET452
-        public ICollection<string> Keys => _keyValuePairs?.Keys?.ToArray() ?? new string[0];
-#else
-        public ICollection<string> Keys => _keyValuePairs?.Keys?.ToArray() ?? Array.Empty<string>();
-#endif
+        public ICollection<string> Keys => _keyValuePairs?.Keys?.ToArray() ?? [];
 
-
-#if NET35 || NET40 || NET452
-        public ICollection<string?> Values => _keyValuePairs?.Values?.ToArray() ?? new string[0];
-#else
-        public ICollection<string?> Values => _keyValuePairs?.Values?.ToArray() ?? Array.Empty<string?>();
-#endif
+        public ICollection<string?> Values => _keyValuePairs?.Values?.ToArray() ?? [];
 
         public int Count => (_keyValuePairs as ICollection<KeyValuePair<string, string>>)?.Count ?? 0;
 

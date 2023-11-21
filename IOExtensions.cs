@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+#if NET35_OR_GREATER || NETCOREAPP
 using System.Linq;
+#endif
 using System.Text;
 
 namespace SabreTools.IO
@@ -118,7 +120,7 @@ namespace SabreTools.IO
                 return null;
 
             // If it does and it is empty, return a blank enumerable
-#if NET35
+#if NET20 || NET35
             if (!Directory.GetFiles(root, "*", SearchOption.AllDirectories).Any())
 #else
             if (!Directory.EnumerateFileSystemEntries(root, "*", SearchOption.AllDirectories).Any())
@@ -126,7 +128,7 @@ namespace SabreTools.IO
                 return [];
 
             // Otherwise, get the complete list
-#if NET35
+#if NET20 || NET35
             return Directory.GetDirectories(root, "*", SearchOption.AllDirectories)
                 .Where(dir => !Directory.GetFiles(dir, "*", SearchOption.AllDirectories).Any())
                 .ToList();
