@@ -11,11 +11,8 @@
 
 using System;
 using System.Collections.Generic;
-#if NET35_OR_GREATER || NETCOREAPP
 using System.Linq;
-#endif
 using System.Text.RegularExpressions;
-using SabreTools.IO;
 
 /// TODO: Make this namespace a separate library
 namespace NaturalSort

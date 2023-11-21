@@ -27,7 +27,7 @@
 
   <!-- Support for old .NET versions -->
   <ItemGroup Condition="$(TargetFramework.StartsWith(`net2`)) OR $(TargetFramework.StartsWith(`net3`))">
-    <PackageReference Include="Hafner.Compatibility.ExtensionAttribute" Version="2.3.0" />
+    <PackageReference Include="Net30.LinqBridge" Version="1.3.0" />
   </ItemGroup>
 
 </Project>
