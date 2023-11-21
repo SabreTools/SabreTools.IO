@@ -74,7 +74,7 @@ namespace SabreTools.IO
             int i3 = BitConverter.ToInt32(retval, 8);
             int i4 = BitConverter.ToInt32(retval, 12);
 
-            return new decimal(new int[] { i1, i2, i3, i4 });
+            return new decimal([i1, i2, i3, i4]);
         }
 
         /// <summary>

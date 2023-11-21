@@ -71,7 +71,7 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// State table for determining the state machine
         /// </summary>
-        private readonly State[] stateTable = {
+        private readonly State[] stateTable = [
             //                         State.Start      State.Prolog     State.Element    State.Attribute  State.Content   State.AttrOnly   State.Epilog
             //
             /* Token.None           */ State.Prolog,    State.Prolog,    State.Content,   State.Content,   State.Content,  State.Error,     State.Epilog,
@@ -82,7 +82,7 @@ namespace SabreTools.IO.Writers
             /* Token.StartAttribute */ State.AttrOnly,  State.Error,     State.Attribute, State.Attribute, State.Error,    State.Error,     State.Error,
             /* Token.EndAttribute   */ State.Error,     State.Error,     State.Error,     State.Element,   State.Error,    State.Epilog,    State.Error,
             /* Token.Content        */ State.Content,   State.Content,   State.Content,   State.Attribute, State.Content,  State.Attribute, State.Epilog,
-        };
+        ];
 
         /// <summary>
         /// Current state in the machine

@@ -14,15 +14,13 @@ namespace SabreTools.IO
     /// </summary>
     public class IniFile : IDictionary<string, string?>
     {
-        private Dictionary<string, string?>? _keyValuePairs = new Dictionary<string, string?>();
+        private Dictionary<string, string?>? _keyValuePairs = [];
 
         public string? this[string? key]
         {
             get
             {
-                if (_keyValuePairs == null)
-                    _keyValuePairs = new Dictionary<string, string?>();
-
+                _keyValuePairs ??= [];
                 key = key?.ToLowerInvariant() ?? string.Empty;
                 if (_keyValuePairs.ContainsKey(key))
                     return _keyValuePairs[key];
@@ -31,9 +29,7 @@ namespace SabreTools.IO
             }
             set
             {
-                if (_keyValuePairs == null)
-                    _keyValuePairs = new Dictionary<string, string?>();
-
+                _keyValuePairs ??= [];
                 key = key?.ToLowerInvariant() ?? string.Empty;
                 _keyValuePairs[key] = value;
             }
@@ -93,10 +89,8 @@ namespace SabreTools.IO
             if (!File.Exists(path))
                 return false;
 
-            using (var fileStream = File.OpenRead(path))
-            {
-                return Parse(fileStream);
-            }
+            using var fileStream = File.OpenRead(path);
+            return Parse(fileStream);
         }
 
         /// <summary>
@@ -111,38 +105,37 @@ namespace SabreTools.IO
             // Keys are case-insensitive by default
             try
             {
-                using (var reader = new IniReader(stream, Encoding.UTF8))
+                // TODO: Can we use the section header in the reader?
+                using var reader = new IniReader(stream, Encoding.UTF8);
+
+                string? section = string.Empty;
+                while (!reader.EndOfStream)
                 {
-                    // TODO: Can we use the section header in the reader?
-                    string? section = string.Empty;
-                    while (!reader.EndOfStream)
+                    // If we dont have a next line
+                    if (!reader.ReadNextLine())
+                        break;
+
+                    // Process the row according to type
+                    switch (reader.RowType)
                     {
-                        // If we dont have a next line
-                        if (!reader.ReadNextLine())
+                        case IniRowType.SectionHeader:
+                            section = reader.Section;
                             break;
 
-                        // Process the row according to type
-                        switch (reader.RowType)
-                        {
-                            case IniRowType.SectionHeader:
-                                section = reader.Section;
-                                break;
+                        case IniRowType.KeyValue:
+                            string? key = reader.KeyValuePair?.Key;
 
-                            case IniRowType.KeyValue:
-                                string? key = reader.KeyValuePair?.Key;
+                            // Section names are prepended to the key with a '.' separating
+                            if (!string.IsNullOrEmpty(section))
+                                key = $"{section}.{key}";
 
-                                // Section names are prepended to the key with a '.' separating
-                                if (!string.IsNullOrEmpty(section))
-                                    key = $"{section}.{key}";
+                            // Set or overwrite keys in the returned dictionary
+                            this[key] = reader.KeyValuePair?.Value;
+                            break;
 
-                                // Set or overwrite keys in the returned dictionary
-                                this[key] = reader.KeyValuePair?.Value;
-                                break;
-
-                            default:
-                                // No-op
-                                break;
-                        }
+                        default:
+                            // No-op
+                            break;
                     }
                 }
             }
@@ -164,10 +157,8 @@ namespace SabreTools.IO
             if (_keyValuePairs == null || _keyValuePairs.Count == 0)
                 return false;
 
-            using (var fileStream = File.OpenWrite(path))
-            {
-                return Write(fileStream);
-            }
+            using var fileStream = File.OpenWrite(path);
+            return Write(fileStream);
         }
 
         /// <summary>
@@ -185,39 +176,38 @@ namespace SabreTools.IO
 
             try
             {
-                using (IniWriter writer = new IniWriter(stream, Encoding.UTF8))
+                using IniWriter writer = new(stream, Encoding.UTF8);
+
+                // Order the dictionary by keys to link sections together
+                var orderedKeyValuePairs = _keyValuePairs.OrderBy(kvp => kvp.Key);
+
+                string section = string.Empty;
+                foreach (var keyValuePair in orderedKeyValuePairs)
                 {
-                    // Order the dictionary by keys to link sections together
-                    var orderedKeyValuePairs = _keyValuePairs.OrderBy(kvp => kvp.Key);
+                    // Extract the key and value
+                    string key = keyValuePair.Key;
+                    string? value = keyValuePair.Value;
 
-                    string section = string.Empty;
-                    foreach (var keyValuePair in orderedKeyValuePairs)
+                    // We assume '.' is a section name separator
+                    if (key.Contains("."))
                     {
-                        // Extract the key and value
-                        string key = keyValuePair.Key;
-                        string? value = keyValuePair.Value;
+                        // Split the key by '.'
+                        string[] data = keyValuePair.Key.Split('.');
 
-                        // We assume '.' is a section name separator
-                        if (key.Contains("."))
+                        // If the key contains an '.', we need to put them back in
+                        string newSection = data[0].Trim();
+                        key = string.Join(".", data.Skip(1).ToArray()).Trim();
+
+                        // If we have a new section, write it out
+                        if (!string.Equals(newSection, section, StringComparison.OrdinalIgnoreCase))
                         {
-                            // Split the key by '.'
-                            string[] data = keyValuePair.Key.Split('.');
-
-                            // If the key contains an '.', we need to put them back in
-                            string newSection = data[0].Trim();
-                            key = string.Join(".", data.Skip(1).ToArray()).Trim();
-
-                            // If we have a new section, write it out
-                            if (!string.Equals(newSection, section, StringComparison.OrdinalIgnoreCase))
-                            {
-                                writer.WriteSection(newSection);
-                                section = newSection;
-                            }
+                            writer.WriteSection(newSection);
+                            section = newSection;
                         }
-
-                        // Now write out the key and value in a standardized way
-                        writer.WriteKeyValuePair(key, value);
                     }
+
+                    // Now write out the key and value in a standardized way
+                    writer.WriteKeyValuePair(key, value);
                 }
             }
             catch
@@ -231,14 +221,14 @@ namespace SabreTools.IO
 
         #region IDictionary Impelementations
 
-#if NET40 || NET452
+#if NET35 || NET40 || NET452
         public ICollection<string> Keys => _keyValuePairs?.Keys?.ToArray() ?? new string[0];
 #else
         public ICollection<string> Keys => _keyValuePairs?.Keys?.ToArray() ?? Array.Empty<string>();
 #endif
 
 
-#if NET40 || NET452
+#if NET35 || NET40 || NET452
         public ICollection<string?> Values => _keyValuePairs?.Values?.ToArray() ?? new string[0];
 #else
         public ICollection<string?> Values => _keyValuePairs?.Values?.ToArray() ?? Array.Empty<string?>();

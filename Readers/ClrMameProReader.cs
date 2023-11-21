@@ -49,7 +49,7 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Contents of the currently read line as an internal item
         /// </summary>
-        public Dictionary<string, string>? Internal { get; private set; } = new Dictionary<string, string>();
+        public Dictionary<string, string>? Internal { get; private set; } = [];
 
         /// <summary>
         /// Current internal item name
@@ -164,7 +164,7 @@ namespace SabreTools.IO.Readers
                 string normalizedValue = gc[1].Value.ToLowerInvariant();
                 string[] linegc = SplitLineAsCMP(gc[2].Value);
 
-                Internal = new Dictionary<string, string>();
+                Internal = [];
                 for (int i = 0; i < linegc.Length; i++)
                 {
                     string key = linegc[i].Replace("\"", string.Empty);

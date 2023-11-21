@@ -58,7 +58,7 @@ namespace SabreTools.IO
         /// <returns>List with all new files</returns>
         private static List<string> GetDirectoriesOrdered(string dir, string pattern = "*")
         {
-            return GetDirectoriesOrderedHelper(dir, new List<string>(), pattern);
+            return GetDirectoriesOrderedHelper(dir, [], pattern);
         }
 
         /// <summary>
@@ -71,7 +71,11 @@ namespace SabreTools.IO
         private static List<string> GetDirectoriesOrderedHelper(string dir, List<string> infiles, string pattern)
         {
             // Take care of the files in the top directory
+#if NET35
+            List<string> toadd = Directory.GetDirectories(dir, pattern, SearchOption.TopDirectoryOnly).ToList();
+#else
             List<string> toadd = Directory.EnumerateDirectories(dir, pattern, SearchOption.TopDirectoryOnly).ToList();
+#endif
             toadd.Sort(new NaturalComparer());
             infiles.AddRange(toadd);
 
@@ -137,7 +141,7 @@ namespace SabreTools.IO
         /// <returns>List with all new files</returns>
         public static List<string> GetFilesOrdered(string dir, string pattern = "*")
         {
-            return GetFilesOrderedHelper(dir, new List<string>(), pattern);
+            return GetFilesOrderedHelper(dir, [], pattern);
         }
 
         /// <summary>
@@ -150,12 +154,20 @@ namespace SabreTools.IO
         private static List<string> GetFilesOrderedHelper(string dir, List<string> infiles, string pattern)
         {
             // Take care of the files in the top directory
+#if NET35
+            List<string> toadd = Directory.GetFiles(dir, pattern, SearchOption.TopDirectoryOnly).ToList();
+#else
             List<string> toadd = Directory.EnumerateFiles(dir, pattern, SearchOption.TopDirectoryOnly).ToList();
+#endif
             toadd.Sort(new NaturalComparer());
             infiles.AddRange(toadd);
 
             // Then recurse through and add from the directories
+#if NET35
+            List<string> subDirs = Directory.GetDirectories(dir, pattern, SearchOption.TopDirectoryOnly).ToList();
+#else
             List<string> subDirs = Directory.EnumerateDirectories(dir, pattern, SearchOption.TopDirectoryOnly).ToList();
+#endif
             subDirs.Sort(new NaturalComparer());
             foreach (string subdir in subDirs)
             {

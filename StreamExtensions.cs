@@ -219,7 +219,7 @@ namespace SabreTools.IO
             byte[] nullTerminator = encoding.GetBytes(new char[] { '\0' });
             int charWidth = nullTerminator.Length;
 
-            List<byte> tempBuffer = new List<byte>();
+            var tempBuffer = new List<byte>();
 
             byte[] buffer = new byte[charWidth];
             while (stream.Position < stream.Length && stream.Read(buffer, 0, charWidth) != 0 && !buffer.SequenceEqual(nullTerminator))
@@ -227,7 +227,7 @@ namespace SabreTools.IO
                 tempBuffer.AddRange(buffer);
             }
 
-            return encoding.GetString(tempBuffer.ToArray());
+            return encoding.GetString([.. tempBuffer]);
         }
 
         /// <summary>

@@ -23,7 +23,7 @@ namespace NaturalSort
 
         public NaturalComparer()
         {
-            table = new Dictionary<string, string[]>();
+            table = [];
         }
 
         public void Dispose()

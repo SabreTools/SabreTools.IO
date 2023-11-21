@@ -118,13 +118,23 @@ namespace SabreTools.IO
                 return null;
 
             // If it does and it is empty, return a blank enumerable
+#if NET35
+            if (!Directory.GetFiles(root, "*", SearchOption.AllDirectories).Any())
+#else
             if (!Directory.EnumerateFileSystemEntries(root, "*", SearchOption.AllDirectories).Any())
-                return new List<string>();
+#endif
+                return [];
 
             // Otherwise, get the complete list
+#if NET35
+            return Directory.GetDirectories(root, "*", SearchOption.AllDirectories)
+                .Where(dir => !Directory.GetFiles(dir, "*", SearchOption.AllDirectories).Any())
+                .ToList();
+#else
             return Directory.EnumerateDirectories(root, "*", SearchOption.AllDirectories)
                 .Where(dir => !Directory.EnumerateFileSystemEntries(dir, "*", SearchOption.AllDirectories).Any())
                 .ToList();
+#endif
         }
     }
 }

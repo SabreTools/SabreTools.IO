@@ -266,7 +266,7 @@ namespace SabreTools.IO
             byte[] nullTerminator = encoding.GetBytes(new char[] { '\0' });
             int charWidth = nullTerminator.Length;
 
-            List<char> keyChars = new List<char>();
+            var keyChars = new List<char>();
             while (offset < content.Length)
             {
                 char c = encoding.GetChars(content, offset, charWidth)[0];
@@ -277,7 +277,7 @@ namespace SabreTools.IO
                     break;
             }
 
-            return new string(keyChars.ToArray()).TrimEnd('\0');
+            return new string([.. keyChars]).TrimEnd('\0');
         }
     }
 }

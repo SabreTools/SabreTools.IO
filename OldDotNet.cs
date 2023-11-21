@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-#if NET40
+#if NET35 || NET40
 
 namespace SabreTools.IO
 {
