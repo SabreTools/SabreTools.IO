@@ -50,7 +50,7 @@ namespace SabreTools.IO
             // Try to open the file
             try
             {
-                FileStream file = File.OpenRead(filename);
+                FileStream file = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 if (file == null)
                     return Encoding.Default;
 

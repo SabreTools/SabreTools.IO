@@ -89,7 +89,7 @@ namespace SabreTools.IO
             if (!File.Exists(path))
                 return false;
 
-            using var fileStream = File.OpenRead(path);
+            using var fileStream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             return Parse(fileStream);
         }
 
