@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-/// TODO: Make this namespace a separate library
+// Ported to SabreTools.Matching. Remove once published.
 namespace NaturalSort
 {
     internal static class NaturalComparerUtil

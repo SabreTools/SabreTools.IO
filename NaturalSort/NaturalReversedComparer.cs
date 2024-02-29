@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-/// TODO: Make this namespace a separate library
+// Ported to SabreTools.Matching. Remove once published.
 namespace NaturalSort
 {
     internal class NaturalReversedComparer : Comparer<string>, IDisposable
