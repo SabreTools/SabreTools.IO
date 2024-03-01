@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using NaturalSort;
+using SabreTools.Matching;
 
 namespace SabreTools.IO
 {
