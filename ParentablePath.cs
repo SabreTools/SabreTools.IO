@@ -90,7 +90,7 @@ namespace SabreTools.IO
                 || workingParent.EndsWith(Path.DirectorySeparatorChar.ToString())
                 || workingParent.EndsWith(Path.AltDirectorySeparatorChar.ToString()) ? 0 : 1;
 
-            return Path.GetDirectoryName(Path.Combine(outDir, CurrentPath.Remove(0, workingParent.Length + extraLength)));
+            return Path.GetDirectoryName(Path.Combine(outDir!, CurrentPath.Remove(0, workingParent.Length + extraLength)));
         }
     }
 }
