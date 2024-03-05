@@ -20,7 +20,7 @@ namespace SabreTools.IO.Test
         {
             var path = new ParentablePath(current, parent);
             string? actual = path.GetNormalizedFileName(sanitize);
-            Assert.Equal(expected, actual);
+            Assert.Equal(expected?.Replace('/', '\\'), actual?.Replace('/', '\\'));
         }
 
         [Theory]
@@ -58,13 +58,13 @@ namespace SabreTools.IO.Test
         {
             // Hacks because I can't use environment vars as parameters
             if (outDir == "%cd%")
-                outDir = Environment.CurrentDirectory.TrimEnd('\\');
+                outDir = Environment.CurrentDirectory.TrimEnd('\\', '/');
             if (expected?.Contains("%cd%") == true)
-                expected = expected.Replace("%cd%", Environment.CurrentDirectory.TrimEnd('\\'));
+                expected = expected.Replace("%cd%", Environment.CurrentDirectory.TrimEnd('\\', '/'));
 
             var path = new ParentablePath(current, parent);
             string? actual = path.GetOutputPath(outDir, inplace);
-            Assert.Equal(expected, actual);
+            Assert.Equal(expected?.Replace('/', '\\'), actual?.Replace('/', '\\'));
         }
     }
 }
