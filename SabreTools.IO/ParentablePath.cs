@@ -20,8 +20,8 @@ namespace SabreTools.IO
 
         public ParentablePath(string currentPath, string? parentPath = null)
         {
-            CurrentPath = currentPath.Trim();
-            ParentPath = parentPath?.Trim();
+            CurrentPath = currentPath.Trim().Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            ParentPath = parentPath?.Trim()?.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
         }
 
         /// <summary>
