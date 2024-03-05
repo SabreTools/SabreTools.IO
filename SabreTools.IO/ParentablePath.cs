@@ -20,8 +20,8 @@ namespace SabreTools.IO
 
         public ParentablePath(string currentPath, string? parentPath = null)
         {
-            CurrentPath = currentPath.Trim().Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
-            ParentPath = parentPath?.Trim()?.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            CurrentPath = currentPath.Trim();
+            ParentPath = parentPath?.Trim();
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace SabreTools.IO
             string filename = Path.GetFileName(CurrentPath);
 
             // If we have a true ParentPath, remove it from CurrentPath and return the remainder
-            if (!string.IsNullOrEmpty(ParentPath) && !string.Equals(CurrentPath, ParentPath, StringComparison.Ordinal))      
+            if (!string.IsNullOrEmpty(ParentPath) && !PathsEqual(CurrentPath, ParentPath))      
                 filename = CurrentPath.Remove(0, ParentPath!.Length + 1);
 
             // If we're sanitizing the path after, do so
@@ -91,6 +91,40 @@ namespace SabreTools.IO
                 || workingParent.EndsWith(Path.AltDirectorySeparatorChar.ToString()) ? 0 : 1;
 
             return Path.GetDirectoryName(Path.Combine(outDir!, CurrentPath.Remove(0, workingParent.Length + extraLength)));
+        }
+    
+        /// <summary>
+        /// Determine if two paths are equal or not
+        /// </summary>
+        private static bool PathsEqual(string? path1, string? path2, bool caseSenstive = false)
+        {
+            // Handle null path cases
+            if (path1 == null && path2 == null)
+                return true;
+            else if (path1 == null ^ path2 == null)
+                return false;
+
+            // Normalize the paths before comparing
+            path1 = NormalizeDirectorySeparators(path1);
+            path2 = NormalizeDirectorySeparators(path2);
+
+            // Compare and return
+            return string.Equals(path1, path2, caseSenstive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Normalize directory separators for the current system
+        /// </summary>
+        /// <param name="input">Input path that may contain separators</param>
+        /// <returns>Normalized path with separators fixed, if possible</returns>
+        private static string? NormalizeDirectorySeparators(string? input)
+        {
+            // Null inputs are skipped
+            if (input == null)
+                return null;
+
+            // Replace alternate directory separators with the correct one
+            return input.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace SabreTools.IO.Test
         {
             var path = new ParentablePath(current, parent);
             string? actual = path.GetNormalizedFileName(sanitize);
-            Assert.Equal(expected?.Replace('/', '\\'), actual?.Replace('/', '\\'));
+            Assert.Equal(expected, actual);
         }
 
         [Theory]
@@ -64,7 +64,7 @@ namespace SabreTools.IO.Test
 
             var path = new ParentablePath(current, parent);
             string? actual = path.GetOutputPath(outDir, inplace);
-            Assert.Equal(expected?.Replace('/', '\\'), actual?.Replace('/', '\\'));
+            Assert.Equal(expected, actual);
         }
     }
 }
