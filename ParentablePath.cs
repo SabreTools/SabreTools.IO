@@ -20,8 +20,8 @@ namespace SabreTools.IO
 
         public ParentablePath(string currentPath, string? parentPath = null)
         {
-            CurrentPath = currentPath;
-            ParentPath = parentPath;
+            CurrentPath = currentPath.Trim();
+            ParentPath = parentPath?.Trim();
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace SabreTools.IO
             string filename = Path.GetFileName(CurrentPath);
 
             // If we have a true ParentPath, remove it from CurrentPath and return the remainder
-            if (string.IsNullOrEmpty(ParentPath) && !string.Equals(CurrentPath, ParentPath, StringComparison.Ordinal))      
+            if (!string.IsNullOrEmpty(ParentPath) && !string.Equals(CurrentPath, ParentPath, StringComparison.Ordinal))      
                 filename = CurrentPath.Remove(0, ParentPath!.Length + 1);
 
             // If we're sanitizing the path after, do so
@@ -55,13 +55,14 @@ namespace SabreTools.IO
         /// <param name="outDir">Output directory to use</param>
         /// <param name="inplace">True if the output file should go to the same input folder, false otherwise</param>
         /// <returns>Complete output path</returns>
-        public string? GetOutputPath(string outDir, bool inplace)
+        public string? GetOutputPath(string? outDir, bool inplace)
         {
             // If the current path is empty, we can't do anything
             if (string.IsNullOrEmpty(CurrentPath))
                 return null;
 
             // If the output dir is empty (and we're not inplace), we can't do anything
+            outDir = outDir?.Trim();
             if (string.IsNullOrEmpty(outDir) && !inplace)
                 return null;
 
