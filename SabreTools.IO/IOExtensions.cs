@@ -16,7 +16,7 @@ namespace SabreTools.IO
         /// <param name="dir">Directory to check</param>
         /// <param name="create">True if the directory should be created, false otherwise (default)</param>
         /// <returns>Full path to the directory</returns>
-        public static string Ensure(this string dir, bool create = false)
+        public static string Ensure(this string? dir, bool create = false)
         {
             // If the output directory is invalid
             if (string.IsNullOrEmpty(dir))
