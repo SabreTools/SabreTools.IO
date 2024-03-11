@@ -23,7 +23,7 @@ namespace SabreTools.IO
                 dir = PathTool.GetRuntimeDirectory();
 
             // Get the full path for the output directory
-            dir = Path.GetFullPath(dir.Trim('"'));
+            dir = Path.GetFullPath(dir!.Trim('"'));
 
             // If we're creating the output folder, do so
             if (create && !Directory.Exists(dir))
