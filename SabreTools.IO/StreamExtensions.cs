@@ -231,6 +231,44 @@ namespace SabreTools.IO
         }
 
         /// <summary>
+        /// Read a string that is terminated by a newline but contains a quoted portion that
+        /// may also contain a newline from the stream
+        /// </summary>
+        public static string? ReadQuotedString(this Stream stream) => stream.ReadQuotedString(Encoding.Default);
+
+        /// <summary>
+        /// Read a string that is terminated by a newline but contains a quoted portion that
+        /// may also contain a newline from the stream
+        /// </summary>
+        public static string? ReadQuotedString(this Stream stream, Encoding encoding)
+        {
+            if (stream.Position >= stream.Length)
+                return null;
+
+            var bytes = new List<byte>();
+            bool openQuote = false;
+            while (stream.Position < stream.Length)
+            {
+                // Read the byte value
+                byte b = stream.ReadByteValue();
+
+                // If we have a quote, flip the flag
+                if (b == (byte)'"')
+                    openQuote = !openQuote;
+
+                // If we have a newline not in a quoted string, exit the loop
+                else if (b == (byte)'\n' && !openQuote)
+                    break;
+
+                // Add the byte to the set
+                bytes.Add(b);
+            }
+
+            var line = encoding.GetString([.. bytes]);
+            return line.TrimEnd();
+        }
+
+        /// <summary>
         /// Seek to a specific point in the stream, if possible
         /// </summary>
         /// <param name="input">Input stream to try seeking on</param>
