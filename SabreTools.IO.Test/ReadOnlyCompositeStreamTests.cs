@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using SabreTools.IO.Streams;
 using Xunit;
 
 namespace SabreTools.IO.Test
