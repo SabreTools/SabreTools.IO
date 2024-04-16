@@ -18,6 +18,14 @@ namespace SabreTools.IO.Test
         [InlineData("C:\\Directory\\SubDir\\Filename.ext", "C:\\Directory", true, "SubDir-Filename.ext")]
         public void NormalizedFileNameTest(string current, string? parent, bool sanitize, string? expected)
         {
+            // Hack to support Windows paths on Linux for testing only
+            if (System.IO.Path.DirectorySeparatorChar == '/')
+            {
+                current = current.Replace('\\', '/');
+                parent = parent?.Replace('\\', '/');
+                expected = expected?.Replace('\\', '/');
+            }
+
             var path = new ParentablePath(current, parent);
             string? actual = path.GetNormalizedFileName(sanitize);
             Assert.Equal(expected, actual);
@@ -61,6 +69,15 @@ namespace SabreTools.IO.Test
                 outDir = Environment.CurrentDirectory.TrimEnd('\\', '/');
             if (expected?.Contains("%cd%") == true)
                 expected = expected.Replace("%cd%", Environment.CurrentDirectory.TrimEnd('\\', '/'));
+
+            // Hack to support Windows paths on Linux for testing only
+            if (System.IO.Path.DirectorySeparatorChar == '/')
+            {
+                current = current.Replace('\\', '/');
+                parent = parent?.Replace('\\', '/');
+                outDir = outDir?.Replace('\\', '/');
+                expected = expected?.Replace('\\', '/');
+            }
 
             var path = new ParentablePath(current, parent);
             string? actual = path.GetOutputPath(outDir, inplace);

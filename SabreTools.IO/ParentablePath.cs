@@ -84,13 +84,19 @@ namespace SabreTools.IO
             // If we are processing a path that is coming from a directory and we are outputting to the current directory, we want to get the subfolder to write to
             if (outDir == Environment.CurrentDirectory)
                 workingParent = Path.GetDirectoryName(ParentPath ?? string.Empty) ?? string.Empty;
+            
+            // Handle bizarre Windows-like paths on Linux
+            if (workingParent.EndsWith(":") && Path.DirectorySeparatorChar == '/')
+                workingParent += '/';
 
             // Determine the correct subfolder based on the working parent directory
             int extraLength = workingParent.EndsWith(":")
-                || workingParent.EndsWith(Path.DirectorySeparatorChar.ToString())
-                || workingParent.EndsWith(Path.AltDirectorySeparatorChar.ToString()) ? 0 : 1;
+                || workingParent.EndsWith("\\")
+                || workingParent.EndsWith("/") ? 0 : 1;
 
-            return Path.GetDirectoryName(Path.Combine(outDir!, CurrentPath.Remove(0, workingParent.Length + extraLength)));
+            string strippedPath = CurrentPath.Remove(0, workingParent.Length + extraLength);
+            string combinedPath = Path.Combine(outDir!, strippedPath);
+            return Path.GetDirectoryName(combinedPath);
         }
     
         /// <summary>
