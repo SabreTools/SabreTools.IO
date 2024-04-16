@@ -25,9 +25,7 @@ namespace SabreTools.IO
         /// Read a UInt8[] from the stream
         /// </summary>
         public static byte[]? ReadBytes(this Stream stream, int count)
-        {
-            return ReadToBuffer(stream, count);
-        }
+            => ReadToBuffer(stream, count);
 
         /// <summary>
         /// Read a Int8 from the stream
