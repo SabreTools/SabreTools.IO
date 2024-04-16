@@ -44,7 +44,7 @@ namespace SabreTools.IO
 
             // If we're sanitizing the path after, do so
             if (sanitize)
-                filename = filename.Replace(Path.DirectorySeparatorChar, '-').Replace(Path.AltDirectorySeparatorChar, '-');
+                filename = filename.Replace('\\', '-').Replace('/', '-');
 
             return filename;
         }
