@@ -180,6 +180,46 @@ namespace SabreTools.IO
             return new Guid(buffer);
         }
 
+#if NET7_0_OR_GREATER
+        /// <summary>
+        /// Read a Int128 from the stream
+        /// </summary>
+        public static Int128 ReadInt128(this Stream stream)
+        {
+            byte[] buffer = ReadToBuffer(stream, 16);
+            return new Int128(BitConverter.ToUInt64(buffer, 0), BitConverter.ToUInt64(buffer, 8));
+        }
+
+        /// <summary>
+        /// Read a Int128 from the stream in big-endian format
+        /// </summary>
+        public static Int128 ReadInt128BigEndian(this Stream stream)
+        {
+            byte[] buffer = ReadToBuffer(stream, 16);
+            Array.Reverse(buffer);
+            return new Int128(BitConverter.ToUInt64(buffer, 0), BitConverter.ToUInt64(buffer, 8));
+        }
+
+        /// <summary>
+        /// Read a UInt128 from the stream
+        /// </summary>
+        public static UInt128 ReadUInt128(this Stream stream)
+        {
+            byte[] buffer = ReadToBuffer(stream, 16);
+            return new UInt128(BitConverter.ToUInt64(buffer, 0), BitConverter.ToUInt64(buffer, 8));
+        }
+
+        /// <summary>
+        /// Read a UInt128 from the stream in big-endian format
+        /// </summary>
+        public static UInt128 ReadUInt128BigEndian(this Stream stream)
+        {
+            byte[] buffer = ReadToBuffer(stream, 16);
+            Array.Reverse(buffer);
+            return new UInt128(BitConverter.ToUInt64(buffer, 0), BitConverter.ToUInt64(buffer, 8));
+        }
+#endif
+
         /// <summary>
         /// Read a null-terminated string from the stream
         /// </summary>
