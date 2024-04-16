@@ -232,7 +232,7 @@ namespace SabreTools.IO
             if (stream.Position >= stream.Length)
                 return null;
 
-            byte[] nullTerminator = encoding.GetBytes(['\0']);
+            byte[] nullTerminator = encoding.GetBytes("\0");
             int charWidth = nullTerminator.Length;
 
             var tempBuffer = new List<byte>();
