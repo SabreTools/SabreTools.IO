@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace SabreTools.IO
+namespace SabreTools.IO.Streams
 {
     /// <summary>
     /// Read-only stream wrapper around multiple, consecutive streams
