@@ -148,9 +148,9 @@ namespace SabreTools.IO.Streams
         public override int Read(byte[] buffer, int offset, int count)
         {
             // Determine which stream we start reading from
-            (int streamIndex, long streamOffset) = DetermineStreamIndex(offset);
+            (int streamIndex, long streamOffset) = DetermineStreamIndex(_position);
             if (streamIndex == -1)
-                throw new ArgumentOutOfRangeException(nameof(offset));
+                throw new ArgumentOutOfRangeException(nameof(count));
 
             // Determine if the stream fully contains the requested segment
             bool singleStream = StreamContains(streamIndex, streamOffset, count);
@@ -228,7 +228,7 @@ namespace SabreTools.IO.Streams
         /// Determine the index of the stream that contains a particular offset
         /// </summary>
         /// <returns>Index of the stream containing the offset and the real offset in the stream, (-1, -1) on error</returns>
-        private (int index, long realOffset) DetermineStreamIndex(int offset)
+        private (int index, long realOffset) DetermineStreamIndex(long offset)
         {
             // If the offset is out of bounds
             if (offset < 0 || offset >= _length)
