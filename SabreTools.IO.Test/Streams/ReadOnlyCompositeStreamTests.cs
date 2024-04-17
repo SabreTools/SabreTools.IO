@@ -79,7 +79,9 @@ namespace SabreTools.IO.Test.Streams
             var stream = new ReadOnlyCompositeStream();
 
             byte[] buf = new byte[512];
-            Assert.Throws<ArgumentOutOfRangeException>(() => stream.Read(buf, 0, 512));
+            int read = stream.Read(buf, 0, 512);
+
+            Assert.Equal(0, read);
         }
 
         [Fact]
