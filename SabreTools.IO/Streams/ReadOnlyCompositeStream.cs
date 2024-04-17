@@ -70,6 +70,23 @@ namespace SabreTools.IO.Streams
         }
 
         /// <summary>
+        /// Create a new ReadOnlyCompositeStream from a single Stream
+        /// </summary>
+        /// <param name="stream"></param>
+        public ReadOnlyCompositeStream(Stream stream)
+        {
+            _streams = [stream];
+            _length = 0;
+            _position = 0;
+
+            // Verify the stream and add to the length
+            if (!stream.CanRead || !stream.CanSeek)
+                throw new ArgumentException($"{nameof(stream)} needs to be readable and seekable");
+
+            _length += stream.Length;
+        }
+
+        /// <summary>
         /// Create a new ReadOnlyCompositeStream from an existing collection of Streams
         /// </summary>
         public ReadOnlyCompositeStream(Stream[] streams)

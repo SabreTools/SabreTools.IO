@@ -36,6 +36,14 @@ namespace SabreTools.IO.Test
         }
 
         [Fact]
+        public void SingleStreamConstructorTest()
+        {
+            var stream = new ReadOnlyCompositeStream(new MemoryStream(new byte[1024]));
+            Assert.Equal(1024, stream.Length);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Fact]
         public void FilledArrayConstructorTest()
         {
             Stream[] arr = [new MemoryStream(new byte[1024]), new MemoryStream(new byte[1024])];
