@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace SabreTools.IO
+namespace SabreTools.IO.Extensions
 {
     /// <summary>
     /// Extensions for Streams

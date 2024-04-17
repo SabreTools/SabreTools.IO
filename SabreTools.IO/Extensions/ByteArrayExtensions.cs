@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SabreTools.IO
+namespace SabreTools.IO.Extensions
 {
     /// <summary>
     /// Extensions for byte arrays

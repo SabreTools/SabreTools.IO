@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace SabreTools.IO
+namespace SabreTools.IO.Extensions
 {
     /// <summary>
     /// Big endian reading overloads for BinaryReader
