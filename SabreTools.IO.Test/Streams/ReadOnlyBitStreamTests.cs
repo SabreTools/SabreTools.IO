@@ -2,7 +2,7 @@ using System.IO;
 using SabreTools.IO.Streams;
 using Xunit;
 
-namespace SabreTools.IO.Test
+namespace SabreTools.IO.Test.Streams
 {
     public class ReadOnlyBitStreamTests
     {
