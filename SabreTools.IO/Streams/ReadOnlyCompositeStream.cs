@@ -150,7 +150,7 @@ namespace SabreTools.IO.Streams
             // Determine which stream we start reading from
             (int streamIndex, long streamOffset) = DetermineStreamIndex(_position);
             if (streamIndex == -1)
-                throw new ArgumentOutOfRangeException(nameof(count));
+                return 0;
 
             // Determine if the stream fully contains the requested segment
             bool singleStream = StreamContains(streamIndex, streamOffset, count);
