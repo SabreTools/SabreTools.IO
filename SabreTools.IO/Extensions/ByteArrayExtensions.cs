@@ -32,7 +32,7 @@ namespace SabreTools.IO.Extensions
             => ReadToBuffer(content, ref offset, count);
 
         /// <summary>
-        /// Read a Int8 and increment the pointer to an array
+        /// Read an Int8 and increment the pointer to an array
         /// </summary>
         public static sbyte ReadSByte(this byte[] content, ref int offset)
         {
@@ -50,7 +50,7 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a Int16 and increment the pointer to an array
+        /// Read an Int16 and increment the pointer to an array
         /// </summary>
         public static short ReadInt16(this byte[] content, ref int offset)
         {
@@ -59,7 +59,7 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a Int16 in big-endian format and increment the pointer to an array
+        /// Read an Int16 in big-endian format and increment the pointer to an array
         /// </summary>
         public static short ReadInt16BigEndian(this byte[] content, ref int offset)
         {
@@ -88,7 +88,7 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a Int32 and increment the pointer to an array
+        /// Read an Int32 and increment the pointer to an array
         /// </summary>
         public static int ReadInt32(this byte[] content, ref int offset)
         {
@@ -97,7 +97,7 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a Int32 in big-endian format and increment the pointer to an array
+        /// Read an Int32 in big-endian format and increment the pointer to an array
         /// </summary>
         public static int ReadInt32BigEndian(this byte[] content, ref int offset)
         {
@@ -126,7 +126,26 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a Int64 and increment the pointer to an array
+        /// Read a Single and increment the pointer to an array
+        /// </summary>
+        public static float ReadSingle(this byte[] content, ref int offset)
+        {
+            byte[] buffer = ReadToBuffer(content, ref offset, 4);
+            return BitConverter.ToSingle(buffer, 0);
+        }
+
+        /// <summary>
+        /// Read a Single in big-endian format and increment the pointer to an array
+        /// </summary>
+        public static float ReadSingleBigEndian(this byte[] content, ref int offset)
+        {
+            byte[] buffer = ReadToBuffer(content, ref offset, 4);
+            Array.Reverse(buffer);
+            return BitConverter.ToSingle(buffer, 0);
+        }
+
+        /// <summary>
+        /// Read an Int64 and increment the pointer to an array
         /// </summary>
         public static long ReadInt64(this byte[] content, ref int offset)
         {
@@ -135,7 +154,7 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a Int64 in big-endian format and increment the pointer to an array
+        /// Read an Int64 in big-endian format and increment the pointer to an array
         /// </summary>
         public static long ReadInt64BigEndian(this byte[] content, ref int offset)
         {
@@ -164,6 +183,25 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Read a Double and increment the pointer to an array
+        /// </summary>
+        public static double ReadDouble(this byte[] content, ref int offset)
+        {
+            byte[] buffer = ReadToBuffer(content, ref offset, 8);
+            return BitConverter.ToDouble(buffer, 0);
+        }
+
+        /// <summary>
+        /// Read a Double in big-endian format and increment the pointer to an array
+        /// </summary>
+        public static double ReadDoubleBigEndian(this byte[] content, ref int offset)
+        {
+            byte[] buffer = ReadToBuffer(content, ref offset, 8);
+            Array.Reverse(buffer);
+            return BitConverter.ToDouble(buffer, 0);
+        }
+
+        /// <summary>
         /// Read a Guid and increment the pointer to an array
         /// </summary>
         public static Guid ReadGuid(this byte[] content, ref int offset)
@@ -185,7 +223,7 @@ namespace SabreTools.IO.Extensions
         // TODO: Determine if the reverse reads are doing what are expected
 #if NET7_0_OR_GREATER
         /// <summary>
-        /// Read a Int128 and increment the pointer to an array
+        /// Read an Int128 and increment the pointer to an array
         /// </summary>
         public static Int128 ReadInt128(this byte[] content, ref int offset)
         {
@@ -194,7 +232,7 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a Int128 in big-endian format and increment the pointer to an array
+        /// Read an Int128 in big-endian format and increment the pointer to an array
         /// </summary>
         public static Int128 ReadInt128BigEndian(this byte[] content, ref int offset)
         {

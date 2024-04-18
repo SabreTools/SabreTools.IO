@@ -28,7 +28,7 @@ namespace SabreTools.IO.Extensions
             => ReadToBuffer(stream, count);
 
         /// <summary>
-        /// Read a Int8 from the stream
+        /// Read an Int8 from the stream
         /// </summary>
         public static sbyte ReadSByte(this Stream stream)
         {
@@ -46,7 +46,7 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a Int16 from the stream
+        /// Read an Int16 from the stream
         /// </summary>
         public static short ReadInt16(this Stream stream)
         {
@@ -55,7 +55,7 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a Int16 from the stream in big-endian format
+        /// Read an Int16 from the stream in big-endian format
         /// </summary>
         public static short ReadInt16BigEndian(this Stream stream)
         {
@@ -122,7 +122,26 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a Int64 from the stream
+        /// Read a Single from the stream
+        /// </summary>
+        public static float ReadSingle(this Stream stream)
+        {
+            byte[] buffer = ReadToBuffer(stream, 4);
+            return BitConverter.ToSingle(buffer, 0);
+        }
+
+        /// <summary>
+        /// Read a Single from the stream in big-endian format
+        /// </summary>
+        public static float ReadSingleBigEndian(this Stream stream)
+        {
+            byte[] buffer = ReadToBuffer(stream, 4);
+            Array.Reverse(buffer);
+            return BitConverter.ToSingle(buffer, 0);
+        }
+
+        /// <summary>
+        /// Read an Int64 from the stream
         /// </summary>
         public static long ReadInt64(this Stream stream)
         {
@@ -131,7 +150,7 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a Int64 from the stream in big-endian format
+        /// Read an Int64 from the stream in big-endian format
         /// </summary>
         public static long ReadInt64BigEndian(this Stream stream)
         {
@@ -160,6 +179,25 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Read a Double from the stream
+        /// </summary>
+        public static double ReadDouble(this Stream stream)
+        {
+            byte[] buffer = ReadToBuffer(stream, 8);
+            return BitConverter.ToDouble(buffer, 0);
+        }
+
+        /// <summary>
+        /// Read a Double from the stream in big-endian format
+        /// </summary>
+        public static double ReadDoubleBigEndian(this Stream stream)
+        {
+            byte[] buffer = ReadToBuffer(stream, 8);
+            Array.Reverse(buffer);
+            return BitConverter.ToDouble(buffer, 0);
+        }
+
+        /// <summary>
         /// Read a Guid from the stream
         /// </summary>
         public static Guid ReadGuid(this Stream stream)
@@ -181,7 +219,7 @@ namespace SabreTools.IO.Extensions
         // TODO: Determine if the reverse reads are doing what are expected
 #if NET7_0_OR_GREATER
         /// <summary>
-        /// Read a Int128 from the stream
+        /// Read an Int128 from the stream
         /// </summary>
         public static Int128 ReadInt128(this Stream stream)
         {
@@ -190,7 +228,7 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a Int128 from the stream in big-endian format
+        /// Read an Int128 from the stream in big-endian format
         /// </summary>
         public static Int128 ReadInt128BigEndian(this Stream stream)
         {

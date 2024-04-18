@@ -119,6 +119,24 @@ namespace SabreTools.IO.Test
         }
 
         [Fact]
+        public void ReadSingleTest()
+        {
+            int offset = 0;
+            float expected = BitConverter.Int32BitsToSingle(0x03020100);
+            float read = _bytes.ReadSingle(ref offset);
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadSingleBigEndianTest()
+        {
+            int offset = 0;
+            float expected = BitConverter.Int32BitsToSingle(0x00010203);
+            float read = _bytes.ReadSingleBigEndian(ref offset);
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
         public void ReadInt64Test()
         {
             int offset = 0;
@@ -148,6 +166,24 @@ namespace SabreTools.IO.Test
             int offset = 0;
             ulong read = _bytes.ReadUInt64BigEndian(ref offset);
             Assert.Equal((ulong)0x0001020304050607, read);
+        }
+
+        [Fact]
+        public void ReadDoubleTest()
+        {
+            int offset = 0;
+            double expected = BitConverter.Int64BitsToDouble(0x0706050403020100);
+            double read = _bytes.ReadDouble(ref offset);
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadDoubleBigEndianTest()
+        {
+            int offset = 0;
+            double expected = BitConverter.Int64BitsToDouble(0x0001020304050607);
+            double read = _bytes.ReadDoubleBigEndian(ref offset);
+            Assert.Equal(expected, read);
         }
 
         [Fact]
