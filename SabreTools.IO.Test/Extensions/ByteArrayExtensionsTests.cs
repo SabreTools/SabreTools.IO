@@ -3,7 +3,7 @@ using System.Linq;
 using SabreTools.IO.Extensions;
 using Xunit;
 
-namespace SabreTools.IO.Test
+namespace SabreTools.IO.Test.Extensions
 {
     public class ByteArrayExtensionsTests
     {
