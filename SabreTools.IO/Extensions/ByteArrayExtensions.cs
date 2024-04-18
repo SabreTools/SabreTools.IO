@@ -239,7 +239,7 @@ namespace SabreTools.IO.Extensions
             if (offset >= content.Length)
                 return null;
 
-            byte[] nullTerminator = encoding.GetBytes(['\0']);
+            byte[] nullTerminator = encoding.GetBytes("\0");
             int charWidth = nullTerminator.Length;
 
             var keyChars = new List<char>();
@@ -272,7 +272,7 @@ namespace SabreTools.IO.Extensions
             if (offset >= content.Length)
                 return null;
 
-            byte[] nullTerminator = encoding.GetBytes(['\0']);
+            byte[] nullTerminator = encoding.GetBytes("\0");
             int charWidth = nullTerminator.Length;
 
             var keyChars = new List<char>();
