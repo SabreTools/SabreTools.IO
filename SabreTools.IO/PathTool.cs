@@ -71,7 +71,7 @@ namespace SabreTools.IO
         private static List<string> GetDirectoriesOrderedHelper(string dir, List<string> infiles, string pattern)
         {
             // Take care of the files in the top directory
-            List<string> toadd = [.. dir.SafeGetDirectories(pattern, SearchOption.TopDirectoryOnly)];
+            List<string> toadd = [.. dir.SafeEnumerateDirectories(pattern, SearchOption.TopDirectoryOnly)];
             toadd.Sort(new NaturalComparer());
             infiles.AddRange(toadd);
 
@@ -150,12 +150,12 @@ namespace SabreTools.IO
         private static List<string> GetFilesOrderedHelper(string dir, List<string> infiles, string pattern)
         {
             // Take care of the files in the top directory
-            List<string> toadd = [.. dir.SafeGetFiles(pattern, SearchOption.TopDirectoryOnly)];
+            List<string> toadd = [.. dir.SafeEnumerateFiles(pattern, SearchOption.TopDirectoryOnly)];
             toadd.Sort(new NaturalComparer());
             infiles.AddRange(toadd);
 
             // Then recurse through and add from the directories
-            List<string> subDirs = [.. dir.SafeGetDirectories(pattern, SearchOption.TopDirectoryOnly)];
+            List<string> subDirs = [.. dir.SafeEnumerateDirectories(pattern, SearchOption.TopDirectoryOnly)];
             subDirs.Sort(new NaturalComparer());
             foreach (string subdir in subDirs)
             {

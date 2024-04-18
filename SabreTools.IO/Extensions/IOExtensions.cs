@@ -118,23 +118,13 @@ namespace SabreTools.IO.Extensions
                 return null;
 
             // If it does and it is empty, return a blank enumerable
-#if NET20 || NET35
-            if (!root!.SafeGetFileSystemEntries("*").Any())
-#else
             if (!root!.SafeEnumerateFileSystemEntries("*", SearchOption.AllDirectories).Any())
-#endif
                 return [];
 
             // Otherwise, get the complete list
-#if NET20 || NET35
-            return root!.SafeGetDirectories("*", SearchOption.AllDirectories)
-                .Where(dir => !dir.SafeGetFileSystemEntries("*").Any())
-                .ToList();
-#else
             return root!.SafeEnumerateDirectories("*", SearchOption.AllDirectories)
                 .Where(dir => !dir.SafeEnumerateFileSystemEntries("*", SearchOption.AllDirectories).Any())
                 .ToList();
-#endif
         }
 
         #region Safe Directory Enumeration
