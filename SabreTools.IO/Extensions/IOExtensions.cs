@@ -136,5 +136,187 @@ namespace SabreTools.IO.Extensions
                 .ToList();
 #endif
         }
+
+        #region Safe Directory Enumeration
+
+        /// <inheritdoc cref="Directory.GetDirectories(string)"/>
+        /// <remarks>Returns an empty enumerable on any exception</remarks>
+        public static IEnumerable<string> SafeGetDirectories(this string path)
+        {
+            try
+            {
+                var enumerable = Directory.GetDirectories(path);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+        /// <inheritdoc cref="Directory.GetDirectories(string, string)"/>
+        /// <remarks>Returns an empty enumerable on any exception</remarks>
+        public static IEnumerable<string> SafeGetDirectories(this string path, string searchPattern)
+        {
+            try
+            {
+                var enumerable = Directory.GetDirectories(path, searchPattern);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+        /// <inheritdoc cref="Directory.GetDirectories(string, string, SearchOption)"/>
+        /// <remarks>Returns an empty enumerable on any exception</remarks>
+        public static IEnumerable<string> SafeGetDirectories(this string path, string searchPattern, SearchOption searchOption)
+        {
+            try
+            {
+                var enumerable = Directory.GetDirectories(path, searchPattern, searchOption);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+        /// <inheritdoc cref="Directory.GetFiles(string)"/>
+        /// <remarks>Returns an empty enumerable on any exception</remarks>
+        public static IEnumerable<string> SafeGetFiles(this string path)
+        {
+            try
+            {
+                var enumerable = Directory.GetFiles(path);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+        /// <inheritdoc cref="Directory.GetFiles(string, string)"/>
+        /// <remarks>Returns an empty enumerable on any exception</remarks>
+        public static IEnumerable<string> SafeGetFiles(this string path, string searchPattern)
+        {
+            try
+            {
+                var enumerable = Directory.GetFiles(path, searchPattern);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+        /// <inheritdoc cref="Directory.GetFiles(string, string, SearchOption)"/>
+        /// <remarks>Returns an empty enumerable on any exception</remarks>
+        public static IEnumerable<string> SafeGetFiles(this string path, string searchPattern, SearchOption searchOption)
+        {
+            try
+            {
+                var enumerable = Directory.GetFiles(path, searchPattern, searchOption);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+        /// <inheritdoc cref="Directory.GetFileSystemEntries(string)"/>
+        /// <remarks>Returns an empty enumerable on any exception</remarks>
+        public static IEnumerable<string> SafeGetFileSystemEntries(this string path)
+        {
+            try
+            {
+                var enumerable = Directory.GetFileSystemEntries(path);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+        /// <inheritdoc cref="Directory.GetDirectories(string, string)"/>
+        /// <remarks>Returns an empty enumerable on any exception</remarks>
+        public static IEnumerable<string> SafeGetFileSystemEntries(this string path, string searchPattern)
+        {
+            try
+            {
+                var enumerable = Directory.GetFileSystemEntries(path, searchPattern);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+#if NET40_OR_GREATER || NETCOREAPP
+        /// <inheritdoc cref="Directory.EnumerateDirectories(string)"/>
+        public static IEnumerable<string> SafeEnumerateDirectories(this string path)
+        {
+            var enumerable = Directory.EnumerateDirectories(path);
+            return enumerable.SafeEnumerate();
+        }
+
+        /// <inheritdoc cref="Directory.EnumerateDirectories(string, string)"/>
+        public static IEnumerable<string> SafeEnumerateDirectories(this string path, string searchPattern)
+        {
+            var enumerable = Directory.EnumerateDirectories(path, searchPattern);
+            return enumerable.SafeEnumerate();
+        }
+
+        /// <inheritdoc cref="Directory.EnumerateDirectories(string, string, SearchOption)"/>
+        public static IEnumerable<string> SafeEnumerateDirectories(this string path, string searchPattern, SearchOption searchOption)
+        {
+            var enumerable = Directory.EnumerateDirectories(path, searchPattern, searchOption);
+            return enumerable.SafeEnumerate();
+        }
+
+        /// <inheritdoc cref="Directory.EnumerateFiles(string)"/>
+        public static IEnumerable<string> SafeEnumerateFiles(this string path)
+        {
+            var enumerable = Directory.EnumerateFiles(path);
+            return enumerable.SafeEnumerate();
+        }
+
+        /// <inheritdoc cref="Directory.EnumerateFiles(string, string)"/>
+        public static IEnumerable<string> SafeEnumerateFiles(this string path, string searchPattern)
+        {
+            var enumerable = Directory.EnumerateFiles(path, searchPattern);
+            return enumerable.SafeEnumerate();
+        }
+
+        /// <inheritdoc cref="Directory.EnumerateFiles(string, string, SearchOption)"/>
+        public static IEnumerable<string> SafeEnumerateFiles(this string path, string searchPattern, SearchOption searchOption)
+        {
+            var enumerable = Directory.EnumerateFiles(path, searchPattern, searchOption);
+            return enumerable.SafeEnumerate();
+        }
+
+        /// <inheritdoc cref="Directory.EnumerateFileSystemEntries(string)"/>
+        public static IEnumerable<string> SafeEnumerateFileSystemEntries(this string path)
+        {
+            var enumerable = Directory.EnumerateFileSystemEntries(path);
+            return enumerable.SafeEnumerate();
+        }
+
+        /// <inheritdoc cref="Directory.EnumerateFileSystemEntries(string, string)"/>
+        public static IEnumerable<string> SafeEnumerateFileSystemEntries(this string path, string searchPattern)
+        {
+            var enumerable = Directory.EnumerateFileSystemEntries(path, searchPattern);
+            return enumerable.SafeEnumerate();
+        }
+#endif
+
+        #endregion
     }
 }
