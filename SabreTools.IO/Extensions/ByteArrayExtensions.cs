@@ -23,10 +23,7 @@ namespace SabreTools.IO.Extensions
         /// Read a UInt8 and increment the pointer to an array
         /// </summary>
         public static byte ReadByteValue(this byte[] content, ref int offset)
-        {
-            byte[] buffer = ReadToBuffer(content, ref offset, 1);
-            return buffer[0];
-        }
+            => content.ReadByte(ref offset);
 
         /// <summary>
         /// Read a UInt8[] and increment the pointer to an array
@@ -185,6 +182,7 @@ namespace SabreTools.IO.Extensions
             return new Guid(buffer);
         }
 
+        // TODO: Determine if the reverse reads are doing what are expected
 #if NET7_0_OR_GREATER
         /// <summary>
         /// Read a Int128 and increment the pointer to an array
@@ -309,7 +307,7 @@ namespace SabreTools.IO.Extensions
                 return [];
 
             // If there are not enough bytes
-            if (offset + length >= content.Length)
+            if (offset + length > content.Length)
                 throw new System.IO.EndOfStreamException(nameof(content));
 
             // Handle the general case, forcing a read of the correct length

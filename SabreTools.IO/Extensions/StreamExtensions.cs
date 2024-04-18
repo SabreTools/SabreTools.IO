@@ -178,6 +178,7 @@ namespace SabreTools.IO.Extensions
             return new Guid(buffer);
         }
 
+        // TODO: Determine if the reverse reads are doing what are expected
 #if NET7_0_OR_GREATER
         /// <summary>
         /// Read a Int128 from the stream
