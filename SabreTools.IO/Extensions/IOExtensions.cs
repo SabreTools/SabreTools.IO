@@ -119,20 +119,20 @@ namespace SabreTools.IO.Extensions
 
             // If it does and it is empty, return a blank enumerable
 #if NET20 || NET35
-            if (!Directory.GetFiles(root, "*", SearchOption.AllDirectories).Any())
+            if (!root!.SafeGetFileSystemEntries("*").Any())
 #else
-            if (!Directory.EnumerateFileSystemEntries(root, "*", SearchOption.AllDirectories).Any())
+            if (!root!.SafeEnumerateFileSystemEntries("*", SearchOption.AllDirectories).Any())
 #endif
                 return [];
 
             // Otherwise, get the complete list
 #if NET20 || NET35
-            return Directory.GetDirectories(root, "*", SearchOption.AllDirectories)
-                .Where(dir => !Directory.GetFiles(dir, "*", SearchOption.AllDirectories).Any())
+            return root!.SafeGetDirectories("*", SearchOption.AllDirectories)
+                .Where(dir => !dir.SafeGetFileSystemEntries("*").Any())
                 .ToList();
 #else
-            return Directory.EnumerateDirectories(root, "*", SearchOption.AllDirectories)
-                .Where(dir => !Directory.EnumerateFileSystemEntries(dir, "*", SearchOption.AllDirectories).Any())
+            return root!.SafeEnumerateDirectories("*", SearchOption.AllDirectories)
+                .Where(dir => !dir.SafeEnumerateFileSystemEntries("*", SearchOption.AllDirectories).Any())
                 .ToList();
 #endif
         }
@@ -313,6 +313,13 @@ namespace SabreTools.IO.Extensions
         public static IEnumerable<string> SafeEnumerateFileSystemEntries(this string path, string searchPattern)
         {
             var enumerable = Directory.EnumerateFileSystemEntries(path, searchPattern);
+            return enumerable.SafeEnumerate();
+        }
+
+        /// <inheritdoc cref="Directory.EnumerateFileSystemEntries(string, string, SearchOption)"/>
+        public static IEnumerable<string> SafeEnumerateFileSystemEntries(this string path, string searchPattern, SearchOption searchOption)
+        {
+            var enumerable = Directory.EnumerateFileSystemEntries(path, searchPattern, searchOption);
             return enumerable.SafeEnumerate();
         }
 #endif
