@@ -259,7 +259,67 @@ namespace SabreTools.IO.Extensions
             }
         }
 
-#if NET40_OR_GREATER || NETCOREAPP
+        /// <inheritdoc cref="Directory.GetDirectories(string, string, SearchOption)"/>
+        /// <remarks>Returns an empty enumerable on any exception</remarks>
+        public static IEnumerable<string> SafeGetFileSystemEntries(this string path, string searchPattern, SearchOption searchOption)
+        {
+            try
+            {
+                var enumerable = Directory.GetFileSystemEntries(path, searchPattern);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+#if NET20 || NET35
+        /// <inheritdoc cref="Directory.GetDirectories(string)"/>
+        /// <remarks>Calls <see cref="SafeGetDirectories(string)"/> implementation</remarks>
+        public static IEnumerable<string> SafeEnumerateDirectories(this string path)
+            => path.SafeGetDirectories();
+
+        /// <inheritdoc cref="Directory.GetDirectories(string, string)"/>
+        /// <remarks>Calls <see cref="SafeGetDirectories(string, string)"/> implementation</remarks>
+        public static IEnumerable<string> SafeEnumerateDirectories(this string path, string searchPattern)
+            => path.SafeGetDirectories(searchPattern);
+
+        /// <inheritdoc cref="Directory.GetDirectories(string, string, SearchOption)"/>
+        /// <remarks>Calls <see cref="SafeGetDirectories(string, string, SearchOption)"/> implementation</remarks>
+        public static IEnumerable<string> SafeEnumerateDirectories(this string path, string searchPattern, SearchOption searchOption)
+            => path.SafeGetDirectories(searchPattern, searchOption);
+
+        /// <inheritdoc cref="Directory.GetFiles(string)"/>
+        /// <remarks>Calls <see cref="SafeGetFiles(string)"/> implementation</remarks>
+        public static IEnumerable<string> SafeEnumerateFiles(this string path)
+            => path.SafeGetFiles();
+
+        /// <inheritdoc cref="Directory.GetFiles(string, string)"/>
+        /// <remarks>Calls <see cref="SafeGetFiles(string, string)"/> implementation</remarks>
+        public static IEnumerable<string> SafeEnumerateFiles(this string path, string searchPattern)
+            => path.SafeGetFiles(searchPattern);
+
+        /// <inheritdoc cref="Directory.GetFiles(string, string, SearchOption)"/>
+        /// <remarks>Calls <see cref="SafeGetFiles(string, string, SearchOption)"/> implementation</remarks>
+        public static IEnumerable<string> SafeEnumerateFiles(this string path, string searchPattern, SearchOption searchOption)
+            => path.SafeGetFiles(searchPattern, searchOption);
+
+        /// <inheritdoc cref="Directory.GetFileSystemEntries(string)"/>
+        /// <remarks>Calls <see cref="SafeGetFileSystemEntries(string)"/> implementation</remarks>
+        public static IEnumerable<string> SafeEnumerateFileSystemEntries(this string path)
+            => path.SafeGetFileSystemEntries();
+
+        /// <inheritdoc cref="Directory.GetFileSystemEntries(string, string)"/>
+        /// <remarks>Calls <see cref="SafeGetFileSystemEntries(string, string)"/> implementation</remarks>
+        public static IEnumerable<string> SafeEnumerateFileSystemEntries(this string path, string searchPattern)
+            => path.SafeGetFileSystemEntries(searchPattern);
+
+        /// <inheritdoc cref="Directory.GetFileSystemEntries(string, string)"/>
+        /// <remarks>Calls <see cref="SafeGetFileSystemEntries(string, string, SearchOption)"/> implementation</remarks>
+        public static IEnumerable<string> SafeEnumerateFileSystemEntries(this string path, string searchPattern, SearchOption searchOption)
+            => path.SafeGetFileSystemEntries(searchPattern, searchOption);
+#else
         /// <inheritdoc cref="Directory.EnumerateDirectories(string)"/>
         public static IEnumerable<string> SafeEnumerateDirectories(this string path)
         {
