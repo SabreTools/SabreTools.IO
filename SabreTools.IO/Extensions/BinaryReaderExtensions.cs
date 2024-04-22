@@ -7,7 +7,6 @@ namespace SabreTools.IO.Extensions
     /// Big endian reading overloads for BinaryReader
     /// </summary>
     /// <remarks>TODO: Add U/Int24 and U/Int48 methods</remarks>
-    /// <remarks>TODO: Add GUID methods</remarks>
     /// <remarks>TODO: Add U/Int128 methods</remarks>
     public static class BinaryReaderExtensions
     {
@@ -116,6 +115,26 @@ namespace SabreTools.IO.Extensions
             byte[] retval = reader.ReadBytes(8);
             Array.Reverse(retval);
             return BitConverter.ToDouble(retval, 0);
+        }
+
+        /// <summary>
+        /// Read a Guid from the underlying stream
+        /// </summary>
+        public static Guid ReadGuid(this BinaryReader reader)
+        {
+            byte[] buffer = reader.ReadBytes(16);
+            return new Guid(buffer);
+        }
+
+        /// <summary>
+        /// Read a Guid from the underlying stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static Guid ReadGuidBigEndian(this BinaryReader reader)
+        {
+            byte[] buffer = reader.ReadBytes(16);
+            Array.Reverse(buffer);
+            return new Guid(buffer);
         }
 
         /// <inheritdoc cref="BinaryReader.ReadDecimal"/>
