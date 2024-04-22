@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using SabreTools.IO.Extensions;
 using Xunit;
@@ -49,6 +50,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void ReadSingleBigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            float expected = BitConverter.Int32BitsToSingle(0x00010203);
+            float read = br.ReadSingleBigEndian();
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
         public void ReadInt64BigEndianTest()
         {
             var stream = new MemoryStream(_bytes);
@@ -66,8 +77,17 @@ namespace SabreTools.IO.Test.Extensions
             Assert.Equal((ulong)0x0001020304050607, read);
         }
 
+        [Fact]
+        public void ReadDoubleBigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            double expected = BitConverter.Int64BitsToDouble(0x0001020304050607);
+            double read = br.ReadDoubleBigEndian();
+            Assert.Equal(expected, read);
+        }
+
         // TODO: Add byte[], char[] tests
-        // TODO: Add float, double tests
         // TODO: Add string reading tests
     }
 }
