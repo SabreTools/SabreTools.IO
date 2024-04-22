@@ -7,7 +7,6 @@ namespace SabreTools.IO.Extensions
     /// Big endian reading overloads for BinaryReader
     /// </summary>
     /// <remarks>TODO: Add U/Int24 and U/Int48 methods</remarks>
-    /// <remarks>TODO: Add U/Int128 methods</remarks>
     public static class BinaryReaderExtensions
     {
         /// <inheritdoc cref="BinaryReader.Read(byte[], int, int)"/>
@@ -117,6 +116,21 @@ namespace SabreTools.IO.Extensions
             return BitConverter.ToDouble(retval, 0);
         }
 
+        /// <inheritdoc cref="BinaryReader.ReadDecimal"/>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static decimal ReadDecimalBigEndian(this BinaryReader reader)
+        {
+            byte[] retval = reader.ReadBytes(16);
+            Array.Reverse(retval);
+
+            int i1 = BitConverter.ToInt32(retval, 0);
+            int i2 = BitConverter.ToInt32(retval, 4);
+            int i3 = BitConverter.ToInt32(retval, 8);
+            int i4 = BitConverter.ToInt32(retval, 12);
+
+            return new decimal([i1, i2, i3, i4]);
+        }
+
         /// <summary>
         /// Read a Guid from the underlying stream
         /// </summary>
@@ -137,19 +151,47 @@ namespace SabreTools.IO.Extensions
             return new Guid(buffer);
         }
 
-        /// <inheritdoc cref="BinaryReader.ReadDecimal"/>
-        /// <remarks>Reads in big-endian format</remarks>
-        public static decimal ReadDecimalBigEndian(this BinaryReader reader)
+        // TODO: Determine if the reverse reads are doing what are expected
+#if NET7_0_OR_GREATER
+        /// <summary>
+        /// Read an Int128 from the underlying stream
+        /// </summary>
+        public static Int128 ReadInt128(this BinaryReader reader)
         {
-            byte[] retval = reader.ReadBytes(16);
-            Array.Reverse(retval);
-
-            int i1 = BitConverter.ToInt32(retval, 0);
-            int i2 = BitConverter.ToInt32(retval, 4);
-            int i3 = BitConverter.ToInt32(retval, 8);
-            int i4 = BitConverter.ToInt32(retval, 12);
-
-            return new decimal([i1, i2, i3, i4]);
+            byte[] buffer = reader.ReadBytes(16);
+            return new Int128(BitConverter.ToUInt64(buffer, 0), BitConverter.ToUInt64(buffer, 8));
         }
+
+        /// <summary>
+        /// Read an Int128 from the underlying stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static Int128 ReadInt128BigEndian(this BinaryReader reader)
+        {
+            byte[] buffer = reader.ReadBytes(16);
+            Array.Reverse(buffer);
+            return new Int128(BitConverter.ToUInt64(buffer, 0), BitConverter.ToUInt64(buffer, 8));
+        }
+
+        /// <summary>
+        /// Read a UInt128 from the underlying stream
+        /// </summary>
+        public static UInt128 ReadUInt128(this BinaryReader reader)
+        {
+            byte[] buffer = reader.ReadBytes(16);
+            return new UInt128(BitConverter.ToUInt64(buffer, 0), BitConverter.ToUInt64(buffer, 8));
+        }
+
+        /// <summary>
+        /// Read a UInt128 from the underlying stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static UInt128 ReadUInt128BigEndian(this BinaryReader reader)
+        {
+            byte[] buffer = reader.ReadBytes(16);
+            Array.Reverse(buffer);
+            return new UInt128(BitConverter.ToUInt64(buffer, 0), BitConverter.ToUInt64(buffer, 8));
+        }
+#endif
     }
 }

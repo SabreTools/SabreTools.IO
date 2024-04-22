@@ -108,6 +108,50 @@ namespace SabreTools.IO.Test.Extensions
             Assert.Equal(expected, read);
         }
 
+#if NET7_0_OR_GREATER
+        [Fact]
+        public void ReadInt128Test()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            var expected = new Int128(BitConverter.ToUInt64(_bytes, 0), BitConverter.ToUInt64(_bytes, 8));
+            Int128 read = br.ReadInt128();
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadInt128BigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            var reversed = _bytes.Reverse().ToArray();
+            var expected = new Int128(BitConverter.ToUInt64(reversed, 0), BitConverter.ToUInt64(reversed, 8));
+            Int128 read = br.ReadInt128BigEndian();
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadUInt128Test()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            var expected = new UInt128(BitConverter.ToUInt64(_bytes, 0), BitConverter.ToUInt64(_bytes, 8));
+            UInt128 read = br.ReadUInt128();
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadUInt128BigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            var reversed = _bytes.Reverse().ToArray();
+            var expected = new UInt128(BitConverter.ToUInt64(reversed, 0), BitConverter.ToUInt64(reversed, 8));
+            UInt128 read = br.ReadUInt128BigEndian();
+            Assert.Equal(expected, read);
+        }
+#endif
+
         // TODO: Add byte[], char[] tests
         // TODO: Add string reading tests
     }
