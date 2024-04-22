@@ -39,7 +39,7 @@ namespace SabreTools.IO
             string filename = Path.GetFileName(CurrentPath);
 
             // If we have a true ParentPath, remove it from CurrentPath and return the remainder
-            if (!string.IsNullOrEmpty(ParentPath) && !PathsEqual(CurrentPath, ParentPath))      
+            if (!string.IsNullOrEmpty(ParentPath) && !PathsEqual(CurrentPath, ParentPath))
                 filename = CurrentPath.Remove(0, ParentPath!.Length + 1);
 
             // If we're sanitizing the path after, do so
@@ -84,7 +84,7 @@ namespace SabreTools.IO
             // If we are processing a path that is coming from a directory and we are outputting to the current directory, we want to get the subfolder to write to
             if (outDir == Environment.CurrentDirectory)
                 workingParent = Path.GetDirectoryName(ParentPath ?? string.Empty) ?? string.Empty;
-            
+
             // Handle bizarre Windows-like paths on Linux
             if (workingParent.EndsWith(":") && Path.DirectorySeparatorChar == '/')
                 workingParent += '/';
@@ -98,7 +98,7 @@ namespace SabreTools.IO
             string combinedPath = Path.Combine(outDir!, strippedPath);
             return Path.GetDirectoryName(combinedPath);
         }
-    
+
         /// <summary>
         /// Determine if two paths are equal or not
         /// </summary>
