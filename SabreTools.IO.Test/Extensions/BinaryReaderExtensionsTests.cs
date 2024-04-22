@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using SabreTools.IO.Extensions;
 using Xunit;
 
@@ -84,6 +85,26 @@ namespace SabreTools.IO.Test.Extensions
             var br = new BinaryReader(stream);
             double expected = BitConverter.Int64BitsToDouble(0x0001020304050607);
             double read = br.ReadDoubleBigEndian();
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadGuidTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            var expected = new Guid(_bytes);
+            Guid read = br.ReadGuid();
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadGuidBigEndian()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            var expected = new Guid(_bytes.Reverse().ToArray());
+            Guid read = br.ReadGuidBigEndian();
             Assert.Equal(expected, read);
         }
 
