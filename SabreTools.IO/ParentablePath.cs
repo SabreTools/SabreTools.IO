@@ -57,33 +57,30 @@ namespace SabreTools.IO
         /// <returns>Complete output path</returns>
         public string? GetOutputPath(string? outDir, bool inplace)
         {
-            // If the current path is empty, we can't do anything
+            // If the current path is empty
             if (string.IsNullOrEmpty(CurrentPath))
                 return null;
 
-            // If the output dir is empty (and we're not inplace), we can't do anything
-            outDir = outDir?.Trim();
-            if (string.IsNullOrEmpty(outDir) && !inplace)
-                return null;
-
-            // Check if we have a split path or not
-            bool splitpath = !string.IsNullOrEmpty(ParentPath);
-
-            // If we have an inplace output, use the directory name from the input path
+            // If we have an inplace output
             if (inplace)
                 return Path.GetDirectoryName(CurrentPath);
 
-            // If the current and parent paths are the same, just use the output directory
-            if (!splitpath || CurrentPath.Length == (ParentPath?.Length ?? 0))
+            // If the output dir is empty after trimming
+            outDir = outDir?.Trim();
+            if (string.IsNullOrEmpty(outDir))
+                return null;
+
+            // If the parent path is empty or the paths are equal
+            if (string.IsNullOrEmpty(ParentPath) || PathsEqual(CurrentPath, ParentPath))
                 return outDir;
 
             // By default, the working parent directory is the parent path
-            string workingParent = ParentPath ?? string.Empty;
+            string workingParent = ParentPath!;
 
             // TODO: Should this be the default? Always create a subfolder if a folder is found?
             // If we are processing a path that is coming from a directory and we are outputting to the current directory, we want to get the subfolder to write to
             if (outDir == Environment.CurrentDirectory)
-                workingParent = Path.GetDirectoryName(ParentPath ?? string.Empty) ?? string.Empty;
+                workingParent = Path.GetDirectoryName(ParentPath) ?? string.Empty;
 
             // Handle bizarre Windows-like paths on Linux
             if (workingParent.EndsWith(":") && Path.DirectorySeparatorChar == '/')
