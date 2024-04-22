@@ -4,7 +4,7 @@ using System.IO;
 namespace SabreTools.IO.Extensions
 {
     /// <summary>
-    /// Big endian reading overloads for BinaryReader
+    /// Extensions for BinaryReader
     /// </summary>
     /// <remarks>TODO: Add U/Int24 and U/Int48 methods</remarks>
     public static class BinaryReaderExtensions
