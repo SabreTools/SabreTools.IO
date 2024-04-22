@@ -129,8 +129,8 @@ namespace SabreTools.IO
             if (input == null)
                 return null;
 
-            // Replace alternate directory separators with the correct one
-            return input.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            // Replace '\' with '/'
+            return input.Replace('\\', '/');
         }
     }
 }
