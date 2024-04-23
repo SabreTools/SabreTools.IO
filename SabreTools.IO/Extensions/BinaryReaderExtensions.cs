@@ -31,102 +31,102 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in big-endian format</remarks>
         public static byte[] ReadBytesBigEndian(this BinaryReader reader, int count)
         {
-            byte[] retval = reader.ReadBytes(count);
-            Array.Reverse(retval);
-            return retval;
+            byte[] buffer = reader.ReadBytes(count);
+            Array.Reverse(buffer);
+            return buffer;
         }
 
         /// <inheritdoc cref="BinaryReader.ReadChars(int)"/>
         /// <remarks>Reads in big-endian format</remarks>
         public static char[] ReadCharsBigEndian(this BinaryReader reader, int count)
         {
-            char[] retval = reader.ReadChars(count);
-            Array.Reverse(retval);
-            return retval;
+            char[] buffer = reader.ReadChars(count);
+            Array.Reverse(buffer);
+            return buffer;
         }
 
         /// <inheritdoc cref="BinaryReader.ReadInt16"/>
         /// <remarks>Reads in big-endian format</remarks>
         public static short ReadInt16BigEndian(this BinaryReader reader)
         {
-            byte[] retval = reader.ReadBytes(2);
-            Array.Reverse(retval);
-            return BitConverter.ToInt16(retval, 0);
+            byte[] buffer = reader.ReadBytes(2);
+            Array.Reverse(buffer);
+            return BitConverter.ToInt16(buffer, 0);
         }
 
         /// <inheritdoc cref="BinaryReader.ReadUInt16"/>
         /// <remarks>Reads in big-endian format</remarks>
         public static ushort ReadUInt16BigEndian(this BinaryReader reader)
         {
-            byte[] retval = reader.ReadBytes(2);
-            Array.Reverse(retval);
-            return BitConverter.ToUInt16(retval, 0);
+            byte[] buffer = reader.ReadBytes(2);
+            Array.Reverse(buffer);
+            return BitConverter.ToUInt16(buffer, 0);
         }
 
         /// <inheritdoc cref="BinaryReader.ReadInt32"/>
         /// <remarks>Reads in big-endian format</remarks>
         public static int ReadInt32BigEndian(this BinaryReader reader)
         {
-            byte[] retval = reader.ReadBytes(4);
-            Array.Reverse(retval);
-            return BitConverter.ToInt32(retval, 0);
+            byte[] buffer = reader.ReadBytes(4);
+            Array.Reverse(buffer);
+            return BitConverter.ToInt32(buffer, 0);
         }
 
         /// <remarks>Reads in big-endian format</remarks>
         public static uint ReadUInt32BigEndian(this BinaryReader reader)
         {
-            byte[] retval = reader.ReadBytes(4);
-            Array.Reverse(retval);
-            return BitConverter.ToUInt32(retval, 0);
+            byte[] buffer = reader.ReadBytes(4);
+            Array.Reverse(buffer);
+            return BitConverter.ToUInt32(buffer, 0);
         }
 
         /// <inheritdoc cref="BinaryReader.ReadSingle"/>
         /// <remarks>Reads in big-endian format</remarks>
         public static float ReadSingleBigEndian(this BinaryReader reader)
         {
-            byte[] retval = reader.ReadBytes(4);
-            Array.Reverse(retval);
-            return BitConverter.ToSingle(retval, 0);
+            byte[] buffer = reader.ReadBytes(4);
+            Array.Reverse(buffer);
+            return BitConverter.ToSingle(buffer, 0);
         }
 
         /// <inheritdoc cref="BinaryReader.ReadInt64"/>
         /// <remarks>Reads in big-endian format</remarks>
         public static long ReadInt64BigEndian(this BinaryReader reader)
         {
-            byte[] retval = reader.ReadBytes(8);
-            Array.Reverse(retval);
-            return BitConverter.ToInt64(retval, 0);
+            byte[] buffer = reader.ReadBytes(8);
+            Array.Reverse(buffer);
+            return BitConverter.ToInt64(buffer, 0);
         }
 
         /// <inheritdoc cref="BinaryReader.ReadUInt64"/>
         /// <remarks>Reads in big-endian format</remarks>
         public static ulong ReadUInt64BigEndian(this BinaryReader reader)
         {
-            byte[] retval = reader.ReadBytes(8);
-            Array.Reverse(retval);
-            return BitConverter.ToUInt64(retval, 0);
+            byte[] buffer = reader.ReadBytes(8);
+            Array.Reverse(buffer);
+            return BitConverter.ToUInt64(buffer, 0);
         }
 
         /// <inheritdoc cref="BinaryReader.ReadDouble"/>
         /// <remarks>Reads in big-endian format</remarks>
         public static double ReadDoubleBigEndian(this BinaryReader reader)
         {
-            byte[] retval = reader.ReadBytes(8);
-            Array.Reverse(retval);
-            return BitConverter.ToDouble(retval, 0);
+            byte[] buffer = reader.ReadBytes(8);
+            Array.Reverse(buffer);
+            return BitConverter.ToDouble(buffer, 0);
         }
 
         /// <inheritdoc cref="BinaryReader.ReadDecimal"/>
         /// <remarks>Reads in big-endian format</remarks>
         public static decimal ReadDecimalBigEndian(this BinaryReader reader)
         {
-            byte[] retval = reader.ReadBytes(16);
-            Array.Reverse(retval);
+            byte[] buffer = reader.ReadBytes(16);
+            Array.Reverse(buffer);
 
-            int i1 = BitConverter.ToInt32(retval, 0);
-            int i2 = BitConverter.ToInt32(retval, 4);
-            int i3 = BitConverter.ToInt32(retval, 8);
-            int i4 = BitConverter.ToInt32(retval, 12);
+            int i1 = BitConverter.ToInt32(buffer, 0);
+            int i2 = BitConverter.ToInt32(buffer, 4);
+            int i3 = BitConverter.ToInt32(buffer, 8);
+            int i4 = BitConverter.ToInt32(buffer, 12);
 
             return new decimal([i1, i2, i3, i4]);
         }
