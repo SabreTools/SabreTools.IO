@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace SabreTools.IO.Extensions
 {
@@ -194,6 +196,143 @@ namespace SabreTools.IO.Extensions
             return new UInt128(BitConverter.ToUInt64(buffer, 0), BitConverter.ToUInt64(buffer, 8));
         }
 #endif
+
+        /// <summary>
+        /// Read a null-terminated string from the underlying stream
+        /// </summary>
+        public static string? ReadNullTerminatedString(this BinaryReader reader, Encoding encoding)
+        {
+            // Short-circuit to explicit implementations
+            if (encoding.Equals(Encoding.ASCII))
+                return reader.ReadNullTerminatedAnsiString();
+            else if (encoding.Equals(Encoding.Unicode))
+                return reader.ReadNullTerminatedUnicodeString();
+
+            if (reader.BaseStream.Position >= reader.BaseStream.Length)
+                return null;
+
+            List<byte> buffer = [];
+            while (reader.BaseStream.Position < reader.BaseStream.Length)
+            {
+                byte ch = reader.ReadByte();
+                buffer.Add(ch);
+                if (ch == '\0')
+                    break;
+            }
+
+            return encoding.GetString([.. buffer]);
+        }
+        
+        /// <summary>
+        /// Read a null-terminated ASCII string from the underlying stream
+        /// </summary>
+        public static string? ReadNullTerminatedAnsiString(this BinaryReader reader)
+        {
+            if (reader.BaseStream.Position >= reader.BaseStream.Length)
+                return null;
+
+            List<byte> buffer = [];
+            while (reader.BaseStream.Position < reader.BaseStream.Length)
+            {
+                byte ch = reader.ReadByte();
+                buffer.Add(ch);
+                if (ch == '\0')
+                    break;
+            }
+
+            return Encoding.ASCII.GetString([.. buffer]);
+        }
+
+        /// <summary>
+        /// Read a null-terminated Unicode string from the underlying stream
+        /// </summary>
+        public static string? ReadNullTerminatedUnicodeString(this BinaryReader reader)
+        {
+            if (reader.BaseStream.Position >= reader.BaseStream.Length)
+                return null;
+
+            List<byte> buffer = [];
+            while (reader.BaseStream.Position < reader.BaseStream.Length)
+            {
+                byte[] ch = reader.ReadBytes(2);
+                buffer.AddRange(ch);
+                if (ch[0] == '\0' && ch[1] == '\0')
+                    break;
+            }
+
+            return Encoding.Unicode.GetString([.. buffer]);
+        }
+
+        /// <summary>
+        /// Read a byte-prefixed ASCII string from the underlying stream
+        /// </summary>
+        public static string? ReadPrefixedAnsiString(this BinaryReader reader)
+        {
+            if (reader.BaseStream.Position >= reader.BaseStream.Length)
+                return null;
+
+            byte size = reader.ReadByte();
+            if (reader.BaseStream.Position + size >= reader.BaseStream.Length)
+                return null;
+
+            byte[] buffer = reader.ReadBytes(size);
+            return Encoding.ASCII.GetString(buffer);
+        }
+
+        /// <summary>
+        /// Read a ushort-prefixed Unicode string from the underlying stream
+        /// </summary>
+        public static string? ReadPrefixedUnicodeString(this BinaryReader reader)
+        {
+            if (reader.BaseStream.Position >= reader.BaseStream.Length)
+                return null;
+
+            ushort size = reader.ReadUInt16();
+            if (reader.BaseStream.Position + size >= reader.BaseStream.Length)
+                return null;
+
+            byte[] buffer = reader.ReadBytes(size);
+            return Encoding.Unicode.GetString(buffer);
+        }
+
+        /// <summary>
+        /// Read a string that is terminated by a newline but contains a quoted portion that
+        /// may also contain a newline from the stream
+        /// </summary>
+        public static string? ReadQuotedString(this BinaryReader reader)
+            => reader.ReadQuotedString(Encoding.Default);
+
+        /// <summary>
+        /// Read a string that is terminated by a newline but contains a quoted portion that
+        /// may also contain a newline from the stream
+        /// </summary>
+        public static string? ReadQuotedString(this BinaryReader reader, Encoding encoding)
+        {
+            if (reader.BaseStream.Position >= reader.BaseStream.Length)
+                return null;
+
+            var bytes = new List<byte>();
+            bool openQuote = false;
+            while (reader.BaseStream.Position < reader.BaseStream.Length)
+            {
+                // Read the byte value
+                byte b = reader.ReadByte();
+
+                // If we have a quote, flip the flag
+                if (b == (byte)'"')
+                    openQuote = !openQuote;
+
+                // If we have a newline not in a quoted string, exit the loop
+                else if (b == (byte)'\n' && !openQuote)
+                    break;
+
+                // Add the byte to the set
+                bytes.Add(b);
+            }
+
+            var line = encoding.GetString([.. bytes]);
+            return line.TrimEnd();
+        }
 
         /// <summary>
         /// Read a <typeparamref name="T"/> from the underlying stream

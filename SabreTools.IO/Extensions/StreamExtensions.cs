@@ -304,29 +304,99 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a null-terminated string from the stream
         /// </summary>
-        public static string? ReadString(this Stream stream)
-            => stream.ReadString(Encoding.Default);
+        public static string? ReadNullTerminatedString(this Stream stream, Encoding encoding)
+        {
+            // Short-circuit to explicit implementations
+            if (encoding.Equals(Encoding.ASCII))
+                return stream.ReadNullTerminatedAnsiString();
+            else if (encoding.Equals(Encoding.Unicode))
+                return stream.ReadNullTerminatedUnicodeString();
 
+            if (stream.Position >= stream.Length)
+                return null;
+
+            List<byte> buffer = [];
+            while (stream.Position < stream.Length)
+            {
+                byte ch = stream.ReadByteValue();
+                buffer.Add(ch);
+                if (ch == '\0')
+                    break;
+            }
+
+            return encoding.GetString([.. buffer]);
+        }
+        
         /// <summary>
-        /// Read a null-terminated string from the stream
+        /// Read a null-terminated ASCII string from the stream
         /// </summary>
-        public static string? ReadString(this Stream stream, Encoding encoding)
+        public static string? ReadNullTerminatedAnsiString(this Stream stream)
         {
             if (stream.Position >= stream.Length)
                 return null;
 
-            byte[] nullTerminator = encoding.GetBytes("\0");
-            int charWidth = nullTerminator.Length;
-
-            var tempBuffer = new List<byte>();
-
-            byte[] buffer = new byte[charWidth];
-            while (stream.Position < stream.Length && stream.Read(buffer, 0, charWidth) != 0 && !buffer.SequenceEqual(nullTerminator))
+            List<byte> buffer = [];
+            while (stream.Position < stream.Length)
             {
-                tempBuffer.AddRange(buffer);
+                byte ch = stream.ReadByteValue();
+                buffer.Add(ch);
+                if (ch == '\0')
+                    break;
             }
 
-            return encoding.GetString([.. tempBuffer]);
+            return Encoding.ASCII.GetString([.. buffer]);
+        }
+
+        /// <summary>
+        /// Read a null-terminated Unicode string from the stream
+        /// </summary>
+        public static string? ReadNullTerminatedUnicodeString(this Stream stream)
+        {
+            if (stream.Position >= stream.Length)
+                return null;
+
+            List<byte> buffer = [];
+            while (stream.Position < stream.Length)
+            {
+                byte[] ch = stream.ReadBytes(2);
+                buffer.AddRange(ch);
+                if (ch[0] == '\0' && ch[1] == '\0')
+                    break;
+            }
+
+            return Encoding.Unicode.GetString([.. buffer]);
+        }
+
+        /// <summary>
+        /// Read a byte-prefixed ASCII string from the stream
+        /// </summary>
+        public static string? ReadPrefixedAnsiString(this Stream stream)
+        {
+            if (stream.Position >= stream.Length)
+                return null;
+
+            byte size = stream.ReadByteValue();
+            if (stream.Position + size >= stream.Length)
+                return null;
+
+            byte[] buffer = stream.ReadBytes(size);
+            return Encoding.ASCII.GetString(buffer);
+        }
+
+        /// <summary>
+        /// Read a ushort-prefixed Unicode string from the stream
+        /// </summary>
+        public static string? ReadPrefixedUnicodeString(this Stream stream)
+        {
+            if (stream.Position >= stream.Length)
+                return null;
+
+            ushort size = stream.ReadUInt16();
+            if (stream.Position + size >= stream.Length)
+                return null;
+
+            byte[] buffer = stream.ReadBytes(size);
+            return Encoding.Unicode.GetString(buffer);
         }
 
         /// <summary>

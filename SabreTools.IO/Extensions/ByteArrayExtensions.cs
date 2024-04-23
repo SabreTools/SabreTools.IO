@@ -317,34 +317,101 @@ namespace SabreTools.IO.Extensions
 #endif
 
         /// <summary>
-        /// Read a null-terminated string from the byte array
+        /// Read a null-terminated string from the array
         /// </summary>
-        public static string? ReadString(this byte[] content, ref int offset)
-            => content.ReadString(ref offset, Encoding.Default);
+        public static string? ReadNullTerminatedString(this byte[] content, ref int offset, Encoding encoding)
+        {
+            // Short-circuit to explicit implementations
+            if (encoding.Equals(Encoding.ASCII))
+                return content.ReadNullTerminatedAnsiString(ref offset);
+            else if (encoding.Equals(Encoding.Unicode))
+                return content.ReadNullTerminatedUnicodeString(ref offset);
 
+            if (offset >= content.Length)
+                return null;
+
+            List<byte> buffer = [];
+            while (offset < content.Length)
+            {
+                byte ch = content.ReadByteValue(ref offset);
+                buffer.Add(ch);
+                if (ch == '\0')
+                    break;
+            }
+
+            return encoding.GetString([.. buffer]);
+        }
+        
         /// <summary>
-        /// Read a null-terminated string from the byte array
+        /// Read a null-terminated ASCII string from the byte array
         /// </summary>
-        public static string? ReadString(this byte[] content, ref int offset, Encoding encoding)
+        public static string? ReadNullTerminatedAnsiString(this byte[] content, ref int offset)
         {
             if (offset >= content.Length)
                 return null;
 
-            byte[] nullTerminator = encoding.GetBytes("\0");
-            int charWidth = nullTerminator.Length;
-
-            var keyChars = new List<char>();
+            List<byte> buffer = [];
             while (offset < content.Length)
             {
-                char c = encoding.GetChars(content, offset, charWidth)[0];
-                keyChars.Add(c);
-                offset += charWidth;
-
-                if (c == '\0')
+                byte ch = content.ReadByteValue(ref offset);
+                buffer.Add(ch);
+                if (ch == '\0')
                     break;
             }
 
-            return new string([.. keyChars]).TrimEnd('\0');
+            return Encoding.ASCII.GetString([.. buffer]);
+        }
+
+        /// <summary>
+        /// Read a null-terminated Unicode string from the byte array
+        /// </summary>
+        public static string? ReadNullTerminatedUnicodeString(this byte[] content, ref int offset)
+        {
+            if (offset >= content.Length)
+                return null;
+
+            List<byte> buffer = [];
+            while (offset < content.Length)
+            {
+                byte[] ch = content.ReadBytes(ref offset, 2);
+                buffer.AddRange(ch);
+                if (ch[0] == '\0' && ch[1] == '\0')
+                    break;
+            }
+
+            return Encoding.Unicode.GetString([.. buffer]);
+        }
+
+        /// <summary>
+        /// Read a byte-prefixed ASCII string from the byte array
+        /// </summary>
+        public static string? ReadPrefixedAnsiString(this byte[] content, ref int offset)
+        {
+            if (offset >= content.Length)
+                return null;
+
+            byte size = content.ReadByteValue(ref offset);
+            if (offset + size >= content.Length)
+                return null;
+
+            byte[] buffer = content.ReadBytes(ref offset, size);
+            return Encoding.ASCII.GetString(buffer);
+        }
+
+        /// <summary>
+        /// Read a ushort-prefixed Unicode string from the byte array
+        /// </summary>
+        public static string? ReadPrefixedUnicodeString(this byte[] content, ref int offset)
+        {
+            if (offset >= content.Length)
+                return null;
+
+            ushort size = content.ReadUInt16(ref offset);
+            if (offset + size >= content.Length)
+                return null;
+
+            byte[] buffer = content.ReadBytes(ref offset, size);
+            return Encoding.Unicode.GetString(buffer);
         }
 
         /// <summary>
