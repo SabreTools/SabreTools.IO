@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace SabreTools.IO.Extensions
@@ -383,6 +384,19 @@ namespace SabreTools.IO.Extensions
             }
 
             return new string([.. keyChars]).TrimEnd();
+        }
+
+        /// <summary>
+        /// Read a <typeparamref name="T"/> from the underlying stream
+        /// </summary>
+        public static T? ReadType<T>(this byte[] content, ref int offset)
+        {
+            int typeSize = Marshal.SizeOf(typeof(T));
+            byte[] buffer = ReadToBuffer(content, ref offset, typeSize);
+            var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            var data = (T?)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
+            handle.Free();
+            return data;
         }
 
         /// <summary>

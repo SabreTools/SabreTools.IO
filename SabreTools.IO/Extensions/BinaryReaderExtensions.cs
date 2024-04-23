@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace SabreTools.IO.Extensions
 {
@@ -193,5 +194,18 @@ namespace SabreTools.IO.Extensions
             return new UInt128(BitConverter.ToUInt64(buffer, 0), BitConverter.ToUInt64(buffer, 8));
         }
 #endif
+
+        /// <summary>
+        /// Read a <typeparamref name="T"/> from the underlying stream
+        /// </summary>
+        public static T? ReadType<T>(this BinaryReader reader)
+        {
+            int typeSize = Marshal.SizeOf(typeof(T));
+            byte[] buffer = reader.ReadBytes(typeSize);
+            var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            var data = (T?)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
+            handle.Free();
+            return data;
+        }
     }
 }

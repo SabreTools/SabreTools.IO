@@ -196,7 +196,7 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
-        public void ReadGuidBigEndian()
+        public void ReadGuidBigEndianTest()
         {
             int offset = 0;
             var expected = new Guid(_bytes.Reverse().ToArray());
@@ -243,6 +243,42 @@ namespace SabreTools.IO.Test.Extensions
             Assert.Equal(expected, read);
         }
 #endif
+
+        [Fact]
+        public void ReadTypeExplicitTest()
+        {
+            int offset = 0;
+            var expected = new TestStructExplicit
+            {
+                FirstValue = 0x03020100,
+                SecondValue = 0x07060504,
+                ThirdValue = 0x0504,
+                FourthValue = 0x0706,
+            };
+            var read = _bytes.ReadType<TestStructExplicit>(ref offset);
+            Assert.Equal(expected.FirstValue, read.FirstValue);
+            Assert.Equal(expected.SecondValue, read.SecondValue);
+            Assert.Equal(expected.ThirdValue, read.ThirdValue);
+            Assert.Equal(expected.FourthValue, read.FourthValue);
+        }
+
+        [Fact]
+        public void ReadTypeSequentialTest()
+        {
+            int offset = 0;
+            var expected = new TestStructSequential
+            {
+                FirstValue = 0x03020100,
+                SecondValue = 0x07060504,
+                ThirdValue = 0x0908,
+                FourthValue = 0x0B0A,
+            };
+            var read = _bytes.ReadType<TestStructSequential>(ref offset);
+            Assert.Equal(expected.FirstValue, read.FirstValue);
+            Assert.Equal(expected.SecondValue, read.SecondValue);
+            Assert.Equal(expected.ThirdValue, read.ThirdValue);
+            Assert.Equal(expected.FourthValue, read.FourthValue);
+        }
 
         // TODO: Add decimal tests
         // TODO: Add string reading tests
