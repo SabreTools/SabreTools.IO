@@ -221,6 +221,38 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Read a Decimal and increment the pointer to an array
+        /// </summary>
+        public static decimal ReadDecimal(this byte[] content, ref int offset)
+        {
+            byte[] buffer = ReadToBuffer(content, ref offset, 16);
+
+            int i1 = BitConverter.ToInt32(buffer, 0);
+            int i2 = BitConverter.ToInt32(buffer, 4);
+            int i3 = BitConverter.ToInt32(buffer, 8);
+            int i4 = BitConverter.ToInt32(buffer, 12);
+
+            return new decimal([i1, i2, i3, i4]);
+        }
+
+        /// <summary>
+        /// Read a Decimal and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static decimal ReadDecimalBigEndian(this byte[] content, ref int offset)
+        {
+            byte[] buffer = ReadToBuffer(content, ref offset, 16);
+            Array.Reverse(buffer);
+
+            int i1 = BitConverter.ToInt32(buffer, 0);
+            int i2 = BitConverter.ToInt32(buffer, 4);
+            int i3 = BitConverter.ToInt32(buffer, 8);
+            int i4 = BitConverter.ToInt32(buffer, 12);
+
+            return new decimal([i1, i2, i3, i4]);
+        }
+
+        /// <summary>
         /// Read a Guid and increment the pointer to an array
         /// </summary>
         public static Guid ReadGuid(this byte[] content, ref int offset)

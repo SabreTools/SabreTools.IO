@@ -153,6 +153,7 @@ namespace SabreTools.IO.Test.Extensions
 #endif
 
         // TODO: Add byte[], char[] tests
+        // TODO: Add decimal tests
         // TODO: Add string reading tests
     }
 }

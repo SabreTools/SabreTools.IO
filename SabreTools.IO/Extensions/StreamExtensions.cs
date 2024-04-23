@@ -55,8 +55,9 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an Int16 from the stream in big-endian format
+        /// Read an Int16 from the stream
         /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
         public static short ReadInt16BigEndian(this Stream stream)
         {
             byte[] buffer = ReadToBuffer(stream, 2);
@@ -74,8 +75,9 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a UInt16 from the stream in big-endian format
+        /// Read a UInt16 from the stream
         /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
         public static ushort ReadUInt16BigEndian(this Stream stream)
         {
             byte[] buffer = ReadToBuffer(stream, 2);
@@ -93,8 +95,9 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an Int32 from the stream in big-endian format
+        /// Read an Int32 from the stream
         /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
         public static int ReadInt32BigEndian(this Stream stream)
         {
             byte[] buffer = ReadToBuffer(stream, 4);
@@ -112,8 +115,9 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a UInt32 from the stream in big-endian format
+        /// Read a UInt32 from the stream
         /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
         public static uint ReadUInt32BigEndian(this Stream stream)
         {
             byte[] buffer = ReadToBuffer(stream, 4);
@@ -131,8 +135,9 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a Single from the stream in big-endian format
+        /// Read a Single from the stream
         /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
         public static float ReadSingleBigEndian(this Stream stream)
         {
             byte[] buffer = ReadToBuffer(stream, 4);
@@ -150,8 +155,9 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an Int64 from the stream in big-endian format
+        /// Read an Int64 from the stream
         /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
         public static long ReadInt64BigEndian(this Stream stream)
         {
             byte[] buffer = ReadToBuffer(stream, 8);
@@ -169,8 +175,9 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a UInt64 from the stream in big-endian format
+        /// Read a UInt64 from the stream
         /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
         public static ulong ReadUInt64BigEndian(this Stream stream)
         {
             byte[] buffer = ReadToBuffer(stream, 8);
@@ -188,13 +195,46 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a Double from the stream in big-endian format
+        /// Read a Double from the stream
         /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
         public static double ReadDoubleBigEndian(this Stream stream)
         {
             byte[] buffer = ReadToBuffer(stream, 8);
             Array.Reverse(buffer);
             return BitConverter.ToDouble(buffer, 0);
+        }
+
+        /// <summary>
+        /// Read a Decimal from the stream
+        /// </summary>
+        public static decimal ReadDecimal(this Stream stream)
+        {
+            byte[] buffer = ReadToBuffer(stream, 16);
+
+            int i1 = BitConverter.ToInt32(buffer, 0);
+            int i2 = BitConverter.ToInt32(buffer, 4);
+            int i3 = BitConverter.ToInt32(buffer, 8);
+            int i4 = BitConverter.ToInt32(buffer, 12);
+
+            return new decimal([i1, i2, i3, i4]);
+        }
+
+        /// <summary>
+        /// Read a Decimal from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static decimal ReadDecimalBigEndian(this Stream stream)
+        {
+            byte[] buffer = ReadToBuffer(stream, 16);
+            Array.Reverse(buffer);
+
+            int i1 = BitConverter.ToInt32(buffer, 0);
+            int i2 = BitConverter.ToInt32(buffer, 4);
+            int i3 = BitConverter.ToInt32(buffer, 8);
+            int i4 = BitConverter.ToInt32(buffer, 12);
+
+            return new decimal([i1, i2, i3, i4]);
         }
 
         /// <summary>
@@ -207,8 +247,9 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a Guid from the stream in big-endian format
+        /// Read a Guid from the stream
         /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
         public static Guid ReadGuidBigEndian(this Stream stream)
         {
             byte[] buffer = ReadToBuffer(stream, 16);
@@ -228,8 +269,9 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an Int128 from the stream in big-endian format
+        /// Read an Int128 from the stream
         /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
         public static Int128 ReadInt128BigEndian(this Stream stream)
         {
             byte[] buffer = ReadToBuffer(stream, 16);
@@ -247,8 +289,9 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a UInt128 from the stream in big-endian format
+        /// Read a UInt128 from the stream
         /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
         public static UInt128 ReadUInt128BigEndian(this Stream stream)
         {
             byte[] buffer = ReadToBuffer(stream, 16);

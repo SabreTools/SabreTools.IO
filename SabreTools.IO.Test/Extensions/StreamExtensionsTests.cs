@@ -238,6 +238,7 @@ namespace SabreTools.IO.Test.Extensions
         }
 #endif
 
+        // TODO: Add decimal tests
         // TODO: Add string reading tests
     }
 }
