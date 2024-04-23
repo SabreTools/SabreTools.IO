@@ -222,7 +222,7 @@ namespace SabreTools.IO.Extensions
 
             return encoding.GetString([.. buffer]);
         }
-        
+
         /// <summary>
         /// Read a null-terminated ASCII string from the underlying stream
         /// </summary>
@@ -341,9 +341,11 @@ namespace SabreTools.IO.Extensions
         {
             int typeSize = Marshal.SizeOf(typeof(T));
             byte[] buffer = reader.ReadBytes(typeSize);
+
             var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
             var data = (T?)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
             handle.Free();
+
             return data;
         }
     }
