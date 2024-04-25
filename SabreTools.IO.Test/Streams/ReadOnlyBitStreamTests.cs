@@ -13,7 +13,7 @@ namespace SabreTools.IO.Test.Streams
             Assert.Equal(0, stream.Length);
             Assert.Equal(0, stream.Position);
 
-            stream = new ReadOnlyBitStream(new MemoryStream(new byte[16]));
+            stream = new ReadOnlyBitStream(new MemoryStream(new byte[16], 0, 16, true, true));
             Assert.Equal(16, stream.Length);
             Assert.Equal(0, stream.Position);
         }

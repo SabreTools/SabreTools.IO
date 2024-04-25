@@ -1,12 +1,17 @@
 using System;
 using System.IO;
 using System.Linq;
+#if NET7_0_OR_GREATER
+using System.Numerics;
+#endif
 using SabreTools.IO.Extensions;
 using Xunit;
 
 namespace SabreTools.IO.Test.Extensions
 {
-    public class StreamExtensionsTests
+    // TODO: Add decimal tests
+    // TODO: Add string reading tests
+    public class StreamExtensionsReadTests
     {
         private static readonly byte[] _bytes =
         [
@@ -203,7 +208,7 @@ namespace SabreTools.IO.Test.Extensions
         public void ReadInt128Test()
         {
             var stream = new MemoryStream(_bytes);
-            var expected = new Int128(BitConverter.ToUInt64(_bytes, 0), BitConverter.ToUInt64(_bytes, 8));
+            var expected = (Int128)new BigInteger(_bytes);
             Int128 read = stream.ReadInt128();
             Assert.Equal(expected, read);
         }
@@ -213,7 +218,7 @@ namespace SabreTools.IO.Test.Extensions
         {
             var stream = new MemoryStream(_bytes);
             var reversed = _bytes.Reverse().ToArray();
-            var expected = new Int128(BitConverter.ToUInt64(reversed, 0), BitConverter.ToUInt64(reversed, 8));
+            var expected = (Int128)new BigInteger(reversed);
             Int128 read = stream.ReadInt128BigEndian();
             Assert.Equal(expected, read);
         }
@@ -222,7 +227,7 @@ namespace SabreTools.IO.Test.Extensions
         public void ReadUInt128Test()
         {
             var stream = new MemoryStream(_bytes);
-            var expected = new UInt128(BitConverter.ToUInt64(_bytes, 0), BitConverter.ToUInt64(_bytes, 8));
+            var expected = (UInt128)new BigInteger(_bytes);
             UInt128 read = stream.ReadUInt128();
             Assert.Equal(expected, read);
         }
@@ -232,7 +237,7 @@ namespace SabreTools.IO.Test.Extensions
         {
             var stream = new MemoryStream(_bytes);
             var reversed = _bytes.Reverse().ToArray();
-            var expected = new UInt128(BitConverter.ToUInt64(reversed, 0), BitConverter.ToUInt64(reversed, 8));
+            var expected = (UInt128)new BigInteger(reversed);
             UInt128 read = stream.ReadUInt128BigEndian();
             Assert.Equal(expected, read);
         }
@@ -273,8 +278,5 @@ namespace SabreTools.IO.Test.Extensions
             Assert.Equal(expected.ThirdValue, read.ThirdValue);
             Assert.Equal(expected.FourthValue, read.FourthValue);
         }
-
-        // TODO: Add decimal tests
-        // TODO: Add string reading tests
     }
 }

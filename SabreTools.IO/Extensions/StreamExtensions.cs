@@ -263,7 +263,6 @@ namespace SabreTools.IO.Extensions
             return new Guid(buffer);
         }
 
-        // TODO: Determine if the reverse reads are doing what are expected
 #if NET7_0_OR_GREATER
         /// <summary>
         /// Read an Int128 from the stream
@@ -271,7 +270,7 @@ namespace SabreTools.IO.Extensions
         public static Int128 ReadInt128(this Stream stream)
         {
             byte[] buffer = ReadToBuffer(stream, 16);
-            return new Int128(BitConverter.ToUInt64(buffer, 0), BitConverter.ToUInt64(buffer, 8));
+            return (Int128)new BigInteger(buffer);
         }
 
         /// <summary>
@@ -282,7 +281,7 @@ namespace SabreTools.IO.Extensions
         {
             byte[] buffer = ReadToBuffer(stream, 16);
             Array.Reverse(buffer);
-            return new Int128(BitConverter.ToUInt64(buffer, 0), BitConverter.ToUInt64(buffer, 8));
+            return (Int128)new BigInteger(buffer);
         }
 
         /// <summary>
@@ -291,7 +290,7 @@ namespace SabreTools.IO.Extensions
         public static UInt128 ReadUInt128(this Stream stream)
         {
             byte[] buffer = ReadToBuffer(stream, 16);
-            return new UInt128(BitConverter.ToUInt64(buffer, 0), BitConverter.ToUInt64(buffer, 8));
+            return (UInt128)new BigInteger(buffer);
         }
 
         /// <summary>
@@ -302,7 +301,7 @@ namespace SabreTools.IO.Extensions
         {
             byte[] buffer = ReadToBuffer(stream, 16);
             Array.Reverse(buffer);
-            return new UInt128(BitConverter.ToUInt64(buffer, 0), BitConverter.ToUInt64(buffer, 8));
+            return (UInt128)new BigInteger(buffer);
         }
 #endif
 
@@ -526,20 +525,20 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a UInt8
         /// </summary>
-        public static bool WriteByteValue(this Stream stream, byte value)
+        public static bool Write(this Stream stream, byte value)
             => WriteFromBuffer(stream, [value]);
 
         /// <summary>
         /// Write a UInt8[]
         /// </summary>
-        public static bool WriteBytes(this Stream stream, byte[] value)
+        public static bool Write(this Stream stream, byte[] value)
             => WriteFromBuffer(stream, value);
 
         /// <summary>
         /// Write a UInt8[]
         /// </summary>
         /// <remarks>Writes in big-endian format</remarks>
-        public static bool WriteBytesBigEndian(this Stream stream, byte[] value)
+        public static bool WriteBigEndian(this Stream stream, byte[] value)
         {
             Array.Reverse(value);
             return WriteFromBuffer(stream, value);
@@ -548,13 +547,13 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write an Int8
         /// </summary>
-        public static bool WriteSByte(this Stream stream, sbyte value)
+        public static bool Write(this Stream stream, sbyte value)
             => WriteFromBuffer(stream, [(byte)value]);
 
         /// <summary>
         /// Write a Char
         /// </summary>
-        public static bool WriteChar(this Stream stream, char value)
+        public static bool Write(this Stream stream, char value)
         {
             byte[] buffer = BitConverter.GetBytes(value);
             return WriteFromBuffer(stream, buffer);
@@ -563,7 +562,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a Char with an Encoding
         /// </summary>
-        public static bool WriteChar(this Stream stream, char value, Encoding encoding)
+        public static bool Write(this Stream stream, char value, Encoding encoding)
         {
             byte[] buffer = encoding.GetBytes([value]);
             return WriteFromBuffer(stream, buffer);
@@ -572,7 +571,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write an Int16
         /// </summary>
-        public static bool WriteInt16(this Stream stream, short value)
+        public static bool Write(this Stream stream, short value)
         {
             byte[] buffer = BitConverter.GetBytes(value);
             return WriteFromBuffer(stream, buffer);
@@ -582,7 +581,7 @@ namespace SabreTools.IO.Extensions
         /// Write an Int16
         /// </summary>
         /// <remarks>Writes in big-endian format</remarks>
-        public static bool WriteInt16BigEndian(this Stream stream, short value)
+        public static bool WriteBigEndian(this Stream stream, short value)
         {
             byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
@@ -592,7 +591,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a UInt16
         /// </summary>
-        public static bool WriteUInt16(this Stream stream, ushort value)
+        public static bool Write(this Stream stream, ushort value)
         {
             byte[] buffer = BitConverter.GetBytes(value);
             return WriteFromBuffer(stream, buffer);
@@ -602,7 +601,7 @@ namespace SabreTools.IO.Extensions
         /// Write a UInt16
         /// </summary>
         /// <remarks>Writes in big-endian format</remarks>
-        public static bool WriteUInt16BigEndian(this Stream stream, ushort value)
+        public static bool WriteBigEndian(this Stream stream, ushort value)
         {
             byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
@@ -612,7 +611,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write an Int32
         /// </summary>
-        public static bool WriteInt32(this Stream stream, int value)
+        public static bool Write(this Stream stream, int value)
         {
             byte[] buffer = BitConverter.GetBytes(value);
             return WriteFromBuffer(stream, buffer);
@@ -622,7 +621,7 @@ namespace SabreTools.IO.Extensions
         /// Write an Int32
         /// </summary>
         /// <remarks>Writes in big-endian format</remarks>
-        public static bool WriteInt32BigEndian(this Stream stream, int value)
+        public static bool WriteBigEndian(this Stream stream, int value)
         {
             byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
@@ -632,7 +631,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a UInt32
         /// </summary>
-        public static bool WriteUInt32(this Stream stream, uint value)
+        public static bool Write(this Stream stream, uint value)
         {
             byte[] buffer = BitConverter.GetBytes(value);
             return WriteFromBuffer(stream, buffer);
@@ -642,7 +641,7 @@ namespace SabreTools.IO.Extensions
         /// Write a UInt32
         /// </summary>
         /// <remarks>Writes in big-endian format</remarks>
-        public static bool WriteUInt32BigEndian(this Stream stream, uint value)
+        public static bool WriteBigEndian(this Stream stream, uint value)
         {
             byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
@@ -652,7 +651,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a Single
         /// </summary>
-        public static bool WriteSingle(this Stream stream, float value)
+        public static bool Write(this Stream stream, float value)
         {
             byte[] buffer = BitConverter.GetBytes(value);
             return WriteFromBuffer(stream, buffer);
@@ -662,7 +661,7 @@ namespace SabreTools.IO.Extensions
         /// Write a Single
         /// </summary>
         /// <remarks>Writes in big-endian format</remarks>
-        public static bool WriteSingleBigEndian(this Stream stream, float value)
+        public static bool WriteBigEndian(this Stream stream, float value)
         {
             byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
@@ -672,7 +671,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write an Int64
         /// </summary>
-        public static bool WriteInt64(this Stream stream, long value)
+        public static bool Write(this Stream stream, long value)
         {
             byte[] buffer = BitConverter.GetBytes(value);
             return WriteFromBuffer(stream, buffer);
@@ -682,7 +681,7 @@ namespace SabreTools.IO.Extensions
         /// Write an Int64
         /// </summary>
         /// <remarks>Writes in big-endian format</remarks>
-        public static bool WriteInt64BigEndian(this Stream stream, long value)
+        public static bool WriteBigEndian(this Stream stream, long value)
         {
             byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
@@ -692,7 +691,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a UInt64
         /// </summary>
-        public static bool WriteUInt64(this Stream stream, ulong value)
+        public static bool Write(this Stream stream, ulong value)
         {
             byte[] buffer = BitConverter.GetBytes(value);
             return WriteFromBuffer(stream, buffer);
@@ -702,7 +701,7 @@ namespace SabreTools.IO.Extensions
         /// Write a UInt64
         /// </summary>
         /// <remarks>Writes in big-endian format</remarks>
-        public static bool WriteUInt64BigEndian(this Stream stream, ulong value)
+        public static bool WriteBigEndian(this Stream stream, ulong value)
         {
             byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
@@ -712,7 +711,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a Double
         /// </summary>
-        public static bool WriteDouble(this Stream stream, double value)
+        public static bool Write(this Stream stream, double value)
         {
             byte[] buffer = BitConverter.GetBytes(value);
             return WriteFromBuffer(stream, buffer);
@@ -722,7 +721,7 @@ namespace SabreTools.IO.Extensions
         /// Write a Double
         /// </summary>
         /// <remarks>Writes in big-endian format</remarks>
-        public static bool WriteDoubleBigEndian(this Stream stream, double value)
+        public static bool WriteBigEndian(this Stream stream, double value)
         {
             byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
@@ -732,7 +731,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a Guid
         /// </summary>
-        public static bool WriteGuid(this Stream stream, Guid value)
+        public static bool Write(this Stream stream, Guid value)
         {
             byte[] buffer = value.ToByteArray();
             return WriteFromBuffer(stream, buffer);
@@ -742,7 +741,7 @@ namespace SabreTools.IO.Extensions
         /// Write a Guid
         /// </summary>
         /// <remarks>Writes in big-endian format</remarks>
-        public static bool WriteGuidBigEndian(this Stream stream, Guid value)
+        public static bool WriteBigEndian(this Stream stream, Guid value)
         {
             byte[] buffer = value.ToByteArray();
             Array.Reverse(buffer);
@@ -753,41 +752,53 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write an Int128
         /// </summary>
-        public static bool WriteInt128(this Stream stream, Int128 value)
+        public static bool Write(this Stream stream, Int128 value)
         {
             byte[] buffer = ((BigInteger)value).ToByteArray();
-            return WriteFromBuffer(stream, buffer);
+
+            byte[] padded = new byte[16];
+            Array.Copy(buffer, 0, padded, 16 - buffer.Length, buffer.Length);
+            return WriteFromBuffer(stream, padded);
         }
 
         /// <summary>
         /// Write an Int128
         /// </summary>
         /// <remarks>Writes in big-endian format</remarks>
-        public static bool WriteInt128BigEndian(this Stream stream, Int128 value)
+        public static bool WriteBigEndian(this Stream stream, Int128 value)
         {
             byte[] buffer = ((BigInteger)value).ToByteArray();
             Array.Reverse(buffer);
-            return WriteFromBuffer(stream, buffer);
+
+            byte[] padded = new byte[16];
+            Array.Copy(buffer, 0, padded, 16 - buffer.Length, buffer.Length);
+            return WriteFromBuffer(stream, padded);
         }
 
         /// <summary>
         /// Write a UInt128
         /// </summary>
-        public static bool WriteUInt128(this Stream stream, UInt128 value)
+        public static bool Write(this Stream stream, UInt128 value)
         {
             byte[] buffer = ((BigInteger)value).ToByteArray();
-            return WriteFromBuffer(stream, buffer);
+
+            byte[] padded = new byte[16];
+            Array.Copy(buffer, 0, padded, 16 - buffer.Length, buffer.Length);
+            return WriteFromBuffer(stream, padded);
         }
 
         /// <summary>
         /// Write a UInt128
         /// </summary>
         /// <remarks>Writes in big-endian format</remarks>
-        public static bool WriteUInt128BigEndian(this Stream stream, UInt128 value)
+        public static bool WriteBigEndian(this Stream stream, UInt128 value)
         {
             byte[] buffer = ((BigInteger)value).ToByteArray();
             Array.Reverse(buffer);
-            return WriteFromBuffer(stream, buffer);
+
+            byte[] padded = new byte[16];
+            Array.Copy(buffer, 0, padded, 16 - buffer.Length, buffer.Length);
+            return WriteFromBuffer(stream, padded);
         }
 #endif
 
@@ -831,7 +842,7 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = Encoding.ASCII.GetBytes(value);
 
             // Write the length as a byte
-            if (!stream.WriteByteValue((byte)buffer.Length))
+            if (!stream.Write((byte)buffer.Length))
                 return false;
 
             // Write the buffer
@@ -851,7 +862,7 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = Encoding.Unicode.GetBytes(value);
 
             // Write the length as a ushort
-            if (!stream.WriteUInt16((ushort)buffer.Length))
+            if (!stream.Write((ushort)buffer.Length))
                 return false;
 
             // Write the buffer

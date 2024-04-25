@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+#if NET7_0_OR_GREATER
+using System.Numerics;
+#endif
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -162,7 +165,7 @@ namespace SabreTools.IO.Extensions
         public static Int128 ReadInt128(this BinaryReader reader)
         {
             byte[] buffer = reader.ReadBytes(16);
-            return new Int128(BitConverter.ToUInt64(buffer, 0), BitConverter.ToUInt64(buffer, 8));
+            return (Int128)new BigInteger(buffer);
         }
 
         /// <summary>
@@ -173,7 +176,7 @@ namespace SabreTools.IO.Extensions
         {
             byte[] buffer = reader.ReadBytes(16);
             Array.Reverse(buffer);
-            return new Int128(BitConverter.ToUInt64(buffer, 0), BitConverter.ToUInt64(buffer, 8));
+            return (Int128)new BigInteger(buffer);
         }
 
         /// <summary>
@@ -182,7 +185,7 @@ namespace SabreTools.IO.Extensions
         public static UInt128 ReadUInt128(this BinaryReader reader)
         {
             byte[] buffer = reader.ReadBytes(16);
-            return new UInt128(BitConverter.ToUInt64(buffer, 0), BitConverter.ToUInt64(buffer, 8));
+            return (UInt128)new BigInteger(buffer);
         }
 
         /// <summary>
@@ -193,7 +196,7 @@ namespace SabreTools.IO.Extensions
         {
             byte[] buffer = reader.ReadBytes(16);
             Array.Reverse(buffer);
-            return new UInt128(BitConverter.ToUInt64(buffer, 0), BitConverter.ToUInt64(buffer, 8));
+            return (UInt128)new BigInteger(buffer);
         }
 #endif
 
