@@ -12,6 +12,8 @@ namespace SabreTools.IO.Extensions
     /// <remarks>TODO: Add U/Int24 and U/Int48 methods</remarks>
     public static class StreamExtensions
     {
+        #region Read
+
         /// <summary>
         /// Read a UInt8 from the stream
         /// </summary>
@@ -512,5 +514,13 @@ namespace SabreTools.IO.Extensions
 
             return buffer;
         }
+    
+        #endregion
+
+        #region Write
+
+
+
+        #endregion
     }
 }

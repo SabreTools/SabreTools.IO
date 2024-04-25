@@ -11,6 +11,8 @@ namespace SabreTools.IO.Extensions
     /// <remarks>TODO: Add U/Int24 and U/Int48 methods</remarks>
     public static class ByteArrayExtensions
     {
+        #region Read
+
         /// <summary>
         /// Read a UInt8 and increment the pointer to an array
         /// </summary>
@@ -492,5 +494,13 @@ namespace SabreTools.IO.Extensions
 
             return buffer;
         }
+    
+        #endregion
+
+        #region Write
+
+
+
+        #endregion
     }
 }
