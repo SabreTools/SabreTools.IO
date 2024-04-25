@@ -10,7 +10,6 @@ namespace SabreTools.IO.Extensions
     /// <summary>
     /// Extensions for byte arrays
     /// </summary>
-    /// <remarks>TODO: Add WriteDecimal methods</remarks>
     /// TODO: Handle proper negative values for Int24 and Int48
     public static class ByteArrayWriterExtensions
     {
@@ -351,6 +350,50 @@ namespace SabreTools.IO.Extensions
         public static bool WriteBigEndian(this byte[] content, ref int offset, double value)
         {
             byte[] buffer = BitConverter.GetBytes(value);
+            Array.Reverse(buffer);
+            return WriteFromBuffer(content, ref offset, buffer);
+        }
+
+        /// <summary>
+        /// Write a Decimal and increment the pointer to an array
+        /// </summary>
+        public static bool Write(this byte[] content, ref int offset, decimal value)
+        {
+            int[] bits = decimal.GetBits(value);
+
+            byte[] lo = BitConverter.GetBytes(bits[0]);
+            byte[] mid = BitConverter.GetBytes(bits[1]);
+            byte[] hi = BitConverter.GetBytes(bits[2]);
+            byte[] flags = BitConverter.GetBytes(bits[3]);
+
+            byte[] buffer = new byte[16];
+            Array.Copy(lo, 0, buffer, 0, 4);
+            Array.Copy(mid, 0, buffer, 4, 4);
+            Array.Copy(hi, 0, buffer, 8, 4);
+            Array.Copy(flags, 0, buffer, 12, 4);
+
+            return WriteFromBuffer(content, ref offset, buffer);
+        }
+
+        /// <summary>
+        /// Write a Decimal and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Writes in big-endian format</remarks>
+        public static bool WriteBigEndian(this byte[] content, ref int offset, decimal value)
+        {
+            int[] bits = decimal.GetBits(value);
+
+            byte[] lo = BitConverter.GetBytes(bits[0]);
+            byte[] mid = BitConverter.GetBytes(bits[1]);
+            byte[] hi = BitConverter.GetBytes(bits[2]);
+            byte[] flags = BitConverter.GetBytes(bits[3]);
+
+            byte[] buffer = new byte[16];
+            Array.Copy(lo, 0, buffer, 0, 4);
+            Array.Copy(mid, 0, buffer, 4, 4);
+            Array.Copy(hi, 0, buffer, 8, 4);
+            Array.Copy(flags, 0, buffer, 12, 4);
+
             Array.Reverse(buffer);
             return WriteFromBuffer(content, ref offset, buffer);
         }

@@ -358,12 +358,12 @@ namespace SabreTools.IO.Extensions
         {
             byte[] buffer = ReadToBuffer(content, ref offset, 16);
 
-            int i1 = BitConverter.ToInt32(buffer, 0);
-            int i2 = BitConverter.ToInt32(buffer, 4);
-            int i3 = BitConverter.ToInt32(buffer, 8);
-            int i4 = BitConverter.ToInt32(buffer, 12);
+            int lo = BitConverter.ToInt32(buffer, 0);
+            int mid = BitConverter.ToInt32(buffer, 4);
+            int hi = BitConverter.ToInt32(buffer, 8);
+            int flags = BitConverter.ToInt32(buffer, 12);
 
-            return new decimal([i1, i2, i3, i4]);
+            return new decimal([lo, mid, hi, flags]);
         }
 
         /// <summary>
@@ -375,12 +375,12 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = ReadToBuffer(content, ref offset, 16);
             Array.Reverse(buffer);
 
-            int i1 = BitConverter.ToInt32(buffer, 0);
-            int i2 = BitConverter.ToInt32(buffer, 4);
-            int i3 = BitConverter.ToInt32(buffer, 8);
-            int i4 = BitConverter.ToInt32(buffer, 12);
+            int lo = BitConverter.ToInt32(buffer, 0);
+            int mid = BitConverter.ToInt32(buffer, 4);
+            int hi = BitConverter.ToInt32(buffer, 8);
+            int flags = BitConverter.ToInt32(buffer, 12);
 
-            return new decimal([i1, i2, i3, i4]);
+            return new decimal([lo, mid, hi, flags]);
         }
 
         /// <summary>

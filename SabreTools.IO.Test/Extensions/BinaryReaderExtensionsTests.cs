@@ -10,7 +10,7 @@ using Xunit;
 namespace SabreTools.IO.Test.Extensions
 {
     // TODO: Add byte[], char[] tests
-    // TODO: Add decimal tests
+    // TODO: Add decimal tests -- Determine what a valid decimal byte array looks like
     // TODO: Add string reading tests
     public class BinaryReaderExtensionsTests
     {
