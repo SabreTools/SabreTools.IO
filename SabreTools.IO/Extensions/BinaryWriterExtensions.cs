@@ -410,6 +410,10 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         private static bool WriteFromBuffer(BinaryWriter writer, byte[] value)
         {
+            // If the stream is not writable
+            if (!writer.BaseStream.CanWrite)
+                return false;
+
             // Handle the 0-byte case
             if (value.Length == 0)
                 return true;
