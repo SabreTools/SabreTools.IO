@@ -10,7 +10,7 @@ using Xunit;
 namespace SabreTools.IO.Test.Extensions
 {
     // TODO: Add decimal tests
-    // TODO: Add string reading tests
+    // TODO: Add string writing tests
     public class StreamExtensionsWriteTests
     {
         private static readonly byte[] _bytes =
@@ -34,7 +34,7 @@ namespace SabreTools.IO.Test.Extensions
         {
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
             byte[] expected = _bytes.Take(4).ToArray();
-            bool write = StreamExtensions.Write(stream, [0x00, 0x01, 0x02, 0x03]);
+            bool write = StreamWriterExtensions.Write(stream, [0x00, 0x01, 0x02, 0x03]);
             Assert.True(write);
             ValidateBytes(expected, stream.GetBuffer());
         }

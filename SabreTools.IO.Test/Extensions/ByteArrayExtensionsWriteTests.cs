@@ -9,6 +9,7 @@ using Xunit;
 namespace SabreTools.IO.Test.Extensions
 {
     // TODO: Add decimal tests
+    // TODO: Add string writing tests
     public class ByteArrayExtensionsWriteTests
     {
         private static readonly byte[] _bytes =
