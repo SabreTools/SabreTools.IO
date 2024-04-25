@@ -137,6 +137,48 @@ namespace SabreTools.IO.Test.Extensions
 #endif
 
         [Fact]
+        public void WriteInt24Test()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = _bytes.Take(3).ToArray();
+            bw.WriteAsInt24(0x020100);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteInt24BigEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = _bytes.Take(3).ToArray();
+            bool write = bw.WriteAsInt24BigEndian(0x000102);
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteUInt24Test()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = _bytes.Take(3).ToArray();
+            bw.WriteAsUInt24(0x020100);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteUInt24BigEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = _bytes.Take(3).ToArray();
+            bool write = bw.WriteAsUInt24BigEndian(0x000102);
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
         public void WriteInt32Test()
         {
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
@@ -195,6 +237,48 @@ namespace SabreTools.IO.Test.Extensions
             var bw = new BinaryWriter(stream);
             byte[] expected = _bytes.Take(4).ToArray();
             bool write = bw.WriteBigEndian(BitConverter.Int32BitsToSingle(0x00010203));
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteInt48Test()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = _bytes.Take(6).ToArray();
+            bw.WriteAsInt48(0x050403020100);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteInt48BigEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = _bytes.Take(6).ToArray();
+            bool write = bw.WriteAsInt48BigEndian(0x000102030405);
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteUInt48Test()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = _bytes.Take(6).ToArray();
+            bw.WriteAsUInt48(0x050403020100);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteUInt48BigEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = _bytes.Take(6).ToArray();
+            bool write = bw.WriteAsUInt48BigEndian(0x000102030405);
             Assert.True(write);
             ValidateBytes(expected, stream.GetBuffer());
         }

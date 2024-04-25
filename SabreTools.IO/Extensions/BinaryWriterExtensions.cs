@@ -11,8 +11,8 @@ namespace SabreTools.IO.Extensions
     /// <summary>
     /// Extensions for BinaryWriter
     /// </summary>
-    /// <remarks>TODO: Add U/Int24 and U/Int48 methods</remarks>
     /// <remarks>TODO: Add WriteDecimal methods</remarks>
+    /// TODO: Handle proper negative values for Int24 and Int48
     public static class BinaryWriterExtensions
     {
         #region Write
@@ -62,6 +62,62 @@ namespace SabreTools.IO.Extensions
         }
 #endif
 
+        /// <summary>
+        /// Write an Int32 as an Int24 to the underlying stream
+        /// </summary>
+        /// <remarks>Throws away top byte</remarks>
+        public static bool WriteAsInt24(this BinaryWriter writer, int value)
+        {
+            byte[] buffer = BitConverter.GetBytes(value);
+
+            byte[] reduced = new byte[3];
+            Array.Copy(buffer, reduced, 3);
+            return WriteFromBuffer(writer, reduced);
+        }
+
+        /// <summary>
+        /// Write an Int32 as an Int24 to the underlying stream
+        /// </summary>
+        /// <remarks>Writes in big-endian format</remarks>
+        /// <remarks>Throws away top byte</remarks>
+        public static bool WriteAsInt24BigEndian(this BinaryWriter writer, int value)
+        {
+            byte[] buffer = BitConverter.GetBytes(value);
+            Array.Reverse(buffer);
+
+            byte[] reduced = new byte[3];
+            Array.Copy(buffer, 1, reduced, 0, 3);
+            return WriteFromBuffer(writer, reduced);
+        }
+
+        /// <summary>
+        /// Write a UInt32 as a UInt24 to the underlying stream
+        /// </summary>
+        /// <remarks>Throws away top byte</remarks>
+        public static bool WriteAsUInt24(this BinaryWriter writer, uint value)
+        {
+            byte[] buffer = BitConverter.GetBytes(value);
+
+            byte[] reduced = new byte[3];
+            Array.Copy(buffer, reduced, 3);
+            return WriteFromBuffer(writer, reduced);
+        }
+
+        /// <summary>
+        /// Write a UInt32 as a UInt24 to the underlying stream
+        /// </summary>
+        /// <remarks>Writes in big-endian format</remarks>
+        /// <remarks>Throws away top byte</remarks>
+        public static bool WriteAsUInt24BigEndian(this BinaryWriter writer, uint value)
+        {
+            byte[] buffer = BitConverter.GetBytes(value);
+            Array.Reverse(buffer);
+
+            byte[] reduced = new byte[3];
+            Array.Copy(buffer, 1, reduced, 0, 3);
+            return WriteFromBuffer(writer, reduced);
+        }
+
         /// <inheritdoc cref="BinaryWriter.Write(int)"/>
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, int value)
@@ -87,6 +143,62 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
             return WriteFromBuffer(writer, buffer);
+        }
+
+        /// <summary>
+        /// Write an Int64 as an Int48 to the underlying stream
+        /// </summary>
+        /// <remarks>Throws away top 2 bytes</remarks>
+        public static bool WriteAsInt48(this BinaryWriter writer, long value)
+        {
+            byte[] buffer = BitConverter.GetBytes(value);
+
+            byte[] reduced = new byte[6];
+            Array.Copy(buffer, reduced, 6);
+            return WriteFromBuffer(writer, reduced);
+        }
+
+        /// <summary>
+        /// Write an Int64 as an Int48 to the underlying stream
+        /// </summary>
+        /// <remarks>Writes in big-endian format</remarks>
+        /// <remarks>Throws away top 2 bytes</remarks>
+        public static bool WriteAsInt48BigEndian(this BinaryWriter writer, long value)
+        {
+            byte[] buffer = BitConverter.GetBytes(value);
+            Array.Reverse(buffer);
+
+            byte[] reduced = new byte[6];
+            Array.Copy(buffer, 2, reduced, 0, 6);
+            return WriteFromBuffer(writer, reduced);
+        }
+
+        /// <summary>
+        /// Write a UInt64 as a UInt48 to the underlying stream
+        /// </summary>
+        /// <remarks>Throws away top 2 bytes</remarks>
+        public static bool WriteAsUInt48(this BinaryWriter writer, ulong value)
+        {
+            byte[] buffer = BitConverter.GetBytes(value);
+
+            byte[] reduced = new byte[6];
+            Array.Copy(buffer, reduced, 6);
+            return WriteFromBuffer(writer, reduced);
+        }
+
+        /// <summary>
+        /// Write a UInt64 as a UInt48 to the underlying stream
+        /// </summary>
+        /// <remarks>Writes in big-endian format</remarks>
+        /// <remarks>Throws away top 2 bytes</remarks>
+        public static bool WriteAsUInt48BigEndian(this BinaryWriter writer, ulong value)
+        {
+            byte[] buffer = BitConverter.GetBytes(value);
+            Array.Reverse(buffer);
+
+            byte[] reduced = new byte[6];
+            Array.Copy(buffer, 2, reduced, 0, 6);
+            return WriteFromBuffer(writer, reduced);
         }
 
         /// <inheritdoc cref="BinaryWriter.Write(long)"/>

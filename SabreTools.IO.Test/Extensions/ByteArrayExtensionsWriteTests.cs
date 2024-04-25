@@ -131,6 +131,50 @@ namespace SabreTools.IO.Test.Extensions
 #endif
 
         [Fact]
+        public void WriteInt24Test()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(3).ToArray();
+            bool write = buffer.WriteAsInt24(ref offset, 0x020100);
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteInt24BigEndianTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(3).ToArray();
+            bool write = buffer.WriteAsInt24BigEndian(ref offset, 0x000102);
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteUInt24Test()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(3).ToArray();
+            bool write = buffer.WriteAsUInt24(ref offset, 0x020100);
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteUInt24BigEndianTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(3).ToArray();
+            bool write = buffer.WriteAsUInt24BigEndian(ref offset, 0x000102);
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
         public void WriteInt32Test()
         {
             byte[] buffer = new byte[16];
@@ -192,6 +236,50 @@ namespace SabreTools.IO.Test.Extensions
             int offset = 0;
             byte[] expected = _bytes.Take(4).ToArray();
             bool write = buffer.WriteBigEndian(ref offset, BitConverter.Int32BitsToSingle(0x00010203));
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteInt48Test()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(6).ToArray();
+            bool write = buffer.WriteAsInt48(ref offset, 0x050403020100);
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteInt48BigEndianTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(6).ToArray();
+            bool write = buffer.WriteAsInt48BigEndian(ref offset, 0x000102030405);
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteUInt48Test()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(6).ToArray();
+            bool write = buffer.WriteAsUInt48(ref offset, 0x050403020100);
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteUInt48BigEndianTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(6).ToArray();
+            bool write = buffer.WriteAsUInt48BigEndian(ref offset, 0x000102030405);
             Assert.True(write);
             ValidateBytes(expected, buffer);
         }
