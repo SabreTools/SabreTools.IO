@@ -11,7 +11,7 @@ namespace SabreTools.IO.Extensions
     /// <summary>
     /// Extensions for byte arrays
     /// </summary>
-    /// <remarks>TODO: Add U/Int24 and U/Int48 methods</remarks>
+    /// <remarks>TODO: Add U/Int48 methods</remarks>
     public static class ByteArrayReaderExtensions
     {
         /// <summary>
@@ -102,6 +102,58 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = ReadToBuffer(content, ref offset, 2);
             Array.Reverse(buffer);
             return BitConverter.ToUInt16(buffer, 0);
+        }
+
+        /// <summary>
+        /// Read an Int24 encoded as an Int32 and increment the pointer to an array
+        /// </summary>
+        public static int ReadInt24(this byte[] content, ref int offset)
+        {
+            byte[] buffer = ReadToBuffer(content, ref offset, 3);
+
+            byte[] padded = new byte[4];
+            Array.Copy(buffer, padded, 3);
+            return BitConverter.ToInt32(padded, 0);
+        }
+
+        /// <summary>
+        /// Read an Int24 encoded as an Int32 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static int ReadInt24BigEndian(this byte[] content, ref int offset)
+        {
+            byte[] buffer = ReadToBuffer(content, ref offset, 3);
+            Array.Reverse(buffer);
+
+            byte[] padded = new byte[4];
+            Array.Copy(buffer, padded, 3);
+            return BitConverter.ToInt32(padded, 0);
+        }
+
+        /// <summary>
+        /// Read a UInt24 encoded as a UInt32 and increment the pointer to an array
+        /// </summary>
+        public static uint ReadUInt24(this byte[] content, ref int offset)
+        {
+            byte[] buffer = ReadToBuffer(content, ref offset, 3);
+
+            byte[] padded = new byte[4];
+            Array.Copy(buffer, padded, 3);
+            return BitConverter.ToUInt32(padded, 0);
+        }
+
+        /// <summary>
+        /// Read a UInt24 encoded as a UInt32 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static uint ReadUInt24BigEndian(this byte[] content, ref int offset)
+        {
+            byte[] buffer = ReadToBuffer(content, ref offset, 3);
+            Array.Reverse(buffer);
+
+            byte[] padded = new byte[4];
+            Array.Copy(buffer, padded, 3);
+            return BitConverter.ToUInt32(padded, 0);
         }
 
         /// <summary>

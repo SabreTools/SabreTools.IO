@@ -92,6 +92,38 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void ReadInt24Test()
+        {
+            int offset = 0;
+            int read = _bytes.ReadInt24(ref offset);
+            Assert.Equal(0x020100, read);
+        }
+
+        [Fact]
+        public void ReadInt24BigEndianTest()
+        {
+            int offset = 0;
+            int read = _bytes.ReadInt24BigEndian(ref offset);
+            Assert.Equal(0x000102, read);
+        }
+
+        [Fact]
+        public void ReadUInt24Test()
+        {
+            int offset = 0;
+            uint read = _bytes.ReadUInt24(ref offset);
+            Assert.Equal((uint)0x020100, read);
+        }
+
+        [Fact]
+        public void ReadUInt24BigEndianTest()
+        {
+            int offset = 0;
+            uint read = _bytes.ReadUInt24BigEndian(ref offset);
+            Assert.Equal((uint)0x000102, read);
+        }
+
+        [Fact]
         public void ReadInt32Test()
         {
             int offset = 0;

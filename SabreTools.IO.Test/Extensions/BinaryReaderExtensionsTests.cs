@@ -57,6 +57,42 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void ReadInt24Test()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            int read = br.ReadInt24();
+            Assert.Equal(0x020100, read);
+        }
+
+        [Fact]
+        public void ReadInt24BigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            int read = br.ReadInt24BigEndian();
+            Assert.Equal(0x000102, read);
+        }
+
+        [Fact]
+        public void ReadUInt24Test()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            uint read = br.ReadUInt24();
+            Assert.Equal((uint)0x020100, read);
+        }
+
+        [Fact]
+        public void ReadUInt24BigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            uint read = br.ReadUInt24BigEndian();
+            Assert.Equal((uint)0x000102, read);
+        }
+
+        [Fact]
         public void ReadInt32Test()
         {
             var stream = new MemoryStream(_bytes);
