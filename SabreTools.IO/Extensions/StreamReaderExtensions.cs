@@ -88,6 +88,29 @@ namespace SabreTools.IO.Extensions
             return BitConverter.ToUInt16(buffer, 0);
         }
 
+        // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
+#if NET6_0_OR_GREATER
+        /// <summary>
+        /// Read a Half from the stream
+        /// </summary>
+        public static Half ReadHalf(this Stream stream)
+        {
+            byte[] buffer = ReadToBuffer(stream, 2);
+            return BitConverter.ToHalf(buffer, 0);
+        }
+
+        /// <summary>
+        /// Read a Half from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static Half ReadHalfBigEndian(this Stream stream)
+        {
+            byte[] buffer = ReadToBuffer(stream, 2);
+            Array.Reverse(buffer);
+            return BitConverter.ToHalf(buffer, 0);
+        }
+#endif
+
         /// <summary>
         /// Read an Int24 encoded as an Int32
         /// </summary>

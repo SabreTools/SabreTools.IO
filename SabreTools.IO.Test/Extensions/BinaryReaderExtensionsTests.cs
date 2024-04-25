@@ -56,6 +56,28 @@ namespace SabreTools.IO.Test.Extensions
             Assert.Equal(0x0001, read);
         }
 
+#if NET6_0_OR_GREATER
+        [Fact]
+        public void ReadHalfTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            Half expected = BitConverter.Int16BitsToHalf(0x0100);
+            Half read = br.ReadHalf();
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadHalfBigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            Half expected = BitConverter.Int16BitsToHalf(0x0001);
+            Half read = br.ReadHalfBigEndian();
+            Assert.Equal(expected, read);
+        }
+#endif
+
         [Fact]
         public void ReadInt24Test()
         {

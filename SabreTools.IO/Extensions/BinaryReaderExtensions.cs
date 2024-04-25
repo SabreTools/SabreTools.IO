@@ -69,6 +69,18 @@ namespace SabreTools.IO.Extensions
             return BitConverter.ToUInt16(buffer, 0);
         }
 
+        // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
+#if NET6_0_OR_GREATER
+        /// <inheritdoc cref="BinaryReader.ReadHalf"/>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static Half ReadHalfBigEndian(this BinaryReader reader)
+        {
+            byte[] buffer = reader.ReadBytes(2);
+            Array.Reverse(buffer);
+            return BitConverter.ToHalf(buffer, 0);
+        }
+#endif
+
         /// <summary>
         /// Read an Int24 encoded as an Int32
         /// </summary>

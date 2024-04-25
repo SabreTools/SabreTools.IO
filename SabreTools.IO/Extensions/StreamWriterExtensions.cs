@@ -13,6 +13,7 @@ namespace SabreTools.IO.Extensions
     /// </summary>
     /// <remarks>TODO: Add U/Int24 and U/Int48 methods</remarks>
     /// <remarks>TODO: Add WriteDecimal methods</remarks>
+    /// <remarks>TODO: Add WriteHalf methods</remarks>
     public static class StreamWriterExtensions
     {
         /// <summary>
