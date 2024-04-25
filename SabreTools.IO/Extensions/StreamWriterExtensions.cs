@@ -57,7 +57,7 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         public static bool Write(this Stream stream, char value, Encoding encoding)
         {
-            byte[] buffer = encoding.GetBytes([value]);
+            byte[] buffer = encoding.GetBytes($"{value}");
             return WriteFromBuffer(stream, buffer);
         }
 

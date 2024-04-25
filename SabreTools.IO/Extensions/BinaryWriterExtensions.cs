@@ -59,7 +59,7 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         public static bool Write(this BinaryWriter writer, char value, Encoding encoding)
         {
-            byte[] buffer = encoding.GetBytes([value]);
+            byte[] buffer = encoding.GetBytes($"{value}");
             return WriteFromBuffer(writer, buffer);
         }
 
