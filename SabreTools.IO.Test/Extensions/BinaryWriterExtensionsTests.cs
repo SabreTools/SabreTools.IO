@@ -3,6 +3,8 @@ using System.IO;
 using System.Linq;
 #if NET7_0_OR_GREATER
 using System.Numerics;
+using System.Text;
+
 #endif
 using SabreTools.IO.Extensions;
 using Xunit;
@@ -26,8 +28,7 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
             var bw = new BinaryWriter(stream);
             byte[] expected = _bytes.Take(1).ToArray();
-            bool write = BinaryWriterExtensions.Write(bw, (byte)0x00);
-            Assert.True(write);
+            bw.Write((byte)0x00);
             ValidateBytes(expected, stream.GetBuffer());
         }
 
@@ -37,8 +38,7 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
             var bw = new BinaryWriter(stream);
             byte[] expected = _bytes.Take(4).ToArray();
-            bool write = BinaryWriterExtensions.Write(bw, [0x00, 0x01, 0x02, 0x03]);
-            Assert.True(write);
+            bw.Write([0x00, 0x01, 0x02, 0x03]);
             ValidateBytes(expected, stream.GetBuffer());
         }
 
@@ -48,8 +48,7 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
             var bw = new BinaryWriter(stream);
             byte[] expected = _bytes.Take(1).ToArray();
-            bool write = BinaryWriterExtensions.Write(bw, (sbyte)0x00);
-            Assert.True(write);
+            bw.Write((sbyte)0x00);
             ValidateBytes(expected, stream.GetBuffer());
         }
 
@@ -59,8 +58,17 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
             var bw = new BinaryWriter(stream);
             byte[] expected = _bytes.Take(1).ToArray();
-            bool write = BinaryWriterExtensions.Write(bw, '\0');
-            Assert.True(write);
+            bw.Write('\0');
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteCharEncodingTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = [0x00, 0x00];
+            bw.Write('\0', Encoding.Unicode);
             ValidateBytes(expected, stream.GetBuffer());
         }
 
@@ -70,8 +78,7 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
             var bw = new BinaryWriter(stream);
             byte[] expected = _bytes.Take(2).ToArray();
-            bool write = BinaryWriterExtensions.Write(bw, (short)0x0100);
-            Assert.True(write);
+            bw.Write((short)0x0100);
             ValidateBytes(expected, stream.GetBuffer());
         }
 
@@ -92,8 +99,7 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
             var bw = new BinaryWriter(stream);
             byte[] expected = _bytes.Take(2).ToArray();
-            bool write = BinaryWriterExtensions.Write(bw, (ushort)0x0100);
-            Assert.True(write);
+            bw.Write((ushort)0x0100);
             ValidateBytes(expected, stream.GetBuffer());
         }
 
@@ -114,8 +120,7 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
             var bw = new BinaryWriter(stream);
             byte[] expected = _bytes.Take(4).ToArray();
-            bool write = BinaryWriterExtensions.Write(bw, 0x03020100);
-            Assert.True(write);
+            bw.Write(0x03020100);
             ValidateBytes(expected, stream.GetBuffer());
         }
 
@@ -136,8 +141,7 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
             var bw = new BinaryWriter(stream);
             byte[] expected = _bytes.Take(4).ToArray();
-            bool write = BinaryWriterExtensions.Write(bw, (uint)0x03020100);
-            Assert.True(write);
+            bw.Write((uint)0x03020100);
             ValidateBytes(expected, stream.GetBuffer());
         }
 
@@ -158,8 +162,7 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
             var bw = new BinaryWriter(stream);
             byte[] expected = _bytes.Take(4).ToArray();
-            bool write = BinaryWriterExtensions.Write(bw, BitConverter.Int32BitsToSingle(0x03020100));
-            Assert.True(write);
+            bw.Write(BitConverter.Int32BitsToSingle(0x03020100));
             ValidateBytes(expected, stream.GetBuffer());
         }
 
@@ -180,8 +183,7 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
             var bw = new BinaryWriter(stream);
             byte[] expected = _bytes.Take(8).ToArray();
-            bool write = BinaryWriterExtensions.Write(bw, 0x0706050403020100);
-            Assert.True(write);
+            bw.Write(0x0706050403020100);
             ValidateBytes(expected, stream.GetBuffer());
         }
 
@@ -202,8 +204,7 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
             var bw = new BinaryWriter(stream);
             byte[] expected = _bytes.Take(8).ToArray();
-            bool write = BinaryWriterExtensions.Write(bw, (ulong)0x0706050403020100);
-            Assert.True(write);
+            bw.Write((ulong)0x0706050403020100);
             ValidateBytes(expected, stream.GetBuffer());
         }
 
@@ -224,8 +225,7 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
             var bw = new BinaryWriter(stream);
             byte[] expected = _bytes.Take(8).ToArray();
-            bool write = BinaryWriterExtensions.Write(bw, BitConverter.Int64BitsToDouble(0x0706050403020100));
-            Assert.True(write);
+            bw.Write(BitConverter.Int64BitsToDouble(0x0706050403020100));
             ValidateBytes(expected, stream.GetBuffer());
         }
 
