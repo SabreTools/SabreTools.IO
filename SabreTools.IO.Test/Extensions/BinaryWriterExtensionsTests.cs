@@ -3,9 +3,8 @@ using System.IO;
 using System.Linq;
 #if NET7_0_OR_GREATER
 using System.Numerics;
-using System.Text;
-
 #endif
+using System.Text;
 using SabreTools.IO.Extensions;
 using Xunit;
 
@@ -113,6 +112,29 @@ namespace SabreTools.IO.Test.Extensions
             Assert.True(write);
             ValidateBytes(expected, stream.GetBuffer());
         }
+
+#if NET6_0_OR_GREATER
+        [Fact]
+        public void WriteHalfTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = _bytes.Take(2).ToArray();
+            bw.Write(BitConverter.Int16BitsToHalf(0x0100));
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteHalfBigEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = _bytes.Take(2).ToArray();
+            bool write = bw.WriteBigEndian(BitConverter.Int16BitsToHalf(0x0001));
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+#endif
 
         [Fact]
         public void WriteInt32Test()

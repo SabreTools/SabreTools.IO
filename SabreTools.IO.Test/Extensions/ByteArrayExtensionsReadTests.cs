@@ -106,7 +106,7 @@ namespace SabreTools.IO.Test.Extensions
         {
             int offset = 0;
             Half expected = BitConverter.Int16BitsToHalf(0x0001);
-            Half read = _bytes.ReadHalf(ref offset);
+            Half read = _bytes.ReadHalfBigEndian(ref offset);
             Assert.Equal(expected, read);
         }
 #endif

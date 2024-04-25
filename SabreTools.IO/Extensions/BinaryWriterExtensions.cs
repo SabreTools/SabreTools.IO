@@ -13,14 +13,11 @@ namespace SabreTools.IO.Extensions
     /// </summary>
     /// <remarks>TODO: Add U/Int24 and U/Int48 methods</remarks>
     /// <remarks>TODO: Add WriteDecimal methods</remarks>
-    /// <remarks>TODO: Add WriteHalf methods</remarks>
     public static class BinaryWriterExtensions
     {
         #region Write
 
-        /// <summary>
-        /// Write a UInt8[]
-        /// </summary>
+        /// <inheritdoc cref="BinaryWriter.Write(byte[])"/>
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, byte[] value)
         {
@@ -28,18 +25,14 @@ namespace SabreTools.IO.Extensions
             return WriteFromBuffer(writer, value);
         }
 
-        /// <summary>
-        /// Write a Char with an Encoding
-        /// </summary>
+        /// <inheritdoc cref="BinaryWriter.Write(char)"/>
         public static bool Write(this BinaryWriter writer, char value, Encoding encoding)
         {
             byte[] buffer = encoding.GetBytes($"{value}");
             return WriteFromBuffer(writer, buffer);
         }
 
-        /// <summary>
-        /// Write an Int16
-        /// </summary>
+        /// <inheritdoc cref="BinaryWriter.Write(short)"/>
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, short value)
         {
@@ -48,9 +41,7 @@ namespace SabreTools.IO.Extensions
             return WriteFromBuffer(writer, buffer);
         }
 
-        /// <summary>
-        /// Write a UInt16
-        /// </summary>
+        /// <inheritdoc cref="BinaryWriter.Write(ushort)"/>
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, ushort value)
         {
@@ -59,10 +50,9 @@ namespace SabreTools.IO.Extensions
             return WriteFromBuffer(writer, buffer);
         }
 
+        // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
 #if NET6_0_OR_GREATER
-        /// <summary>
-        /// Write a Half
-        /// </summary>
+        /// <inheritdoc cref="BinaryWriter.Write(Half)"/>
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, Half value)
         {
@@ -72,9 +62,7 @@ namespace SabreTools.IO.Extensions
         }
 #endif
 
-        /// <summary>
-        /// Write an Int32
-        /// </summary>
+        /// <inheritdoc cref="BinaryWriter.Write(int)"/>
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, int value)
         {
@@ -83,9 +71,7 @@ namespace SabreTools.IO.Extensions
             return WriteFromBuffer(writer, buffer);
         }
 
-        /// <summary>
-        /// Write a UInt32
-        /// </summary>
+        /// <inheritdoc cref="BinaryWriter.Write(uint)"/>
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, uint value)
         {
@@ -94,9 +80,7 @@ namespace SabreTools.IO.Extensions
             return WriteFromBuffer(writer, buffer);
         }
 
-        /// <summary>
-        /// Write a Single
-        /// </summary>
+        /// <inheritdoc cref="BinaryWriter.Write(float)"/>
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, float value)
         {
@@ -105,9 +89,7 @@ namespace SabreTools.IO.Extensions
             return WriteFromBuffer(writer, buffer);
         }
 
-        /// <summary>
-        /// Write an Int64
-        /// </summary>
+        /// <inheritdoc cref="BinaryWriter.Write(long)"/>
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, long value)
         {
@@ -116,9 +98,7 @@ namespace SabreTools.IO.Extensions
             return WriteFromBuffer(writer, buffer);
         }
 
-        /// <summary>
-        /// Write a UInt64
-        /// </summary>
+        /// <inheritdoc cref="BinaryWriter.Write(ulong)"/>
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, ulong value)
         {
@@ -127,9 +107,7 @@ namespace SabreTools.IO.Extensions
             return WriteFromBuffer(writer, buffer);
         }
 
-        /// <summary>
-        /// Write a Double
-        /// </summary>
+        /// <inheritdoc cref="BinaryWriter.Write(double)"/>
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, double value)
         {

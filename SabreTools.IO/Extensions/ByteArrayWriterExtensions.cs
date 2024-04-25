@@ -12,7 +12,6 @@ namespace SabreTools.IO.Extensions
     /// </summary>
     /// <remarks>TODO: Add U/Int24 and U/Int48 methods</remarks>
     /// <remarks>TODO: Add WriteDecimal methods</remarks>
-    /// <remarks>TODO: Add WriteHalf methods</remarks>
     public static class ByteArrayWriterExtensions
     {
         /// <summary>
@@ -100,6 +99,29 @@ namespace SabreTools.IO.Extensions
             Array.Reverse(buffer);
             return WriteFromBuffer(content, ref offset, buffer);
         }
+
+        // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
+#if NET6_0_OR_GREATER
+        /// <summary>
+        /// Write a Half and increment the pointer to an array
+        /// </summary>
+        public static bool Write(this byte[] content, ref int offset, Half value)
+        {
+            byte[] buffer = BitConverter.GetBytes(value);
+            return WriteFromBuffer(content, ref offset, buffer);
+        }
+
+        /// <summary>
+        /// Write a Half and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Writes in big-endian format</remarks>
+        public static bool WriteBigEndian(this byte[] content, ref int offset, Half value)
+        {
+            byte[] buffer = BitConverter.GetBytes(value);
+            Array.Reverse(buffer);
+            return WriteFromBuffer(content, ref offset, buffer);
+        }
+#endif
 
         /// <summary>
         /// Write an Int32 and increment the pointer to an array

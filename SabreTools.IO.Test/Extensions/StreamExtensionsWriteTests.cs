@@ -99,6 +99,28 @@ namespace SabreTools.IO.Test.Extensions
             ValidateBytes(expected, stream.GetBuffer());
         }
 
+#if NET6_0_OR_GREATER
+        [Fact]
+        public void WriteHalfTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            byte[] expected = _bytes.Take(2).ToArray();
+            bool write = stream.Write(BitConverter.Int16BitsToHalf(0x0100));
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteHalfBigEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            byte[] expected = _bytes.Take(2).ToArray();
+            bool write = stream.WriteBigEndian(BitConverter.Int16BitsToHalf(0x0001));
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+#endif
+
         [Fact]
         public void WriteInt32Test()
         {

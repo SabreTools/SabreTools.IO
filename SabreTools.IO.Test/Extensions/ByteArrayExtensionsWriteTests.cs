@@ -106,6 +106,30 @@ namespace SabreTools.IO.Test.Extensions
             ValidateBytes(expected, buffer);
         }
 
+#if NET6_0_OR_GREATER
+        [Fact]
+        public void WriteHalfTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(2).ToArray();
+            bool write = buffer.Write(ref offset, BitConverter.Int16BitsToHalf(0x0100));
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteHalfBigEndianTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(2).ToArray();
+            bool write = buffer.WriteBigEndian(ref offset, BitConverter.Int16BitsToHalf(0x0001));
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+#endif
+
         [Fact]
         public void WriteInt32Test()
         {

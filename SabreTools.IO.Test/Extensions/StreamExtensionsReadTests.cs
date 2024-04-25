@@ -100,7 +100,7 @@ namespace SabreTools.IO.Test.Extensions
         {
             var stream = new MemoryStream(_bytes);
             Half expected = BitConverter.Int16BitsToHalf(0x0001);
-            Half read = stream.ReadHalf();
+            Half read = stream.ReadHalfBigEndian();
             Assert.Equal(expected, read);
         }
 #endif
