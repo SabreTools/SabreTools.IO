@@ -12,7 +12,7 @@ namespace SabreTools.IO.Extensions
     /// <summary>
     /// Extensions for BinaryReader
     /// </summary>
-    /// <remarks>TODO: Add U/Int48 methods</remarks>
+    /// TODO: Handle proper negative values for Int24 and Int48
     public static class BinaryReaderExtensions
     {
         /// <inheritdoc cref="BinaryReader.Read(byte[], int, int)"/>
@@ -145,6 +145,58 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = reader.ReadBytes(4);
             Array.Reverse(buffer);
             return BitConverter.ToSingle(buffer, 0);
+        }
+
+        /// <summary>
+        /// Read an Int48 encoded as an Int64
+        /// </summary>
+        public static long ReadInt48(this BinaryReader reader)
+        {
+            byte[] buffer = reader.ReadBytes(6);
+
+            byte[] padded = new byte[8];
+            Array.Copy(buffer, padded, 6);
+            return BitConverter.ToInt64(padded, 0);
+        }
+
+        /// <summary>
+        /// Read an Int48 encoded as an Int64
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static long ReadInt48BigEndian(this BinaryReader reader)
+        {
+            byte[] buffer = reader.ReadBytes(6);
+            Array.Reverse(buffer);
+
+            byte[] padded = new byte[8];
+            Array.Copy(buffer, padded, 6);
+            return BitConverter.ToInt64(padded, 0);
+        }
+
+        /// <summary>
+        /// Read a UInt48 encoded as a UInt64
+        /// </summary>
+        public static ulong ReadUInt48(this BinaryReader reader)
+        {
+            byte[] buffer = reader.ReadBytes(6);
+
+            byte[] padded = new byte[8];
+            Array.Copy(buffer, padded, 6);
+            return BitConverter.ToUInt64(padded, 0);
+        }
+
+        /// <summary>
+        /// Read a UInt48 encoded as a UInt64
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static ulong ReadUInt48BigEndian(this BinaryReader reader)
+        {
+            byte[] buffer = reader.ReadBytes(6);
+            Array.Reverse(buffer);
+
+            byte[] padded = new byte[8];
+            Array.Copy(buffer, padded, 6);
+            return BitConverter.ToUInt64(padded, 0);
         }
 
         /// <inheritdoc cref="BinaryReader.ReadInt64"/>

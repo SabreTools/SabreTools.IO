@@ -168,6 +168,38 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void ReadInt48Test()
+        {
+            var stream = new MemoryStream(_bytes);
+            long read = stream.ReadInt48();
+            Assert.Equal(0x050403020100, read);
+        }
+
+        [Fact]
+        public void ReadInt48BigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            long read = stream.ReadInt48BigEndian();
+            Assert.Equal(0x000102030405, read);
+        }
+
+        [Fact]
+        public void ReadUInt48Test()
+        {
+            var stream = new MemoryStream(_bytes);
+            ulong read = stream.ReadUInt48();
+            Assert.Equal((ulong)0x050403020100, read);
+        }
+
+        [Fact]
+        public void ReadUInt48BigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            ulong read = stream.ReadUInt48BigEndian();
+            Assert.Equal((ulong)0x000102030405, read);
+        }
+
+        [Fact]
         public void ReadInt64Test()
         {
             var stream = new MemoryStream(_bytes);

@@ -12,7 +12,7 @@ namespace SabreTools.IO.Extensions
     /// <summary>
     /// Extensions for Streams
     /// </summary>
-    /// <remarks>TODO: Add U/Int48 methods</remarks>
+    /// TODO: Handle proper negative values for Int24 and Int48
     public static class StreamReaderExtensions
     {
         /// <summary>
@@ -198,6 +198,58 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = ReadToBuffer(stream, 4);
             Array.Reverse(buffer);
             return BitConverter.ToSingle(buffer, 0);
+        }
+
+        /// <summary>
+        /// Read an Int48 encoded as an Int64
+        /// </summary>
+        public static long ReadInt48(this Stream stream)
+        {
+            byte[] buffer = ReadToBuffer(stream, 6);
+
+            byte[] padded = new byte[8];
+            Array.Copy(buffer, padded, 6);
+            return BitConverter.ToInt64(padded, 0);
+        }
+
+        /// <summary>
+        /// Read an Int48 encoded as an Int64
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static long ReadInt48BigEndian(this Stream stream)
+        {
+            byte[] buffer = ReadToBuffer(stream, 6);
+            Array.Reverse(buffer);
+
+            byte[] padded = new byte[8];
+            Array.Copy(buffer, padded, 6);
+            return BitConverter.ToInt64(padded, 0);
+        }
+
+        /// <summary>
+        /// Read a UInt48 encoded as a UInt64
+        /// </summary>
+        public static ulong ReadUInt48(this Stream stream)
+        {
+            byte[] buffer = ReadToBuffer(stream, 6);
+
+            byte[] padded = new byte[8];
+            Array.Copy(buffer, padded, 6);
+            return BitConverter.ToUInt64(padded, 0);
+        }
+
+        /// <summary>
+        /// Read a UInt48 encoded as a UInt64
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static ulong ReadUInt48BigEndian(this Stream stream)
+        {
+            byte[] buffer = ReadToBuffer(stream, 6);
+            Array.Reverse(buffer);
+
+            byte[] padded = new byte[8];
+            Array.Copy(buffer, padded, 6);
+            return BitConverter.ToUInt64(padded, 0);
         }
 
         /// <summary>
