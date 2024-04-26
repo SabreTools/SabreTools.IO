@@ -394,37 +394,37 @@ namespace SabreTools.IO.Test.Extensions
         }
 #endif
 
-        // [Fact]
-        // public void WriteTypeExplicitTest()
-        // {
-        //     var stream = new MemoryStream(new byte[16], 0, 16, true, true);
-        //     var expected = new TestStructExplicit
-        //     {
-        //         FirstValue = 0x03020100,
-        //         SecondValue = 0x07060504,
-        //         ThirdValue = 0x0504,
-        //         FourthValue = 0x0706,
-        //     };
-        //     bool write = stream.WriteType<TestStructExplicit>();
-        //     Assert.True(write);
-        //     ValidateBytes(expected, stream.GetBuffer());
-        // }
+        [Fact]
+        public void WriteTypeExplicitTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var obj = new TestStructExplicit
+            {
+                FirstValue = 0x03020100,
+                SecondValue = 0x07060504,
+            };
+            byte[] expected = _bytes.Take(8).ToArray();
+            bool write = stream.WriteType(obj);
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
 
-        // [Fact]
-        // public void WriteTypeSequentialTest()
-        // {
-        //     var stream = new MemoryStream(new byte[16], 0, 16, true, true);
-        //     var expected = new TestStructSequential
-        //     {
-        //         FirstValue = 0x03020100,
-        //         SecondValue = 0x07060504,
-        //         ThirdValue = 0x0908,
-        //         FourthValue = 0x0B0A,
-        //     };
-        //     bool write = stream.WriteType<TestStructSequential>();
-        //     Assert.True(write);
-        //     ValidateBytes(expected, stream.GetBuffer());
-        // }
+        [Fact]
+        public void WriteTypeSequentialTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var obj = new TestStructSequential
+            {
+                FirstValue = 0x03020100,
+                SecondValue = 0x07060504,
+                ThirdValue = 0x0908,
+                FourthValue = 0x0B0A,
+            };
+            byte[] expected = _bytes.Take(12).ToArray();
+            bool write = stream.WriteType(obj);
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
 
         /// <summary>
         /// Validate that a set of actual bytes matches the expected bytes

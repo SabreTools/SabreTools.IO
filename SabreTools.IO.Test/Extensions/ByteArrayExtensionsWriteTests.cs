@@ -429,39 +429,39 @@ namespace SabreTools.IO.Test.Extensions
         }
 #endif
 
-        // [Fact]
-        // public void WriteTypeExplicitTest()
-        // {
-        //     byte[] buffer = new byte[16];
-        //     int offset = 0;
-        //     var expected = new TestStructExplicit
-        //     {
-        //         FirstValue = 0x03020100,
-        //         SecondValue = 0x07060504,
-        //         ThirdValue = 0x0504,
-        //         FourthValue = 0x0706,
-        //     };
-        //     bool write = buffer.WriteType<TestStructExplicit>(ref offset);
-        //     Assert.True(write);
-        //     ValidateBytes(expected, buffer);
-        // }
+        [Fact]
+        public void WriteTypeExplicitTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            var obj = new TestStructExplicit
+            {
+                FirstValue = 0x03020100,
+                SecondValue = 0x07060504,
+            };
+            byte[] expected = _bytes.Take(8).ToArray();
+            bool write = buffer.WriteType(ref offset, obj);
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
 
-        // [Fact]
-        // public void WriteTypeSequentialTest()
-        // {
-        //     byte[] buffer = new byte[16];
-        //     int offset = 0;
-        //     var expected = new TestStructSequential
-        //     {
-        //         FirstValue = 0x03020100,
-        //         SecondValue = 0x07060504,
-        //         ThirdValue = 0x0908,
-        //         FourthValue = 0x0B0A,
-        //     };
-        //     bool write = buffer.WriteType<TestStructSequential>(ref offset);
-        //     Assert.True(write);
-        //     ValidateBytes(expected, buffer);
-        // }
+        [Fact]
+        public void WriteTypeSequentialTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            var obj = new TestStructSequential
+            {
+                FirstValue = 0x03020100,
+                SecondValue = 0x07060504,
+                ThirdValue = 0x0908,
+                FourthValue = 0x0B0A,
+            };
+            byte[] expected = _bytes.Take(12).ToArray();
+            bool write = buffer.WriteType(ref offset, obj);
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
 
         /// <summary>
         /// Validate that a set of actual bytes matches the expected bytes
