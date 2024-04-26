@@ -429,7 +429,7 @@ namespace SabreTools.IO.Test.Extensions
         /// <summary>
         /// Validate that a set of actual bytes matches the expected bytes
         /// </summary>
-        private void ValidateBytes(byte[] expected, byte[] actual)
+        private static void ValidateBytes(byte[] expected, byte[] actual)
         {
             for (int i = 0; i < expected.Length; i++)
             {
