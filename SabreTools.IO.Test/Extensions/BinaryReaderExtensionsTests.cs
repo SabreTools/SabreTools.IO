@@ -9,10 +9,12 @@ using Xunit;
 
 namespace SabreTools.IO.Test.Extensions
 {
-    // TODO: Add byte[], char[] tests
     // TODO: Add string reading tests
     public class BinaryReaderExtensionsTests
     {
+        /// <summary>
+        /// Test pattern from 0x00-0x0F
+        /// </summary>
         private static readonly byte[] _bytes =
         [
             0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
@@ -27,6 +29,44 @@ namespace SabreTools.IO.Test.Extensions
             0x15, 0xCD, 0x5B, 0x07, 0x00, 0x00, 0x00, 0x00,
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0A, 0x00,
         ];
+
+        [Fact]
+        public void ReadByteTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            byte read = br.ReadByte();
+            Assert.Equal(0x00, read);
+        }
+
+        [Fact]
+        public void ReadBytesTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            int length = 4;
+            byte[] read = br.ReadBytes(length);
+            Assert.Equal(length, read.Length);
+            Assert.True(read.SequenceEqual(_bytes.Take(length)));
+        }
+
+        [Fact]
+        public void ReadSByteTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            sbyte read = br.ReadSByte();
+            Assert.Equal(0x00, read);
+        }
+
+        [Fact]
+        public void ReadCharTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            char read = br.ReadChar();
+            Assert.Equal('\0', read);
+        }
 
         [Fact]
         public void ReadInt16Test()
