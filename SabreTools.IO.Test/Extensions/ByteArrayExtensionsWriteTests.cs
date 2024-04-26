@@ -8,14 +8,25 @@ using Xunit;
 
 namespace SabreTools.IO.Test.Extensions
 {
-    // TODO: Add decimal tests
     // TODO: Add string writing tests
     public class ByteArrayExtensionsWriteTests
     {
+        /// <summary>
+        /// Test pattern from 0x00-0x0F
+        /// </summary>
         private static readonly byte[] _bytes =
         [
             0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
             0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+        ];
+
+        /// <summary>
+        /// Represents the decimal value 0.0123456789
+        /// </summary>
+        private static readonly byte[] _decimalBytes =
+        [
+            0x15, 0xCD, 0x5B, 0x07, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0A, 0x00,
         ];
 
         [Fact]
@@ -324,6 +335,28 @@ namespace SabreTools.IO.Test.Extensions
             int offset = 0;
             byte[] expected = _bytes.Take(8).ToArray();
             bool write = buffer.WriteBigEndian(ref offset, (ulong)0x0001020304050607);
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteDecimalTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _decimalBytes.Take(16).ToArray();
+            bool write = buffer.Write(ref offset, 0.0123456789M);
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteDecimalBigEndianTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _decimalBytes.Take(16).Reverse().ToArray();
+            bool write = buffer.WriteBigEndian(ref offset, 0.0123456789M);
             Assert.True(write);
             ValidateBytes(expected, buffer);
         }

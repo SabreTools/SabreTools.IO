@@ -9,14 +9,25 @@ using Xunit;
 
 namespace SabreTools.IO.Test.Extensions
 {
-    // TODO: Add decimal tests
     // TODO: Add string writing tests
     public class StreamExtensionsWriteTests
     {
+        /// <summary>
+        /// Test pattern from 0x00-0x0F
+        /// </summary>
         private static readonly byte[] _bytes =
         [
             0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
             0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+        ];
+
+        /// <summary>
+        /// Represents the decimal value 0.0123456789
+        /// </summary>
+        private static readonly byte[] _decimalBytes =
+        [
+            0x15, 0xCD, 0x5B, 0x07, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0A, 0x00,
         ];
 
         [Fact]
@@ -297,6 +308,26 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
             byte[] expected = _bytes.Take(8).ToArray();
             bool write = stream.WriteBigEndian((ulong)0x0001020304050607);
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteDecimalTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            byte[] expected = _decimalBytes.Take(16).ToArray();
+            bool write = stream.Write(0.0123456789M);
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteDecimalBigEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            byte[] expected = _decimalBytes.Take(16).Reverse().ToArray();
+            bool write = stream.WriteBigEndian(0.0123456789M);
             Assert.True(write);
             ValidateBytes(expected, stream.GetBuffer());
         }
