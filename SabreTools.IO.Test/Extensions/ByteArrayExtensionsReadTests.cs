@@ -8,7 +8,6 @@ using Xunit;
 
 namespace SabreTools.IO.Test.Extensions
 {
-    // TODO: Add decimal tests -- Determine what a valid decimal byte array looks like
     // TODO: Add string reading tests
     public class ByteArrayExtensionsReadTests
     {
@@ -16,6 +15,15 @@ namespace SabreTools.IO.Test.Extensions
         [
             0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
             0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+        ];
+
+        /// <summary>
+        /// Represents the decimal value 0.0123456789
+        /// </summary>
+        private static readonly byte[] _decimalBytes =
+        [
+            0x15, 0xCD, 0x5B, 0x07, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0A, 0x00,
         ];
 
         [Fact]
@@ -272,6 +280,24 @@ namespace SabreTools.IO.Test.Extensions
             int offset = 0;
             double expected = BitConverter.Int64BitsToDouble(0x0001020304050607);
             double read = _bytes.ReadDoubleBigEndian(ref offset);
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadDecimalTest()
+        {
+            int offset = 0;
+            decimal expected = 0.0123456789M;
+            decimal read = _decimalBytes.ReadDecimal(ref offset);
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadDecimalBigEndianTest()
+        {
+            int offset = 0;
+            decimal expected = 0.0123456789M;
+            decimal read = _decimalBytes.Reverse().ToArray().ReadDecimalBigEndian(ref offset);
             Assert.Equal(expected, read);
         }
 

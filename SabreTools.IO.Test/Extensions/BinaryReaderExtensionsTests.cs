@@ -10,7 +10,6 @@ using Xunit;
 namespace SabreTools.IO.Test.Extensions
 {
     // TODO: Add byte[], char[] tests
-    // TODO: Add decimal tests -- Determine what a valid decimal byte array looks like
     // TODO: Add string reading tests
     public class BinaryReaderExtensionsTests
     {
@@ -18,6 +17,15 @@ namespace SabreTools.IO.Test.Extensions
         [
             0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
             0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+        ];
+
+        /// <summary>
+        /// Represents the decimal value 0.0123456789
+        /// </summary>
+        private static readonly byte[] _decimalBytes =
+        [
+            0x15, 0xCD, 0x5B, 0x07, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0A, 0x00,
         ];
 
         [Fact]
@@ -259,6 +267,26 @@ namespace SabreTools.IO.Test.Extensions
             var br = new BinaryReader(stream);
             double expected = BitConverter.Int64BitsToDouble(0x0001020304050607);
             double read = br.ReadDoubleBigEndian();
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadDecimalTest()
+        {
+            var stream = new MemoryStream(_decimalBytes);
+            var br = new BinaryReader(stream);
+            decimal expected = 0.0123456789M;
+            decimal read = br.ReadDecimal();
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadDecimalBigEndianTest()
+        {
+            var stream = new MemoryStream(_decimalBytes.Reverse().ToArray());
+            var br = new BinaryReader(stream);
+            decimal expected = 0.0123456789M;
+            decimal read = br.ReadDecimalBigEndian();
             Assert.Equal(expected, read);
         }
 
