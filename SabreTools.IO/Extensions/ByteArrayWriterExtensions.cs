@@ -564,6 +564,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a <typeparamref name="T"/> to the byte array
         /// </summary>
+        /// TODO: Fix writing as reading was fixed
         public static bool WriteType<T>(this byte[] content, ref int offset, T? value)
         {
             // Handle the null case

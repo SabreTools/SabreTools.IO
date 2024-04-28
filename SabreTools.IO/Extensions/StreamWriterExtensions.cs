@@ -565,6 +565,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a <typeparamref name="T"/> to the stream
         /// </summary>
+        /// TODO: Fix writing as reading was fixed
         public static bool WriteType<T>(this Stream stream, T? value)
         {
             // Handle the null case

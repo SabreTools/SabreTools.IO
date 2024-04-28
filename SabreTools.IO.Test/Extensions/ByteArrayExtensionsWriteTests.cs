@@ -448,7 +448,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void WriteTypeSequentialTest()
         {
-            byte[] buffer = new byte[16];
+            byte[] buffer = new byte[24];
             int offset = 0;
             var obj = new TestStructSequential
             {

@@ -412,7 +412,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void WriteTypeSequentialTest()
         {
-            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var stream = new MemoryStream(new byte[24], 0, 24, true, true);
             var obj = new TestStructSequential
             {
                 FirstValue = 0x03020100,

@@ -465,7 +465,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void WriteTypeSequentialTest()
         {
-            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var stream = new MemoryStream(new byte[24], 0, count: 24, true, true);
             var bw = new BinaryWriter(stream);
             var obj = new TestStructSequential
             {

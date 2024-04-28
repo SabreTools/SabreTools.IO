@@ -413,6 +413,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a <typeparamref name="T"/> to the underlying stream
         /// </summary>
+        /// TODO: Fix writing as reading was fixed
         public static bool WriteType<T>(this BinaryWriter writer, T? value)
         {
             // Handle the null case
