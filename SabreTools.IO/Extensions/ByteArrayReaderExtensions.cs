@@ -595,7 +595,7 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         public static object? ReadType(this byte[] content, ref int offset, Type type)
         {
-            if (type.IsClass || (type.IsValueType && !type.IsPrimitive))
+            if (type.IsClass || (type.IsValueType && !type.IsEnum && !type.IsPrimitive))
                 return ReadComplexType(content, ref offset, type);
             else
                 return ReadNormalType(content, ref offset, type);

@@ -466,7 +466,7 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         public static object? ReadType(this BinaryReader reader, Type type)
         {
-            if (type.IsClass || (type.IsValueType && !type.IsPrimitive))
+            if (type.IsClass || (type.IsValueType && !type.IsEnum && !type.IsPrimitive))
                 return ReadComplexType(reader, type);
             else
                 return ReadNormalType(reader, type);

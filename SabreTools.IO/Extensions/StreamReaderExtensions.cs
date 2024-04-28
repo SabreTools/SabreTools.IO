@@ -579,7 +579,7 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         public static object? ReadType(this Stream stream, Type type)
         {
-            if (type.IsClass || (type.IsValueType && !type.IsPrimitive))
+            if (type.IsClass || (type.IsValueType && !type.IsEnum && !type.IsPrimitive))
                 return ReadComplexType(stream, type);
             else
                 return ReadNormalType(stream, type);
