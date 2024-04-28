@@ -458,14 +458,21 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         public static T? ReadType<T>(this BinaryReader reader)
         {
-            int typeSize = Marshal.SizeOf(typeof(T));
-            byte[] buffer = reader.ReadBytes(typeSize);
+            try
+            {
+                int typeSize = Marshal.SizeOf(typeof(T));
+                byte[] buffer = reader.ReadBytes(typeSize);
 
-            var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-            var data = (T?)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
-            handle.Free();
+                var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+                var data = (T?)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
+                handle.Free();
 
-            return data;
+                return data;
+            }
+            catch
+            {
+                return default;
+            }
         }
     }
 }

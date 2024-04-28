@@ -571,14 +571,21 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         public static T? ReadType<T>(this Stream stream)
         {
-            int typeSize = Marshal.SizeOf(typeof(T));
-            byte[] buffer = ReadToBuffer(stream, typeSize);
+            try
+            {
+                int typeSize = Marshal.SizeOf(typeof(T));
+                byte[] buffer = ReadToBuffer(stream, typeSize);
 
-            var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-            var data = (T?)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
-            handle.Free();
+                var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+                var data = (T?)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
+                handle.Free();
 
-            return data;
+                return data;
+            }
+            catch
+            {
+                return default;
+            }
         }
 
         /// <summary>
@@ -598,7 +605,7 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = new byte[length];
             int read = stream.Read(buffer, 0, length);
             if (read < length)
-                throw new EndOfStreamException(nameof(stream));
+                throw new EndOfStreamException($"Requested to read {nameof(length)} bytes from {nameof(stream)}, {read} returned");
 
             return buffer;
         }

@@ -587,14 +587,21 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         public static T? ReadType<T>(this byte[] content, ref int offset)
         {
-            int typeSize = Marshal.SizeOf(typeof(T));
-            byte[] buffer = ReadToBuffer(content, ref offset, typeSize);
+            try
+            {
+                int typeSize = Marshal.SizeOf(typeof(T));
+                byte[] buffer = ReadToBuffer(content, ref offset, typeSize);
 
-            var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-            var data = (T?)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
-            handle.Free();
+                var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+                var data = (T?)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
+                handle.Free();
 
-            return data;
+                return data;
+            }
+            catch
+            {
+                return default;
+            }
         }
 
         /// <summary>
@@ -612,7 +619,7 @@ namespace SabreTools.IO.Extensions
 
             // If there are not enough bytes
             if (offset + length > content.Length)
-                throw new System.IO.EndOfStreamException(nameof(content));
+                throw new System.IO.EndOfStreamException($"Requested to read {nameof(length)} bytes from {nameof(content)}, {content.Length - offset} returned");
 
             // Handle the general case, forcing a read of the correct length
             byte[] buffer = new byte[length];
