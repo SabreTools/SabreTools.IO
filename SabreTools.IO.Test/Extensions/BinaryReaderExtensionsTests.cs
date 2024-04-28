@@ -397,7 +397,13 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadTypeExplicitTest()
         {
-            var stream = new MemoryStream(_bytes);
+            byte[] bytesWithString =
+            [
+                0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+                0x41, 0x42, 0x43, 0x00,
+            ];
+
+            var stream = new MemoryStream(bytesWithString);
             var br = new BinaryReader(stream);
             var expected = new TestStructExplicit
             {
@@ -405,18 +411,26 @@ namespace SabreTools.IO.Test.Extensions
                 SecondValue = 0x07060504,
                 ThirdValue = 0x0504,
                 FourthValue = 0x0706,
+                FifthValue = "ABC",
             };
             var read = br.ReadType<TestStructExplicit>();
             Assert.Equal(expected.FirstValue, read.FirstValue);
             Assert.Equal(expected.SecondValue, read.SecondValue);
             Assert.Equal(expected.ThirdValue, read.ThirdValue);
             Assert.Equal(expected.FourthValue, read.FourthValue);
+            Assert.Equal(expected.FifthValue, read.FifthValue);
         }
 
         [Fact]
         public void ReadTypeSequentialTest()
         {
-            var stream = new MemoryStream(_bytes);
+            byte[] bytesWithString =
+            [
+                0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+                0x08, 0x09, 0x0A, 0x0B, 0x41, 0x42, 0x43, 0x00,
+            ];
+
+            var stream = new MemoryStream(bytesWithString);
             var br = new BinaryReader(stream);
             var expected = new TestStructSequential
             {
@@ -424,12 +438,14 @@ namespace SabreTools.IO.Test.Extensions
                 SecondValue = 0x07060504,
                 ThirdValue = 0x0908,
                 FourthValue = 0x0B0A,
+                FifthValue = "ABC",
             };
             var read = br.ReadType<TestStructSequential>();
             Assert.Equal(expected.FirstValue, read.FirstValue);
             Assert.Equal(expected.SecondValue, read.SecondValue);
             Assert.Equal(expected.ThirdValue, read.ThirdValue);
             Assert.Equal(expected.FourthValue, read.FourthValue);
+            Assert.Equal(expected.FifthValue, read.FifthValue);
         }
     }
 }

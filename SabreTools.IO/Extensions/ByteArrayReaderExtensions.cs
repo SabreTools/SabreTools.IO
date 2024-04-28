@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 #if NET7_0_OR_GREATER
 using System.Numerics;
 #endif
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -583,24 +585,186 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a <typeparamref name="T"/> from the byte array
+        /// Read a <typeparamref name="T"/> from the stream
         /// </summary>
         public static T? ReadType<T>(this byte[] content, ref int offset)
+            => (T?)content.ReadType(ref offset, typeof(T));
+
+        /// <summary>
+        /// Read a <paramref name="type"/> from the stream
+        /// </summary>
+        public static object? ReadType(this byte[] content, ref int offset, Type type)
+        {
+            if (type.IsClass || (type.IsValueType && !type.IsPrimitive))
+                return ReadComplexType(content, ref offset, type);
+            else
+                return ReadNormalType(content, ref offset, type);
+        }
+
+        /// <summary>
+        /// Read a <paramref name="type"/> from the stream
+        /// </summary>
+        private static object? ReadNormalType(byte[] content, ref int offset, Type type)
         {
             try
             {
-                int typeSize = Marshal.SizeOf(typeof(T));
+                int typeSize = Marshal.SizeOf(type);
                 byte[] buffer = ReadToBuffer(content, ref offset, typeSize);
 
                 var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-                var data = (T?)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
+                var data = Marshal.PtrToStructure(handle.AddrOfPinnedObject(), type);
                 handle.Free();
 
                 return data;
             }
             catch
             {
-                return default;
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Read a <paramref name="type"/> from the stream
+        /// </summary>
+        private static object? ReadComplexType(this byte[] content, ref int offset, Type type)
+        {
+            try
+            {
+                var instance = Activator.CreateInstance(type);
+                if (instance == null)
+                    return null;
+
+                // Get the layout attribute
+                var layoutAttr = type.GetCustomAttributes(typeof(StructLayoutAttribute), true).FirstOrDefault() as StructLayoutAttribute;
+
+                // Get the layout type
+                LayoutKind layoutKind = LayoutKind.Auto;
+                if (layoutAttr != null)
+                    layoutKind = layoutAttr.Value;
+                else if (type.IsAutoLayout)
+                    layoutKind = LayoutKind.Auto;
+                else if (type.IsExplicitLayout)
+                    layoutKind = LayoutKind.Explicit;
+                else if (type.IsLayoutSequential)
+                    layoutKind = LayoutKind.Sequential;
+
+                // Get the encoding to use
+                Encoding encoding = layoutAttr?.CharSet switch
+                {
+                    CharSet.None => Encoding.ASCII,
+                    CharSet.Ansi => Encoding.ASCII,
+                    CharSet.Unicode => Encoding.Unicode,
+                    CharSet.Auto => Encoding.ASCII, // UTF-8 on Unix
+                    _ => Encoding.ASCII,
+                };
+
+                // Cache the current offset
+                int currentOffset = offset;
+
+                // Loop through the fields and set them
+                var fields = type.GetFields();
+                foreach (var fi in fields)
+                {
+                    // If we have an explicit layout, move accordingly
+                    if (layoutKind == LayoutKind.Explicit)
+                    {
+                        var fieldOffset = fi.GetCustomAttributes(typeof(FieldOffsetAttribute), true).FirstOrDefault() as FieldOffsetAttribute;
+                        offset = currentOffset + fieldOffset?.Value ?? 0;
+                    }
+
+                    SetField(content, ref offset, encoding, fields, instance, fi);
+                }
+
+                return instance;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Set a single field on an object
+        /// </summary>
+        private static void SetField(byte[] content, ref int offset, Encoding encoding, FieldInfo[] fields, object instance, FieldInfo fi)
+        {
+            if (fi.FieldType.IsAssignableFrom(typeof(string)))
+            {
+                var value = ReadStringType(content, ref offset, encoding, instance, fi);
+                fi.SetValue(instance, value);
+            }
+            else
+            {
+                var value = content.ReadType(ref offset, fi.FieldType);
+                fi.SetValue(instance, value);
+            }
+        }
+
+        /// <summary>
+        /// Read a string type field for an object
+        /// </summary>
+        private static string? ReadStringType(byte[] content, ref int offset, Encoding encoding, object instance, FieldInfo fi)
+        {
+            var marshalAsAttr = fi.GetCustomAttributes(typeof(MarshalAsAttribute), true).FirstOrDefault() as MarshalAsAttribute;
+            switch (marshalAsAttr?.Value)
+            {
+                case UnmanagedType.AnsiBStr:
+                    byte ansiLength = content.ReadByteValue(ref offset);
+                    byte[] ansiBytes = content.ReadBytes(ref offset, ansiLength);
+                    return Encoding.ASCII.GetString(ansiBytes);
+
+                case UnmanagedType.BStr:
+                    ushort bstrLength = content.ReadUInt16(ref offset);
+                    byte[] bstrBytes = content.ReadBytes(ref offset, bstrLength);
+                    return Encoding.ASCII.GetString(bstrBytes);
+
+                // TODO: Handle length from another field
+                case UnmanagedType.ByValTStr:
+                    int byvalLength = marshalAsAttr.SizeConst;
+                    byte[] byvalBytes = content.ReadBytes(ref offset, byvalLength);
+                    return encoding.GetString(byvalBytes);
+
+                case UnmanagedType.LPStr:
+                case null:
+                    var lpstrBytes = new List<byte>();
+                    while (true)
+                    {
+                        byte next = content.ReadByteValue(ref offset);
+                        if (next == 0x00)
+                            break;
+
+                        lpstrBytes.Add(next);
+
+                        if (offset >= content.Length)
+                            break;
+                    }
+
+                    return Encoding.ASCII.GetString([.. lpstrBytes]);
+
+                case UnmanagedType.LPWStr:
+                    var lpwstrBytes = new List<byte>();
+                    while (true)
+                    {
+                        ushort next = content.ReadUInt16(ref offset);
+
+                        if (next == 0x0000)
+                            break;
+                        lpwstrBytes.AddRange(BitConverter.GetBytes(next));
+
+                        if (offset >= content.Length)
+                            break;
+                    }
+
+                    return Encoding.ASCII.GetString([.. lpwstrBytes]);
+
+                // No support required yet
+                case UnmanagedType.LPTStr:
+#if NET472_OR_GREATER || NETCOREAPP
+                case UnmanagedType.LPUTF8Str:
+#endif
+                case UnmanagedType.TBStr:
+                default:
+                    return null;
             }
         }
 

@@ -16,5 +16,8 @@ namespace SabreTools.IO.Test.Extensions
 
         [FieldOffset(6)]
         public short FourthValue;
+
+        [FieldOffset(8), MarshalAs(UnmanagedType.LPStr)]
+        public string? FifthValue;
     }
 }

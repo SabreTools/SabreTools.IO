@@ -12,5 +12,8 @@ namespace SabreTools.IO.Test.Extensions
         public ushort ThirdValue;
         
         public short FourthValue;
+
+        [MarshalAs(UnmanagedType.LPStr)]
+        public string? FifthValue;
     }
 }

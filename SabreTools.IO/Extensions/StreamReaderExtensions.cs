@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 #if NET7_0_OR_GREATER
 using System.Numerics;
 #endif
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -570,21 +572,183 @@ namespace SabreTools.IO.Extensions
         /// Read a <typeparamref name="T"/> from the stream
         /// </summary>
         public static T? ReadType<T>(this Stream stream)
+            => (T?)stream.ReadType(typeof(T));
+
+        /// <summary>
+        /// Read a <paramref name="type"/> from the stream
+        /// </summary>
+        public static object? ReadType(this Stream stream, Type type)
+        {
+            if (type.IsClass || (type.IsValueType && !type.IsPrimitive))
+                return ReadComplexType(stream, type);
+            else
+                return ReadNormalType(stream, type);
+        }
+
+        /// <summary>
+        /// Read a <paramref name="type"/> from the stream
+        /// </summary>
+        private static object? ReadNormalType(Stream stream, Type type)
         {
             try
             {
-                int typeSize = Marshal.SizeOf(typeof(T));
+                int typeSize = Marshal.SizeOf(type);
                 byte[] buffer = ReadToBuffer(stream, typeSize);
 
                 var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-                var data = (T?)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
+                var data = Marshal.PtrToStructure(handle.AddrOfPinnedObject(), type);
                 handle.Free();
 
                 return data;
             }
             catch
             {
-                return default;
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Read a <paramref name="type"/> from the stream
+        /// </summary>
+        private static object? ReadComplexType(this Stream stream, Type type)
+        {
+            try
+            {
+                var instance = Activator.CreateInstance(type);
+                if (instance == null)
+                    return null;
+
+                // Get the layout attribute
+                var layoutAttr = type.GetCustomAttributes(typeof(StructLayoutAttribute), true).FirstOrDefault() as StructLayoutAttribute;
+
+                // Get the layout type
+                LayoutKind layoutKind = LayoutKind.Auto;
+                if (layoutAttr != null)
+                    layoutKind = layoutAttr.Value;
+                else if (type.IsAutoLayout)
+                    layoutKind = LayoutKind.Auto;
+                else if (type.IsExplicitLayout)
+                    layoutKind = LayoutKind.Explicit;
+                else if (type.IsLayoutSequential)
+                    layoutKind = LayoutKind.Sequential;
+
+                // Get the encoding to use
+                Encoding encoding = layoutAttr?.CharSet switch
+                {
+                    CharSet.None => Encoding.ASCII,
+                    CharSet.Ansi => Encoding.ASCII,
+                    CharSet.Unicode => Encoding.Unicode,
+                    CharSet.Auto => Encoding.ASCII, // UTF-8 on Unix
+                    _ => Encoding.ASCII,
+                };
+
+                // Cache the current offset
+                long currentOffset = stream.Position;
+
+                // Loop through the fields and set them
+                var fields = type.GetFields();
+                foreach (var fi in fields)
+                {
+                    // If we have an explicit layout, move accordingly
+                    if (layoutKind == LayoutKind.Explicit)
+                    {
+                        var fieldOffset = fi.GetCustomAttributes(typeof(FieldOffsetAttribute), true).FirstOrDefault() as FieldOffsetAttribute;
+                        stream.Seek(currentOffset + fieldOffset?.Value ?? 0, SeekOrigin.Begin);
+                    }
+
+                    SetField(stream, encoding, fields, instance, fi);
+                }
+
+                return instance;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Set a single field on an object
+        /// </summary>
+        private static void SetField(Stream stream, Encoding encoding, FieldInfo[] fields, object instance, FieldInfo fi)
+        {
+            if (fi.FieldType.IsAssignableFrom(typeof(string)))
+            {
+                var value = ReadStringType(stream, encoding, instance, fi);
+                fi.SetValue(instance, value);
+            }
+            else
+            {
+                var value = stream.ReadType(fi.FieldType);
+                fi.SetValue(instance, value);
+            }
+        }
+
+        /// <summary>
+        /// Read a string type field for an object
+        /// </summary>
+        private static string? ReadStringType(Stream stream, Encoding encoding, object instance, FieldInfo fi)
+        {
+            var marshalAsAttr = fi.GetCustomAttributes(typeof(MarshalAsAttribute), true).FirstOrDefault() as MarshalAsAttribute;
+            switch (marshalAsAttr?.Value)
+            {
+                case UnmanagedType.AnsiBStr:
+                    byte ansiLength = stream.ReadByteValue();
+                    byte[] ansiBytes = stream.ReadBytes(ansiLength);
+                    return Encoding.ASCII.GetString(ansiBytes);
+
+                case UnmanagedType.BStr:
+                    ushort bstrLength = stream.ReadUInt16();
+                    byte[] bstrBytes = stream.ReadBytes(bstrLength);
+                    return Encoding.ASCII.GetString(bstrBytes);
+
+                // TODO: Handle length from another field
+                case UnmanagedType.ByValTStr:
+                    int byvalLength = marshalAsAttr.SizeConst;
+                    byte[] byvalBytes = stream.ReadBytes(byvalLength);
+                    return encoding.GetString(byvalBytes);
+
+                case UnmanagedType.LPStr:
+                case null:
+                    var lpstrBytes = new List<byte>();
+                    while (true)
+                    {
+                        byte next = stream.ReadByteValue();
+                        if (next == 0x00)
+                            break;
+
+                        lpstrBytes.Add(next);
+
+                        if (stream.Position >= stream.Length)
+                            break;
+                    }
+
+                    return Encoding.ASCII.GetString([.. lpstrBytes]);
+
+                case UnmanagedType.LPWStr:
+                    var lpwstrBytes = new List<byte>();
+                    while (true)
+                    {
+                        ushort next = stream.ReadUInt16();
+
+                        if (next == 0x0000)
+                            break;
+                        lpwstrBytes.AddRange(BitConverter.GetBytes(next));
+
+                        if (stream.Position >= stream.Length)
+                            break;
+                    }
+
+                    return Encoding.ASCII.GetString([.. lpwstrBytes]);
+
+                // No support required yet
+                case UnmanagedType.LPTStr:
+#if NET472_OR_GREATER || NETCOREAPP
+                case UnmanagedType.LPUTF8Str:
+#endif
+                case UnmanagedType.TBStr:
+                default:
+                    return null;
             }
         }
 
