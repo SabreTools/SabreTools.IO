@@ -7,7 +7,7 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <Version>1.4.5</Version>
+    <Version>1.4.6</Version>
     <WarningsNotAsErrors>CS0618</WarningsNotAsErrors>
 
     <!-- Package Properties -->
