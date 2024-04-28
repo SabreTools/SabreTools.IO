@@ -436,7 +436,7 @@ namespace SabreTools.IO.Test.Extensions
             int offset = 0;
             var obj = new TestStructExplicit
             {
-                FirstValue = 0x03020100,
+                FirstValue = TestEnum.RecognizedTestValue,
                 SecondValue = 0x07060504,
             };
             byte[] expected = _bytes.Take(8).ToArray();
@@ -452,7 +452,7 @@ namespace SabreTools.IO.Test.Extensions
             int offset = 0;
             var obj = new TestStructSequential
             {
-                FirstValue = 0x03020100,
+                FirstValue = TestEnum.RecognizedTestValue,
                 SecondValue = 0x07060504,
                 ThirdValue = 0x0908,
                 FourthValue = 0x0B0A,

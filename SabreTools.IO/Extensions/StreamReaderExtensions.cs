@@ -581,6 +581,8 @@ namespace SabreTools.IO.Extensions
         {
             if (type.IsClass || (type.IsValueType && !type.IsEnum && !type.IsPrimitive))
                 return ReadComplexType(stream, type);
+            else if (type.IsValueType && type.IsEnum)
+                return ReadNormalType(stream, Enum.GetUnderlyingType(type));
             else
                 return ReadNormalType(stream, type);
         }

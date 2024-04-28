@@ -5,7 +5,7 @@ namespace SabreTools.IO.Test.Extensions
     [StructLayout(LayoutKind.Sequential)]
     internal struct TestStructSequential
     {
-        public int FirstValue;
+        public TestEnum FirstValue;
 
         public int SecondValue;
 

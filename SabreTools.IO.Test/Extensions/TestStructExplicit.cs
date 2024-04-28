@@ -6,7 +6,7 @@ namespace SabreTools.IO.Test.Extensions
     internal struct TestStructExplicit
     {
         [FieldOffset(0)]
-        public int FirstValue;
+        public TestEnum FirstValue;
 
         [FieldOffset(4)]
         public int SecondValue;

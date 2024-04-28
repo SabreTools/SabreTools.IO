@@ -468,6 +468,8 @@ namespace SabreTools.IO.Extensions
         {
             if (type.IsClass || (type.IsValueType && !type.IsEnum && !type.IsPrimitive))
                 return ReadComplexType(reader, type);
+            else if (type.IsValueType && type.IsEnum)
+                return ReadNormalType(reader, Enum.GetUnderlyingType(type));
             else
                 return ReadNormalType(reader, type);
         }
@@ -480,7 +482,7 @@ namespace SabreTools.IO.Extensions
             try
             {
                 int typeSize = Marshal.SizeOf(type);
-                byte[] buffer = reader.ReadBytes(typeSize);;
+                byte[] buffer = reader.ReadBytes(typeSize); ;
 
                 var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
                 var data = Marshal.PtrToStructure(handle.AddrOfPinnedObject(), type);

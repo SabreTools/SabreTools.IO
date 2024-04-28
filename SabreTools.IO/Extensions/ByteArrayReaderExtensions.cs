@@ -597,6 +597,8 @@ namespace SabreTools.IO.Extensions
         {
             if (type.IsClass || (type.IsValueType && !type.IsEnum && !type.IsPrimitive))
                 return ReadComplexType(content, ref offset, type);
+            else if (type.IsValueType && type.IsEnum)
+                return ReadNormalType(content, ref offset, Enum.GetUnderlyingType(type));
             else
                 return ReadNormalType(content, ref offset, type);
         }

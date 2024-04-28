@@ -407,7 +407,7 @@ namespace SabreTools.IO.Test.Extensions
             var br = new BinaryReader(stream);
             var expected = new TestStructExplicit
             {
-                FirstValue = 0x03020100,
+                FirstValue = TestEnum.RecognizedTestValue,
                 SecondValue = 0x07060504,
                 ThirdValue = 0x0504,
                 FourthValue = 0x0706,
@@ -434,7 +434,7 @@ namespace SabreTools.IO.Test.Extensions
             var br = new BinaryReader(stream);
             var expected = new TestStructSequential
             {
-                FirstValue = 0x03020100,
+                FirstValue = TestEnum.RecognizedTestValue,
                 SecondValue = 0x07060504,
                 ThirdValue = 0x0908,
                 FourthValue = 0x0B0A,

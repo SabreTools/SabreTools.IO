@@ -400,7 +400,7 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
             var obj = new TestStructExplicit
             {
-                FirstValue = 0x03020100,
+                FirstValue = TestEnum.RecognizedTestValue,
                 SecondValue = 0x07060504,
             };
             byte[] expected = _bytes.Take(8).ToArray();
@@ -415,7 +415,7 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(new byte[24], 0, 24, true, true);
             var obj = new TestStructSequential
             {
-                FirstValue = 0x03020100,
+                FirstValue = TestEnum.RecognizedTestValue,
                 SecondValue = 0x07060504,
                 ThirdValue = 0x0908,
                 FourthValue = 0x0B0A,
