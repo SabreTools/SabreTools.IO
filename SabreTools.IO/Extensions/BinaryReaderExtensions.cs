@@ -405,10 +405,10 @@ namespace SabreTools.IO.Extensions
                 return null;
 
             ushort size = reader.ReadUInt16();
-            if (reader.BaseStream.Position + size >= reader.BaseStream.Length)
+            if (reader.BaseStream.Position + (size * 2) >= reader.BaseStream.Length)
                 return null;
 
-            byte[] buffer = reader.ReadBytes(size);
+            byte[] buffer = reader.ReadBytes(size * 2);
             return Encoding.Unicode.GetString(buffer);
         }
 

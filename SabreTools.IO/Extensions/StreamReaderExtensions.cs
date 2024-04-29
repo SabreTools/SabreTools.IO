@@ -517,10 +517,10 @@ namespace SabreTools.IO.Extensions
                 return null;
 
             ushort size = stream.ReadUInt16();
-            if (stream.Position + size >= stream.Length)
+            if (stream.Position + (size * 2) >= stream.Length)
                 return null;
 
-            byte[] buffer = stream.ReadBytes(size);
+            byte[] buffer = stream.ReadBytes(size * 2);
             return Encoding.Unicode.GetString(buffer);
         }
 

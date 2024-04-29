@@ -533,10 +533,10 @@ namespace SabreTools.IO.Extensions
                 return null;
 
             ushort size = content.ReadUInt16(ref offset);
-            if (offset + size >= content.Length)
+            if (offset + (size * 2) >= content.Length)
                 return null;
 
-            byte[] buffer = content.ReadBytes(ref offset, size);
+            byte[] buffer = content.ReadBytes(ref offset, size * 2);
             return Encoding.Unicode.GetString(buffer);
         }
 
