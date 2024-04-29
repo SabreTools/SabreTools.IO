@@ -710,9 +710,12 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read an array type field for an object
         /// </summary>
+        /// TODO: Handle LPArray + SizeParamIndex
         private static Array ReadArrayType(byte[] content, ref int offset, FieldInfo fi)
         {
             var marshalAsAttr = fi.GetCustomAttributes(typeof(MarshalAsAttribute), true).FirstOrDefault() as MarshalAsAttribute;
+            if (marshalAsAttr?.Value != UnmanagedType.ByValArray)
+                return new object[0];
 
             // Get the number of elements expected
             int elementCount = marshalAsAttr?.SizeConst ?? -1;
