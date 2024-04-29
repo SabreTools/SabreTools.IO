@@ -578,21 +578,156 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a <typeparamref name="T"/> to the stream
         /// </summary>
-        /// TODO: Fix writing as reading was fixed
+        /// <remarks>
+        /// This method is different than standard marshalling in a few notable ways:
+        /// - Strings are written by value, not by reference
+        /// - Complex objects are written by value, not by reference
+        /// - Enumeration values are written by the underlying value type
+        /// - Arrays of the above are handled sequentially as above
+        /// - Inherited fields from parents are serialized BEFORE fields in the child
+        /// </remarks>
         public static bool WriteType<T>(this Stream stream, T? value)
+            => stream.WriteType(value, typeof(T));
+
+        /// <summary>
+        /// Write a <typeparamref name="T"/> to the stream
+        /// </summary>
+        /// <remarks>
+        /// This method is different than standard marshalling in a few notable ways:
+        /// - Strings are written by value, not by reference
+        /// - Complex objects are written by value, not by reference
+        /// - Enumeration values are written by the underlying value type
+        /// - Arrays of the above are handled sequentially as above
+        /// - Inherited fields from parents are serialized BEFORE fields in the child
+        /// </remarks>
+        public static bool WriteType(this Stream stream, object? value, Type type)
         {
-            // Handle the null case
-            if (value == null)
+            if (type.IsClass || (type.IsValueType && !type.IsEnum && !type.IsPrimitive))
+                return WriteComplexType(stream, value, type);
+            else if (type.IsValueType && type.IsEnum)
+                return WriteNormalType(stream, value, Enum.GetUnderlyingType(type));
+            else
+                return WriteNormalType(stream, value, type);
+        }
+
+        /// <summary>
+        /// Read a <paramref name="type"/> from the stream
+        /// </summary>
+        private static bool WriteNormalType(Stream stream, object? value, Type type)
+        {
+            try
+            {
+                int typeSize = Marshal.SizeOf(type);
+
+                var buffer = new byte[typeSize];
+                var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+                Marshal.StructureToPtr(value, handle.AddrOfPinnedObject(), false);
+                handle.Free();
+
+                return WriteFromBuffer(stream, buffer);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Read a <paramref name="type"/> from the stream
+        /// </summary>
+        private static bool WriteComplexType(Stream stream, object? value, Type type)
+        {
+            try
+            {
+                // Null values cannot be written
+                if (value == null)
+                    return false;
+
+                // Get the layout information
+                var layoutAttr = MarshalHelpers.GetAttribute<StructLayoutAttribute>(type);
+                LayoutKind layoutKind = MarshalHelpers.DetermineLayoutKind(layoutAttr, type);
+                Encoding encoding = MarshalHelpers.DetermineEncoding(layoutAttr);
+
+                // Cache the current offset
+                long currentOffset = stream.Position;
+
+                // Generate the fields by parent first
+                var fields = MarshalHelpers.GetFields(type);
+
+                // Loop through the fields and set them
+                foreach (var fi in fields)
+                {
+                    // If we have an explicit layout, move accordingly
+                    if (layoutKind == LayoutKind.Explicit)
+                    {
+                        var fieldOffset = MarshalHelpers.GetAttribute<FieldOffsetAttribute>(fi);
+                        stream.Seek(currentOffset + fieldOffset?.Value ?? 0, SeekOrigin.Begin);
+                    }
+
+                    if (!GetField(stream, encoding, fields, value, fi))
+                        return false;
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Write a single field from an object
+        /// </summary>
+        private static bool GetField(Stream stream, Encoding encoding, FieldInfo[] fields, object instance, FieldInfo fi)
+        {
+            if (fi.FieldType.IsAssignableFrom(typeof(string)))
+            {
+                return WriteStringType(stream, encoding, instance, fi);
+            }
+            else if (fi.FieldType.IsArray)
+            {
+                return WriteArrayType(stream, fields, instance, fi);
+            }
+            else
+            {
+                var value = fi.GetValue(instance);
+                return stream.WriteType(value, fi.FieldType);
+            }
+        }
+
+        /// <summary>
+        /// Write an array type field from an object
+        /// </summary>
+        private static bool WriteArrayType(Stream stream, FieldInfo[] fields, object instance, FieldInfo fi)
+        {
+            var marshalAsAttr = MarshalHelpers.GetAttribute<MarshalAsAttribute>(fi);
+            if (marshalAsAttr == null)
                 return false;
 
-            int typeSize = Marshal.SizeOf(typeof(T));
+            // Get the array
+            Array? arr = fi.GetValue(instance) as Array;
+            if (arr == null)
+                return false;
 
-            var buffer = new byte[typeSize];
-            var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-            Marshal.StructureToPtr(value, handle.AddrOfPinnedObject(), false);
-            handle.Free();
+            // Get the number of elements expected
+            int elementCount = MarshalHelpers.GetArrayElementCount(marshalAsAttr, fields, instance);
+            if (elementCount < 0)
+                return false;
 
-            return WriteFromBuffer(stream, buffer);
+            // Get the item type for the array
+            Type elementType = fi.FieldType.GetElementType() ?? typeof(object);
+
+            // Loop through and write the array
+            for (int i = 0; i < elementCount; i++)
+            {
+                var value = arr.GetValue(i);
+                if (!WriteType(stream, value, elementType))
+                    return false;
+            }
+
+            // Return the built array
+            return true;
         }
 
         /// <summary>

@@ -639,7 +639,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a <paramref name="type"/> from the stream
         /// </summary>
-        private static object? ReadComplexType(this Stream stream, Type type)
+        private static object? ReadComplexType(Stream stream, Type type)
         {
             try
             {

@@ -527,7 +527,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a <paramref name="type"/> from the underlying stream
         /// </summary>
-        private static object? ReadComplexType(this BinaryReader reader, Type type)
+        private static object? ReadComplexType(BinaryReader reader, Type type)
         {
             try
             {

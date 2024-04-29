@@ -655,7 +655,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a <paramref name="type"/> from the stream
         /// </summary>
-        private static object? ReadComplexType(this byte[] content, ref int offset, Type type)
+        private static object? ReadComplexType(byte[] content, ref int offset, Type type)
         {
             try
             {
