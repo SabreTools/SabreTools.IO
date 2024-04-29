@@ -712,6 +712,7 @@ namespace SabreTools.IO.Extensions
                     return encoding.GetString(byvalBytes);
 
                 case UnmanagedType.LPStr:
+                case UnmanagedType.LPTStr: // Technically distinct; possibly not null-terminated
                 case null:
                     var lpstrBytes = new List<byte>();
                     while (true)
@@ -745,7 +746,6 @@ namespace SabreTools.IO.Extensions
                     return Encoding.Unicode.GetString([.. lpwstrBytes]);
 
                 // No support required yet
-                case UnmanagedType.LPTStr:
 #if NET472_OR_GREATER || NETCOREAPP
                 case UnmanagedType.LPUTF8Str:
 #endif
