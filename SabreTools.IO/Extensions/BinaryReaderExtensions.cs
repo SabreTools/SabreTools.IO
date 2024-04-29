@@ -459,7 +459,7 @@ namespace SabreTools.IO.Extensions
         /// Read a <typeparamref name="T"/> from the underlying stream
         /// </summary>
         /// <remarks>
-        /// This method is different than standard serialization in a few notable ways:
+        /// This method is different than standard marshalling in a few notable ways:
         /// - Strings are read by value, not by reference
         /// - Complex objects are read by value, not by reference
         /// - Enumeration values are read by the underlying value type
@@ -473,7 +473,7 @@ namespace SabreTools.IO.Extensions
         /// Read a <paramref name="type"/> from the underlying stream
         /// </summary>
         /// <remarks>
-        /// This method is different than standard serialization in a few notable ways:
+        /// This method is different than standard marshalling in a few notable ways:
         /// - Strings are read by value, not by reference
         /// - Complex objects are read by value, not by reference
         /// - Enumeration values are read by the underlying value type
