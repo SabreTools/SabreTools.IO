@@ -724,10 +724,8 @@ namespace SabreTools.IO.Extensions
             // Get the item type for the array
             Type elementType = fi.FieldType.GetElementType() ?? typeof(object);
 
-            // Create an array of the proper length
-            Array arr = Array.CreateInstance(elementType, elementCount);
-
             // Loop through and build the array
+            Array arr = Array.CreateInstance(elementType, elementCount);
             for (int i = 0; i < elementCount; i++)
             {
                 var value = ReadType(content, ref offset, elementType);
