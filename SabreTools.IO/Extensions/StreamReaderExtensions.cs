@@ -812,6 +812,7 @@ namespace SabreTools.IO.Extensions
                     return Encoding.ASCII.GetString(ansiBytes);
 
                 case UnmanagedType.BStr:
+                case UnmanagedType.TBStr: // Technically distinct; returns char[] instead
                     ushort bstrLength = stream.ReadUInt16();
                     byte[] bstrBytes = stream.ReadBytes(bstrLength * 2);
                     return Encoding.Unicode.GetString(bstrBytes);
@@ -859,7 +860,6 @@ namespace SabreTools.IO.Extensions
 #if NET472_OR_GREATER || NETCOREAPP
                 case UnmanagedType.LPUTF8Str:
 #endif
-                case UnmanagedType.TBStr:
                 default:
                     return null;
             }
