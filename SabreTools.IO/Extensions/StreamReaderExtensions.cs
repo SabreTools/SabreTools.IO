@@ -840,6 +840,24 @@ namespace SabreTools.IO.Extensions
 
                     return Encoding.ASCII.GetString([.. lpstrBytes]);
 
+#if NET472_OR_GREATER || NETCOREAPP
+                case UnmanagedType.LPUTF8Str:
+                    var lputf8Str = new List<byte>();
+                    while (true)
+                    {
+                        byte next = stream.ReadByteValue();
+                        if (next == 0x00)
+                            break;
+
+                        lputf8Str.Add(next);
+
+                        if (stream.Position >= stream.Length)
+                            break;
+                    }
+
+                    return Encoding.UTF8.GetString([.. lputf8Str]);
+#endif
+
                 case UnmanagedType.LPWStr:
                     var lpwstrBytes = new List<byte>();
                     while (true)
@@ -856,10 +874,7 @@ namespace SabreTools.IO.Extensions
 
                     return Encoding.Unicode.GetString([.. lpwstrBytes]);
 
-                // No support required yet
-#if NET472_OR_GREATER || NETCOREAPP
-                case UnmanagedType.LPUTF8Str:
-#endif
+                // No other string types are recognized
                 default:
                     return null;
             }
