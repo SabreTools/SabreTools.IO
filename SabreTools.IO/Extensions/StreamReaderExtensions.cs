@@ -442,6 +442,8 @@ namespace SabreTools.IO.Extensions
                 return stream.ReadNullTerminatedUTF8String();
             else if (encoding.Equals(Encoding.Unicode))
                 return stream.ReadNullTerminatedUnicodeString();
+            else if (encoding.Equals(Encoding.UTF32))
+                return stream.ReadNullTerminatedUTF32String();
 
             if (stream.Position >= stream.Length)
                 return null;
@@ -466,7 +468,7 @@ namespace SabreTools.IO.Extensions
             if (stream.Position >= stream.Length)
                 return null;
 
-            byte[] buffer = ReadUntilNullNarrow(stream);
+            byte[] buffer = ReadUntilNull1Byte(stream);
             return Encoding.ASCII.GetString(buffer);
         }
 
@@ -478,7 +480,7 @@ namespace SabreTools.IO.Extensions
             if (stream.Position >= stream.Length)
                 return null;
 
-            byte[] buffer = ReadUntilNullNarrow(stream);
+            byte[] buffer = ReadUntilNull1Byte(stream);
             return Encoding.UTF8.GetString(buffer);
         }
 
@@ -490,7 +492,19 @@ namespace SabreTools.IO.Extensions
             if (stream.Position >= stream.Length)
                 return null;
 
-            byte[] buffer = ReadUntilNullWide(stream);
+            byte[] buffer = ReadUntilNull2Byte(stream);
+            return Encoding.Unicode.GetString(buffer);
+        }
+
+        /// <summary>
+        /// Read a null-terminated UTF-32 string from the stream
+        /// </summary>
+        public static string? ReadNullTerminatedUTF32String(this Stream stream)
+        {
+            if (stream.Position >= stream.Length)
+                return null;
+
+            byte[] buffer = ReadUntilNull4Byte(stream);
             return Encoding.Unicode.GetString(buffer);
         }
 
@@ -760,7 +774,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read bytes until a 1-byte null terminator is found
         /// </summary>
-        private static byte[] ReadUntilNullNarrow(Stream stream)
+        private static byte[] ReadUntilNull1Byte(Stream stream)
         {
             var bytes = new List<byte>();
             while (stream.Position < stream.Length)
@@ -778,7 +792,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read bytes until a 2-byte null terminator is found
         /// </summary>
-        private static byte[] ReadUntilNullWide(Stream stream)
+        private static byte[] ReadUntilNull2Byte(Stream stream)
         {
             var bytes = new List<byte>();
             while (stream.Position < stream.Length)
@@ -813,6 +827,24 @@ namespace SabreTools.IO.Extensions
                 throw new EndOfStreamException($"Requested to read {nameof(length)} bytes from {nameof(stream)}, {read} returned");
 
             return buffer;
+        }
+
+        /// <summary>
+        /// Read bytes until a 4-byte null terminator is found
+        /// </summary>
+        private static byte[] ReadUntilNull4Byte(Stream stream)
+        {
+            var bytes = new List<byte>();
+            while (stream.Position < stream.Length)
+            {
+                uint next = stream.ReadUInt32();
+                if (next == 0x00000000)
+                    break;
+
+                bytes.AddRange(BitConverter.GetBytes(next));
+            }
+
+            return [.. bytes];
         }
     }
 }

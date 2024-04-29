@@ -330,6 +330,8 @@ namespace SabreTools.IO.Extensions
                 return reader.ReadNullTerminatedUTF8String();
             else if (encoding.Equals(Encoding.Unicode))
                 return reader.ReadNullTerminatedUnicodeString();
+            else if (encoding.Equals(Encoding.UTF32))
+                return reader.ReadNullTerminatedUTF32String();
 
             if (reader.BaseStream.Position >= reader.BaseStream.Length)
                 return null;
@@ -354,7 +356,7 @@ namespace SabreTools.IO.Extensions
             if (reader.BaseStream.Position >= reader.BaseStream.Length)
                 return null;
 
-            byte[] buffer = ReadUntilNullNarrow(reader);
+            byte[] buffer = ReadUntilNull1Byte(reader);
             return Encoding.ASCII.GetString(buffer);
         }
 
@@ -366,7 +368,7 @@ namespace SabreTools.IO.Extensions
             if (reader.BaseStream.Position >= reader.BaseStream.Length)
                 return null;
 
-            byte[] buffer = ReadUntilNullNarrow(reader);
+            byte[] buffer = ReadUntilNull1Byte(reader);
             return Encoding.ASCII.GetString(buffer);
         }
 
@@ -378,7 +380,19 @@ namespace SabreTools.IO.Extensions
             if (reader.BaseStream.Position >= reader.BaseStream.Length)
                 return null;
 
-            byte[] buffer = ReadUntilNullWide(reader);
+            byte[] buffer = ReadUntilNull2Byte(reader);
+            return Encoding.Unicode.GetString(buffer);
+        }
+
+        /// <summary>
+        /// Read a null-terminated UTF-32 string from the underlying stream
+        /// </summary>
+        public static string? ReadNullTerminatedUTF32String(this BinaryReader reader)
+        {
+            if (reader.BaseStream.Position >= reader.BaseStream.Length)
+                return null;
+
+            byte[] buffer = ReadUntilNull4Byte(reader);
             return Encoding.Unicode.GetString(buffer);
         }
 
@@ -648,7 +662,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read bytes until a 1-byte null terminator is found
         /// </summary>
-        private static byte[] ReadUntilNullNarrow(BinaryReader reader)
+        private static byte[] ReadUntilNull1Byte(BinaryReader reader)
         {
             var bytes = new List<byte>();
             while (reader.BaseStream.Position < reader.BaseStream.Length)
@@ -666,13 +680,31 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read bytes until a 2-byte null terminator is found
         /// </summary>
-        private static byte[] ReadUntilNullWide(BinaryReader reader)
+        private static byte[] ReadUntilNull2Byte(BinaryReader reader)
         {
             var bytes = new List<byte>();
             while (reader.BaseStream.Position < reader.BaseStream.Length)
             {
                 ushort next = reader.ReadUInt16();
                 if (next == 0x0000)
+                    break;
+
+                bytes.AddRange(BitConverter.GetBytes(next));
+            }
+
+            return [.. bytes];
+        }
+
+        /// <summary>
+        /// Read bytes until a 4-byte null terminator is found
+        /// </summary>
+        private static byte[] ReadUntilNull4Byte(BinaryReader reader)
+        {
+            var bytes = new List<byte>();
+            while (reader.BaseStream.Position < reader.BaseStream.Length)
+            {
+                uint next = reader.ReadUInt32();
+                if (next == 0x00000000)
                     break;
 
                 bytes.AddRange(BitConverter.GetBytes(next));

@@ -458,6 +458,8 @@ namespace SabreTools.IO.Extensions
                 return content.ReadNullTerminatedUTF8String(ref offset);
             else if (encoding.Equals(Encoding.Unicode))
                 return content.ReadNullTerminatedUnicodeString(ref offset);
+            else if (encoding.Equals(Encoding.UTF32))
+                return content.ReadNullTerminatedUTF32String(ref offset);
 
             if (offset >= content.Length)
                 return null;
@@ -482,7 +484,7 @@ namespace SabreTools.IO.Extensions
             if (offset >= content.Length)
                 return null;
 
-            byte[] buffer = ReadUntilNullNarrow(content, ref offset);
+            byte[] buffer = ReadUntilNull1Byte(content, ref offset);
             return Encoding.ASCII.GetString(buffer);
         }
 
@@ -494,7 +496,7 @@ namespace SabreTools.IO.Extensions
             if (offset >= content.Length)
                 return null;
 
-            byte[] buffer = ReadUntilNullNarrow(content, ref offset);
+            byte[] buffer = ReadUntilNull1Byte(content, ref offset);
             return Encoding.UTF8.GetString(buffer);
         }
 
@@ -506,7 +508,19 @@ namespace SabreTools.IO.Extensions
             if (offset >= content.Length)
                 return null;
 
-            byte[] buffer = ReadUntilNullWide(content, ref offset);
+            byte[] buffer = ReadUntilNull2Byte(content, ref offset);
+            return Encoding.Unicode.GetString(buffer);
+        }
+
+        /// <summary>
+        /// Read a null-terminated UTF-32 string from the byte array
+        /// </summary>
+        public static string? ReadNullTerminatedUTF32String(this byte[] content, ref int offset)
+        {
+            if (offset >= content.Length)
+                return null;
+
+            byte[] buffer = ReadUntilNull4Byte(content, ref offset);
             return Encoding.Unicode.GetString(buffer);
         }
 
@@ -776,7 +790,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read bytes until a 1-byte null terminator is found
         /// </summary>
-        private static byte[] ReadUntilNullNarrow(byte[] content, ref int offset)
+        private static byte[] ReadUntilNull1Byte(byte[] content, ref int offset)
         {
             var bytes = new List<byte>();
             while (offset < content.Length)
@@ -794,13 +808,31 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read bytes until a 2-byte null terminator is found
         /// </summary>
-        private static byte[] ReadUntilNullWide(byte[] content, ref int offset)
+        private static byte[] ReadUntilNull2Byte(byte[] content, ref int offset)
         {
             var bytes = new List<byte>();
             while (offset < content.Length)
             {
                 ushort next = content.ReadUInt16(ref offset);
                 if (next == 0x0000)
+                    break;
+
+                bytes.AddRange(BitConverter.GetBytes(next));
+            }
+
+            return [.. bytes];
+        }
+
+        /// <summary>
+        /// Read bytes until a 4-byte null terminator is found
+        /// </summary>
+        private static byte[] ReadUntilNull4Byte(byte[] content, ref int offset)
+        {
+            var bytes = new List<byte>();
+            while (offset < content.Length)
+            {
+                uint next = content.ReadUInt32(ref offset);
+                if (next == 0x00000000)
                     break;
 
                 bytes.AddRange(BitConverter.GetBytes(next));
