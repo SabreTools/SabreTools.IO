@@ -468,6 +468,8 @@ namespace SabreTools.IO.Extensions
         {
             if (type.IsClass || (type.IsValueType && !type.IsEnum && !type.IsPrimitive))
                 return ReadComplexType(reader, type);
+            else if (type.IsAssignableFrom(typeof(string)))
+                return ReadStringType(reader, Encoding.ASCII, null);
             else if (type.IsValueType && type.IsEnum)
                 return ReadNormalType(reader, Enum.GetUnderlyingType(type));
             else
@@ -559,13 +561,17 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Set a single field on an object
         /// </summary>
-        /// TODO: Add array parsing
         private static void SetField(BinaryReader reader, Encoding encoding, FieldInfo[] fields, object instance, FieldInfo fi)
         {
             if (fi.FieldType.IsAssignableFrom(typeof(string)))
             {
-                var value = ReadStringType(reader, encoding, fields, instance, fi);
+                var value = ReadStringType(reader, encoding, fi);
                 fi.SetValue(instance, value);
+            }
+            else if (fi.FieldType.IsArray)
+            {
+                var value = ReadArrayType(reader, fi);
+                fi.SetValue(instance, Convert.ChangeType(value, fi.FieldType));
             }
             else
             {
@@ -575,11 +581,38 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a string type field for an object
+        /// Read an array type field for an object
         /// </summary>
-        private static string? ReadStringType(BinaryReader reader, Encoding encoding, FieldInfo[] fields, object instance, FieldInfo fi)
+        private static Array ReadArrayType(BinaryReader reader, FieldInfo fi)
         {
             var marshalAsAttr = fi.GetCustomAttributes(typeof(MarshalAsAttribute), true).FirstOrDefault() as MarshalAsAttribute;
+
+            // Get the number of elements expected
+            int elementCount = marshalAsAttr?.SizeConst ?? -1;
+
+            // Get the item type for the array
+            Type elementType = fi.FieldType.GetElementType() ?? typeof(object);
+
+            // Create an array of the proper length
+            Array arr = Array.CreateInstance(elementType, elementCount);
+
+            // Loop through and build the array
+            for (int i = 0; i < elementCount; i++)
+            {
+                var value = ReadType(reader, elementType);
+                arr.SetValue(value, i);
+            }
+
+            // Return the built array
+            return arr;
+        }
+
+        /// <summary>
+        /// Read a string type field for an object
+        /// </summary>
+        private static string? ReadStringType(BinaryReader reader, Encoding encoding, FieldInfo? fi)
+        {
+            var marshalAsAttr = fi?.GetCustomAttributes(typeof(MarshalAsAttribute), true)?.FirstOrDefault() as MarshalAsAttribute;
 
             switch (marshalAsAttr?.Value)
             {
@@ -594,7 +627,7 @@ namespace SabreTools.IO.Extensions
                     return Encoding.Unicode.GetString(bstrBytes);
 
                 case UnmanagedType.ByValTStr:
-                    int byvalLength = marshalAsAttr.SizeConst;
+                    int byvalLength = marshalAsAttr!.SizeConst;
                     byte[] byvalBytes = reader.ReadBytes(byvalLength);
                     return encoding.GetString(byvalBytes);
 

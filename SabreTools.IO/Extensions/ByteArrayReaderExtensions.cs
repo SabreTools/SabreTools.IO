@@ -688,13 +688,17 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Set a single field on an object
         /// </summary>
-        /// TODO: Add array parsing
         private static void SetField(byte[] content, ref int offset, Encoding encoding, FieldInfo[] fields, object instance, FieldInfo fi)
         {
             if (fi.FieldType.IsAssignableFrom(typeof(string)))
             {
-                var value = ReadStringType(content, ref offset, encoding, fields, instance, fi);
+                var value = ReadStringType(content, ref offset, encoding, instance, fi);
                 fi.SetValue(instance, value);
+            }
+            else if (fi.FieldType.IsArray)
+            {
+                var value = ReadArrayType(content, ref offset, fi);
+                fi.SetValue(instance, Convert.ChangeType(value, fi.FieldType));
             }
             else
             {
@@ -704,9 +708,36 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Read an array type field for an object
+        /// </summary>
+        private static Array ReadArrayType(byte[] content, ref int offset, FieldInfo fi)
+        {
+            var marshalAsAttr = fi.GetCustomAttributes(typeof(MarshalAsAttribute), true).FirstOrDefault() as MarshalAsAttribute;
+
+            // Get the number of elements expected
+            int elementCount = marshalAsAttr?.SizeConst ?? -1;
+
+            // Get the item type for the array
+            Type elementType = fi.FieldType.GetElementType() ?? typeof(object);
+
+            // Create an array of the proper length
+            Array arr = Array.CreateInstance(elementType, elementCount);
+
+            // Loop through and build the array
+            for (int i = 0; i < elementCount; i++)
+            {
+                var value = ReadType(content, ref offset, elementType);
+                arr.SetValue(value, i);
+            }
+
+            // Return the built array
+            return arr;
+        }
+
+        /// <summary>
         /// Read a string type field for an object
         /// </summary>
-        private static string? ReadStringType(byte[] content, ref int offset, Encoding encoding, FieldInfo[] fields, object instance, FieldInfo fi)
+        private static string? ReadStringType(byte[] content, ref int offset, Encoding encoding, object instance, FieldInfo fi)
         {
             var marshalAsAttr = fi.GetCustomAttributes(typeof(MarshalAsAttribute), true).FirstOrDefault() as MarshalAsAttribute;
 

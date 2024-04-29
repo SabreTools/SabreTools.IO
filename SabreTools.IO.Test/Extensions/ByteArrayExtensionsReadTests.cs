@@ -441,5 +441,48 @@ namespace SabreTools.IO.Test.Extensions
             Assert.Equal(expected.LPStr, read.LPStr);
             Assert.Equal(expected.LPWStr, read.LPWStr);
         }
+        
+        [Fact]
+        public void ReadTypeArraysTest()
+        {
+            byte[] structBytes =
+            [
+                // Byte Array
+                0x00, 0x01, 0x02, 0x03,
+
+                // Int Array
+                0x03, 0x02, 0x01, 0x00,
+                0x04, 0x03, 0x02, 0x01,
+                0x05, 0x04, 0x03, 0x02,
+                0x06, 0x05, 0x04, 0x03,
+
+                // Struct Array (X, Y)
+                0xFF, 0x00, 0x00, 0xFF,
+                0x00, 0xFF, 0xFF, 0x00,
+                0xAA, 0x55, 0x55, 0xAA,
+                0x55, 0xAA, 0xAA, 0x55,
+            ];
+
+            int offset = 0;
+            var expected = new TestStructArrays
+            {
+                ByteArray = [0x00, 0x01, 0x02, 0x03],
+                IntArray = [0x00010203, 0x01020304, 0x02030405, 0x03040506],
+                StructArray =
+                [
+                    new TestStructPoint { X = 0x00FF, Y = 0xFF00 },
+                    new TestStructPoint { X = 0xFF00, Y = 0x00FF },
+                    new TestStructPoint { X = 0x55AA, Y = 0xAA55 },
+                    new TestStructPoint { X = 0xAA55, Y = 0x55AA },
+                ],
+            };
+            var read = structBytes.ReadType<TestStructArrays>(ref offset);
+            Assert.NotNull(read.ByteArray);
+            Assert.True(expected.ByteArray.SequenceEqual(read.ByteArray));
+            Assert.NotNull(read.IntArray);
+            Assert.True(expected.IntArray.SequenceEqual(read.IntArray));
+            Assert.NotNull(read.StructArray);
+            Assert.True(expected.StructArray.SequenceEqual(read.StructArray));
+        }
     }
 }
