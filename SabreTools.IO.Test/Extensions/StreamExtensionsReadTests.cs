@@ -455,6 +455,10 @@ namespace SabreTools.IO.Test.Extensions
                 0x00, 0xFF, 0xFF, 0x00,
                 0xAA, 0x55, 0x55, 0xAA,
                 0x55, 0xAA, 0xAA, 0x55,
+
+                // LPArray
+                0x04, 0x00,
+                0x00, 0x01, 0x02, 0x03,
             ];
 
             var stream = new MemoryStream(structBytes);
@@ -469,6 +473,8 @@ namespace SabreTools.IO.Test.Extensions
                     new TestStructPoint { X = 0x55AA, Y = 0xAA55 },
                     new TestStructPoint { X = 0xAA55, Y = 0x55AA },
                 ],
+                LPByteArrayLength = 0x0004,
+                LPByteArray = [0x00, 0x01, 0x02, 0x03],
             };
             var read = stream.ReadType<TestStructArrays>();
             Assert.NotNull(read.ByteArray);
@@ -477,6 +483,9 @@ namespace SabreTools.IO.Test.Extensions
             Assert.True(expected.IntArray.SequenceEqual(read.IntArray));
             Assert.NotNull(read.StructArray);
             Assert.True(expected.StructArray.SequenceEqual(read.StructArray));
+            Assert.Equal(expected.LPByteArrayLength, read.LPByteArrayLength);
+            Assert.NotNull(read.LPByteArray);
+            Assert.True(expected.LPByteArray.SequenceEqual(read.LPByteArray));
         }
     }
 }

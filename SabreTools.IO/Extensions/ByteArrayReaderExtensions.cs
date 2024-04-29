@@ -697,7 +697,7 @@ namespace SabreTools.IO.Extensions
             }
             else if (fi.FieldType.IsArray)
             {
-                var value = ReadArrayType(content, ref offset, fi);
+                var value = ReadArrayType(content, ref offset, fields, instance, fi);
                 fi.SetValue(instance, Convert.ChangeType(value, fi.FieldType));
             }
             else
@@ -710,15 +710,24 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read an array type field for an object
         /// </summary>
-        /// TODO: Handle LPArray + SizeParamIndex
-        private static Array ReadArrayType(byte[] content, ref int offset, FieldInfo fi)
+        private static Array ReadArrayType(byte[] content, ref int offset, FieldInfo[] fields, object instance, FieldInfo fi)
         {
             var marshalAsAttr = fi.GetCustomAttributes(typeof(MarshalAsAttribute), true).FirstOrDefault() as MarshalAsAttribute;
-            if (marshalAsAttr?.Value != UnmanagedType.ByValArray)
+            if (marshalAsAttr == null)
                 return new object[0];
 
             // Get the number of elements expected
-            int elementCount = marshalAsAttr?.SizeConst ?? -1;
+            int elementCount = -1;
+            if (marshalAsAttr.Value == UnmanagedType.ByValArray)
+            {
+                elementCount = marshalAsAttr.SizeConst;
+            }
+            else if (marshalAsAttr.Value == UnmanagedType.LPArray)
+            {
+                elementCount = marshalAsAttr.SizeConst;
+                if (marshalAsAttr.SizeParamIndex >= 0)
+                    elementCount = GetSizeFromField(marshalAsAttr, fields, instance);
+            }
 
             // Get the item type for the array
             Type elementType = fi.FieldType.GetElementType() ?? typeof(object);
@@ -735,6 +744,35 @@ namespace SabreTools.IO.Extensions
 
             // Return the built array
             return arr;
+        }
+
+        /// <summary>
+        /// Get the expected LPArray size
+        /// </summary>
+        private static int GetSizeFromField(MarshalAsAttribute marshalAsAttr, FieldInfo[] fields, object instance)
+        {
+            // If the index is invalid
+            if (marshalAsAttr.SizeParamIndex < 0)
+                return -1;
+
+            // Get the size field
+            var sizeField = fields[marshalAsAttr.SizeParamIndex];
+            if (sizeField == null)
+                return -1;
+
+            // Cast based on the field type
+            return sizeField.GetValue(instance) switch
+            {
+                sbyte val => val,
+                byte val => val,
+                short val => val,
+                ushort val => val,
+                int val => val,
+                uint val => (int)val,
+                long val => (int)val,
+                ulong val => (int)val,
+                _ => -1,
+            };
         }
 
         /// <summary>
