@@ -15,8 +15,6 @@ namespace SabreTools.IO.Extensions
     /// TODO: Handle proper negative values for Int24 and Int48
     public static class BinaryWriterExtensions
     {
-        #region Write
-
         /// <inheritdoc cref="BinaryWriter.Write(byte[])"/>
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, byte[] value)
@@ -345,10 +343,22 @@ namespace SabreTools.IO.Extensions
             => writer.WriteNullTerminatedString(value, Encoding.ASCII);
 
         /// <summary>
-        /// Write a null-terminated Unicode string to the underlying stream
+        /// Write a null-terminated UTF-8 string to the underlying stream
+        /// </summary>
+        public static bool WriteNullTerminatedUTF8String(this BinaryWriter writer, string? value)
+            => writer.WriteNullTerminatedString(value, Encoding.UTF8);
+
+        /// <summary>
+        /// Write a null-terminated UTF-16 (Unicode) string to the underlying stream
         /// </summary>
         public static bool WriteNullTerminatedUnicodeString(this BinaryWriter writer, string? value)
             => writer.WriteNullTerminatedString(value, Encoding.Unicode);
+
+        /// <summary>
+        /// Write a null-terminated UTF-32 string to the underlying stream
+        /// </summary>
+        public static bool WriteNullTerminatedUTF32String(this BinaryWriter writer, string? value)
+            => writer.WriteNullTerminatedString(value, Encoding.UTF32);
 
         /// <summary>
         /// Write a byte-prefixed ASCII string to the underlying stream
@@ -447,7 +457,5 @@ namespace SabreTools.IO.Extensions
             writer.Write(value, 0, value.Length);
             return true;
         }
-
-        #endregion
     }
 }

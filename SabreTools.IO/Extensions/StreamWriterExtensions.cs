@@ -495,12 +495,24 @@ namespace SabreTools.IO.Extensions
             => stream.WriteNullTerminatedString(value, Encoding.ASCII);
 
         /// <summary>
-        /// Write a null-terminated Unicode string to the stream
+        /// Write a null-terminated UTF-8 string to the stream
+        /// </summary>
+        public static bool WriteNullTerminatedUTF8String(this Stream stream, string? value)
+            => stream.WriteNullTerminatedString(value, Encoding.UTF8);
+
+        /// <summary>
+        /// Write a null-terminated UTF-16 (Unicode) string to the stream
         /// </summary>
         public static bool WriteNullTerminatedUnicodeString(this Stream stream, string? value)
             => stream.WriteNullTerminatedString(value, Encoding.Unicode);
 
         /// <summary>
+        /// Write a null-terminated UTF-32 string to the stream
+        /// </summary>
+        public static bool WriteNullTerminatedUTF32String(this Stream stream, string? value)
+            => stream.WriteNullTerminatedString(value, Encoding.UTF32);
+
+        //// <summary>
         /// Write a byte-prefixed ASCII string to the stream
         /// </summary>
         public static bool WritePrefixedAnsiString(this Stream stream, string? value)

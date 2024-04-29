@@ -494,10 +494,22 @@ namespace SabreTools.IO.Extensions
             => content.WriteNullTerminatedString(ref offset, value, Encoding.ASCII);
 
         /// <summary>
-        /// Write a null-terminated Unicode string to the byte array
+        /// Write a null-terminated UTF-8 string to the byte array
+        /// </summary>
+        public static bool WriteNullTerminatedUTF8String(this byte[] content, ref int offset, string? value)
+            => content.WriteNullTerminatedString(ref offset, value, Encoding.UTF8);
+
+        /// <summary>
+        /// Write a null-terminated UTF-16 (Unicode) string to the byte array
         /// </summary>
         public static bool WriteNullTerminatedUnicodeString(this byte[] content, ref int offset, string? value)
             => content.WriteNullTerminatedString(ref offset, value, Encoding.Unicode);
+
+        /// <summary>
+        /// Write a null-terminated UTF-32 string to the byte array
+        /// </summary>
+        public static bool WriteNullTerminatedUTF32String(this byte[] content, ref int offset, string? value)
+            => content.WriteNullTerminatedString(ref offset, value, Encoding.UTF32);
 
         /// <summary>
         /// Write a byte-prefixed ASCII string to the byte array

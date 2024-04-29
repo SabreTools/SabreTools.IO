@@ -808,6 +808,24 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Read bytes until a 4-byte null terminator is found
+        /// </summary>
+        private static byte[] ReadUntilNull4Byte(Stream stream)
+        {
+            var bytes = new List<byte>();
+            while (stream.Position < stream.Length)
+            {
+                uint next = stream.ReadUInt32();
+                if (next == 0x00000000)
+                    break;
+
+                bytes.AddRange(BitConverter.GetBytes(next));
+            }
+
+            return [.. bytes];
+        }
+
+        /// <summary>
         /// Read a number of bytes from the stream to a buffer
         /// </summary>
         private static byte[] ReadToBuffer(Stream stream, int length)
@@ -827,24 +845,6 @@ namespace SabreTools.IO.Extensions
                 throw new EndOfStreamException($"Requested to read {nameof(length)} bytes from {nameof(stream)}, {read} returned");
 
             return buffer;
-        }
-
-        /// <summary>
-        /// Read bytes until a 4-byte null terminator is found
-        /// </summary>
-        private static byte[] ReadUntilNull4Byte(Stream stream)
-        {
-            var bytes = new List<byte>();
-            while (stream.Position < stream.Length)
-            {
-                uint next = stream.ReadUInt32();
-                if (next == 0x00000000)
-                    break;
-
-                bytes.AddRange(BitConverter.GetBytes(next));
-            }
-
-            return [.. bytes];
         }
     }
 }
