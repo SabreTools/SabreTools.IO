@@ -435,7 +435,7 @@ namespace SabreTools.IO.Test.Extensions
             Assert.Equal(expected.LPStr, read.LPStr);
             Assert.Equal(expected.LPWStr, read.LPWStr);
         }
-    
+
         [Fact]
         public void ReadTypeArraysTest()
         {
@@ -486,6 +486,56 @@ namespace SabreTools.IO.Test.Extensions
             Assert.Equal(expected.LPByteArrayLength, read.LPByteArrayLength);
             Assert.NotNull(read.LPByteArray);
             Assert.True(expected.LPByteArray.SequenceEqual(read.LPByteArray));
+        }
+
+        [Fact]
+        public void ReadTypeInheritanceTest()
+        {
+            byte[] structBytes1 =
+            [
+                0x41, 0x42, 0x43, 0x44, // Signature
+                0x00, 0xFF, 0x00, 0xFF, // IdentifierType
+                0xAA, 0x55, 0xAA, 0x55, // FieldA
+                0x55, 0xAA, 0x55, 0xAA, // FieldB
+            ];
+
+            var stream1 = new MemoryStream(structBytes1);
+            var expected1 = new TestStructInheritanceChild1
+            {
+                Signature = [0x41, 0x42, 0x43, 0x44],
+                IdentifierType = 0xFF00FF00,
+                FieldA = 0x55AA55AA,
+                FieldB = 0xAA55AA55,
+            };
+            var read1 = stream1.ReadType<TestStructInheritanceChild1>();
+            Assert.NotNull(read1?.Signature);
+            Assert.Equal(expected1.Signature, read1.Signature);
+            Assert.Equal(expected1.IdentifierType, read1.IdentifierType);
+            Assert.Equal(expected1.FieldA, read1.FieldA);
+            Assert.Equal(expected1.FieldB, read1.FieldB);
+
+            byte[] structBytes2 =
+            [
+                0x41, 0x42, 0x43, 0x44, // Signature
+                0x00, 0xFF, 0x00, 0xFF, // IdentifierType
+                0xAA, 0x55, // FieldA
+                0x55, 0xAA, // FieldB
+            ];
+
+            var stream2 = new MemoryStream(structBytes2);
+            var expected2 = new TestStructInheritanceChild2
+            {
+                Signature = [0x41, 0x42, 0x43, 0x44],
+                IdentifierType = 0xFF00FF00,
+                FieldA = 0x55AA,
+                FieldB = 0xAA55,
+            };
+            var read2 = stream2.ReadType<TestStructInheritanceChild2>();
+            Assert.NotNull(read2?.Signature);
+            Assert.Equal(expected2.Signature, read2.Signature);
+            Assert.Equal(expected2.IdentifierType, read2.IdentifierType);
+            Assert.Equal(expected2.FieldA, read2.FieldA);
+            Assert.Equal(expected2.FieldB, read2.FieldB);
         }
     }
 }

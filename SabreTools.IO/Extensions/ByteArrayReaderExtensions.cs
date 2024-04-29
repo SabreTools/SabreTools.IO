@@ -663,8 +663,30 @@ namespace SabreTools.IO.Extensions
                 // Cache the current offset
                 int currentOffset = offset;
 
+                // Get the type hierarchy for ensuring serialization order
+                var lineage = new List<Type>();
+                Type currentType = type;
+                while (currentType != typeof(object) && currentType != typeof(ValueType))
+                {
+                    lineage.Add(currentType);
+                    currentType = currentType.BaseType ?? typeof(object);
+                }
+
+                // Generate the fields by parent first
+                lineage.Reverse();
+                var fieldsList = new List<FieldInfo>();
+                foreach (var nextType in lineage)
+                {
+                    var nextFields = nextType.GetFields();
+                    foreach (var field in nextFields)
+                    {
+                        if (!fieldsList.Any(f => f.Name == field.Name && f.FieldType == field.FieldType))
+                            fieldsList.Add(field);
+                    }
+                }
+
                 // Loop through the fields and set them
-                var fields = type.GetFields();
+                var fields = fieldsList.ToArray();
                 foreach (var fi in fields)
                 {
                     // If we have an explicit layout, move accordingly
