@@ -406,5 +406,34 @@ namespace SabreTools.IO.Test.Extensions
             Assert.Equal(expected.FourthValue, read.FourthValue);
             Assert.Equal(expected.FifthValue, read.FifthValue);
         }
+
+        [Fact]
+        public void ReadTypeStringsTest()
+        {
+            byte[] structBytes =
+            [
+                0x03, 0x41, 0x42, 0x43, // AnsiBStr
+                0x03, 0x00, 0x41, 0x00, 0x42, 0x00, 0x43, 0x00, // BStr
+                0x41, 0x42, 0x43, // ByValTStr
+                0x41, 0x42, 0x43, 0x00, // LPStr
+                0x41, 0x00, 0x42, 0x00, 0x43, 0x00, 0x00, 0x00, // LPWStr
+            ];
+
+            var stream = new MemoryStream(structBytes);
+            var expected = new TestStructSTrings
+            {
+                AnsiBStr = "ABC",
+                BStr = "ABC",
+                ByValTStr = "ABC",
+                LPStr = "ABC",
+                LPWStr = "ABC",
+            };
+            var read = stream.ReadType<TestStructSTrings>();
+            Assert.Equal(expected.AnsiBStr, read.AnsiBStr);
+            Assert.Equal(expected.BStr, read.BStr);
+            Assert.Equal(expected.ByValTStr, read.ByValTStr);
+            Assert.Equal(expected.LPStr, read.LPStr);
+            Assert.Equal(expected.LPWStr, read.LPWStr);
+        }
     }
 }

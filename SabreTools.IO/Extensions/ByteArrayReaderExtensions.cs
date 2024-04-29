@@ -688,11 +688,12 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Set a single field on an object
         /// </summary>
+        /// TODO: Add array parsing
         private static void SetField(byte[] content, ref int offset, Encoding encoding, FieldInfo[] fields, object instance, FieldInfo fi)
         {
             if (fi.FieldType.IsAssignableFrom(typeof(string)))
             {
-                var value = ReadStringType(content, ref offset, encoding, instance, fi);
+                var value = ReadStringType(content, ref offset, encoding, fields, instance, fi);
                 fi.SetValue(instance, value);
             }
             else
@@ -705,9 +706,10 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a string type field for an object
         /// </summary>
-        private static string? ReadStringType(byte[] content, ref int offset, Encoding encoding, object instance, FieldInfo fi)
+        private static string? ReadStringType(byte[] content, ref int offset, Encoding encoding, FieldInfo[] fields, object instance, FieldInfo fi)
         {
             var marshalAsAttr = fi.GetCustomAttributes(typeof(MarshalAsAttribute), true).FirstOrDefault() as MarshalAsAttribute;
+
             switch (marshalAsAttr?.Value)
             {
                 case UnmanagedType.AnsiBStr:
@@ -717,10 +719,9 @@ namespace SabreTools.IO.Extensions
 
                 case UnmanagedType.BStr:
                     ushort bstrLength = content.ReadUInt16(ref offset);
-                    byte[] bstrBytes = content.ReadBytes(ref offset, bstrLength);
-                    return Encoding.ASCII.GetString(bstrBytes);
+                    byte[] bstrBytes = content.ReadBytes(ref offset, bstrLength * 2);
+                    return Encoding.Unicode.GetString(bstrBytes);
 
-                // TODO: Handle length from another field
                 case UnmanagedType.ByValTStr:
                     int byvalLength = marshalAsAttr.SizeConst;
                     byte[] byvalBytes = content.ReadBytes(ref offset, byvalLength);
@@ -757,7 +758,7 @@ namespace SabreTools.IO.Extensions
                             break;
                     }
 
-                    return Encoding.ASCII.GetString([.. lpwstrBytes]);
+                    return Encoding.Unicode.GetString([.. lpwstrBytes]);
 
                 // No support required yet
                 case UnmanagedType.LPTStr:

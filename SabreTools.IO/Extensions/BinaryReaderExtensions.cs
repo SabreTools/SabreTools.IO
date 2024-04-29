@@ -559,11 +559,12 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Set a single field on an object
         /// </summary>
+        /// TODO: Add array parsing
         private static void SetField(BinaryReader reader, Encoding encoding, FieldInfo[] fields, object instance, FieldInfo fi)
         {
             if (fi.FieldType.IsAssignableFrom(typeof(string)))
             {
-                var value = ReadStringType(reader, encoding, instance, fi);
+                var value = ReadStringType(reader, encoding, fields, instance, fi);
                 fi.SetValue(instance, value);
             }
             else
@@ -576,9 +577,10 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a string type field for an object
         /// </summary>
-        private static string? ReadStringType(BinaryReader reader, Encoding encoding, object instance, FieldInfo fi)
+        private static string? ReadStringType(BinaryReader reader, Encoding encoding, FieldInfo[] fields, object instance, FieldInfo fi)
         {
             var marshalAsAttr = fi.GetCustomAttributes(typeof(MarshalAsAttribute), true).FirstOrDefault() as MarshalAsAttribute;
+
             switch (marshalAsAttr?.Value)
             {
                 case UnmanagedType.AnsiBStr:
@@ -588,10 +590,9 @@ namespace SabreTools.IO.Extensions
 
                 case UnmanagedType.BStr:
                     ushort bstrLength = reader.ReadUInt16();
-                    byte[] bstrBytes = reader.ReadBytes(bstrLength);
-                    return Encoding.ASCII.GetString(bstrBytes);
+                    byte[] bstrBytes = reader.ReadBytes(bstrLength * 2);
+                    return Encoding.Unicode.GetString(bstrBytes);
 
-                // TODO: Handle length from another field
                 case UnmanagedType.ByValTStr:
                     int byvalLength = marshalAsAttr.SizeConst;
                     byte[] byvalBytes = reader.ReadBytes(byvalLength);
@@ -628,7 +629,7 @@ namespace SabreTools.IO.Extensions
                             break;
                     }
 
-                    return Encoding.ASCII.GetString([.. lpwstrBytes]);
+                    return Encoding.Unicode.GetString([.. lpwstrBytes]);
 
                 // No support required yet
                 case UnmanagedType.LPTStr:
