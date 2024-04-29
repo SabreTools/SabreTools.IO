@@ -648,67 +648,29 @@ namespace SabreTools.IO.Extensions
         {
             try
             {
+                // Try to create an instance of the type
                 var instance = Activator.CreateInstance(type);
                 if (instance == null)
                     return null;
 
-                // Get the layout attribute
-                var layoutAttr = type.GetCustomAttributes(typeof(StructLayoutAttribute), true).FirstOrDefault() as StructLayoutAttribute;
-
-                // Get the layout type
-                LayoutKind layoutKind = LayoutKind.Auto;
-                if (layoutAttr != null)
-                    layoutKind = layoutAttr.Value;
-                else if (type.IsAutoLayout)
-                    layoutKind = LayoutKind.Auto;
-                else if (type.IsExplicitLayout)
-                    layoutKind = LayoutKind.Explicit;
-                else if (type.IsLayoutSequential)
-                    layoutKind = LayoutKind.Sequential;
-
-                // Get the encoding to use
-                Encoding encoding = layoutAttr?.CharSet switch
-                {
-                    CharSet.None => Encoding.ASCII,
-                    CharSet.Ansi => Encoding.ASCII,
-                    CharSet.Unicode => Encoding.Unicode,
-                    CharSet.Auto => Encoding.ASCII, // UTF-8 on Unix
-                    _ => Encoding.ASCII,
-                };
+                // Get the layout information
+                var layoutAttr = MarshalHelpers.GetAttribute<StructLayoutAttribute>(type);
+                LayoutKind layoutKind = MarshalHelpers.DetermineLayoutKind(layoutAttr, type);
+                Encoding encoding = MarshalHelpers.DetermineEncoding(layoutAttr);
 
                 // Cache the current offset
                 int currentOffset = offset;
 
-                // Get the type hierarchy for ensuring serialization order
-                var lineage = new List<Type>();
-                Type currentType = type;
-                while (currentType != typeof(object) && currentType != typeof(ValueType))
-                {
-                    lineage.Add(currentType);
-                    currentType = currentType.BaseType ?? typeof(object);
-                }
-
                 // Generate the fields by parent first
-                lineage.Reverse();
-                var fieldsList = new List<FieldInfo>();
-                foreach (var nextType in lineage)
-                {
-                    var nextFields = nextType.GetFields();
-                    foreach (var field in nextFields)
-                    {
-                        if (!fieldsList.Any(f => f.Name == field.Name && f.FieldType == field.FieldType))
-                            fieldsList.Add(field);
-                    }
-                }
+                var fields = MarshalHelpers.GetFields(type);
 
                 // Loop through the fields and set them
-                var fields = fieldsList.ToArray();
                 foreach (var fi in fields)
                 {
                     // If we have an explicit layout, move accordingly
                     if (layoutKind == LayoutKind.Explicit)
                     {
-                        var fieldOffset = fi.GetCustomAttributes(typeof(FieldOffsetAttribute), true).FirstOrDefault() as FieldOffsetAttribute;
+                        var fieldOffset = MarshalHelpers.GetAttribute<FieldOffsetAttribute>(fi);
                         offset = currentOffset + fieldOffset?.Value ?? 0;
                     }
 
@@ -750,22 +712,14 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         private static Array ReadArrayType(byte[] content, ref int offset, FieldInfo[] fields, object instance, FieldInfo fi)
         {
-            var marshalAsAttr = fi.GetCustomAttributes(typeof(MarshalAsAttribute), true).FirstOrDefault() as MarshalAsAttribute;
+            var marshalAsAttr = MarshalHelpers.GetAttribute<MarshalAsAttribute>(fi);
             if (marshalAsAttr == null)
                 return new object[0];
 
             // Get the number of elements expected
-            int elementCount = -1;
-            if (marshalAsAttr.Value == UnmanagedType.ByValArray)
-            {
-                elementCount = marshalAsAttr.SizeConst;
-            }
-            else if (marshalAsAttr.Value == UnmanagedType.LPArray)
-            {
-                elementCount = marshalAsAttr.SizeConst;
-                if (marshalAsAttr.SizeParamIndex >= 0)
-                    elementCount = GetSizeFromField(marshalAsAttr, fields, instance);
-            }
+            int elementCount = MarshalHelpers.GetArrayElementCount(marshalAsAttr, fields, instance);
+            if (elementCount < 0)
+                return new object[0];
 
             // Get the item type for the array
             Type elementType = fi.FieldType.GetElementType() ?? typeof(object);
@@ -785,40 +739,11 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Get the expected LPArray size
-        /// </summary>
-        private static int GetSizeFromField(MarshalAsAttribute marshalAsAttr, FieldInfo[] fields, object instance)
-        {
-            // If the index is invalid
-            if (marshalAsAttr.SizeParamIndex < 0)
-                return -1;
-
-            // Get the size field
-            var sizeField = fields[marshalAsAttr.SizeParamIndex];
-            if (sizeField == null)
-                return -1;
-
-            // Cast based on the field type
-            return sizeField.GetValue(instance) switch
-            {
-                sbyte val => val,
-                byte val => val,
-                short val => val,
-                ushort val => val,
-                int val => val,
-                uint val => (int)val,
-                long val => (int)val,
-                ulong val => (int)val,
-                _ => -1,
-            };
-        }
-
-        /// <summary>
         /// Read a string type field for an object
         /// </summary>
         private static string? ReadStringType(byte[] content, ref int offset, Encoding encoding, object instance, FieldInfo fi)
         {
-            var marshalAsAttr = fi.GetCustomAttributes(typeof(MarshalAsAttribute), true).FirstOrDefault() as MarshalAsAttribute;
+            var marshalAsAttr = MarshalHelpers.GetAttribute<MarshalAsAttribute>(fi);
 
             switch (marshalAsAttr?.Value)
             {
@@ -879,9 +804,9 @@ namespace SabreTools.IO.Extensions
                     while (true)
                     {
                         ushort next = content.ReadUInt16(ref offset);
-
                         if (next == 0x0000)
                             break;
+
                         lpwstrBytes.AddRange(BitConverter.GetBytes(next));
 
                         if (offset >= content.Length)
