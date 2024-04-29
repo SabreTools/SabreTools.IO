@@ -480,16 +480,8 @@ namespace SabreTools.IO.Extensions
             if (offset >= content.Length)
                 return null;
 
-            List<byte> buffer = [];
-            while (offset < content.Length)
-            {
-                byte ch = content.ReadByteValue(ref offset);
-                buffer.Add(ch);
-                if (ch == '\0')
-                    break;
-            }
-
-            return Encoding.ASCII.GetString([.. buffer]);
+            byte[] buffer = ReadUntilNullNarrow(content, ref offset);
+            return Encoding.ASCII.GetString(buffer);
         }
 
         /// <summary>
@@ -500,16 +492,8 @@ namespace SabreTools.IO.Extensions
             if (offset >= content.Length)
                 return null;
 
-            List<byte> buffer = [];
-            while (offset < content.Length)
-            {
-                byte[] ch = content.ReadBytes(ref offset, 2);
-                buffer.AddRange(ch);
-                if (ch[0] == '\0' && ch[1] == '\0')
-                    break;
-            }
-
-            return Encoding.Unicode.GetString([.. buffer]);
+            byte[] buffer = ReadUntilNullWide(content, ref offset);
+            return Encoding.Unicode.GetString(buffer);
         }
 
         /// <summary>
@@ -763,59 +747,59 @@ namespace SabreTools.IO.Extensions
                 case UnmanagedType.LPStr:
                 case UnmanagedType.LPTStr: // Technically distinct; possibly not null-terminated
                 case null:
-                    var lpstrBytes = new List<byte>();
-                    while (true)
-                    {
-                        byte next = content.ReadByteValue(ref offset);
-                        if (next == 0x00)
-                            break;
-
-                        lpstrBytes.Add(next);
-
-                        if (offset >= content.Length)
-                            break;
-                    }
-
-                    return Encoding.ASCII.GetString([.. lpstrBytes]);
+                    var lpstrBytes = ReadUntilNullNarrow(content, ref offset);
+                    return Encoding.ASCII.GetString(lpstrBytes);
 
 #if NET472_OR_GREATER || NETCOREAPP
                 case UnmanagedType.LPUTF8Str:
-                    var lputf8Str = new List<byte>();
-                    while (true)
-                    {
-                        byte next = content.ReadByteValue(ref offset);
-                        if (next == 0x00)
-                            break;
-
-                        lputf8Str.Add(next);
-
-                        if (offset >= content.Length)
-                            break;
-                    }
-
-                    return Encoding.UTF8.GetString([.. lputf8Str]);
+                    var lputf8Str = ReadUntilNullNarrow(content, ref offset);
+                    return Encoding.UTF8.GetString(lputf8Str);
 #endif
 
                 case UnmanagedType.LPWStr:
-                    var lpwstrBytes = new List<byte>();
-                    while (true)
-                    {
-                        ushort next = content.ReadUInt16(ref offset);
-                        if (next == 0x0000)
-                            break;
-
-                        lpwstrBytes.AddRange(BitConverter.GetBytes(next));
-
-                        if (offset >= content.Length)
-                            break;
-                    }
-
-                    return Encoding.Unicode.GetString([.. lpwstrBytes]);
+                    var lpwstrBytes = ReadUntilNullWide(content, ref offset);
+                    return Encoding.Unicode.GetString(lpwstrBytes);
 
                 // No other string types are recognized
                 default:
                     return null;
             }
+        }
+
+        /// <summary>
+        /// Read bytes until a 1-byte null terminator is found
+        /// </summary>
+        private static byte[] ReadUntilNullNarrow(byte[] content, ref int offset)
+        {
+            var bytes = new List<byte>();
+            while (offset < content.Length)
+            {
+                byte next = content.ReadByte(ref offset);
+                if (next == 0x00)
+                    break;
+
+                bytes.Add(next);
+            }
+
+            return [.. bytes];
+        }
+
+        /// <summary>
+        /// Read bytes until a 2-byte null terminator is found
+        /// </summary>
+        private static byte[] ReadUntilNullWide(byte[] content, ref int offset)
+        {
+            var bytes = new List<byte>();
+            while (offset < content.Length)
+            {
+                ushort next = content.ReadUInt16(ref offset);
+                if (next == 0x0000)
+                    break;
+
+                bytes.AddRange(BitConverter.GetBytes(next));
+            }
+
+            return [.. bytes];
         }
 
         /// <summary>
