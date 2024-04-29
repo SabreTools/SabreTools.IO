@@ -3,6 +3,7 @@ using System.IO;
 #if NET7_0_OR_GREATER
 using System.Numerics;
 #endif
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -592,6 +593,51 @@ namespace SabreTools.IO.Extensions
             handle.Free();
 
             return WriteFromBuffer(stream, buffer);
+        }
+
+        /// <summary>
+        /// Write a string type field from an object
+        /// </summary>
+        private static bool WriteStringType(Stream stream, Encoding encoding, object instance, FieldInfo fi)
+        {
+            var marshalAsAttr = MarshalHelpers.GetAttribute<MarshalAsAttribute>(fi);
+            string? fieldValue = fi.GetValue(instance) as string;
+            if (fieldValue == null)
+                return false;
+
+            switch (marshalAsAttr?.Value)
+            {
+                case UnmanagedType.AnsiBStr:
+                    return stream.WritePrefixedAnsiString(fieldValue);
+
+                case UnmanagedType.BStr:
+                case UnmanagedType.TBStr: // Technically distinct; returns char[] instead
+                    return stream.WritePrefixedUnicodeString(fieldValue);
+
+                case UnmanagedType.ByValTStr:
+                    int byvalLength = marshalAsAttr!.SizeConst;
+                    byte[] byvalBytes = encoding.GetBytes(fieldValue);
+                    byte[] byvalSizedBytes = new byte[byvalLength];
+                    Array.Copy(byvalBytes, byvalSizedBytes, Math.Min(byvalBytes.Length, byvalSizedBytes.Length));
+                    return stream.Write(byvalSizedBytes);
+
+                case UnmanagedType.LPStr:
+                case UnmanagedType.LPTStr: // Technically distinct; possibly not null-terminated
+                case null:
+                    return stream.WriteNullTerminatedAnsiString(fieldValue);
+
+#if NET472_OR_GREATER || NETCOREAPP
+                case UnmanagedType.LPUTF8Str:
+                    return stream.WriteNullTerminatedUTF8String(fieldValue);
+#endif
+
+                case UnmanagedType.LPWStr:
+                    return stream.WriteNullTerminatedUnicodeString(fieldValue);
+
+                // No other string types are recognized
+                default:
+                    return false;
+            }
         }
 
         /// <summary>

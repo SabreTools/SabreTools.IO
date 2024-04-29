@@ -2,6 +2,7 @@ using System;
 #if NET7_0_OR_GREATER
 using System.Numerics;
 #endif
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -591,6 +592,51 @@ namespace SabreTools.IO.Extensions
             handle.Free();
 
             return WriteFromBuffer(content, ref offset, buffer);
+        }
+
+        /// <summary>
+        /// Write a string type field from an object
+        /// </summary>
+        private static bool WriteStringType(byte[] content, ref int offset, Encoding encoding, object instance, FieldInfo fi)
+        {
+            var marshalAsAttr = MarshalHelpers.GetAttribute<MarshalAsAttribute>(fi);
+            string? fieldValue = fi.GetValue(instance) as string;
+            if (fieldValue == null)
+                return false;
+
+            switch (marshalAsAttr?.Value)
+            {
+                case UnmanagedType.AnsiBStr:
+                    return content.WritePrefixedAnsiString(ref offset, fieldValue);
+
+                case UnmanagedType.BStr:
+                case UnmanagedType.TBStr: // Technically distinct; returns char[] instead
+                    return content.WritePrefixedUnicodeString(ref offset, fieldValue);
+
+                case UnmanagedType.ByValTStr:
+                    int byvalLength = marshalAsAttr!.SizeConst;
+                    byte[] byvalBytes = encoding.GetBytes(fieldValue);
+                    byte[] byvalSizedBytes = new byte[byvalLength];
+                    Array.Copy(byvalBytes, byvalSizedBytes, Math.Min(byvalBytes.Length, byvalSizedBytes.Length));
+                    return content.Write(ref offset, byvalSizedBytes);
+
+                case UnmanagedType.LPStr:
+                case UnmanagedType.LPTStr: // Technically distinct; possibly not null-terminated
+                case null:
+                    return content.WriteNullTerminatedAnsiString(ref offset, fieldValue);
+
+#if NET472_OR_GREATER || NETCOREAPP
+                case UnmanagedType.LPUTF8Str:
+                    return content.WriteNullTerminatedUTF8String(ref offset, fieldValue);
+#endif
+
+                case UnmanagedType.LPWStr:
+                    return content.WriteNullTerminatedUnicodeString(ref offset, fieldValue);
+
+                // No other string types are recognized
+                default:
+                    return false;
+            }
         }
 
         /// <summary>

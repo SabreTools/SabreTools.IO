@@ -3,6 +3,7 @@ using System.IO;
 #if NET7_0_OR_GREATER
 using System.Numerics;
 #endif
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -438,6 +439,52 @@ namespace SabreTools.IO.Extensions
             handle.Free();
 
             return WriteFromBuffer(writer, buffer);
+        }
+
+        /// <summary>
+        /// Write a string type field from an object
+        /// </summary>
+        private static bool WriteStringType(BinaryWriter writer, Encoding encoding, object instance, FieldInfo fi)
+        {
+            var marshalAsAttr = MarshalHelpers.GetAttribute<MarshalAsAttribute>(fi);
+            string? fieldValue = fi.GetValue(instance) as string;
+            if (fieldValue == null)
+                return false;
+
+            switch (marshalAsAttr?.Value)
+            {
+                case UnmanagedType.AnsiBStr:
+                    return writer.WritePrefixedAnsiString(fieldValue);
+
+                case UnmanagedType.BStr:
+                case UnmanagedType.TBStr: // Technically distinct; returns char[] instead
+                    return writer.WritePrefixedUnicodeString(fieldValue);
+
+                case UnmanagedType.ByValTStr:
+                    int byvalLength = marshalAsAttr!.SizeConst;
+                    byte[] byvalBytes = encoding.GetBytes(fieldValue);
+                    byte[] byvalSizedBytes = new byte[byvalLength];
+                    Array.Copy(byvalBytes, byvalSizedBytes, Math.Min(byvalBytes.Length, byvalSizedBytes.Length));
+                    writer.Write(byvalSizedBytes);
+                    return true;
+
+                case UnmanagedType.LPStr:
+                case UnmanagedType.LPTStr: // Technically distinct; possibly not null-terminated
+                case null:
+                    return writer.WriteNullTerminatedAnsiString(fieldValue);
+
+#if NET472_OR_GREATER || NETCOREAPP
+                case UnmanagedType.LPUTF8Str:
+                    return writer.WriteNullTerminatedUTF8String(fieldValue);
+#endif
+
+                case UnmanagedType.LPWStr:
+                    return writer.WriteNullTerminatedUnicodeString(fieldValue);
+
+                // No other string types are recognized
+                default:
+                    return false;
+            }
         }
 
         /// <summary>
