@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 namespace SabreTools.IO.Test.Extensions
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    internal struct TestStructSTrings
+    internal struct TestStructStrings
     {
         /// <summary>
         /// ASCII-encoded, byte-length-prefixed string

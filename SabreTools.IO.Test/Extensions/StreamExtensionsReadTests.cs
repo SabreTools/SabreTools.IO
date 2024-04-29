@@ -420,7 +420,7 @@ namespace SabreTools.IO.Test.Extensions
             ];
 
             var stream = new MemoryStream(structBytes);
-            var expected = new TestStructSTrings
+            var expected = new TestStructStrings
             {
                 AnsiBStr = "ABC",
                 BStr = "ABC",
@@ -428,7 +428,7 @@ namespace SabreTools.IO.Test.Extensions
                 LPStr = "ABC",
                 LPWStr = "ABC",
             };
-            var read = stream.ReadType<TestStructSTrings>();
+            var read = stream.ReadType<TestStructStrings>();
             Assert.Equal(expected.AnsiBStr, read.AnsiBStr);
             Assert.Equal(expected.BStr, read.BStr);
             Assert.Equal(expected.ByValTStr, read.ByValTStr);
