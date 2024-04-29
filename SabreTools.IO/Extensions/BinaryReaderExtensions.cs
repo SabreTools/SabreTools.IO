@@ -326,6 +326,8 @@ namespace SabreTools.IO.Extensions
             // Short-circuit to explicit implementations
             if (encoding.Equals(Encoding.ASCII))
                 return reader.ReadNullTerminatedAnsiString();
+            else if (encoding.Equals(Encoding.UTF8))
+                return reader.ReadNullTerminatedUTF8String();
             else if (encoding.Equals(Encoding.Unicode))
                 return reader.ReadNullTerminatedUnicodeString();
 

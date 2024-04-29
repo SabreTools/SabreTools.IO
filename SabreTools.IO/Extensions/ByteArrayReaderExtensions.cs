@@ -454,6 +454,8 @@ namespace SabreTools.IO.Extensions
             // Short-circuit to explicit implementations
             if (encoding.Equals(Encoding.ASCII))
                 return content.ReadNullTerminatedAnsiString(ref offset);
+            else if (encoding.Equals(Encoding.UTF8))
+                return content.ReadNullTerminatedUTF8String(ref offset);
             else if (encoding.Equals(Encoding.Unicode))
                 return content.ReadNullTerminatedUnicodeString(ref offset);
 
