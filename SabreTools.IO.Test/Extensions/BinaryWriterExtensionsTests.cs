@@ -449,14 +449,21 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void WriteTypeExplicitTest()
         {
+            byte[] bytesWithString =
+            [
+                0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+                0x41, 0x42, 0x43, 0x00,
+            ];
+
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
             var bw = new BinaryWriter(stream);
             var obj = new TestStructExplicit
             {
                 FirstValue = TestEnum.RecognizedTestValue,
                 SecondValue = 0x07060504,
+                FifthValue = "ABC",
             };
-            byte[] expected = _bytes.Take(8).ToArray();
+            byte[] expected = bytesWithString.Take(12).ToArray();
             bool write = bw.WriteType(obj);
             Assert.True(write);
             ValidateBytes(expected, stream.GetBuffer());
@@ -465,6 +472,12 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void WriteTypeSequentialTest()
         {
+            byte[] bytesWithString =
+            [
+                0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+                0x08, 0x09, 0x0A, 0x0B, 0x41, 0x42, 0x43, 0x00,
+            ];
+
             var stream = new MemoryStream(new byte[24], 0, count: 24, true, true);
             var bw = new BinaryWriter(stream);
             var obj = new TestStructSequential
@@ -473,8 +486,9 @@ namespace SabreTools.IO.Test.Extensions
                 SecondValue = 0x07060504,
                 ThirdValue = 0x0908,
                 FourthValue = 0x0B0A,
+                FifthValue = "ABC",
             };
-            byte[] expected = _bytes.Take(12).ToArray();
+            byte[] expected = bytesWithString.Take(16).ToArray();
             bool write = bw.WriteType(obj);
             Assert.True(write);
             ValidateBytes(expected, stream.GetBuffer());

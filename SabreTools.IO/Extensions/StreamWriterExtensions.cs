@@ -619,9 +619,11 @@ namespace SabreTools.IO.Extensions
             {
                 // Null values cannot be written
                 if (value == null)
-                    return false;
+                    return true;
 
                 int typeSize = Marshal.SizeOf(type);
+                if (value.GetType() != type)
+                    value = Convert.ChangeType(value, type);
 
                 var buffer = new byte[typeSize];
                 var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
@@ -645,7 +647,7 @@ namespace SabreTools.IO.Extensions
             {
                 // Null values cannot be written
                 if (value == null)
-                    return false;
+                    return true;
 
                 // Get the layout information
                 var layoutAttr = MarshalHelpers.GetAttribute<StructLayoutAttribute>(type);
@@ -742,7 +744,7 @@ namespace SabreTools.IO.Extensions
             var marshalAsAttr = MarshalHelpers.GetAttribute<MarshalAsAttribute>(fi);
             string? fieldValue = fi.GetValue(instance) as string;
             if (fieldValue == null)
-                return false;
+                return true;
 
             switch (marshalAsAttr?.Value)
             {
