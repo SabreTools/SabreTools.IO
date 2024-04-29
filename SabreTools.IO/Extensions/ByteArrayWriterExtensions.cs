@@ -616,6 +616,10 @@ namespace SabreTools.IO.Extensions
         {
             try
             {
+                // Null values cannot be written
+                if (value == null)
+                    return false;
+
                 int typeSize = Marshal.SizeOf(type);
 
                 var buffer = new byte[typeSize];

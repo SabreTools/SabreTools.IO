@@ -617,6 +617,10 @@ namespace SabreTools.IO.Extensions
         {
             try
             {
+                // Null values cannot be written
+                if (value == null)
+                    return false;
+
                 int typeSize = Marshal.SizeOf(type);
 
                 var buffer = new byte[typeSize];
@@ -754,7 +758,7 @@ namespace SabreTools.IO.Extensions
                     byte[] byvalBytes = encoding.GetBytes(fieldValue);
                     byte[] byvalSizedBytes = new byte[byvalLength];
                     Array.Copy(byvalBytes, byvalSizedBytes, Math.Min(byvalBytes.Length, byvalSizedBytes.Length));
-                    return stream.Write(byvalSizedBytes);
+                    return Write(stream, byvalSizedBytes);
 
                 case UnmanagedType.LPStr:
                 case UnmanagedType.LPTStr: // Technically distinct; possibly not null-terminated
