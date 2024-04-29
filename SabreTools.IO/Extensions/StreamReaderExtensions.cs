@@ -469,7 +469,19 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a null-terminated Unicode string from the stream
+        /// Read a null-terminated UTF-8 string from the stream
+        /// </summary>
+        public static string? ReadNullTerminatedUTF8String(this Stream stream)
+        {
+            if (stream.Position >= stream.Length)
+                return null;
+
+            byte[] buffer = ReadUntilNullNarrow(stream);
+            return Encoding.UTF8.GetString(buffer);
+        }
+
+        /// <summary>
+        /// Read a null-terminated UTF-16 (Unicode) string from the stream
         /// </summary>
         public static string? ReadNullTerminatedUnicodeString(this Stream stream)
         {
@@ -713,36 +725,29 @@ namespace SabreTools.IO.Extensions
             switch (marshalAsAttr?.Value)
             {
                 case UnmanagedType.AnsiBStr:
-                    byte ansiLength = stream.ReadByteValue();
-                    byte[] ansiBytes = stream.ReadBytes(ansiLength);
-                    return Encoding.ASCII.GetString(ansiBytes);
+                    return stream.ReadPrefixedAnsiString();
 
                 case UnmanagedType.BStr:
                 case UnmanagedType.TBStr: // Technically distinct; returns char[] instead
-                    ushort bstrLength = stream.ReadUInt16();
-                    byte[] bstrBytes = stream.ReadBytes(bstrLength * 2);
-                    return Encoding.Unicode.GetString(bstrBytes);
+                    return stream.ReadPrefixedUnicodeString();
 
                 case UnmanagedType.ByValTStr:
-                    int byvalLength = marshalAsAttr.SizeConst;
+                    int byvalLength = marshalAsAttr!.SizeConst;
                     byte[] byvalBytes = stream.ReadBytes(byvalLength);
                     return encoding.GetString(byvalBytes);
 
                 case UnmanagedType.LPStr:
                 case UnmanagedType.LPTStr: // Technically distinct; possibly not null-terminated
                 case null:
-                    var lpstrBytes = ReadUntilNullNarrow(stream);
-                    return Encoding.ASCII.GetString(lpstrBytes);
+                    return stream.ReadNullTerminatedAnsiString();
 
 #if NET472_OR_GREATER || NETCOREAPP
                 case UnmanagedType.LPUTF8Str:
-                    var lputf8Str = ReadUntilNullNarrow(stream);
-                    return Encoding.UTF8.GetString(lputf8Str);
+                    return stream.ReadNullTerminatedUTF8String();
 #endif
 
                 case UnmanagedType.LPWStr:
-                    var lpwstrBytes = ReadUntilNullWide(stream);
-                    return Encoding.Unicode.GetString(lpwstrBytes);
+                    return stream.ReadNullTerminatedUnicodeString();
 
                 // No other string types are recognized
                 default:

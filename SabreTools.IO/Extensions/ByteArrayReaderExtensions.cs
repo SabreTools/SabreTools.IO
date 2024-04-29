@@ -485,7 +485,19 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a null-terminated Unicode string from the byte array
+        /// Read a null-terminated UTF-8 string from the byte array
+        /// </summary>
+        public static string? ReadNullTerminatedUTF8String(this byte[] content, ref int offset)
+        {
+            if (offset >= content.Length)
+                return null;
+
+            byte[] buffer = ReadUntilNullNarrow(content, ref offset);
+            return Encoding.UTF8.GetString(buffer);
+        }
+
+        /// <summary>
+        /// Read a null-terminated UTF-16 (Unicode) string from the byte array
         /// </summary>
         public static string? ReadNullTerminatedUnicodeString(this byte[] content, ref int offset)
         {
@@ -729,36 +741,29 @@ namespace SabreTools.IO.Extensions
             switch (marshalAsAttr?.Value)
             {
                 case UnmanagedType.AnsiBStr:
-                    byte ansiLength = content.ReadByteValue(ref offset);
-                    byte[] ansiBytes = content.ReadBytes(ref offset, ansiLength);
-                    return Encoding.ASCII.GetString(ansiBytes);
+                    return content.ReadPrefixedAnsiString(ref offset);
 
                 case UnmanagedType.BStr:
                 case UnmanagedType.TBStr: // Technically distinct; returns char[] instead
-                    ushort bstrLength = content.ReadUInt16(ref offset);
-                    byte[] bstrBytes = content.ReadBytes(ref offset, bstrLength * 2);
-                    return Encoding.Unicode.GetString(bstrBytes);
+                    return content.ReadPrefixedUnicodeString(ref offset);
 
                 case UnmanagedType.ByValTStr:
-                    int byvalLength = marshalAsAttr.SizeConst;
+                    int byvalLength = marshalAsAttr!.SizeConst;
                     byte[] byvalBytes = content.ReadBytes(ref offset, byvalLength);
                     return encoding.GetString(byvalBytes);
 
                 case UnmanagedType.LPStr:
                 case UnmanagedType.LPTStr: // Technically distinct; possibly not null-terminated
                 case null:
-                    var lpstrBytes = ReadUntilNullNarrow(content, ref offset);
-                    return Encoding.ASCII.GetString(lpstrBytes);
+                    return content.ReadNullTerminatedAnsiString(ref offset);
 
 #if NET472_OR_GREATER || NETCOREAPP
                 case UnmanagedType.LPUTF8Str:
-                    var lputf8Str = ReadUntilNullNarrow(content, ref offset);
-                    return Encoding.UTF8.GetString(lputf8Str);
+                    return content.ReadNullTerminatedUTF8String(ref offset);
 #endif
 
                 case UnmanagedType.LPWStr:
-                    var lpwstrBytes = ReadUntilNullWide(content, ref offset);
-                    return Encoding.Unicode.GetString(lpwstrBytes);
+                    return content.ReadNullTerminatedUnicodeString(ref offset);
 
                 // No other string types are recognized
                 default:
