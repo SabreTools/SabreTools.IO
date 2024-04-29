@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 #if NET7_0_OR_GREATER
 using System.Numerics;
 #endif
