@@ -571,12 +571,28 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a <typeparamref name="T"/> from the stream
         /// </summary>
+        /// <remarks>
+        /// This method is different than standard serialization in a few notable ways:
+        /// - Strings are read by value, not by reference
+        /// - Complex objects are read by value, not by reference
+        /// - Enumeration values are read by the underlying value type
+        /// - Arrays of the above are handled sequentially as above
+        /// - Inherited fields from parents are deserialized BEFORE fields in the child
+        /// </remarks>
         public static T? ReadType<T>(this Stream stream)
             => (T?)stream.ReadType(typeof(T));
 
         /// <summary>
         /// Read a <paramref name="type"/> from the stream
         /// </summary>
+        /// <remarks>
+        /// This method is different than standard serialization in a few notable ways:
+        /// - Strings are read by value, not by reference
+        /// - Complex objects are read by value, not by reference
+        /// - Enumeration values are read by the underlying value type
+        /// - Arrays of the above are handled sequentially as above
+        /// - Inherited fields from parents are deserialized BEFORE fields in the child
+        /// </remarks>
         public static object? ReadType(this Stream stream, Type type)
         {
             if (type.IsClass || (type.IsValueType && !type.IsEnum && !type.IsPrimitive))
