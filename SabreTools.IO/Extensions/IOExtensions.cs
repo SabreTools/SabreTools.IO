@@ -313,64 +313,126 @@ namespace SabreTools.IO.Extensions
         /// <inheritdoc cref="Directory.EnumerateDirectories(string)"/>
         public static IEnumerable<string> SafeEnumerateDirectories(this string path)
         {
-            var enumerable = Directory.EnumerateDirectories(path);
-            return enumerable.SafeEnumerate();
+            try
+            {
+                var enumerable = Directory.EnumerateDirectories(path);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
         }
 
         /// <inheritdoc cref="Directory.EnumerateDirectories(string, string)"/>
         public static IEnumerable<string> SafeEnumerateDirectories(this string path, string searchPattern)
         {
-            var enumerable = Directory.EnumerateDirectories(path, searchPattern);
-            return enumerable.SafeEnumerate();
+            try
+            {
+                var enumerable = Directory.EnumerateDirectories(path, searchPattern);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
         }
 
         /// <inheritdoc cref="Directory.EnumerateDirectories(string, string, SearchOption)"/>
         public static IEnumerable<string> SafeEnumerateDirectories(this string path, string searchPattern, SearchOption searchOption)
         {
-            var enumerable = Directory.EnumerateDirectories(path, searchPattern, searchOption);
-            return enumerable.SafeEnumerate();
+            try
+            {
+                var enumerable = Directory.EnumerateDirectories(path, searchPattern, searchOption);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
         }
 
         /// <inheritdoc cref="Directory.EnumerateFiles(string)"/>
         public static IEnumerable<string> SafeEnumerateFiles(this string path)
         {
-            var enumerable = Directory.EnumerateFiles(path);
-            return enumerable.SafeEnumerate();
+            try
+            {
+                var enumerable = Directory.EnumerateFiles(path);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
         }
 
         /// <inheritdoc cref="Directory.EnumerateFiles(string, string)"/>
         public static IEnumerable<string> SafeEnumerateFiles(this string path, string searchPattern)
         {
-            var enumerable = Directory.EnumerateFiles(path, searchPattern);
-            return enumerable.SafeEnumerate();
+            try
+            {
+                var enumerable = Directory.EnumerateFiles(path, searchPattern);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
         }
 
         /// <inheritdoc cref="Directory.EnumerateFiles(string, string, SearchOption)"/>
         public static IEnumerable<string> SafeEnumerateFiles(this string path, string searchPattern, SearchOption searchOption)
         {
-            var enumerable = Directory.EnumerateFiles(path, searchPattern, searchOption);
-            return enumerable.SafeEnumerate();
+            try
+            {
+                var enumerable = Directory.EnumerateFiles(path, searchPattern, searchOption);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
         }
 
         /// <inheritdoc cref="Directory.EnumerateFileSystemEntries(string)"/>
         public static IEnumerable<string> SafeEnumerateFileSystemEntries(this string path)
         {
-            var enumerable = Directory.EnumerateFileSystemEntries(path);
-            return enumerable.SafeEnumerate();
+            try
+            {
+                var enumerable = Directory.EnumerateFileSystemEntries(path);
+                return enumerable.SafeEnumerate();            }
+            catch
+            {
+                return [];
+            }
         }
 
         /// <inheritdoc cref="Directory.EnumerateFileSystemEntries(string, string)"/>
         public static IEnumerable<string> SafeEnumerateFileSystemEntries(this string path, string searchPattern)
         {
-            var enumerable = Directory.EnumerateFileSystemEntries(path, searchPattern);
-            return enumerable.SafeEnumerate();
+            try
+            {
+                var enumerable = Directory.EnumerateFileSystemEntries(path, searchPattern);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
         }
 
         /// <inheritdoc cref="Directory.EnumerateFileSystemEntries(string, string, SearchOption)"/>
         public static IEnumerable<string> SafeEnumerateFileSystemEntries(this string path, string searchPattern, SearchOption searchOption)
         {
-            var enumerable = Directory.EnumerateFileSystemEntries(path, searchPattern, searchOption);
-            return enumerable.SafeEnumerate();
+            try
+            {
+                var enumerable = Directory.EnumerateFileSystemEntries(path, searchPattern, searchOption);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
         }
 #endif
 
