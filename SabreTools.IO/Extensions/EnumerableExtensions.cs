@@ -11,7 +11,15 @@ namespace SabreTools.IO.Extensions
         public static IEnumerable<T> SafeEnumerate<T>(this IEnumerable<T> enumerable)
         {
             // Get the enumerator for the enumerable
-            var enumerator = enumerable.GetEnumerator();
+            IEnumerator<T> enumerator;
+            try
+            {
+                enumerator = enumerable.GetEnumerator();
+            }
+            catch
+            {
+                yield break;
+            }
 
             // Iterate through and absorb any errors
             while (true)
