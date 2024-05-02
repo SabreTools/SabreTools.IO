@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace SabreTools.IO.Extensions
@@ -20,6 +21,11 @@ namespace SabreTools.IO.Extensions
                 try
                 {
                     moved = enumerator.MoveNext();
+                }
+                catch (InvalidOperationException)
+                {
+                    // Specific case for collections that were modified
+                    moved = false;
                 }
                 catch
                 {
