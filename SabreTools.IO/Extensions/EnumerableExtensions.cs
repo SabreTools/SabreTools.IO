@@ -35,6 +35,11 @@ namespace SabreTools.IO.Extensions
                     // Specific case for collections that were modified
                     yield break;
                 }
+                catch (System.IO.IOException ex) when (ex.Message.Contains("The file or directory is corrupted and unreadable."))
+                {
+                    // Specific case we can't circumvent
+                    yield break;
+                }
                 catch
                 {
                     continue;

@@ -1,5 +1,11 @@
-﻿using System.Collections.Generic;
+﻿#if NETCOREAPP3_1_OR_GREATER
+using System;
+#endif
+using System.Collections.Generic;
 using System.IO;
+#if NETCOREAPP3_1_OR_GREATER
+using System.IO.Enumeration;
+#endif
 using System.Linq;
 using System.Text;
 
@@ -309,7 +315,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Calls <see cref="SafeGetFileSystemEntries(string, string, SearchOption)"/> implementation</remarks>
         public static IEnumerable<string> SafeEnumerateFileSystemEntries(this string path, string searchPattern, SearchOption searchOption)
             => path.SafeGetFileSystemEntries(searchPattern, searchOption);
-#else
+#elif NET40_OR_GREATER
         /// <inheritdoc cref="Directory.EnumerateDirectories(string)"/>
         public static IEnumerable<string> SafeEnumerateDirectories(this string path)
         {
@@ -400,7 +406,8 @@ namespace SabreTools.IO.Extensions
             try
             {
                 var enumerable = Directory.EnumerateFileSystemEntries(path);
-                return enumerable.SafeEnumerate();            }
+                return enumerable.SafeEnumerate();
+            }
             catch
             {
                 return [];
@@ -433,6 +440,171 @@ namespace SabreTools.IO.Extensions
             {
                 return [];
             }
+        }
+#else
+        /// <inheritdoc cref="Directory.EnumerateDirectories(string)"/>
+        public static IEnumerable<string> SafeEnumerateDirectories(this string path)
+        {
+            try
+            {
+                string searchPattern = "*";
+                SearchOption searchOption = SearchOption.TopDirectoryOnly;
+                var enumerationOptions = FromSearchOption(searchOption);
+                enumerationOptions.IgnoreInaccessible = true;
+                var enumerable = Directory.EnumerateDirectories(path, searchPattern, enumerationOptions);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+        /// <inheritdoc cref="Directory.EnumerateDirectories(string, string)"/>
+        public static IEnumerable<string> SafeEnumerateDirectories(this string path, string searchPattern)
+        {
+            try
+            {
+                SearchOption searchOption = SearchOption.TopDirectoryOnly;
+                var enumerationOptions = FromSearchOption(searchOption);
+                enumerationOptions.IgnoreInaccessible = true;
+                var enumerable = Directory.EnumerateDirectories(path, searchPattern, enumerationOptions);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+        /// <inheritdoc cref="Directory.EnumerateDirectories(string, string, SearchOption)"/>
+        public static IEnumerable<string> SafeEnumerateDirectories(this string path, string searchPattern, SearchOption searchOption)
+        {
+            try
+            {
+                var enumerationOptions = FromSearchOption(searchOption);
+                enumerationOptions.IgnoreInaccessible = true;
+                var enumerable = Directory.EnumerateDirectories(path, searchPattern, enumerationOptions);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+        /// <inheritdoc cref="Directory.EnumerateFiles(string)"/>
+        public static IEnumerable<string> SafeEnumerateFiles(this string path)
+        {
+            try
+            {
+                string searchPattern = "*";
+                SearchOption searchOption = SearchOption.TopDirectoryOnly;
+                var enumerationOptions = FromSearchOption(searchOption);
+                enumerationOptions.IgnoreInaccessible = true;
+                var enumerable = Directory.EnumerateFiles(path, searchPattern, enumerationOptions);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+        /// <inheritdoc cref="Directory.EnumerateFiles(string, string)"/>
+        public static IEnumerable<string> SafeEnumerateFiles(this string path, string searchPattern)
+        {
+            try
+            {
+                SearchOption searchOption = SearchOption.TopDirectoryOnly;
+                var enumerationOptions = FromSearchOption(searchOption);
+                enumerationOptions.IgnoreInaccessible = true;
+                var enumerable = Directory.EnumerateFiles(path, searchPattern, enumerationOptions);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+        /// <inheritdoc cref="Directory.EnumerateFiles(string, string, SearchOption)"/>
+        public static IEnumerable<string> SafeEnumerateFiles(this string path, string searchPattern, SearchOption searchOption)
+        {
+            try
+            {
+                var enumerationOptions = FromSearchOption(searchOption);
+                enumerationOptions.IgnoreInaccessible = true;
+                var enumerable = Directory.EnumerateFiles(path, searchPattern, enumerationOptions);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+        /// <inheritdoc cref="Directory.EnumerateFileSystemEntries(string)"/>
+        public static IEnumerable<string> SafeEnumerateFileSystemEntries(this string path)
+        {
+            try
+            {
+                string searchPattern = "*";
+                SearchOption searchOption = SearchOption.TopDirectoryOnly;
+                var enumerationOptions = FromSearchOption(searchOption);
+                enumerationOptions.IgnoreInaccessible = true;
+                var enumerable = Directory.EnumerateFileSystemEntries(path, searchPattern, enumerationOptions);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+        /// <inheritdoc cref="Directory.EnumerateFileSystemEntries(string, string)"/>
+        public static IEnumerable<string> SafeEnumerateFileSystemEntries(this string path, string searchPattern)
+        {
+            try
+            {
+                SearchOption searchOption = SearchOption.TopDirectoryOnly;
+                var enumerationOptions = FromSearchOption(searchOption);
+                enumerationOptions.IgnoreInaccessible = true;
+                var enumerable = Directory.EnumerateFileSystemEntries(path, searchPattern, enumerationOptions);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+        /// <inheritdoc cref="Directory.EnumerateFileSystemEntries(string, string, SearchOption)"/>
+        public static IEnumerable<string> SafeEnumerateFileSystemEntries(this string path, string searchPattern, SearchOption searchOption)
+        {
+            try
+            {
+                var enumerationOptions = FromSearchOption(searchOption);
+                enumerationOptions.IgnoreInaccessible = true;
+                var enumerable = Directory.EnumerateFileSystemEntries(path, searchPattern, enumerationOptions);
+                return enumerable.SafeEnumerate();
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="EnumerationOptions" /> class with the recommended default options.</summary>
+        /// <see href="https://github.com/dotnet/runtime/blob/main/src/libraries/System.Private.CoreLib/src/System/IO/EnumerationOptions.cs#L42"</remarks>
+        private static EnumerationOptions FromSearchOption(SearchOption searchOption)
+        {
+            if ((searchOption != SearchOption.TopDirectoryOnly) && (searchOption != SearchOption.AllDirectories))
+                throw new ArgumentOutOfRangeException(nameof(searchOption));
+
+            return searchOption == SearchOption.AllDirectories
+                ? new EnumerationOptions { RecurseSubdirectories = true, MatchType = MatchType.Win32, AttributesToSkip = 0, IgnoreInaccessible = false }
+                : new EnumerationOptions { MatchType = MatchType.Win32, AttributesToSkip = 0, IgnoreInaccessible = false };
         }
 #endif
 
