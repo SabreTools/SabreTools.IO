@@ -33,7 +33,7 @@ namespace SabreTools.IO.Extensions
                 catch (InvalidOperationException)
                 {
                     // Specific case for collections that were modified
-                    moved = false;
+                    yield break;
                 }
                 catch
                 {
