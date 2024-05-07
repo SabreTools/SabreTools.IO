@@ -457,7 +457,10 @@ namespace SabreTools.IO.Extensions
                 return writer.Write((Guid)value);
 #if NET6_0_OR_GREATER
             else if (type == typeof(Half))
-                return writer.Write((Half)value);
+            {
+                writer.Write((Half)value);
+                return true;
+            }    
 #endif
 #if NET7_0_OR_GREATER
             else if (type == typeof(Int128))
