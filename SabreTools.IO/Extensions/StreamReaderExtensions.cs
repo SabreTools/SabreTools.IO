@@ -606,6 +606,20 @@ namespace SabreTools.IO.Extensions
         /// </remarks>
         public static object? ReadType(this Stream stream, Type type)
         {
+            // Handle special struct cases
+            if (type == typeof(Guid))
+                return stream.ReadGuid();
+#if NET6_0_OR_GREATER
+            else if (type == typeof(Half))
+                return stream.ReadHalf();
+#endif
+#if NET7_0_OR_GREATER
+            else if (type == typeof(Int128))
+                return stream.ReadInt128();
+            else if (type == typeof(UInt128))
+                return stream.ReadUInt128();
+#endif
+
             if (type.IsClass || (type.IsValueType && !type.IsEnum && !type.IsPrimitive))
                 return ReadComplexType(stream, type);
             else if (type.IsValueType && type.IsEnum)

@@ -622,6 +622,20 @@ namespace SabreTools.IO.Extensions
         /// </remarks>
         public static object? ReadType(this byte[] content, ref int offset, Type type)
         {
+            // Handle special struct cases
+            if (type == typeof(Guid))
+                return content.ReadGuid(ref offset);
+#if NET6_0_OR_GREATER
+            else if (type == typeof(Half))
+                return content.ReadHalf(ref offset);
+#endif
+#if NET7_0_OR_GREATER
+            else if (type == typeof(Int128))
+                return content.ReadInt128(ref offset);
+            else if (type == typeof(UInt128))
+                return content.ReadUInt128(ref offset);
+#endif
+
             if (type.IsClass || (type.IsValueType && !type.IsEnum && !type.IsPrimitive))
                 return ReadComplexType(content, ref offset, type);
             else if (type.IsValueType && type.IsEnum)

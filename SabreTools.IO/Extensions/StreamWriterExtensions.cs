@@ -602,6 +602,24 @@ namespace SabreTools.IO.Extensions
         /// </remarks>
         public static bool WriteType(this Stream stream, object? value, Type type)
         {
+            // Null values cannot be written
+            if (value == null)
+                return true;
+
+            // Handle special struct cases
+            if (type == typeof(Guid))
+                return stream.Write((Guid)value);
+#if NET6_0_OR_GREATER
+            else if (type == typeof(Half))
+                return stream.Write((Half)value);
+#endif
+#if NET7_0_OR_GREATER
+            else if (type == typeof(Int128))
+                return stream.Write((Int128)value);
+            else if (type == typeof(UInt128))
+                return stream.Write((UInt128)value);
+#endif
+
             if (type.IsClass || (type.IsValueType && !type.IsEnum && !type.IsPrimitive))
                 return WriteComplexType(stream, value, type);
             else if (type.IsValueType && type.IsEnum)
