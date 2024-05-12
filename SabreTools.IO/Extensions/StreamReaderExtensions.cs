@@ -846,7 +846,7 @@ namespace SabreTools.IO.Extensions
         {
             // If we have an invalid length
             if (length < 0)
-                throw new ArgumentOutOfRangeException($"{nameof(length)} must be 0 or a positive value");
+                throw new ArgumentOutOfRangeException($"{nameof(length)} must be 0 or a positive value, {length} requested");
 
             // Handle the 0-byte case
             if (length == 0)
@@ -856,7 +856,7 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = new byte[length];
             int read = stream.Read(buffer, 0, length);
             if (read < length)
-                throw new EndOfStreamException($"Requested to read {nameof(length)} bytes from {nameof(stream)}, {read} returned");
+                throw new EndOfStreamException($"Requested to read {length} bytes from {nameof(stream)}, {read} returned");
 
             return buffer;
         }
