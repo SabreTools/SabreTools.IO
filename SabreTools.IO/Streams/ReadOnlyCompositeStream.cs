@@ -154,7 +154,7 @@ namespace SabreTools.IO.Streams
         public override int Read(byte[] buffer, int offset, int count)
         {
             // Determine which stream we start reading from
-            (int streamIndex, long streamOffset) = DetermineStreamIndex(_position);
+            int streamIndex = DetermineStreamIndex(_position, out long streamOffset);
             if (streamIndex == -1)
                 return 0;
 
@@ -233,12 +233,16 @@ namespace SabreTools.IO.Streams
         /// <summary>
         /// Determine the index of the stream that contains a particular offset
         /// </summary>
-        /// <returns>Index of the stream containing the offset and the real offset in the stream, (-1, -1) on error</returns>
-        private (int index, long realOffset) DetermineStreamIndex(long offset)
+        /// <param name="realOffset">Output parameter representing the real offset in the stream, -1 on error</param>
+        /// <returns>Index of the stream containing the offset, -1 on error</returns>
+        private int DetermineStreamIndex(long offset, out long realOffset)
         {
             // If the offset is out of bounds
             if (offset < 0 || offset >= _length)
-                return (-1, -1);
+            {
+                realOffset = -1;
+                return -1;
+            }
 
             // Seek through until we hit the correct offset
             long currentLength = 0;
@@ -247,13 +251,14 @@ namespace SabreTools.IO.Streams
                 currentLength += _streams[i].Length;
                 if (currentLength > offset)
                 {
-                    long realOffset = offset - (currentLength - _streams[i].Length);
-                    return (i, realOffset);
+                    realOffset = offset - (currentLength - _streams[i].Length);
+                    return i;
                 }
             }
 
             // Should never happen
-            return (-1, -1);
+            realOffset = -1;
+            return -1;
         }
 
         /// <summary>
