@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+#if NET40_OR_GREATER || NETCOREAPP
 using System.Linq;
+#endif
 using System.Text;
 
 namespace SabreTools.IO.Readers
@@ -118,7 +120,13 @@ namespace SabreTools.IO.Readers
 
                 // If the value field contains an '=', we need to put them back in
                 string key = data[0].Trim();
+#if NET20 || NET35
+                var valueArr = new string[data.Length - 1];
+                Array.Copy(data, 1, valueArr, 0, valueArr.Length);
+                string value = string.Join("=", valueArr).Trim();
+#else
                 string value = string.Join("=", data.Skip(1).ToArray()).Trim();
+#endif
 
                 KeyValuePair = new KeyValuePair<string, string>(key, value);
                 RowType = IniRowType.KeyValue;

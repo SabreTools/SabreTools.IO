@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+#if NET40_OR_GREATER || NETCOREAPP
 using System.Linq;
+#endif
 
 namespace SabreTools.IO.Streams
 {
@@ -110,7 +112,11 @@ namespace SabreTools.IO.Streams
         /// </summary>
         public ReadOnlyCompositeStream(IEnumerable<Stream> streams)
         {
+#if NET20 || NET35
+            _streams = new List<Stream>(streams);
+#else
             _streams = streams.ToList();
+#endif
             _length = 0;
             _position = 0;
 

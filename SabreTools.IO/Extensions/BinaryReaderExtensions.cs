@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+#if NET40_OR_GREATER || NETCOREAPP
 using System.Linq;
+#endif
 #if NET7_0_OR_GREATER
 using System.Numerics;
 #endif
@@ -638,7 +640,18 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         private static string? ReadStringType(BinaryReader reader, Encoding encoding, FieldInfo? fi)
         {
-            var marshalAsAttr = fi?.GetCustomAttributes(typeof(MarshalAsAttribute), true)?.FirstOrDefault() as MarshalAsAttribute;
+#if NET20 || NET35
+            var attributes = fi?.GetCustomAttributes(typeof(MarshalAsAttribute), true);
+            MarshalAsAttribute? marshalAsAttr;
+            if (attributes == null || attributes.Length == 0)
+                marshalAsAttr = default;
+            else
+                marshalAsAttr = attributes[0] as MarshalAsAttribute;
+#else
+            var marshalAsAttr = fi?
+                .GetCustomAttributes(typeof(MarshalAsAttribute), true)?
+                .FirstOrDefault() as MarshalAsAttribute;
+#endif
 
             switch (marshalAsAttr?.Value)
             {

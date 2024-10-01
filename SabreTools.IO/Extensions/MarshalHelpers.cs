@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+#if NET40_OR_GREATER || NETCOREAPP
 using System.Linq;
+#endif
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -27,7 +29,7 @@ namespace SabreTools.IO.Extensions
                 return null;
 
             // Get the first attribute that matches
-            return attributes.First() as T;
+            return attributes[0] as T;
         }
 
         /// <summary>
@@ -45,7 +47,7 @@ namespace SabreTools.IO.Extensions
                 return null;
 
             // Get the first attribute that matches
-            return attributes.First() as T;
+            return attributes[0] as T;
         }
 
         /// <summary>
@@ -115,7 +117,21 @@ namespace SabreTools.IO.Extensions
                 var nextFields = nextType.GetFields();
                 foreach (var field in nextFields)
                 {
+#if NET20 || NET35
+                    bool any = false;
+                    foreach (var f in fieldsList)
+                    {
+                        if (f.Name == field.Name && f.FieldType == field.FieldType)
+                        {
+                            any = true;
+                            break;
+                        }
+                    }
+
+                    if (!any)
+#else
                     if (!fieldsList.Any(f => f.Name == field.Name && f.FieldType == field.FieldType))
+#endif
                         fieldsList.Add(field);
                 }
             }

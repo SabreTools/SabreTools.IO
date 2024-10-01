@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+#if NET40_OR_GREATER || NETCOREAPP
 using System.Linq;
+#endif
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -295,11 +297,22 @@ namespace SabreTools.IO.Readers
             s = s.Trim();
 
             // Now we get each string, divided up as cleanly as possible
+#if NET20 || NET35
+            var matchList = Regex.Matches(s, InternalPatternAttributesCMP);
+            var matchStrings = new List<string>();
+            foreach (Match m in matchList)
+            {
+                matchStrings.Add(m.Groups[0].Value);
+            }
+
+            string[] matches = matchStrings.ToArray();
+#else
             string[] matches = Regex
                 .Matches(s, InternalPatternAttributesCMP)
                 .Cast<Match>()
                 .Select(m => m.Groups[0].Value)
                 .ToArray();
+#endif
 
             return matches;
         }

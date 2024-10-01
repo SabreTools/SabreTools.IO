@@ -3,10 +3,9 @@ using System;
 #endif
 using System.Collections.Generic;
 using System.IO;
-#if NETCOREAPP3_1_OR_GREATER
-using System.IO.Enumeration;
-#endif
+#if NET40_OR_GREATER || NETCOREAPP
 using System.Linq;
+#endif
 using System.Text;
 
 namespace SabreTools.IO.Extensions
@@ -124,13 +123,28 @@ namespace SabreTools.IO.Extensions
                 return null;
 
             // If it does and it is empty, return a blank enumerable
+#if NET20 || NET35
+            if (new List<string>(root!.SafeEnumerateFileSystemEntries("*", SearchOption.AllDirectories)).Count == 0)
+#else
             if (!root!.SafeEnumerateFileSystemEntries("*", SearchOption.AllDirectories).Any())
+#endif
                 return [];
 
             // Otherwise, get the complete list
+#if NET20 || NET35
+            var empty = new List<string>();
+            foreach (var dir in root!.SafeEnumerateDirectories("*", SearchOption.AllDirectories))
+            {
+                if (new List<string>(dir!.SafeEnumerateFileSystemEntries("*", SearchOption.AllDirectories)).Count == 0)
+                    empty.Add(dir);
+            }
+
+            return empty;
+#else
             return root!.SafeEnumerateDirectories("*", SearchOption.AllDirectories)
                 .Where(dir => !dir.SafeEnumerateFileSystemEntries("*", SearchOption.AllDirectories).Any())
                 .ToList();
+#endif
         }
 
         #region Safe Directory Enumeration

@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+#if NET40_OR_GREATER || NETCOREAPP
 using System.Linq;
+#endif
 using System.Text;
 using SabreTools.IO.Readers;
 using SabreTools.IO.Writers;
@@ -179,7 +181,17 @@ namespace SabreTools.IO
                 using IniWriter writer = new(stream, Encoding.UTF8);
 
                 // Order the dictionary by keys to link sections together
+#if NET20 || NET35
+                var orderedKeyValuePairs = new List<KeyValuePair<string, string?>>();
+                foreach (var kvp in _keyValuePairs)
+                {
+                    orderedKeyValuePairs.Add(kvp);
+                }
+
+                orderedKeyValuePairs.Sort((x, y) => x.Key.CompareTo(y.Key));
+#else
                 var orderedKeyValuePairs = _keyValuePairs.OrderBy(kvp => kvp.Key);
+#endif
 
                 string section = string.Empty;
                 foreach (var keyValuePair in orderedKeyValuePairs)
@@ -196,7 +208,13 @@ namespace SabreTools.IO
 
                         // If the key contains an '.', we need to put them back in
                         string newSection = data[0].Trim();
+#if NET20 || NET35
+                        string[] dataKey = new string[data.Length - 1];
+                        Array.Copy(data, 1, dataKey, 0, dataKey.Length);
+                        key = string.Join(".", dataKey).Trim();
+#else
                         key = string.Join(".", data.Skip(1).ToArray()).Trim();
+#endif
 
                         // If we have a new section, write it out
                         if (!string.Equals(newSection, section, StringComparison.OrdinalIgnoreCase))
@@ -221,9 +239,39 @@ namespace SabreTools.IO
 
         #region IDictionary Impelementations
 
+#if NET20 || NET35
+        public ICollection<string> Keys
+        {
+            get
+            {
+                var keys = _keyValuePairs?.Keys;
+                if (keys == null || keys.Count == 0)
+                    return [];
+                
+                var keyArr = new string[keys.Count];
+                keys.CopyTo(keyArr, 0);
+                return keyArr;
+            }
+        }
+
+        public ICollection<string?> Values
+        {
+            get
+            {
+                var values = _keyValuePairs?.Values;
+                if (values == null || values.Count == 0)
+                    return [];
+                
+                var valueArr = new string[values.Count];
+                values.CopyTo(valueArr, 0);
+                return valueArr;
+            }
+        }
+#else
         public ICollection<string> Keys => _keyValuePairs?.Keys?.ToArray() ?? [];
 
         public ICollection<string?> Values => _keyValuePairs?.Values?.ToArray() ?? [];
+#endif
 
         public int Count => (_keyValuePairs as ICollection<KeyValuePair<string, string>>)?.Count ?? 0;
 
