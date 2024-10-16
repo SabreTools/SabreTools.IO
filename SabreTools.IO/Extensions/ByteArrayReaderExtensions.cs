@@ -105,6 +105,19 @@ namespace SabreTools.IO.Extensions
             return BitConverter.ToUInt16(buffer, 0);
         }
 
+        /// <summary>
+        /// Read a WORD (2-byte) and increment the pointer to an array
+        /// </summary>
+        public static ushort ReadWORD(this byte[] content, ref int offset)
+            => content.ReadUInt16(ref offset);
+
+        /// <summary>
+        /// Read a WORD (2-byte) and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static ushort ReadWORDBigEndian(this byte[] content, ref int offset)
+            => content.ReadUInt16BigEndian(ref offset);
+
         // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
 #if NET6_0_OR_GREATER
         /// <summary>
@@ -219,6 +232,19 @@ namespace SabreTools.IO.Extensions
             Array.Reverse(buffer);
             return BitConverter.ToUInt32(buffer, 0);
         }
+
+        /// <summary>
+        /// Read a DWORD (4-byte) and increment the pointer to an array
+        /// </summary>
+        public static uint ReadDWORD(this byte[] content, ref int offset)
+            => content.ReadUInt32(ref offset);
+
+        /// <summary>
+        /// Read a DWORD (4-byte) and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static uint ReadDWORDBigEndian(this byte[] content, ref int offset)
+            => content.ReadUInt32BigEndian(ref offset);
 
         /// <summary>
         /// Read a Single and increment the pointer to an array
