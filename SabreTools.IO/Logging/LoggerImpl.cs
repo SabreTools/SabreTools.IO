@@ -258,7 +258,7 @@ namespace SabreTools.IO.Logging
 
             // USER and ERROR writes to console
             if (loglevel == LogLevel.USER || loglevel == LogLevel.ERROR)
-                Console.WriteLine((loglevel == LogLevel.ERROR && AppendPrefix ? loglevel.ToString() + " " : string.Empty) + output);
+                Console.WriteLine((loglevel == LogLevel.ERROR && AppendPrefix ? loglevel.FromLogLevel() + " " : string.Empty) + output);
 
             // If we're writing to file, use the existing stream
             if (LogToFile)
@@ -267,7 +267,7 @@ namespace SabreTools.IO.Logging
                 {
                     lock (_lock)
                     {
-                        _log?.WriteLine((AppendPrefix ? $"{loglevel} - {DateTime.Now} - " : string.Empty) + output);
+                        _log?.WriteLine((AppendPrefix ? $"{loglevel.FromLogLevel()} - {DateTime.Now} - " : string.Empty) + output);
                     }
                 }
                 catch (Exception ex) when (ThrowOnError)
