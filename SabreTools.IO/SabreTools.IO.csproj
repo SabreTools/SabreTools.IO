@@ -8,7 +8,6 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Version>1.4.12</Version>
-    <WarningsNotAsErrors>CS0618</WarningsNotAsErrors>
 
     <!-- Package Properties -->
     <Authors>Matt Nadareski</Authors>

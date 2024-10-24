@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 
+#pragma warning disable CS0618 // Obsolete unmanaged types
 namespace SabreTools.IO.Test.Extensions
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]

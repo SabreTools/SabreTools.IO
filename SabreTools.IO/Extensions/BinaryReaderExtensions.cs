@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
+#pragma warning disable CS0618 // Obsolete unmanaged types
 namespace SabreTools.IO.Extensions
 {
     /// <summary>
