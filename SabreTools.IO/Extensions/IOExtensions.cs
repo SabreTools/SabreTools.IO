@@ -3,9 +3,6 @@ using System;
 #endif
 using System.Collections.Generic;
 using System.IO;
-#if NET40_OR_GREATER || NETCOREAPP
-using System.Linq;
-#endif
 using System.Text;
 
 namespace SabreTools.IO.Extensions
@@ -115,48 +112,33 @@ namespace SabreTools.IO.Extensions
         public static List<string>? ListEmpty(this string? root)
         {
             // Check null or empty first
-            if (string.IsNullOrEmpty(root))
+            if (root == null)
                 return null;
 
             // Then, check if the root exists
             if (!Directory.Exists(root))
                 return null;
 
-            // If it does and it is empty, return a blank enumerable
-#if NET20 || NET35
-            if (new List<string>(root!.SafeEnumerateFileSystemEntries("*", SearchOption.AllDirectories)).Count == 0)
-#else
-            if (!root!.SafeEnumerateFileSystemEntries("*", SearchOption.AllDirectories).Any())
-#endif
-                return [];
-
             // Otherwise, get the complete list
-#if NET20 || NET35
             var empty = new List<string>();
-            foreach (var dir in root!.SafeEnumerateDirectories("*", SearchOption.AllDirectories))
+            foreach (var dir in SafeGetDirectories(root, "*", SearchOption.AllDirectories))
             {
-                if (new List<string>(dir!.SafeEnumerateFileSystemEntries("*", SearchOption.AllDirectories)).Count == 0)
+                if (SafeGetFiles(dir).Length == 0)
                     empty.Add(dir);
             }
 
             return empty;
-#else
-            return root!.SafeEnumerateDirectories("*", SearchOption.AllDirectories)
-                .Where(dir => !dir.SafeEnumerateFileSystemEntries("*", SearchOption.AllDirectories).Any())
-                .ToList();
-#endif
         }
 
         #region Safe Directory Enumeration
 
         /// <inheritdoc cref="Directory.GetDirectories(string)"/>
         /// <remarks>Returns an empty enumerable on any exception</remarks>
-        public static IEnumerable<string> SafeGetDirectories(this string path)
+        public static string[] SafeGetDirectories(this string path)
         {
             try
             {
-                var enumerable = Directory.GetDirectories(path);
-                return enumerable.SafeEnumerate();
+                return Directory.GetDirectories(path);
             }
             catch
             {
@@ -166,12 +148,11 @@ namespace SabreTools.IO.Extensions
 
         /// <inheritdoc cref="Directory.GetDirectories(string, string)"/>
         /// <remarks>Returns an empty enumerable on any exception</remarks>
-        public static IEnumerable<string> SafeGetDirectories(this string path, string searchPattern)
+        public static string[] SafeGetDirectories(this string path, string searchPattern)
         {
             try
             {
-                var enumerable = Directory.GetDirectories(path, searchPattern);
-                return enumerable.SafeEnumerate();
+                return Directory.GetDirectories(path, searchPattern);
             }
             catch
             {
@@ -181,12 +162,11 @@ namespace SabreTools.IO.Extensions
 
         /// <inheritdoc cref="Directory.GetDirectories(string, string, SearchOption)"/>
         /// <remarks>Returns an empty enumerable on any exception</remarks>
-        public static IEnumerable<string> SafeGetDirectories(this string path, string searchPattern, SearchOption searchOption)
+        public static string[] SafeGetDirectories(this string path, string searchPattern, SearchOption searchOption)
         {
             try
             {
-                var enumerable = Directory.GetDirectories(path, searchPattern, searchOption);
-                return enumerable.SafeEnumerate();
+                return Directory.GetDirectories(path, searchPattern, searchOption);
             }
             catch
             {
@@ -196,12 +176,11 @@ namespace SabreTools.IO.Extensions
 
         /// <inheritdoc cref="Directory.GetFiles(string)"/>
         /// <remarks>Returns an empty enumerable on any exception</remarks>
-        public static IEnumerable<string> SafeGetFiles(this string path)
+        public static string[] SafeGetFiles(this string path)
         {
             try
             {
-                var enumerable = Directory.GetFiles(path);
-                return enumerable.SafeEnumerate();
+                return Directory.GetFiles(path);
             }
             catch
             {
@@ -211,12 +190,11 @@ namespace SabreTools.IO.Extensions
 
         /// <inheritdoc cref="Directory.GetFiles(string, string)"/>
         /// <remarks>Returns an empty enumerable on any exception</remarks>
-        public static IEnumerable<string> SafeGetFiles(this string path, string searchPattern)
+        public static string[] SafeGetFiles(this string path, string searchPattern)
         {
             try
             {
-                var enumerable = Directory.GetFiles(path, searchPattern);
-                return enumerable.SafeEnumerate();
+                return Directory.GetFiles(path, searchPattern);
             }
             catch
             {
@@ -226,12 +204,11 @@ namespace SabreTools.IO.Extensions
 
         /// <inheritdoc cref="Directory.GetFiles(string, string, SearchOption)"/>
         /// <remarks>Returns an empty enumerable on any exception</remarks>
-        public static IEnumerable<string> SafeGetFiles(this string path, string searchPattern, SearchOption searchOption)
+        public static string[] SafeGetFiles(this string path, string searchPattern, SearchOption searchOption)
         {
             try
             {
-                var enumerable = Directory.GetFiles(path, searchPattern, searchOption);
-                return enumerable.SafeEnumerate();
+                return Directory.GetFiles(path, searchPattern, searchOption);
             }
             catch
             {
@@ -241,12 +218,11 @@ namespace SabreTools.IO.Extensions
 
         /// <inheritdoc cref="Directory.GetFileSystemEntries(string)"/>
         /// <remarks>Returns an empty enumerable on any exception</remarks>
-        public static IEnumerable<string> SafeGetFileSystemEntries(this string path)
+        public static string[] SafeGetFileSystemEntries(this string path)
         {
             try
             {
-                var enumerable = Directory.GetFileSystemEntries(path);
-                return enumerable.SafeEnumerate();
+                return Directory.GetFileSystemEntries(path);
             }
             catch
             {

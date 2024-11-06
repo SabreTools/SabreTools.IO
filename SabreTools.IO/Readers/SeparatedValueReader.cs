@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-#if NET40_OR_GREATER || NETCOREAPP
-using System.Linq;
-#endif
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -126,11 +123,7 @@ namespace SabreTools.IO.Readers
                 // https://stackoverflow.com/questions/3776458/split-a-comma-separated-string-with-both-quoted-and-unquoted-strings
                 var lineSplitRegex = new Regex($"(?:^|{Separator})(\"(?:[^\"]+|\"\")*\"|[^{Separator}]*)");
                 var temp = new List<string>();
-#if NET20 || NET35
                 foreach (Match? match in lineSplitRegex.Matches(fullLine))
-#else
-                foreach (Match? match in lineSplitRegex.Matches(fullLine).Cast<Match?>())
-#endif
                 {
                     string? curr = match?.Value;
                     if (curr == null)
@@ -149,17 +142,9 @@ namespace SabreTools.IO.Readers
             // Otherwise, just split on the delimiter
             else
             {
-#if NET20 || NET35
-                Line = new List<string>();
-                foreach (string f in fullLine.Split(Separator))
-                {
-                    Line.Add(f.Trim());
-                }
-#else
-                Line = fullLine.Split(Separator)
-                    .Select(f => f.Trim())
-                    .ToList();
-#endif
+                var lineArr = fullLine.Split(Separator);
+                lineArr = Array.ConvertAll(lineArr, f => f.Trim());
+                Line = [.. lineArr];
             }
 
             // If we don't have a header yet and are expecting one, read this as the header

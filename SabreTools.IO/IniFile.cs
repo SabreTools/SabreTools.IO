@@ -2,9 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-#if NET40_OR_GREATER || NETCOREAPP
-using System.Linq;
-#endif
 using System.Text;
 using SabreTools.IO.Readers;
 using SabreTools.IO.Writers;
@@ -16,13 +13,12 @@ namespace SabreTools.IO
     /// </summary>
     public class IniFile : IDictionary<string, string?>
     {
-        private Dictionary<string, string?>? _keyValuePairs = [];
+        private readonly Dictionary<string, string?> _keyValuePairs = [];
 
         public string? this[string? key]
         {
             get
             {
-                _keyValuePairs ??= [];
                 key = key?.ToLowerInvariant() ?? string.Empty;
                 if (_keyValuePairs.ContainsKey(key))
                     return _keyValuePairs[key];
@@ -31,7 +27,6 @@ namespace SabreTools.IO
             }
             set
             {
-                _keyValuePairs ??= [];
                 key = key?.ToLowerInvariant() ?? string.Empty;
                 _keyValuePairs[key] = value;
             }
@@ -49,7 +44,7 @@ namespace SabreTools.IO
         /// </summary>
         public IniFile(string path)
         {
-            this.Parse(path);
+            Parse(path);
         }
 
         /// <summary>
@@ -57,7 +52,7 @@ namespace SabreTools.IO
         /// </summary>
         public IniFile(Stream stream)
         {
-            this.Parse(stream);
+            Parse(stream);
         }
 
         /// <summary>
@@ -73,7 +68,7 @@ namespace SabreTools.IO
         /// </summary>
         public bool Remove(string key)
         {
-            if (_keyValuePairs != null && _keyValuePairs.ContainsKey(key))
+            if (_keyValuePairs.ContainsKey(key))
             {
                 _keyValuePairs.Remove(key.ToLowerInvariant());
                 return true;
@@ -156,7 +151,7 @@ namespace SabreTools.IO
         public bool Write(string path)
         {
             // If we don't have a valid dictionary with values, we can't write out
-            if (_keyValuePairs == null || _keyValuePairs.Count == 0)
+            if (_keyValuePairs.Count == 0)
                 return false;
 
             using var fileStream = File.OpenWrite(path);
@@ -169,7 +164,7 @@ namespace SabreTools.IO
         public bool Write(Stream stream)
         {
             // If we don't have a valid dictionary with values, we can't write out
-            if (_keyValuePairs == null || _keyValuePairs.Count == 0)
+            if (_keyValuePairs.Count == 0)
                 return false;
 
             // If the stream is invalid or unwritable, we can't output to it
@@ -180,41 +175,29 @@ namespace SabreTools.IO
             {
                 using IniWriter writer = new(stream, Encoding.UTF8);
 
-                // Order the dictionary by keys to link sections together
-#if NET20 || NET35
-                var orderedKeyValuePairs = new List<KeyValuePair<string, string?>>();
-                foreach (var kvp in _keyValuePairs)
-                {
-                    orderedKeyValuePairs.Add(kvp);
-                }
-
-                orderedKeyValuePairs.Sort((x, y) => x.Key.CompareTo(y.Key));
-#else
-                var orderedKeyValuePairs = _keyValuePairs.OrderBy(kvp => kvp.Key);
-#endif
+                // Order the keys to link sections together
+                var orderedKeys = new string[_keyValuePairs.Keys.Count];
+                _keyValuePairs.Keys.CopyTo(orderedKeys, 0);
+                Array.Sort(orderedKeys);
 
                 string section = string.Empty;
-                foreach (var keyValuePair in orderedKeyValuePairs)
+                for (int i = 0; i < orderedKeys.Length; i++)
                 {
-                    // Extract the key and value
-                    string key = keyValuePair.Key;
-                    string? value = keyValuePair.Value;
+                    // Retrive the key and value
+                    string key = orderedKeys[i];
+                    string? value = _keyValuePairs[key];
 
                     // We assume '.' is a section name separator
                     if (key.Contains("."))
                     {
                         // Split the key by '.'
-                        string[] data = keyValuePair.Key.Split('.');
+                        string[] data = key.Split('.');
 
                         // If the key contains an '.', we need to put them back in
                         string newSection = data[0].Trim();
-#if NET20 || NET35
-                        string[] dataKey = new string[data.Length - 1];
-                        Array.Copy(data, 1, dataKey, 0, dataKey.Length);
-                        key = string.Join(".", dataKey).Trim();
-#else
-                        key = string.Join(".", data.Skip(1).ToArray()).Trim();
-#endif
+                        string[] keyArr = new string[data.Length - 1];
+                        Array.Copy(data, 1, keyArr, 0, keyArr.Length);
+                        key = string.Join(".", keyArr).Trim();
 
                         // If we have a new section, write it out
                         if (!string.Equals(newSection, section, StringComparison.OrdinalIgnoreCase))
@@ -239,39 +222,9 @@ namespace SabreTools.IO
 
         #region IDictionary Impelementations
 
-#if NET20 || NET35
-        public ICollection<string> Keys
-        {
-            get
-            {
-                var keys = _keyValuePairs?.Keys;
-                if (keys == null || keys.Count == 0)
-                    return [];
-                
-                var keyArr = new string[keys.Count];
-                keys.CopyTo(keyArr, 0);
-                return keyArr;
-            }
-        }
+        public ICollection<string> Keys => _keyValuePairs.Keys;
 
-        public ICollection<string?> Values
-        {
-            get
-            {
-                var values = _keyValuePairs?.Values;
-                if (values == null || values.Count == 0)
-                    return [];
-                
-                var valueArr = new string[values.Count];
-                values.CopyTo(valueArr, 0);
-                return valueArr;
-            }
-        }
-#else
-        public ICollection<string> Keys => _keyValuePairs?.Keys?.ToArray() ?? [];
-
-        public ICollection<string?> Values => _keyValuePairs?.Values?.ToArray() ?? [];
-#endif
+        public ICollection<string?> Values => _keyValuePairs.Values;
 
         public int Count => (_keyValuePairs as ICollection<KeyValuePair<string, string>>)?.Count ?? 0;
 
