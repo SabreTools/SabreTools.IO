@@ -1,7 +1,4 @@
-﻿#if NETCOREAPP3_1_OR_GREATER
-using System;
-#endif
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -58,7 +55,7 @@ namespace SabreTools.IO.Extensions
 
                 // Read the BOM
                 var bom = new byte[4];
-                file.Read(bom, 0, 4);
+                int read = file.Read(bom, 0, 4);
                 file.Dispose();
 
                 // Disable warning about UTF7 usage
@@ -590,7 +587,7 @@ namespace SabreTools.IO.Extensions
         private static EnumerationOptions FromSearchOption(SearchOption searchOption)
         {
             if ((searchOption != SearchOption.TopDirectoryOnly) && (searchOption != SearchOption.AllDirectories))
-                throw new ArgumentOutOfRangeException(nameof(searchOption));
+                throw new System.ArgumentOutOfRangeException(nameof(searchOption));
 
             return searchOption == SearchOption.AllDirectories
                 ? new EnumerationOptions { RecurseSubdirectories = true, MatchType = MatchType.Win32, AttributesToSkip = 0, IgnoreInaccessible = false }
