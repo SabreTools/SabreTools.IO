@@ -54,44 +54,10 @@ namespace SabreTools.IO.Streams
         }
 
         /// <summary>
-        /// Read a single bit little-endian, if possible
+        /// Read a single bit, if possible
         /// </summary>
         /// <returns>The next bit encoded in a byte, null on error or end of stream</returns>
-        public byte? ReadBitLE()
-        {
-            // If we reached the end of the stream
-            if (_source.Position >= _source.Length)
-                return null;
-
-            // If we don't have a value cached
-            if (_bitBuffer == null)
-            {
-                // Read the next byte, if possible
-                _bitBuffer = ReadSourceByte();
-                if (_bitBuffer == null)
-                    return null;
-
-                // Reset the bit index
-                _bitIndex = 0;
-            }
-
-            // Get the value by bit-shifting
-            int value = _bitBuffer.Value >> 7;
-            _bitBuffer = (byte?)(_bitBuffer << 1);
-            _bitIndex++;
-
-            // Reset the byte if we're at the end
-            if (_bitIndex >= 8)
-                Discard();
-
-            return (byte)value;
-        }
-
-        /// <summary>
-        /// Read a single bit big-endian, if possible
-        /// </summary>
-        /// <returns>The next bit encoded in a byte, null on error or end of stream</returns>
-        public byte? ReadBitBE()
+        public byte? ReadBit()
         {
             // If we reached the end of the stream
             if (_source.Position >= _source.Length)
@@ -131,7 +97,7 @@ namespace SabreTools.IO.Streams
             for (int i = 0; i < bits; i++)
             {
                 // Read the next bit
-                byte? bitValue = ReadBitLE();
+                byte? bitValue = ReadBit();
                 if (bitValue == null)
                     return null;
 
@@ -152,7 +118,7 @@ namespace SabreTools.IO.Streams
             for (int i = 0; i < bits; i++)
             {
                 // Read the next bit
-                byte? bitValue = ReadBitBE();
+                byte? bitValue = ReadBit();
                 if (bitValue == null)
                     return null;
 

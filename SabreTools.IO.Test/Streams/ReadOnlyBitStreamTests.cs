@@ -19,22 +19,11 @@ namespace SabreTools.IO.Test.Streams
         }
 
         [Fact]
-        public void ReadSingleBitLETest()
-        {
-            byte[] data = [0b01010101];
-            var stream = new ReadOnlyBitStream(new MemoryStream(data));
-            byte? bit = stream.ReadBitLE();
-            Assert.NotNull(bit);
-            Assert.Equal((byte)0b00000000, bit);
-            Assert.Equal(1, stream.Position);
-        }
-
-        [Fact]
         public void ReadSingleBitBETest()
         {
             byte[] data = [0b01010101];
             var stream = new ReadOnlyBitStream(new MemoryStream(data));
-            byte? bit = stream.ReadBitBE();
+            byte? bit = stream.ReadBit();
             Assert.NotNull(bit);
             Assert.Equal((byte)0b00000001, bit);
             Assert.Equal(1, stream.Position);
