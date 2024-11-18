@@ -91,6 +91,7 @@ namespace SabreTools.IO.Streams
         /// Read a multiple bits in little-endian, if possible
         /// </summary>
         /// <returns>The next bits encoded in a UInt32, null on error or end of stream</returns>
+        /// <remarks>[76543210] order within a byte, appended to output [76543210]</remarks>
         public uint? ReadBitsLE(int bits)
         {
             uint value = 0;
@@ -101,8 +102,8 @@ namespace SabreTools.IO.Streams
                 if (bitValue == null)
                     return null;
 
-                // Add the bit shifted by the current index
-                value += (uint)(bitValue.Value << i);
+                // Append the bit shifted by the current index
+                value |= (uint)(bitValue.Value << i);
             }
 
             return value;
@@ -112,6 +113,7 @@ namespace SabreTools.IO.Streams
         /// Read a multiple bits in big-endian, if possible
         /// </summary>
         /// <returns>The next bits encoded in a UInt32, null on error or end of stream</returns>
+        /// <remarks>[76543210] order within a byte, appended to output [01234567]</remarks>
         public uint? ReadBitsBE(int bits)
         {
             uint value = 0;
@@ -122,8 +124,8 @@ namespace SabreTools.IO.Streams
                 if (bitValue == null)
                     return null;
 
-                // Add the bit shifted by the current index
-                value = (value << 1) + bitValue.Value;
+                // Append the bit shifted by the current index
+                value = (value << 1) | bitValue.Value;
             }
 
             return value;
