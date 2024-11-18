@@ -57,7 +57,7 @@ namespace SabreTools.IO.Streams
         /// Read a single bit little-endian, if possible
         /// </summary>
         /// <returns>The next bit encoded in a byte, null on error or end of stream</returns>
-        public byte? ReadBitLSB()
+        public byte? ReadBitLE()
         {
             // If we reached the end of the stream
             if (_source.Position >= _source.Length)
@@ -91,7 +91,7 @@ namespace SabreTools.IO.Streams
         /// Read a single bit big-endian, if possible
         /// </summary>
         /// <returns>The next bit encoded in a byte, null on error or end of stream</returns>
-        public byte? ReadBitMSB()
+        public byte? ReadBitBE()
         {
             // If we reached the end of the stream
             if (_source.Position >= _source.Length)
@@ -122,16 +122,16 @@ namespace SabreTools.IO.Streams
         }
 
         /// <summary>
-        /// Read a multiple bits in LSB, if possible
+        /// Read a multiple bits in little-endian, if possible
         /// </summary>
         /// <returns>The next bits encoded in a UInt32, null on error or end of stream</returns>
-        public uint? ReadBitsLSB(int bits)
+        public uint? ReadBitsLE(int bits)
         {
             uint value = 0;
             for (int i = 0; i < bits; i++)
             {
                 // Read the next bit
-                byte? bitValue = ReadBitLSB();
+                byte? bitValue = ReadBitLE();
                 if (bitValue == null)
                     return null;
 
@@ -143,16 +143,16 @@ namespace SabreTools.IO.Streams
         }
 
         /// <summary>
-        /// Read a multiple bits in MSB, if possible
+        /// Read a multiple bits in big-endian, if possible
         /// </summary>
         /// <returns>The next bits encoded in a UInt32, null on error or end of stream</returns>
-        public uint? ReadBitsMSB(int bits)
+        public uint? ReadBitsBE(int bits)
         {
             uint value = 0;
             for (int i = 0; i < bits; i++)
             {
                 // Read the next bit
-                byte? bitValue = ReadBitMSB();
+                byte? bitValue = ReadBitBE();
                 if (bitValue == null)
                     return null;
 

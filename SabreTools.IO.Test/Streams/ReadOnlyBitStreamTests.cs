@@ -19,44 +19,44 @@ namespace SabreTools.IO.Test.Streams
         }
 
         [Fact]
-        public void ReadSingleBitLSBTest()
+        public void ReadSingleBitLETest()
         {
             byte[] data = [0b01010101];
             var stream = new ReadOnlyBitStream(new MemoryStream(data));
-            byte? bit = stream.ReadBitLSB();
+            byte? bit = stream.ReadBitLE();
             Assert.NotNull(bit);
             Assert.Equal((byte)0b00000000, bit);
             Assert.Equal(1, stream.Position);
         }
 
         [Fact]
-        public void ReadSingleBitMSBTest()
+        public void ReadSingleBitBETest()
         {
             byte[] data = [0b01010101];
             var stream = new ReadOnlyBitStream(new MemoryStream(data));
-            byte? bit = stream.ReadBitMSB();
+            byte? bit = stream.ReadBitBE();
             Assert.NotNull(bit);
             Assert.Equal((byte)0b00000001, bit);
             Assert.Equal(1, stream.Position);
         }
 
         [Fact]
-        public void ReadBitsLSBTest()
+        public void ReadBitsLETest()
         {
             byte[] data = [0b01010101, 0b01010101, 0b01010101, 0b01010101];
             var stream = new ReadOnlyBitStream(new MemoryStream(data));
-            uint? bits = stream.ReadBitsLSB(4);
+            uint? bits = stream.ReadBitsLE(4);
             Assert.NotNull(bits);
             Assert.Equal((byte)0b00001010, bits); // Transcribed to big-endian
             Assert.Equal(1, stream.Position);
         }
 
         [Fact]
-        public void ReadBitsMSBTest()
+        public void ReadBitsBETest()
         {
             byte[] data = [0b01010101, 0b01010101, 0b01010101, 0b01010101];
             var stream = new ReadOnlyBitStream(new MemoryStream(data));
-            uint? bits = stream.ReadBitsMSB(4);
+            uint? bits = stream.ReadBitsBE(4);
             Assert.NotNull(bits);
             Assert.Equal((byte)0b00001010, bits);
             Assert.Equal(1, stream.Position);
