@@ -21,15 +21,8 @@ namespace SabreTools.IO.Extensions
             if (bytes == null)
                 return null;
 
-            try
-            {
-                string hex = BitConverter.ToString(bytes);
-                return hex.Replace("-", string.Empty).ToLowerInvariant();
-            }
-            catch
-            {
-                return null;
-            }
+            string hex = BitConverter.ToString(bytes);
+            return hex.Replace("-", string.Empty).ToLowerInvariant();
         }
 
         /// <summary>
