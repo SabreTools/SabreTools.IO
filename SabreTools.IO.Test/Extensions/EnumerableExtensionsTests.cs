@@ -10,7 +10,7 @@ namespace SabreTools.IO.Test.Extensions
     public class EnumerableExtensionsTests
     {
         [Fact]
-        public void SafeEnumerateEmptyTest()
+        public void SafeEnumerate_Empty()
         {
             var source = Enumerable.Empty<string>();
             var safe = source.SafeEnumerate();
@@ -19,7 +19,18 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
-        public void SafeEnumerateNoErrorTest()
+        public void SafeEnumerate_Throws()
+        {
+            var source = new List<string> { "a", "ab", "abc" };
+            var wrapper = new ThrowsEnumerable(source);
+
+            var safe = wrapper.SafeEnumerate();
+            var list = safe.ToList();
+            Assert.Empty(list);
+        }
+
+        [Fact]
+        public void SafeEnumerate_NoError()
         {
             var source = new List<string> { "a", "ab", "abc" };
             var safe = source.SafeEnumerate();
@@ -28,7 +39,7 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
-        public void SafeEnumerateErrorMidTest()
+        public void SafeEnumerate_ErrorMid()
         {
             var source = new List<string> { "a", "ab", "abc" };
             var wrapper = new ErrorEnumerable(source);
@@ -39,11 +50,11 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
-        public void SafeEnumerateErrorLastTest()
+        public void SafeEnumerate_ErrorLast()
         {
             var source = new List<string> { "a", "ab", "abc", "abcd" };
             var wrapper = new ErrorEnumerable(source);
-            
+
             var safe = wrapper.SafeEnumerate();
             var list = safe.ToList();
             Assert.Equal(2, list.Count);
@@ -133,6 +144,20 @@ namespace SabreTools.IO.Test.Extensions
                 _enumerator.Reset();
                 _index = -1;
             }
+        }
+
+        /// <summary>
+        /// Fake enumerable that throws an exception for the enumerator
+        /// </summary>
+        private class ThrowsEnumerable : IEnumerable<string>
+        {
+            public ThrowsEnumerable(IEnumerable<string> source) { }
+
+            /// <inheritdoc/>
+            public IEnumerator<string> GetEnumerator() => throw new Exception();
+
+            /// <inheritdoc/>
+            IEnumerator IEnumerable.GetEnumerator() => throw new Exception();
         }
     }
 }
