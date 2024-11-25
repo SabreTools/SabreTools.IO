@@ -15,7 +15,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Convert a byte array to a hex string
         /// </summary>
-        public static string? ByteArrayToString(byte[]? bytes)
+        public static string? ToHexString(this byte[]? bytes)
         {
             // If we get null in, we send null out
             if (bytes == null)
@@ -35,7 +35,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Convert a hex string to a byte array
         /// </summary>
-        public static byte[]? StringToByteArray(string? hex)
+        public static byte[]? FromHexString(this string? hex)
         {
             // If we get null in, we send null out
             if (string.IsNullOrEmpty(hex))
@@ -43,9 +43,9 @@ namespace SabreTools.IO.Extensions
 
             try
             {
-                int NumberChars = hex!.Length;
-                byte[] bytes = new byte[NumberChars / 2];
-                for (int i = 0; i < NumberChars; i += 2)
+                int chars = hex!.Length;
+                byte[] bytes = new byte[chars / 2];
+                for (int i = 0; i < chars; i += 2)
                 {
                     bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
                 }
