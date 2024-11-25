@@ -10,6 +10,16 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <None Remove="TestData\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="TestData\**">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="6.0.2">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>

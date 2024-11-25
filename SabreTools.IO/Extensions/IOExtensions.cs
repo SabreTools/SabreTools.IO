@@ -49,7 +49,7 @@ namespace SabreTools.IO.Extensions
             // Try to open the file
             try
             {
-                FileStream file = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                var file = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 if (file == null)
                     return Encoding.Default;
 
@@ -229,12 +229,11 @@ namespace SabreTools.IO.Extensions
 
         /// <inheritdoc cref="Directory.GetDirectories(string, string)"/>
         /// <remarks>Returns an empty enumerable on any exception</remarks>
-        public static IEnumerable<string> SafeGetFileSystemEntries(this string path, string searchPattern)
+        public static string[] SafeGetFileSystemEntries(this string path, string searchPattern)
         {
             try
             {
-                var enumerable = Directory.GetFileSystemEntries(path, searchPattern);
-                return enumerable.SafeEnumerate();
+                return Directory.GetFileSystemEntries(path, searchPattern);
             }
             catch
             {
