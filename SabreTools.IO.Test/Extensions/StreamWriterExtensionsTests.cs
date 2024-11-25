@@ -4,12 +4,12 @@ using System.Linq;
 #if NET7_0_OR_GREATER
 using System.Numerics;
 #endif
+using System.Text;
 using SabreTools.IO.Extensions;
 using Xunit;
 
 namespace SabreTools.IO.Test.Extensions
 {
-    // TODO: Add string writing tests
     public class StreamWriterExtensionsTests
     {
         /// <summary>
@@ -51,6 +51,15 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteBytesBigEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            byte[] expected = _bytes.Take(4).ToArray();
+            stream.WriteBigEndian([0x03, 0x02, 0x01, 0x00]);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
         public void WriteSByteTest()
         {
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
@@ -67,6 +76,15 @@ namespace SabreTools.IO.Test.Extensions
             byte[] expected = _bytes.Take(1).ToArray();
             bool write = stream.Write('\0');
             Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteCharEncodingTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            byte[] expected = [0x00, 0x00];
+            stream.Write('\0', Encoding.Unicode);
             ValidateBytes(expected, stream.GetBuffer());
         }
 
@@ -313,6 +331,26 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteDoubleTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            byte[] expected = _bytes.Take(8).ToArray();
+            bool write = stream.Write(BitConverter.Int64BitsToDouble(0x0706050403020100));
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteDoubleBigEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            byte[] expected = _bytes.Take(8).ToArray();
+            bool write = stream.WriteBigEndian(BitConverter.Int64BitsToDouble(0x0001020304050607));
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
         public void WriteDecimalTest()
         {
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
@@ -393,6 +431,110 @@ namespace SabreTools.IO.Test.Extensions
             ValidateBytes(expected, stream.GetBuffer());
         }
 #endif
+
+        [Fact]
+        public void WriteNullTerminatedAnsiStringTest()
+        {
+            var stream = new MemoryStream(new byte[4], 0, 4, true, true);
+            byte[] expected = [0x41, 0x42, 0x43, 0x00];
+
+            bool write = stream.WriteNullTerminatedAnsiString("ABC");
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteNullTerminatedUTF8StringTest()
+        {
+            var stream = new MemoryStream(new byte[4], 0, 4, true, true);
+            byte[] expected = [0x41, 0x42, 0x43, 0x00];
+
+            bool write = stream.WriteNullTerminatedUTF8String("ABC");
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteNullTerminatedUnicodeStringTest()
+        {
+            var stream = new MemoryStream(new byte[8], 0, 8, true, true);
+            byte[] expected = [0x41, 0x00, 0x42, 0x00, 0x43, 0x00, 0x00];
+
+            bool write = stream.WriteNullTerminatedUnicodeString("ABC");
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteNullTerminatedUTF32StringTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            byte[] expected = [0x41, 0x00, 0x00, 0x00, 0x42, 0x00, 0x00, 0x00, 0x43, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
+
+            bool write = stream.WriteNullTerminatedUTF32String("ABC");
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WritePrefixedAnsiStringTest()
+        {
+            var stream = new MemoryStream(new byte[4], 0, 4, true, true);
+            byte[] expected = [0x03, 0x41, 0x42, 0x43];
+
+            bool write = stream.WritePrefixedAnsiString("ABC");
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WritePrefixedUnicodeStringTest()
+        {
+            var stream = new MemoryStream(new byte[8], 0, 8, true, true);
+            byte[] expected = [0x03, 0x00, 0x41, 0x00, 0x42, 0x00, 0x43, 0x00];
+
+            bool write = stream.WritePrefixedUnicodeString("ABC");
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteTypeTest()
+        {
+            // Guid
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            bool actual = stream.WriteType<Guid>(new Guid(_bytes));
+            Assert.True(actual);
+            ValidateBytes(_bytes, stream.GetBuffer());
+
+#if NET6_0_OR_GREATER
+            // Half
+            stream = new MemoryStream(new byte[2], 0, 2, true, true);
+            actual = stream.WriteType<Half>(BitConverter.Int16BitsToHalf(0x0100));
+            Assert.True(actual);
+            ValidateBytes([.. _bytes.Take(2)], stream.GetBuffer());
+#endif
+
+#if NET7_0_OR_GREATER
+            // Int128
+            stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            actual = stream.WriteType<Int128>((Int128)new BigInteger(_bytes));
+            Assert.True(actual);
+            ValidateBytes(_bytes, stream.GetBuffer());
+
+            // UInt128
+            stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            actual = stream.WriteType<UInt128>((UInt128)new BigInteger(_bytes));
+            Assert.True(actual);
+            ValidateBytes(_bytes, stream.GetBuffer());
+#endif
+
+            // Enum
+            stream = new MemoryStream(new byte[4], 0, 4, true, true);
+            actual = stream.WriteType<TestEnum>((TestEnum)0x03020100);
+            Assert.True(actual);
+            ValidateBytes([.. _bytes.Take(4)], stream.GetBuffer());
+        }
 
         [Fact]
         public void WriteTypeExplicitTest()

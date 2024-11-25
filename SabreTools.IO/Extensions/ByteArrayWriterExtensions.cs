@@ -525,7 +525,7 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = Encoding.ASCII.GetBytes(value);
 
             // Write the length as a byte
-            if (!content.Write(ref offset, (byte)buffer.Length))
+            if (!content.Write(ref offset, (byte)value.Length))
                 return false;
 
             // Write the buffer
@@ -545,32 +545,10 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = Encoding.Unicode.GetBytes(value);
 
             // Write the length as a ushort
-            if (!content.Write(ref offset, (ushort)buffer.Length))
+            if (!content.Write(ref offset, (ushort)value.Length))
                 return false;
 
             // Write the buffer
-            return WriteFromBuffer(content, ref offset, buffer);
-        }
-
-        /// <summary>
-        /// Write a string that is terminated by a newline but contains a quoted portion that
-        /// may also contain a newline to the byte array
-        /// </summary>
-        public static bool WriteQuotedString(this byte[] content, ref int offset, string? value)
-            => content.WriteQuotedString(ref offset, value, Encoding.UTF8);
-
-        /// <summary>
-        /// Write a string that is terminated by a newline but contains a quoted portion that
-        /// may also contain a newline to the byte array
-        /// </summary>
-        public static bool WriteQuotedString(this byte[] content, ref int offset, string? value, Encoding encoding)
-        {
-            // If the value is null
-            if (value == null)
-                return false;
-
-            // Write without the null terminator
-            byte[] buffer = encoding.GetBytes(value);
             return WriteFromBuffer(content, ref offset, buffer);
         }
 

@@ -526,7 +526,7 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = Encoding.ASCII.GetBytes(value);
 
             // Write the length as a byte
-            if (!stream.Write((byte)buffer.Length))
+            if (!stream.Write((byte)value.Length))
                 return false;
 
             // Write the buffer
@@ -546,32 +546,10 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = Encoding.Unicode.GetBytes(value);
 
             // Write the length as a ushort
-            if (!stream.Write((ushort)buffer.Length))
+            if (!stream.Write((ushort)value.Length))
                 return false;
 
             // Write the buffer
-            return WriteFromBuffer(stream, buffer);
-        }
-
-        /// <summary>
-        /// Write a string that is terminated by a newline but contains a quoted portion that
-        /// may also contain a newline to the stream
-        /// </summary>
-        public static bool WriteQuotedString(this Stream stream, string? value)
-            => stream.WriteQuotedString(value, Encoding.UTF8);
-
-        /// <summary>
-        /// Write a string that is terminated by a newline but contains a quoted portion that
-        /// may also contain a newline to the stream
-        /// </summary>
-        public static bool WriteQuotedString(this Stream stream, string? value, Encoding encoding)
-        {
-            // If the value is null
-            if (value == null)
-                return false;
-
-            // Write without the null terminator
-            byte[] buffer = encoding.GetBytes(value);
             return WriteFromBuffer(stream, buffer);
         }
 

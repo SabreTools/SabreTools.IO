@@ -3,12 +3,12 @@ using System.Linq;
 #if NET7_0_OR_GREATER
 using System.Numerics;
 #endif
+using System.Text;
 using SabreTools.IO.Extensions;
 using Xunit;
 
 namespace SabreTools.IO.Test.Extensions
 {
-    // TODO: Add string writing tests
     public class ByteArrayWriterExtensionsTests
     {
         /// <summary>
@@ -52,6 +52,17 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteBytesBigEndianTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(4).ToArray();
+            bool write = buffer.WriteBigEndian(ref offset, [0x03, 0x02, 0x01, 0x00]);
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
         public void WriteSByteTest()
         {
             byte[] buffer = new byte[16];
@@ -69,6 +80,17 @@ namespace SabreTools.IO.Test.Extensions
             int offset = 0;
             byte[] expected = _bytes.Take(1).ToArray();
             bool write = buffer.Write(ref offset, '\0');
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteCharEncodingTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = [0x00, 0x00];
+            bool write = buffer.Write(ref offset, '\0', Encoding.Unicode);
             Assert.True(write);
             ValidateBytes(expected, buffer);
         }
@@ -340,6 +362,28 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteDoubleTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(8).ToArray();
+            bool write = buffer.Write(ref offset, BitConverter.Int64BitsToDouble(0x0706050403020100));
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteDoubleBigEndianTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(8).ToArray();
+            bool write = buffer.WriteBigEndian(ref offset, BitConverter.Int64BitsToDouble(0x0001020304050607));
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
         public void WriteDecimalTest()
         {
             byte[] buffer = new byte[16];
@@ -428,6 +472,121 @@ namespace SabreTools.IO.Test.Extensions
             ValidateBytes(expected, buffer);
         }
 #endif
+
+        [Fact]
+        public void WriteNullTerminatedAnsiStringTest()
+        {
+            int offset = 0;
+            byte[] buffer = new byte[4];
+            byte[] expected = [0x41, 0x42, 0x43, 0x00];
+
+            bool write = buffer.WriteNullTerminatedAnsiString(ref offset, "ABC");
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteNullTerminatedUTF8StringTest()
+        {
+            int offset = 0;
+            byte[] buffer = new byte[4];
+            byte[] expected = [0x41, 0x42, 0x43, 0x00];
+
+            bool write = buffer.WriteNullTerminatedUTF8String(ref offset, "ABC");
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteNullTerminatedUnicodeStringTest()
+        {
+            int offset = 0;
+            byte[] buffer = new byte[8];
+            byte[] expected = [0x41, 0x00, 0x42, 0x00, 0x43, 0x00, 0x00];
+
+            bool write = buffer.WriteNullTerminatedUnicodeString(ref offset, "ABC");
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteNullTerminatedUTF32StringTest()
+        {
+            int offset = 0;
+            byte[] buffer = new byte[16];
+            byte[] expected = [0x41, 0x00, 0x00, 0x00, 0x42, 0x00, 0x00, 0x00, 0x43, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
+
+            bool write = buffer.WriteNullTerminatedUTF32String(ref offset, "ABC");
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WritePrefixedAnsiStringTest()
+        {
+            int offset = 0;
+            byte[] buffer = new byte[4];
+            byte[] expected = [0x03, 0x41, 0x42, 0x43];
+
+            bool write = buffer.WritePrefixedAnsiString(ref offset, "ABC");
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WritePrefixedUnicodeStringTest()
+        {
+            int offset = 0;
+            byte[] buffer = new byte[8];
+            byte[] expected = [0x03, 0x00, 0x41, 0x00, 0x42, 0x00, 0x43, 0x00];
+
+            bool write = buffer.WritePrefixedUnicodeString(ref offset, "ABC");
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteTypeTest()
+        {
+            // Guid
+            int offset = 0;
+            byte[] buffer = new byte[16];
+            bool actual = buffer.WriteType<Guid>(ref offset, new Guid(_bytes));
+            Assert.True(actual);
+            ValidateBytes(_bytes, buffer);
+
+#if NET6_0_OR_GREATER
+            // Half
+            offset = 0;
+            buffer = new byte[2];
+            actual = buffer.WriteType<Half>(ref offset, BitConverter.Int16BitsToHalf(0x0100));
+            Assert.True(actual);
+            ValidateBytes([.. _bytes.Take(2)], buffer);
+#endif
+
+#if NET7_0_OR_GREATER
+            // Int128
+            offset = 0;
+            buffer = new byte[16];
+            actual = buffer.WriteType<Int128>(ref offset, (Int128)new BigInteger(_bytes));
+            Assert.True(actual);
+            ValidateBytes(_bytes, buffer);
+
+            // UInt128
+            offset = 0;
+            buffer = new byte[16];
+            actual = buffer.WriteType<UInt128>(ref offset, (UInt128)new BigInteger(_bytes));
+            Assert.True(actual);
+            ValidateBytes(_bytes, buffer);
+#endif
+
+            // Enum
+            offset = 0;
+            buffer = new byte[4];
+            actual = buffer.WriteType<TestEnum>(ref offset, (TestEnum)0x03020100);
+            Assert.True(actual);
+            ValidateBytes([.. _bytes.Take(4)], buffer);
+        }
 
         [Fact]
         public void WriteTypeExplicitTest()

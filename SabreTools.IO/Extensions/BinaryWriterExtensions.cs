@@ -12,7 +12,6 @@ namespace SabreTools.IO.Extensions
     /// <summary>
     /// Extensions for BinaryWriter
     /// </summary>
-    /// <remarks>TODO: Add WriteDecimal methods</remarks>
     /// TODO: Handle proper negative values for Int24 and Int48
     public static class BinaryWriterExtensions
     {
@@ -374,7 +373,7 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = Encoding.ASCII.GetBytes(value);
 
             // Write the length as a byte
-            writer.Write((byte)buffer.Length);
+            writer.Write((byte)value.Length);
 
             // Write the buffer
             return WriteFromBuffer(writer, buffer);
@@ -393,31 +392,9 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = Encoding.Unicode.GetBytes(value);
 
             // Write the length as a ushort
-            writer.Write((ushort)buffer.Length);
+            writer.Write((ushort)value.Length);
 
             // Write the buffer
-            return WriteFromBuffer(writer, buffer);
-        }
-
-        /// <summary>
-        /// Write a string that is terminated by a newline but contains a quoted portion that
-        /// may also contain a newline to the underlying stream
-        /// </summary>
-        public static bool WriteQuotedString(this BinaryWriter writer, string? value)
-            => writer.WriteQuotedString(value, Encoding.UTF8);
-
-        /// <summary>
-        /// Write a string that is terminated by a newline but contains a quoted portion that
-        /// may also contain a newline to the underlying stream
-        /// </summary>
-        public static bool WriteQuotedString(this BinaryWriter writer, string? value, Encoding encoding)
-        {
-            // If the value is null
-            if (value == null)
-                return false;
-
-            // Write without the null terminator
-            byte[] buffer = encoding.GetBytes(value);
             return WriteFromBuffer(writer, buffer);
         }
 
