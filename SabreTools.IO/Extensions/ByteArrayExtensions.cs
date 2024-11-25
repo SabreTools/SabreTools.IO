@@ -5,6 +5,14 @@ namespace SabreTools.IO.Extensions
     public static class ByteArrayExtensions
     {
         /// <summary>
+        /// Indicates whether the specified array is null or has a length of zero
+        /// </summary>
+        public static bool IsNullOrEmpty(this Array? array)
+        {
+            return array == null || array.Length == 0;
+        }
+
+        /// <summary>
         /// Convert a byte array to a hex string
         /// </summary>
         public static string? ByteArrayToString(byte[]? bytes)
