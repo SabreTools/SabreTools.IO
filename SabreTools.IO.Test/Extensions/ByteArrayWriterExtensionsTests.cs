@@ -9,7 +9,7 @@ using Xunit;
 namespace SabreTools.IO.Test.Extensions
 {
     // TODO: Add string writing tests
-    public class ByteArrayExtensionsWriteTests
+    public class ByteArrayWriterExtensionsTests
     {
         /// <summary>
         /// Test pattern from 0x00-0x0F

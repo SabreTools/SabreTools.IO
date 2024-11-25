@@ -4,13 +4,13 @@ using System.Linq;
 #if NET7_0_OR_GREATER
 using System.Numerics;
 #endif
+using System.Text;
 using SabreTools.IO.Extensions;
 using Xunit;
 
 namespace SabreTools.IO.Test.Extensions
 {
-    // TODO: Add string reading tests
-    public class StreamExtensionsReadTests
+    public class StreamReaderExtensionsTests
     {
         /// <summary>
         /// Test pattern from 0x00-0x0F
@@ -29,6 +29,16 @@ namespace SabreTools.IO.Test.Extensions
             0x15, 0xCD, 0x5B, 0x07, 0x00, 0x00, 0x00, 0x00,
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0A, 0x00,
         ];
+
+        [Fact]
+        public void ReadByteArrayTest()
+        {
+            byte[] arr = new byte[4];
+            var stream = new MemoryStream(_bytes);
+            int read = stream.Read(arr, 0, 4);
+            Assert.Equal(4, read);
+            Assert.True(arr.SequenceEqual(_bytes.Take(4)));
+        }
 
         [Fact]
         public void ReadByteValueTest()
@@ -93,6 +103,22 @@ namespace SabreTools.IO.Test.Extensions
         {
             var stream = new MemoryStream(_bytes);
             ushort read = stream.ReadUInt16BigEndian();
+            Assert.Equal(0x0001, read);
+        }
+
+        [Fact]
+        public void ReadWORDTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            ushort read = stream.ReadWORD();
+            Assert.Equal(0x0100, read);
+        }
+
+        [Fact]
+        public void ReadWORDBigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            ushort read = stream.ReadWORDBigEndian();
             Assert.Equal(0x0001, read);
         }
 
@@ -177,6 +203,22 @@ namespace SabreTools.IO.Test.Extensions
         {
             var stream = new MemoryStream(_bytes);
             uint read = stream.ReadUInt32BigEndian();
+            Assert.Equal((uint)0x00010203, read);
+        }
+
+        [Fact]
+        public void ReadDWORDTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            uint read = stream.ReadDWORD();
+            Assert.Equal((uint)0x03020100, read);
+        }
+
+        [Fact]
+        public void ReadDWORDBigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            uint read = stream.ReadDWORDBigEndian();
             Assert.Equal((uint)0x00010203, read);
         }
 
@@ -357,6 +399,78 @@ namespace SabreTools.IO.Test.Extensions
 #endif
 
         [Fact]
+        public void ReadNullTerminatedStringTest()
+        {
+            // Encoding.ASCII
+            byte[] bytes = [0x41, 0x42, 0x43, 0x00];
+            var stream = new MemoryStream(bytes);
+            string? actual = stream.ReadNullTerminatedString(Encoding.ASCII);
+            Assert.Equal("ABC", actual);
+
+            // Encoding.UTF8
+            bytes = [0x41, 0x42, 0x43, 0x00];
+            stream = new MemoryStream(bytes);
+            actual = stream.ReadNullTerminatedString(Encoding.UTF8);
+            Assert.Equal("ABC", actual);
+
+            // Encoding.Unicode
+            bytes = [0x41, 0x00, 0x42, 0x00, 0x43, 0x00, 0x00, 0x00];
+            stream = new MemoryStream(bytes);
+            actual = stream.ReadNullTerminatedString(Encoding.Unicode);
+            Assert.Equal("ABC", actual);
+
+            // Encoding.UTF32
+            bytes = [0x41, 0x00, 0x00, 0x00, 0x42, 0x00, 0x00, 0x00, 0x43, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
+            stream = new MemoryStream(bytes);
+            actual = stream.ReadNullTerminatedString(Encoding.UTF32);
+            Assert.Equal("ABC", actual);
+
+            // Encoding.Latin1
+            bytes = [0x41, 0x42, 0x43, 0x00];
+            stream = new MemoryStream(bytes);
+            actual = stream.ReadNullTerminatedString(Encoding.Latin1);
+            Assert.Equal("ABC", actual);
+        }
+
+        [Fact]
+        public void ReadTypeTest()
+        {
+            // Guid
+            var stream = new MemoryStream(_bytes);
+            var expectedGuid = new Guid(_bytes);
+            Guid actualGuid = stream.ReadType<Guid>();
+            Assert.Equal(expectedGuid, actualGuid);
+
+#if NET6_0_OR_GREATER
+            // Half
+            stream = new MemoryStream(_bytes);
+            Half expectedHalf = BitConverter.Int16BitsToHalf(0x0100);
+            Half actualHalf = stream.ReadType<Half>();
+            Assert.Equal(expectedHalf, actualHalf);
+#endif
+
+#if NET7_0_OR_GREATER
+            // Int128
+            stream = new MemoryStream(_bytes);
+            Int128 expectedInt128 = (Int128)new BigInteger(_bytes);
+            Int128 actualInt128 = stream.ReadType<Int128>();
+            Assert.Equal(expectedHalf, actualHalf);
+
+            // UInt128
+            stream = new MemoryStream(_bytes);
+            UInt128 expectedUInt128 = (UInt128)new BigInteger(_bytes);
+            UInt128 actualUInt128 = stream.ReadType<UInt128>();
+            Assert.Equal(expectedHalf, actualHalf);
+#endif
+
+            // Enum
+            stream = new MemoryStream(_bytes);
+            TestEnum expectedTestEnum = (TestEnum)0x03020100;
+            TestEnum actualTestEnum = stream.ReadType<TestEnum>();
+            Assert.Equal(expectedTestEnum, actualTestEnum);
+        }
+
+        [Fact]
         public void ReadTypeExplicitTest()
         {
             byte[] bytesWithString =
@@ -450,6 +564,12 @@ namespace SabreTools.IO.Test.Extensions
                 0x05, 0x04, 0x03, 0x02,
                 0x06, 0x05, 0x04, 0x03,
 
+                // Enum Array
+                0x03, 0x02, 0x01, 0x00,
+                0x04, 0x03, 0x02, 0x01,
+                0x05, 0x04, 0x03, 0x02,
+                0x06, 0x05, 0x04, 0x03,
+
                 // Struct Array (X, Y)
                 0xFF, 0x00, 0x00, 0xFF,
                 0x00, 0xFF, 0xFF, 0x00,
@@ -466,6 +586,13 @@ namespace SabreTools.IO.Test.Extensions
             {
                 ByteArray = [0x00, 0x01, 0x02, 0x03],
                 IntArray = [0x00010203, 0x01020304, 0x02030405, 0x03040506],
+                EnumArray =
+                [
+                    (TestEnum)0x00010203,
+                    (TestEnum)0x01020304,
+                    (TestEnum)0x02030405,
+                    (TestEnum)0x03040506,
+                ],
                 StructArray =
                 [
                     new TestStructPoint { X = 0x00FF, Y = 0xFF00 },
@@ -481,6 +608,8 @@ namespace SabreTools.IO.Test.Extensions
             Assert.True(expected.ByteArray.SequenceEqual(read.ByteArray));
             Assert.NotNull(read.IntArray);
             Assert.True(expected.IntArray.SequenceEqual(read.IntArray));
+            Assert.NotNull(read.EnumArray);
+            Assert.True(expected.EnumArray.SequenceEqual(read.EnumArray));
             Assert.NotNull(read.StructArray);
             Assert.True(expected.StructArray.SequenceEqual(read.StructArray));
             Assert.Equal(expected.LPByteArrayLength, read.LPByteArrayLength);

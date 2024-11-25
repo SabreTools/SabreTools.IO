@@ -494,9 +494,10 @@ namespace SabreTools.IO.Extensions
             while (offset < content.Length)
             {
                 byte ch = content.ReadByteValue(ref offset);
-                buffer.Add(ch);
                 if (ch == '\0')
                     break;
+
+                buffer.Add(ch);
             }
 
             return encoding.GetString([.. buffer]);
@@ -547,7 +548,7 @@ namespace SabreTools.IO.Extensions
                 return null;
 
             byte[] buffer = ReadUntilNull4Byte(content, ref offset);
-            return Encoding.Unicode.GetString(buffer);
+            return Encoding.UTF32.GetString(buffer);
         }
 
         /// <summary>
@@ -580,45 +581,6 @@ namespace SabreTools.IO.Extensions
 
             byte[] buffer = content.ReadBytes(ref offset, size * 2);
             return Encoding.Unicode.GetString(buffer);
-        }
-
-        /// <summary>
-        /// Read a string that is terminated by a newline but contains a quoted portion that
-        /// may also contain a newline from the byte array
-        /// </summary>
-        public static string? ReadQuotedString(this byte[] content, ref int offset)
-            => content.ReadQuotedString(ref offset, Encoding.Default);
-
-        /// <summary>
-        /// Read a string that is terminated by a newline but contains a quoted portion that
-        /// may also contain a newline from the byte array
-        /// </summary>
-        public static string? ReadQuotedString(this byte[] content, ref int offset, Encoding encoding)
-        {
-            if (offset >= content.Length)
-                return null;
-
-            byte[] nullTerminator = encoding.GetBytes("\0");
-            int charWidth = nullTerminator.Length;
-
-            var keyChars = new List<char>();
-            bool openQuote = false;
-            while (offset < content.Length)
-            {
-                char c = encoding.GetChars(content, offset, charWidth)[0];
-                keyChars.Add(c);
-                offset += charWidth;
-
-                // If we have a quote, flip the flag
-                if (c == '"')
-                    openQuote = !openQuote;
-
-                // If we have a newline not in a quoted string, exit the loop
-                else if (c == (byte)'\n' && !openQuote)
-                    break;
-            }
-
-            return new string([.. keyChars]).TrimEnd();
         }
 
         /// <summary>
@@ -749,7 +711,10 @@ namespace SabreTools.IO.Extensions
             else if (fi.FieldType.IsArray)
             {
                 var value = ReadArrayType(content, ref offset, fields, instance, fi);
-                fi.SetValue(instance, Convert.ChangeType(value, fi.FieldType));
+                if (value.GetType() == fi.FieldType)
+                    fi.SetValue(instance, value);
+                else
+                    fi.SetValue(instance, Convert.ChangeType(value, fi.FieldType));
             }
             else
             {
@@ -780,7 +745,10 @@ namespace SabreTools.IO.Extensions
             for (int i = 0; i < elementCount; i++)
             {
                 var value = ReadType(content, ref offset, elementType);
-                arr.SetValue(value, i);
+                if (value != null && elementType.IsEnum)
+                    arr.SetValue(Enum.ToObject(elementType, value), i);
+                else
+                    arr.SetValue(value, i);
             }
 
             // Return the built array

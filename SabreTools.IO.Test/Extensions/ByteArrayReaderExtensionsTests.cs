@@ -3,13 +3,13 @@ using System.Linq;
 #if NET7_0_OR_GREATER
 using System.Numerics;
 #endif
+using System.Text;
 using SabreTools.IO.Extensions;
 using Xunit;
 
 namespace SabreTools.IO.Test.Extensions
 {
-    // TODO: Add string reading tests
-    public class ByteArrayExtensionsReadTests
+    public class ByteArrayReaderExtensionsTests
     {
         /// <summary>
         /// Test pattern from 0x00-0x0F
@@ -102,6 +102,22 @@ namespace SabreTools.IO.Test.Extensions
             Assert.Equal(0x0001, read);
         }
 
+        [Fact]
+        public void ReadWORDTest()
+        {
+            int offset = 0;
+            ushort read = _bytes.ReadWORD(ref offset);
+            Assert.Equal(0x0100, read);
+        }
+
+        [Fact]
+        public void ReadWORDBigEndianTest()
+        {
+            int offset = 0;
+            ushort read = _bytes.ReadWORDBigEndian(ref offset);
+            Assert.Equal(0x0001, read);
+        }
+
 #if NET6_0_OR_GREATER
         [Fact]
         public void ReadHalfTest()
@@ -183,6 +199,22 @@ namespace SabreTools.IO.Test.Extensions
         {
             int offset = 0;
             uint read = _bytes.ReadUInt32BigEndian(ref offset);
+            Assert.Equal((uint)0x00010203, read);
+        }
+
+        [Fact]
+        public void ReadDWORDTest()
+        {
+            int offset = 0;
+            uint read = _bytes.ReadDWORD(ref offset);
+            Assert.Equal((uint)0x03020100, read);
+        }
+
+        [Fact]
+        public void ReadDWORDBigEndianTest()
+        {
+            int offset = 0;
+            uint read = _bytes.ReadDWORDBigEndian(ref offset);
             Assert.Equal((uint)0x00010203, read);
         }
 
@@ -363,6 +395,78 @@ namespace SabreTools.IO.Test.Extensions
 #endif
 
         [Fact]
+        public void ReadNullTerminatedStringTest()
+        {
+            // Encoding.ASCII
+            int offset = 0;
+            byte[] bytes = [0x41, 0x42, 0x43, 0x00];
+            string? actual = bytes.ReadNullTerminatedString(ref offset, Encoding.ASCII);
+            Assert.Equal("ABC", actual);
+
+            // Encoding.UTF8
+            offset = 0;
+            bytes = [0x41, 0x42, 0x43, 0x00];
+            actual = bytes.ReadNullTerminatedString(ref offset, Encoding.UTF8);
+            Assert.Equal("ABC", actual);
+
+            // Encoding.Unicode
+            offset = 0;
+            bytes = [0x41, 0x00, 0x42, 0x00, 0x43, 0x00, 0x00, 0x00];
+            actual = bytes.ReadNullTerminatedString(ref offset, Encoding.Unicode);
+            Assert.Equal("ABC", actual);
+
+            // Encoding.UTF32
+            offset = 0;
+            bytes = [0x41, 0x00, 0x00, 0x00, 0x42, 0x00, 0x00, 0x00, 0x43, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
+            actual = bytes.ReadNullTerminatedString(ref offset, Encoding.UTF32);
+            Assert.Equal("ABC", actual);
+
+            // Encoding.Latin1
+            offset = 0;
+            bytes = [0x41, 0x42, 0x43, 0x00];
+            actual = bytes.ReadNullTerminatedString(ref offset, Encoding.Latin1);
+            Assert.Equal("ABC", actual);
+        }
+
+        [Fact]
+        public void ReadTypeTest()
+        {
+            // Guid
+            int offset = 0;
+            var expectedGuid = new Guid(_bytes);
+            Guid actualGuid = _bytes.ReadType<Guid>(ref offset);
+            Assert.Equal(expectedGuid, actualGuid);
+
+#if NET6_0_OR_GREATER
+            // Half
+            offset = 0;
+            Half expectedHalf = BitConverter.Int16BitsToHalf(0x0100);
+            Half actualHalf = _bytes.ReadType<Half>(ref offset);
+            Assert.Equal(expectedHalf, actualHalf);
+#endif
+
+#if NET7_0_OR_GREATER
+            // Int128
+            offset = 0;
+            Int128 expectedInt128 = (Int128)new BigInteger(_bytes);
+            Int128 actualInt128 = _bytes.ReadType<Int128>(ref offset);
+            Assert.Equal(expectedHalf, actualHalf);
+
+            // UInt128
+            offset = 0;
+            UInt128 expectedUInt128 = (UInt128)new BigInteger(_bytes);
+            UInt128 actualUInt128 = _bytes.ReadType<UInt128>(ref offset);
+            Assert.Equal(expectedHalf, actualHalf);
+#endif
+
+            // Enum
+            offset = 0;
+            TestEnum expectedTestEnum = (TestEnum)0x03020100;
+            TestEnum actualTestEnum = _bytes.ReadType<TestEnum>(ref offset);
+            Assert.Equal(expectedTestEnum, actualTestEnum);
+        }
+
+        [Fact]
         public void ReadTypeExplicitTest()
         {
             byte[] bytesWithString =
@@ -456,6 +560,12 @@ namespace SabreTools.IO.Test.Extensions
                 0x05, 0x04, 0x03, 0x02,
                 0x06, 0x05, 0x04, 0x03,
 
+                // Enum Array
+                0x03, 0x02, 0x01, 0x00,
+                0x04, 0x03, 0x02, 0x01,
+                0x05, 0x04, 0x03, 0x02,
+                0x06, 0x05, 0x04, 0x03,
+
                 // Struct Array (X, Y)
                 0xFF, 0x00, 0x00, 0xFF,
                 0x00, 0xFF, 0xFF, 0x00,
@@ -472,6 +582,13 @@ namespace SabreTools.IO.Test.Extensions
             {
                 ByteArray = [0x00, 0x01, 0x02, 0x03],
                 IntArray = [0x00010203, 0x01020304, 0x02030405, 0x03040506],
+                EnumArray =
+                [
+                    (TestEnum)0x00010203,
+                    (TestEnum)0x01020304,
+                    (TestEnum)0x02030405,
+                    (TestEnum)0x03040506,
+                ],
                 StructArray =
                 [
                     new TestStructPoint { X = 0x00FF, Y = 0xFF00 },
@@ -487,6 +604,8 @@ namespace SabreTools.IO.Test.Extensions
             Assert.True(expected.ByteArray.SequenceEqual(read.ByteArray));
             Assert.NotNull(read.IntArray);
             Assert.True(expected.IntArray.SequenceEqual(read.IntArray));
+            Assert.NotNull(read.EnumArray);
+            Assert.True(expected.EnumArray.SequenceEqual(read.EnumArray));
             Assert.NotNull(read.StructArray);
             Assert.True(expected.StructArray.SequenceEqual(read.StructArray));
             Assert.Equal(expected.LPByteArrayLength, read.LPByteArrayLength);

@@ -478,9 +478,10 @@ namespace SabreTools.IO.Extensions
             while (stream.Position < stream.Length)
             {
                 byte ch = stream.ReadByteValue();
-                buffer.Add(ch);
                 if (ch == '\0')
                     break;
+
+                buffer.Add(ch);
             }
 
             return encoding.GetString([.. buffer]);
@@ -531,7 +532,7 @@ namespace SabreTools.IO.Extensions
                 return null;
 
             byte[] buffer = ReadUntilNull4Byte(stream);
-            return Encoding.Unicode.GetString(buffer);
+            return Encoding.UTF32.GetString(buffer);
         }
 
         /// <summary>
@@ -564,45 +565,6 @@ namespace SabreTools.IO.Extensions
 
             byte[] buffer = stream.ReadBytes(size * 2);
             return Encoding.Unicode.GetString(buffer);
-        }
-
-        /// <summary>
-        /// Read a string that is terminated by a newline but contains a quoted portion that
-        /// may also contain a newline from the stream
-        /// </summary>
-        public static string? ReadQuotedString(this Stream stream)
-            => stream.ReadQuotedString(Encoding.Default);
-
-        /// <summary>
-        /// Read a string that is terminated by a newline but contains a quoted portion that
-        /// may also contain a newline from the stream
-        /// </summary>
-        public static string? ReadQuotedString(this Stream stream, Encoding encoding)
-        {
-            if (stream.Position >= stream.Length)
-                return null;
-
-            var bytes = new List<byte>();
-            bool openQuote = false;
-            while (stream.Position < stream.Length)
-            {
-                // Read the byte value
-                byte b = stream.ReadByteValue();
-
-                // If we have a quote, flip the flag
-                if (b == (byte)'"')
-                    openQuote = !openQuote;
-
-                // If we have a newline not in a quoted string, exit the loop
-                else if (b == (byte)'\n' && !openQuote)
-                    break;
-
-                // Add the byte to the set
-                bytes.Add(b);
-            }
-
-            var line = encoding.GetString([.. bytes]);
-            return line.TrimEnd();
         }
 
         /// <summary>
@@ -733,7 +695,10 @@ namespace SabreTools.IO.Extensions
             else if (fi.FieldType.IsArray)
             {
                 var value = ReadArrayType(stream, fields, instance, fi);
-                fi.SetValue(instance, Convert.ChangeType(value, fi.FieldType));
+                if (value.GetType() == fi.FieldType)
+                    fi.SetValue(instance, value);
+                else
+                    fi.SetValue(instance, Convert.ChangeType(value, fi.FieldType));
             }
             else
             {
@@ -764,7 +729,10 @@ namespace SabreTools.IO.Extensions
             for (int i = 0; i < elementCount; i++)
             {
                 var value = ReadType(stream, elementType);
-                arr.SetValue(value, i);
+                if (value != null && elementType.IsEnum)
+                    arr.SetValue(Enum.ToObject(elementType, value), i);
+                else
+                    arr.SetValue(value, i);
             }
 
             // Return the built array
