@@ -24,7 +24,11 @@ namespace SabreTools.IO.Writers
         /// </summary>
         public IniWriter(Stream stream, Encoding encoding)
         {
+#if NET20 || NET35 || NET40
+            sw = new StreamWriter(stream, encoding);
+#else
             sw = new StreamWriter(stream, encoding, 1024, leaveOpen: true);
+#endif
         }
 
         /// <summary>
