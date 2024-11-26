@@ -14,9 +14,9 @@ namespace SabreTools.IO
         /// Retrieve a list of just directories from inputs
         /// </summary>
         /// <param name="inputs">List of strings representing directories and files</param>
-        /// <param name="appendparent">True if the parent name should be included in the ParentablePath, false otherwise (default)</param>
+        /// <param name="appendParent">True if the parent name should be included in the ParentablePath, false otherwise (default)</param>
         /// <returns>List of strings representing just directories from the inputs</returns>
-        public static List<ParentablePath> GetDirectoriesOnly(List<string> inputs, bool appendparent = false)
+        public static List<ParentablePath> GetDirectoriesOnly(List<string> inputs, bool appendParent = false)
         {
             var outputs = new List<ParentablePath>();
             for (int i = 0; i < inputs.Count; i++)
@@ -42,7 +42,7 @@ namespace SabreTools.IO
                     List<string> directories = GetDirectoriesOrdered(input, pattern);
                     foreach (string dir in directories)
                     {
-                        outputs.Add(new ParentablePath(Path.GetFullPath(dir), appendparent ? parentPath : string.Empty));
+                        outputs.Add(new ParentablePath(Path.GetFullPath(dir), appendParent ? parentPath : string.Empty));
                     }
                 }
             }
@@ -89,9 +89,9 @@ namespace SabreTools.IO
         /// Retrieve a list of just files from inputs
         /// </summary>
         /// <param name="inputs">List of strings representing directories and files</param>
-        /// <param name="appendparent">True if the parent name should be be included in the ParentablePath, false otherwise (default)</param>
+        /// <param name="appendParent">True if the parent name should be be included in the ParentablePath, false otherwise (default)</param>
         /// <returns>List of strings representing just files from the inputs</returns>
-        public static List<ParentablePath> GetFilesOnly(List<string> inputs, bool appendparent = false)
+        public static List<ParentablePath> GetFilesOnly(List<string> inputs, bool appendParent = false)
         {
             var outputs = new List<ParentablePath>();
             for (int i = 0; i < inputs.Count; i++)
@@ -117,12 +117,12 @@ namespace SabreTools.IO
                     List<string> files = GetFilesOrdered(input, pattern);
                     foreach (string file in files)
                     {
-                        outputs.Add(new ParentablePath(Path.GetFullPath(file), appendparent ? parentPath : string.Empty));
+                        outputs.Add(new ParentablePath(Path.GetFullPath(file), appendParent ? parentPath : string.Empty));
                     }
                 }
                 else if (File.Exists(input))
                 {
-                    outputs.Add(new ParentablePath(Path.GetFullPath(input), appendparent ? parentPath : string.Empty));
+                    outputs.Add(new ParentablePath(Path.GetFullPath(input), appendParent ? parentPath : string.Empty));
                 }
             }
 
