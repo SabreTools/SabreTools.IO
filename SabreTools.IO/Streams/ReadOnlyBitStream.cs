@@ -88,11 +88,11 @@ namespace SabreTools.IO.Streams
         }
 
         /// <summary>
-        /// Read a multiple bits in little-endian, if possible
+        /// Read a multiple bits MSB-first, if possible
         /// </summary>
         /// <returns>The next bits encoded in a UInt32, null on error or end of stream</returns>
         /// <remarks>[76543210] order within a byte, appended to output [76543210]</remarks>
-        public uint? ReadBitsLE(int bits)
+        public uint? ReadBitsBE(int bits)
         {
             uint value = 0;
             for (int i = 0; i < bits; i++)
@@ -110,11 +110,11 @@ namespace SabreTools.IO.Streams
         }
 
         /// <summary>
-        /// Read a multiple bits in big-endian, if possible
+        /// Read a multiple bits in LSB-first, if possible
         /// </summary>
         /// <returns>The next bits encoded in a UInt32, null on error or end of stream</returns>
         /// <remarks>[76543210] order within a byte, appended to output [01234567]</remarks>
-        public uint? ReadBitsBE(int bits)
+        public uint? ReadBitsLE(int bits)
         {
             uint value = 0;
             for (int i = 0; i < bits; i++)

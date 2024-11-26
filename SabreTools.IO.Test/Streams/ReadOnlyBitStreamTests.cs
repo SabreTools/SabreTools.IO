@@ -34,11 +34,11 @@ namespace SabreTools.IO.Test.Streams
         [Theory]
         [InlineData(4, 0b00000101, 1)]
         [InlineData(9, 0b10101010_1, 2)]
-        public void ReadBitsLETest(int bits, uint expected, int position)
+        public void ReadBitsBETest(int bits, uint expected, int position)
         {
             byte[] data = [0b01010101, 0b01010101, 0b01010101, 0b01010101];
             var stream = new ReadOnlyBitStream(new MemoryStream(data));
-            uint? actual = stream.ReadBitsLE(bits);
+            uint? actual = stream.ReadBitsBE(bits);
 
             Assert.NotNull(actual);
             Assert.Equal(expected, actual);
@@ -48,11 +48,11 @@ namespace SabreTools.IO.Test.Streams
         [Theory]
         [InlineData(4, 0b00001010, 1)]
         [InlineData(9, 0b10101010_1, 2)]
-        public void ReadBitsBETest(int bits, uint expected, int position)
+        public void ReadBitsLETest(int bits, uint expected, int position)
         {
             byte[] data = [0b01010101, 0b01010101, 0b01010101, 0b01010101];
             var stream = new ReadOnlyBitStream(new MemoryStream(data));
-            uint? actual = stream.ReadBitsBE(bits);
+            uint? actual = stream.ReadBitsLE(bits);
 
             Assert.NotNull(actual);
             Assert.Equal(expected, actual);
