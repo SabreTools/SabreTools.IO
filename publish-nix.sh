@@ -8,7 +8,7 @@
 
 # Optional parameters
 NO_BUILD=false
-while getopts "uba" OPTION
+while getopts "b" OPTION
 do
     case $OPTION in
     b)
