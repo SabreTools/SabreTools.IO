@@ -118,7 +118,11 @@ namespace SabreTools.IO.Writers
         /// </summary>
         public ClrMameProWriter(Stream stream, Encoding encoding)
         {
+#if NET20 || NET35 || NET40
             sw = new StreamWriter(stream, encoding);
+#else
+            sw = new StreamWriter(stream, encoding, 1024, leaveOpen: true);
+#endif
             Quotes = true;
 
             // Element stack
@@ -165,42 +169,6 @@ namespace SabreTools.IO.Writers
         public void WriteFullEndElement()
         {
             InternalWriteEndElement(true);
-        }
-
-        /// <summary>
-        /// Write a complete element with content
-        /// </summary>
-        public void WriteElementString(string name, string? value)
-        {
-            WriteStartElement(name);
-            WriteString(value);
-            WriteEndElement();
-        }
-
-        /// <summary>
-        /// Ensure writing writing null values as empty strings
-        /// </summary>
-        /// <param name="name">Name of the element</param>
-        /// <param name="value">Value to write in the element</param>
-        /// <param name="throwOnError">Indicates if an error should be thrown on a missing required value</param>
-        public void WriteRequiredElementString(string name, string? value, bool throwOnError = false)
-        {
-            // Throw an exception if we are configured to
-            if (value == null && throwOnError)
-                throw new ArgumentNullException(nameof(value));
-
-            WriteElementString(name, value ?? string.Empty);
-        }
-
-        /// <summary>
-        /// Write an element, if the value is not null or empty
-        /// </summary>
-        /// <param name="name">Name of the element</param>
-        /// <param name="value">Value to write in the element</param>
-        public void WriteOptionalElementString(string name, string? value)
-        {
-            if (!string.IsNullOrEmpty(value))
-                WriteElementString(name, value);
         }
 
         /// <summary>
