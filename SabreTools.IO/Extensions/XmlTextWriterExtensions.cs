@@ -15,7 +15,7 @@ namespace SabreTools.IO.Extensions
         /// <param name="localName">Name of the element</param>
         /// <param name="value">Value to write in the element</param>
         /// <param name="throwOnError">Indicates if an error should be thrown on a missing required value</param>
-        public static void WriteRequiredAttributeString(this XmlTextWriter writer, string localName, string value, bool throwOnError = false)
+        public static void WriteRequiredAttributeString(this XmlTextWriter writer, string localName, string? value, bool throwOnError = false)
         {
             // Throw an exception if we are configured to
             if (value == null && throwOnError)
@@ -31,7 +31,7 @@ namespace SabreTools.IO.Extensions
         /// <param name="localName">Name of the element</param>
         /// <param name="value">Value to write in the element</param>
         /// <param name="throwOnError">Indicates if an error should be thrown on a missing required value</param>
-        public static void WriteRequiredElementString(this XmlTextWriter writer, string localName, string value, bool throwOnError = false)
+        public static void WriteRequiredElementString(this XmlTextWriter writer, string localName, string? value, bool throwOnError = false)
         {
             // Throw an exception if we are configured to
             if (value == null && throwOnError)
@@ -51,7 +51,7 @@ namespace SabreTools.IO.Extensions
         /// <param name="writer">XmlTextWriter to write out with</param>
         /// <param name="localName">Name of the attribute</param>
         /// <param name="value">Value to write in the attribute</param>
-        public static void WriteOptionalAttributeString(this XmlTextWriter writer, string localName, string value)
+        public static void WriteOptionalAttributeString(this XmlTextWriter writer, string localName, string? value)
         {
             if (!string.IsNullOrEmpty(value))
                 writer.WriteAttributeString(localName, value);
@@ -63,7 +63,7 @@ namespace SabreTools.IO.Extensions
         /// <param name="writer">XmlTextWriter to write out with</param>
         /// <param name="localName">Name of the element</param>
         /// <param name="value">Value to write in the element</param>
-        public static void WriteOptionalElementString(this XmlTextWriter writer, string localName, string value)
+        public static void WriteOptionalElementString(this XmlTextWriter writer, string localName, string? value)
         {
             if (!string.IsNullOrEmpty(value))
                 writer.WriteElementString(localName, value);
