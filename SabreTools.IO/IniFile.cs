@@ -44,16 +44,19 @@ namespace SabreTools.IO
         /// </summary>
         public IniFile(string path)
         {
-            Parse(path);
+            // If we don't have a file, we can't read it
+            if (!File.Exists(path))
+                throw new FileNotFoundException(nameof(path));
+
+            using var fileStream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            Parse(fileStream);
         }
 
         /// <summary>
         /// Populate an INI file from stream
         /// </summary>
         public IniFile(Stream stream)
-        {
-            Parse(stream);
-        }
+            => Parse(stream);
 
         /// <summary>
         /// Add or update a key and value to the INI file
@@ -78,74 +81,6 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Read an INI file based on the path
-        /// </summary>
-        public bool Parse(string path)
-        {
-            // If we don't have a file, we can't read it
-            if (!File.Exists(path))
-                return false;
-
-            using var fileStream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            return Parse(fileStream);
-        }
-
-        /// <summary>
-        /// Read an INI file from a stream
-        /// </summary>
-        public bool Parse(Stream? stream)
-        {
-            // If the stream is invalid or unreadable, we can't process it
-            if (stream == null || !stream.CanRead || stream.Position >= stream.Length - 1)
-                return false;
-
-            // Keys are case-insensitive by default
-            try
-            {
-                // TODO: Can we use the section header in the reader?
-                using var reader = new IniReader(stream, Encoding.UTF8);
-
-                string? section = string.Empty;
-                while (!reader.EndOfStream)
-                {
-                    // If we dont have a next line
-                    if (!reader.ReadNextLine())
-                        break;
-
-                    // Process the row according to type
-                    switch (reader.RowType)
-                    {
-                        case IniRowType.SectionHeader:
-                            section = reader.Section;
-                            break;
-
-                        case IniRowType.KeyValue:
-                            string? key = reader.KeyValuePair?.Key;
-
-                            // Section names are prepended to the key with a '.' separating
-                            if (!string.IsNullOrEmpty(section))
-                                key = $"{section}.{key}";
-
-                            // Set or overwrite keys in the returned dictionary
-                            this[key] = reader.KeyValuePair?.Value;
-                            break;
-
-                        default:
-                            // No-op
-                            break;
-                    }
-                }
-            }
-            catch
-            {
-                // We don't care what the error was, just catch and return
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
         /// Write an INI file to a path
         /// </summary>
         public bool Write(string path)
@@ -167,8 +102,8 @@ namespace SabreTools.IO
             if (_keyValuePairs.Count == 0)
                 return false;
 
-            // If the stream is invalid or unwritable, we can't output to it
-            if (stream == null || !stream.CanWrite || stream.Position >= stream.Length - 1)
+            // If the stream is invalid, we can't output to it
+            if (!stream.CanWrite)
                 return false;
 
             try
@@ -209,6 +144,61 @@ namespace SabreTools.IO
 
                     // Now write out the key and value in a standardized way
                     writer.WriteKeyValuePair(key, value);
+                }
+            }
+            catch
+            {
+                // We don't care what the error was, just catch and return
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Read an INI file from a stream
+        /// </summary>
+        private bool Parse(Stream? stream)
+        {
+            // If the stream is invalid or unreadable, we can't process it
+            if (stream == null || !stream.CanRead || stream.Position >= stream.Length - 1)
+                return false;
+
+            // Keys are case-insensitive by default
+            try
+            {
+                // TODO: Can we use the section header in the reader?
+                using var reader = new IniReader(stream, Encoding.UTF8);
+
+                string? section = string.Empty;
+                while (!reader.EndOfStream)
+                {
+                    // If we dont have a next line
+                    if (!reader.ReadNextLine())
+                        break;
+
+                    // Process the row according to type
+                    switch (reader.RowType)
+                    {
+                        case IniRowType.SectionHeader:
+                            section = reader.Section;
+                            break;
+
+                        case IniRowType.KeyValue:
+                            string? key = reader.KeyValuePair?.Key;
+
+                            // Section names are prepended to the key with a '.' separating
+                            if (!string.IsNullOrEmpty(section))
+                                key = $"{section}.{key}";
+
+                            // Set or overwrite keys in the returned dictionary
+                            this[key] = reader.KeyValuePair?.Value;
+                            break;
+
+                        default:
+                            // No-op
+                            break;
+                    }
                 }
             }
             catch

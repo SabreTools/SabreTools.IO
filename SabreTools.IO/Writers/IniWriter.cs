@@ -24,7 +24,7 @@ namespace SabreTools.IO.Writers
         /// </summary>
         public IniWriter(Stream stream, Encoding encoding)
         {
-            sw = new StreamWriter(stream, encoding);
+            sw = new StreamWriter(stream, encoding, 1024, leaveOpen: true);
         }
 
         /// <summary>
