@@ -11,12 +11,12 @@ namespace SabreTools.IO
         /// <summary>
         /// Current full path represented
         /// </summary>
-        public string CurrentPath { get; private set; }
+        public string CurrentPath { get; }
 
         /// <summary>
         /// Possible parent path represented (may be null or empty)
         /// </summary>
-        public string? ParentPath { get; private set; }
+        public string? ParentPath { get; }
 
         public ParentablePath(string currentPath, string? parentPath = null)
         {
@@ -32,7 +32,7 @@ namespace SabreTools.IO
         public string? GetNormalizedFileName(bool sanitize)
         {
             // If the current path is empty, we can't do anything
-            if (string.IsNullOrEmpty(CurrentPath))
+            if (CurrentPath.Length == 0)
                 return null;
 
             // Assume the current path is the filename
@@ -58,7 +58,7 @@ namespace SabreTools.IO
         public string? GetOutputPath(string? outDir, bool inplace)
         {
             // If the current path is empty
-            if (string.IsNullOrEmpty(CurrentPath))
+            if (CurrentPath.Length == 0)
                 return null;
 
             // If we have an inplace output
