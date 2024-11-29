@@ -7,6 +7,63 @@ namespace SabreTools.IO.Test.Extensions
 {
     public class StreamExtensionsTests
     {
+        #region Align to Boundary
+
+        [Fact]
+        public void AlignToBoundary_Null_False()
+        {
+            Stream? stream = null;
+            byte alignment = 4;
+            bool actual = stream.AlignToBoundary(alignment);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void AlignToBoundary_Empty_False()
+        {
+            Stream? stream = new MemoryStream([]);
+            byte alignment = 4;
+            bool actual = stream.AlignToBoundary(alignment);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void AlignToBoundary_EOF_False()
+        {
+            Stream? stream = new MemoryStream([0x01, 0x02]);
+            byte alignment = 4;
+
+            stream.Position = 1;
+            bool actual = stream.AlignToBoundary(alignment);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void AlignToBoundary_TooShort_False()
+        {
+            Stream? stream = new MemoryStream([0x01, 0x02]);
+            byte alignment = 4;
+
+            stream.Position = 1;
+            bool actual = stream.AlignToBoundary(alignment);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void AlignToBoundary_CanAlign_True()
+        {
+            Stream? stream = new MemoryStream([0x01, 0x02, 0x03, 0x04, 0x05]);
+            byte alignment = 4;
+
+            stream.Position = 1;
+            bool actual = stream.AlignToBoundary(alignment);
+            Assert.True(actual);
+        }
+
+        #endregion
+
+        #region Seek If Possible
+
         [Fact]
         public void SeekIfPossible_NonSeekable_CurrentPosition()
         {
@@ -46,6 +103,8 @@ namespace SabreTools.IO.Test.Extensions
             long actual = stream.SeekIfPossible(-3);
             Assert.Equal(13, actual);
         }
+
+        #endregion
 
         /// <summary>
         /// Represents a hidden non-seekable stream
