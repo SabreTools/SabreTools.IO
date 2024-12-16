@@ -13,7 +13,6 @@ namespace SabreTools.IO.Extensions
     /// <summary>
     /// Extensions for Streams
     /// </summary>
-    /// TODO: Handle proper negative values for Int24 and Int48
     public static class StreamReaderExtensions
     {
         /// <summary>
@@ -21,7 +20,7 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         public static byte ReadByteValue(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 1);
+            byte[] buffer = ReadExactlyToBuffer(stream, 1);
             return buffer[0];
         }
 
@@ -29,14 +28,14 @@ namespace SabreTools.IO.Extensions
         /// Read a UInt8[] from the stream
         /// </summary>
         public static byte[] ReadBytes(this Stream stream, int count)
-            => ReadToBuffer(stream, count);
+            => ReadExactlyToBuffer(stream, count);
 
         /// <summary>
         /// Read an Int8 from the stream
         /// </summary>
         public static sbyte ReadSByte(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 1);
+            byte[] buffer = ReadExactlyToBuffer(stream, 1);
             return (sbyte)buffer[0];
         }
 
@@ -45,17 +44,20 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         public static char ReadChar(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 1);
+            byte[] buffer = ReadExactlyToBuffer(stream, 1);
             return (char)buffer[0];
         }
 
         /// <summary>
         /// Read an Int16 from the stream
         /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static short ReadInt16(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 2);
-            return BitConverter.ToInt16(buffer, 0);
+            if (BitConverter.IsLittleEndian)
+                return stream.ReadInt16LittleEndian();
+            else
+                return stream.ReadInt16BigEndian();
         }
 
         /// <summary>
@@ -64,18 +66,32 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in big-endian format</remarks>
         public static short ReadInt16BigEndian(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 2);
-            Array.Reverse(buffer);
-            return BitConverter.ToInt16(buffer, 0);
+            byte[] buffer = ReadExactlyToBuffer(stream, 2);
+            return (short)(buffer[1]
+                        | (buffer[0] << 8));
+        }
+
+        /// <summary>
+        /// Read an Int16 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static short ReadInt16LittleEndian(this Stream stream)
+        {
+            byte[] buffer = ReadExactlyToBuffer(stream, 2);
+            return (short)(buffer[0]
+                        | (buffer[1] << 8));
         }
 
         /// <summary>
         /// Read a UInt16 from the stream
         /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static ushort ReadUInt16(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 2);
-            return BitConverter.ToUInt16(buffer, 0);
+            if (BitConverter.IsLittleEndian)
+                return stream.ReadUInt16LittleEndian();
+            else
+                return stream.ReadUInt16BigEndian();
         }
 
         /// <summary>
@@ -84,14 +100,26 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in big-endian format</remarks>
         public static ushort ReadUInt16BigEndian(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 2);
-            Array.Reverse(buffer);
-            return BitConverter.ToUInt16(buffer, 0);
+            byte[] buffer = ReadExactlyToBuffer(stream, 2);
+            return (ushort)(buffer[1]
+                         | (buffer[0] << 8));
+        }
+
+        /// <summary>
+        /// Read a UInt16 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static ushort ReadUInt16LittleEndian(this Stream stream)
+        {
+            byte[] buffer = ReadExactlyToBuffer(stream, 2);
+            return (ushort)(buffer[0]
+                         | (buffer[1] << 8));
         }
 
         /// <summary>
         /// Read a WORD (2-byte) from the stream
         /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static ushort ReadWORD(this Stream stream)
             => stream.ReadUInt16();
 
@@ -102,14 +130,22 @@ namespace SabreTools.IO.Extensions
         public static ushort ReadWORDBigEndian(this Stream stream)
             => stream.ReadUInt16BigEndian();
 
+        /// <summary>
+        /// Read a WORD (2-byte) from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static ushort ReadWORDLittleEndian(this Stream stream)
+            => stream.ReadUInt16LittleEndian();
+
         // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
 #if NET6_0_OR_GREATER
         /// <summary>
         /// Read a Half from the stream
         /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static Half ReadHalf(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 2);
+            byte[] buffer = ReadExactlyToBuffer(stream, 2);
             return BitConverter.ToHalf(buffer, 0);
         }
 
@@ -119,71 +155,94 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in big-endian format</remarks>
         public static Half ReadHalfBigEndian(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 2);
+            byte[] buffer = ReadExactlyToBuffer(stream, 2);
             Array.Reverse(buffer);
             return BitConverter.ToHalf(buffer, 0);
         }
 #endif
 
         /// <summary>
-        /// Read an Int24 encoded as an Int32
+        /// Read an Int24 encoded as an Int32 from the stream
         /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static int ReadInt24(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 3);
-
-            byte[] padded = new byte[4];
-            Array.Copy(buffer, padded, 3);
-            return BitConverter.ToInt32(padded, 0);
+            if (BitConverter.IsLittleEndian)
+                return stream.ReadInt24LittleEndian();
+            else
+                return stream.ReadInt24BigEndian();
         }
 
         /// <summary>
-        /// Read an Int24 encoded as an Int32
+        /// Read an Int24 encoded as an Int32 from the stream
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
         public static int ReadInt24BigEndian(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 3);
-            Array.Reverse(buffer);
-
-            byte[] padded = new byte[4];
-            Array.Copy(buffer, padded, 3);
-            return BitConverter.ToInt32(padded, 0);
+            byte[] buffer = ReadExactlyToBuffer(stream, 3);
+            return (int)(buffer[2]
+                      | (buffer[1] << 8)
+                      | (buffer[0] << 16));
         }
 
         /// <summary>
-        /// Read a UInt24 encoded as a UInt32
+        /// Read an Int24 encoded as an Int32 from the stream
         /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static int ReadInt24LittleEndian(this Stream stream)
+        {
+            byte[] buffer = ReadExactlyToBuffer(stream, 3);
+            return (int)(buffer[0]
+                      | (buffer[1] << 8)
+                      | (buffer[2] << 16));
+        }
+
+        /// <summary>
+        /// Read a UInt24 encoded as a UInt32 from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static uint ReadUInt24(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 3);
-
-            byte[] padded = new byte[4];
-            Array.Copy(buffer, padded, 3);
-            return BitConverter.ToUInt32(padded, 0);
+            if (BitConverter.IsLittleEndian)
+                return stream.ReadUInt24LittleEndian();
+            else
+                return stream.ReadUInt24BigEndian();
         }
 
         /// <summary>
-        /// Read a UInt24 encoded as a UInt32
+        /// Read a UInt24 encoded as a UInt32 from the stream
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
         public static uint ReadUInt24BigEndian(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 3);
-            Array.Reverse(buffer);
+            byte[] buffer = ReadExactlyToBuffer(stream, 3);
+            return (uint)(buffer[2]
+                       | (buffer[1] << 8)
+                       | (buffer[0] << 16));
+        }
 
-            byte[] padded = new byte[4];
-            Array.Copy(buffer, padded, 3);
-            return BitConverter.ToUInt32(padded, 0);
+        /// <summary>
+        /// Read a UInt24 encoded as a UInt32 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static uint ReadUInt24LittleEndian(this Stream stream)
+        {
+            byte[] buffer = ReadExactlyToBuffer(stream, 3);
+            return (uint)(buffer[0]
+                       | (buffer[1] << 8)
+                       | (buffer[2] << 16));
         }
 
         /// <summary>
         /// Read an Int32 from the stream
         /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static int ReadInt32(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 4);
-            return BitConverter.ToInt32(buffer, 0);
+            if (BitConverter.IsLittleEndian)
+                return stream.ReadInt32LittleEndian();
+            else
+                return stream.ReadInt32BigEndian();
         }
 
         /// <summary>
@@ -192,18 +251,36 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in big-endian format</remarks>
         public static int ReadInt32BigEndian(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 4);
-            Array.Reverse(buffer);
-            return BitConverter.ToInt32(buffer, 0);
+            byte[] buffer = ReadExactlyToBuffer(stream, 4);
+            return (int)(buffer[3]
+                      | (buffer[2] << 8)
+                      | (buffer[1] << 16)
+                      | (buffer[0] << 24));
+        }
+
+        /// <summary>
+        /// Read an Int32 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static int ReadInt32LittleEndian(this Stream stream)
+        {
+            byte[] buffer = ReadExactlyToBuffer(stream, 4);
+            return (int)(buffer[0]
+                      | (buffer[1] << 8)
+                      | (buffer[2] << 16)
+                      | (buffer[3] << 24));
         }
 
         /// <summary>
         /// Read a UInt32 from the stream
         /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static uint ReadUInt32(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 4);
-            return BitConverter.ToUInt32(buffer, 0);
+            if (BitConverter.IsLittleEndian)
+                return stream.ReadUInt32LittleEndian();
+            else
+                return stream.ReadUInt32BigEndian();
         }
 
         /// <summary>
@@ -212,14 +289,30 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in big-endian format</remarks>
         public static uint ReadUInt32BigEndian(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 4);
-            Array.Reverse(buffer);
-            return BitConverter.ToUInt32(buffer, 0);
+            byte[] buffer = ReadExactlyToBuffer(stream, 4);
+            return (uint)(buffer[3]
+                       | (buffer[2] << 8)
+                       | (buffer[1] << 16)
+                       | (buffer[0] << 24));
+        }
+
+        /// <summary>
+        /// Read a UInt32 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static uint ReadUInt32LittleEndian(this Stream stream)
+        {
+            byte[] buffer = ReadExactlyToBuffer(stream, 4);
+            return (uint)(buffer[0]
+                       | (buffer[1] << 8)
+                       | (buffer[2] << 16)
+                       | (buffer[3] << 24));
         }
 
         /// <summary>
         /// Read a DWORD (4-byte) from the stream
         /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static uint ReadDWORD(this Stream stream)
             => stream.ReadUInt32();
 
@@ -231,11 +324,19 @@ namespace SabreTools.IO.Extensions
             => stream.ReadUInt32BigEndian();
 
         /// <summary>
+        /// Read a DWORD (4-byte) from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static uint ReadDWORDLittleEndian(this Stream stream)
+            => stream.ReadUInt32LittleEndian();
+
+        /// <summary>
         /// Read a Single from the stream
         /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static float ReadSingle(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 4);
+            byte[] buffer = ReadExactlyToBuffer(stream, 4);
             return BitConverter.ToSingle(buffer, 0);
         }
 
@@ -245,70 +346,105 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in big-endian format</remarks>
         public static float ReadSingleBigEndian(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 4);
+            byte[] buffer = ReadExactlyToBuffer(stream, 4);
             Array.Reverse(buffer);
             return BitConverter.ToSingle(buffer, 0);
         }
 
         /// <summary>
-        /// Read an Int48 encoded as an Int64
+        /// Read an Int48 encoded as an Int64 from the stream
         /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static long ReadInt48(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 6);
-
-            byte[] padded = new byte[8];
-            Array.Copy(buffer, padded, 6);
-            return BitConverter.ToInt64(padded, 0);
+            if (BitConverter.IsLittleEndian)
+                return stream.ReadInt48LittleEndian();
+            else
+                return stream.ReadInt48BigEndian();
         }
 
         /// <summary>
-        /// Read an Int48 encoded as an Int64
+        /// Read an Int48 encoded as an Int64 from the stream
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
         public static long ReadInt48BigEndian(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 6);
-            Array.Reverse(buffer);
-
-            byte[] padded = new byte[8];
-            Array.Copy(buffer, padded, 6);
-            return BitConverter.ToInt64(padded, 0);
+            byte[] buffer = ReadExactlyToBuffer(stream, 6);
+            return ((long)buffer[5] << 0)
+                 | ((long)buffer[4] << 8)
+                 | ((long)buffer[3] << 16)
+                 | ((long)buffer[2] << 24)
+                 | ((long)buffer[1] << 32)
+                 | ((long)buffer[0] << 40);
         }
 
         /// <summary>
-        /// Read a UInt48 encoded as a UInt64
+        /// Read an Int48 encoded as an Int64 from the stream
         /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static long ReadInt48LittleEndian(this Stream stream)
+        {
+            byte[] buffer = ReadExactlyToBuffer(stream, 6);
+            return ((long)buffer[0] << 0)
+                 | ((long)buffer[1] << 8)
+                 | ((long)buffer[2] << 16)
+                 | ((long)buffer[3] << 24)
+                 | ((long)buffer[4] << 32)
+                 | ((long)buffer[5] << 40);
+        }
+
+        /// <summary>
+        /// Read a UInt48 encoded as a UInt64 from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static ulong ReadUInt48(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 6);
-
-            byte[] padded = new byte[8];
-            Array.Copy(buffer, padded, 6);
-            return BitConverter.ToUInt64(padded, 0);
+            if (BitConverter.IsLittleEndian)
+                return stream.ReadUInt48LittleEndian();
+            else
+                return stream.ReadUInt48BigEndian();
         }
 
         /// <summary>
-        /// Read a UInt48 encoded as a UInt64
+        /// Read a UInt48 encoded as a UInt64 from the stream
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
         public static ulong ReadUInt48BigEndian(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 6);
-            Array.Reverse(buffer);
+            byte[] buffer = ReadExactlyToBuffer(stream, 6);
+            return ((ulong)buffer[5] << 0)
+                 | ((ulong)buffer[4] << 8)
+                 | ((ulong)buffer[3] << 16)
+                 | ((ulong)buffer[2] << 24)
+                 | ((ulong)buffer[1] << 32)
+                 | ((ulong)buffer[0] << 40);
+        }
 
-            byte[] padded = new byte[8];
-            Array.Copy(buffer, padded, 6);
-            return BitConverter.ToUInt64(padded, 0);
+        /// <summary>
+        /// Read an UInt48 encoded as an UInt64 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static ulong ReadUInt48LittleEndian(this Stream stream)
+        {
+            byte[] buffer = ReadExactlyToBuffer(stream, 6);
+            return ((ulong)buffer[0] << 0)
+                 | ((ulong)buffer[1] << 8)
+                 | ((ulong)buffer[2] << 16)
+                 | ((ulong)buffer[3] << 24)
+                 | ((ulong)buffer[4] << 32)
+                 | ((ulong)buffer[5] << 40);
         }
 
         /// <summary>
         /// Read an Int64 from the stream
         /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static long ReadInt64(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 8);
-            return BitConverter.ToInt64(buffer, 0);
+            if (BitConverter.IsLittleEndian)
+                return stream.ReadInt64LittleEndian();
+            else
+                return stream.ReadInt64BigEndian();
         }
 
         /// <summary>
@@ -317,18 +453,44 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in big-endian format</remarks>
         public static long ReadInt64BigEndian(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 8);
-            Array.Reverse(buffer);
-            return BitConverter.ToInt64(buffer, 0);
+            byte[] buffer = ReadExactlyToBuffer(stream, 8);
+            return ((long)buffer[7] << 0)
+                 | ((long)buffer[6] << 8)
+                 | ((long)buffer[5] << 16)
+                 | ((long)buffer[4] << 24)
+                 | ((long)buffer[3] << 32)
+                 | ((long)buffer[2] << 40)
+                 | ((long)buffer[1] << 48)
+                 | ((long)buffer[0] << 56);
+        }
+
+        /// <summary>
+        /// Read an Int64 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static long ReadInt64LittleEndian(this Stream stream)
+        {
+            byte[] buffer = ReadExactlyToBuffer(stream, 8);
+            return ((long)buffer[0] << 0)
+                 | ((long)buffer[1] << 8)
+                 | ((long)buffer[2] << 16)
+                 | ((long)buffer[3] << 24)
+                 | ((long)buffer[4] << 32)
+                 | ((long)buffer[5] << 40)
+                 | ((long)buffer[6] << 48)
+                 | ((long)buffer[7] << 56);
         }
 
         /// <summary>
         /// Read a UInt64 from the stream
         /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static ulong ReadUInt64(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 8);
-            return BitConverter.ToUInt64(buffer, 0);
+            if (BitConverter.IsLittleEndian)
+                return stream.ReadUInt64LittleEndian();
+            else
+                return stream.ReadUInt64BigEndian();
         }
 
         /// <summary>
@@ -337,17 +499,62 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in big-endian format</remarks>
         public static ulong ReadUInt64BigEndian(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 8);
-            Array.Reverse(buffer);
-            return BitConverter.ToUInt64(buffer, 0);
+            byte[] buffer = ReadExactlyToBuffer(stream, 8);
+            return ((ulong)buffer[7] << 0)
+                 | ((ulong)buffer[6] << 8)
+                 | ((ulong)buffer[5] << 16)
+                 | ((ulong)buffer[4] << 24)
+                 | ((ulong)buffer[3] << 32)
+                 | ((ulong)buffer[2] << 40)
+                 | ((ulong)buffer[1] << 48)
+                 | ((ulong)buffer[0] << 56);
         }
+
+        /// <summary>
+        /// Read a UInt64 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static ulong ReadUInt64LittleEndian(this Stream stream)
+        {
+            byte[] buffer = ReadExactlyToBuffer(stream, 8);
+            return ((ulong)buffer[0] << 0)
+                 | ((ulong)buffer[1] << 8)
+                 | ((ulong)buffer[2] << 16)
+                 | ((ulong)buffer[3] << 24)
+                 | ((ulong)buffer[4] << 32)
+                 | ((ulong)buffer[5] << 40)
+                 | ((ulong)buffer[6] << 48)
+                 | ((ulong)buffer[7] << 56);
+        }
+
+        /// <summary>
+        /// Read a QWORD (8-byte) from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static ulong ReadQWORD(this Stream stream)
+            => stream.ReadUInt64();
+
+        /// <summary>
+        /// Read a QWORD (8-byte) from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static ulong ReadQWORDBigEndian(this Stream stream)
+            => stream.ReadUInt64BigEndian();
+
+        /// <summary>
+        /// Read a QWORD (8-byte) from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static ulong ReadQWORDLittleEndian(this Stream stream)
+            => stream.ReadUInt64LittleEndian();
 
         /// <summary>
         /// Read a Double from the stream
         /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static double ReadDouble(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 8);
+            byte[] buffer = ReadExactlyToBuffer(stream, 8);
             return BitConverter.ToDouble(buffer, 0);
         }
 
@@ -357,7 +564,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in big-endian format</remarks>
         public static double ReadDoubleBigEndian(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 8);
+            byte[] buffer = ReadExactlyToBuffer(stream, 8);
             Array.Reverse(buffer);
             return BitConverter.ToDouble(buffer, 0);
         }
@@ -365,9 +572,10 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a Decimal from the stream
         /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static decimal ReadDecimal(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 16);
+            byte[] buffer = ReadExactlyToBuffer(stream, 16);
 
             int lo = BitConverter.ToInt32(buffer, 0);
             int mid = BitConverter.ToInt32(buffer, 4);
@@ -383,7 +591,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in big-endian format</remarks>
         public static decimal ReadDecimalBigEndian(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 16);
+            byte[] buffer = ReadExactlyToBuffer(stream, 16);
             Array.Reverse(buffer);
 
             int lo = BitConverter.ToInt32(buffer, 0);
@@ -397,9 +605,10 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a Guid from the stream
         /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static Guid ReadGuid(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 16);
+            byte[] buffer = ReadExactlyToBuffer(stream, 16);
             return new Guid(buffer);
         }
 
@@ -409,7 +618,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in big-endian format</remarks>
         public static Guid ReadGuidBigEndian(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 16);
+            byte[] buffer = ReadExactlyToBuffer(stream, 16);
             Array.Reverse(buffer);
             return new Guid(buffer);
         }
@@ -418,9 +627,10 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read an Int128 from the stream
         /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static Int128 ReadInt128(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 16);
+            byte[] buffer = ReadExactlyToBuffer(stream, 16);
             return (Int128)new BigInteger(buffer);
         }
 
@@ -430,7 +640,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in big-endian format</remarks>
         public static Int128 ReadInt128BigEndian(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 16);
+            byte[] buffer = ReadExactlyToBuffer(stream, 16);
             Array.Reverse(buffer);
             return (Int128)new BigInteger(buffer);
         }
@@ -438,9 +648,10 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a UInt128 from the stream
         /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static UInt128 ReadUInt128(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 16);
+            byte[] buffer = ReadExactlyToBuffer(stream, 16);
             return (UInt128)new BigInteger(buffer);
         }
 
@@ -450,7 +661,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in big-endian format</remarks>
         public static UInt128 ReadUInt128BigEndian(this Stream stream)
         {
-            byte[] buffer = ReadToBuffer(stream, 16);
+            byte[] buffer = ReadExactlyToBuffer(stream, 16);
             Array.Reverse(buffer);
             return (UInt128)new BigInteger(buffer);
         }
@@ -624,7 +835,7 @@ namespace SabreTools.IO.Extensions
             try
             {
                 int typeSize = Marshal.SizeOf(type);
-                byte[] buffer = ReadToBuffer(stream, typeSize);
+                byte[] buffer = ReadExactlyToBuffer(stream, typeSize);
 
                 var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
                 var data = Marshal.PtrToStructure(handle.AddrOfPinnedObject(), type);
@@ -836,7 +1047,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a number of bytes from the stream to a buffer
         /// </summary>
-        private static byte[] ReadToBuffer(Stream stream, int length)
+        private static byte[] ReadExactlyToBuffer(Stream stream, int length)
         {
             // If we have an invalid length
             if (length < 0)
