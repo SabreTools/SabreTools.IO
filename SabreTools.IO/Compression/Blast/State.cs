@@ -115,7 +115,6 @@ namespace SabreTools.IO.Compression.Blast
                 // Load eight bits
                 EnsureAvailable();
                 val |= _input[_inputPtr++] << BitCnt;
-                _available--;
                 BitCnt += 8;
             }
 
@@ -169,7 +168,7 @@ namespace SabreTools.IO.Compression.Blast
         private void EnsureAvailable()
         {
             // If there are bytes
-            if (_inputPtr < _available)
+            if (_available != 0 && _inputPtr < _available)
                 return;
 
             // Read the next block

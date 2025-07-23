@@ -11,7 +11,7 @@ namespace SabreTools.IO.Test.Compression
         [Fact]
         public void BZip2InputStreamTest()
         {
-            string path = Path.Combine(Environment.CurrentDirectory, "TestData", "file-to-compress.bin.bz2");
+            string path = Path.Combine(Environment.CurrentDirectory, "TestData", "test-archive.bz2");
             Stream input = File.OpenRead(path);
             byte[] output = new byte[1024];
 
