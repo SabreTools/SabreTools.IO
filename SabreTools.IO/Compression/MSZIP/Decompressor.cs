@@ -42,6 +42,10 @@ namespace SabreTools.IO.Compression.MSZIP
             if (!dest.CanWrite)
                 return false;
 
+            // Ignore if the end of the stream is reached
+            if (source.Position >= source.Length)
+                return false;
+
             // Validate the header
             var header = new BlockHeader();
             header.Signature = source.ReadUInt16LittleEndian();
@@ -49,7 +53,7 @@ namespace SabreTools.IO.Compression.MSZIP
                 throw new InvalidDataException(nameof(source));
 
             byte[] buffer = new byte[32 * 1024];
-            var blockStream = new Deflate.DeflateStream(source, Deflate.CompressionMode.Decompress);
+            var blockStream = new Deflate.DeflateStream(source, Deflate.CompressionMode.Decompress, leaveOpen: true);
             if (_history != null)
                 blockStream.SetDictionary(_history, check: false);
 
