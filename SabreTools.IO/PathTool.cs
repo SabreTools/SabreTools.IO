@@ -167,8 +167,15 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Get the current runtime directory
+        /// Get the runtime directory
         /// </summary>
-        public static string GetRuntimeDirectory() => Directory.GetCurrentDirectory();
+        public static string GetRuntimeDirectory()
+        {
+#if NET20 || NET35 || NET40 || NET452
+            return Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+#else
+            return System.AppContext.BaseDirectory;
+#endif
+        }
     }
 }
