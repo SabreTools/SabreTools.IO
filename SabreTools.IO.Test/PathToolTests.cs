@@ -88,5 +88,34 @@ namespace SabreTools.IO.Test
             Assert.Equal(expectedCurrent, first.CurrentPath);
             Assert.Equal(string.Empty, first.ParentPath);
         }
+
+        [Theory]
+        [InlineData(null, false, "")]
+        [InlineData(null, true, "")]
+        [InlineData("", false, "")]
+        [InlineData("", true, "")]
+        [InlineData("filename.bin", false, "filename.bin")]
+        [InlineData("filename.bin", true, "filename.bin")]
+        [InlineData("\"filename.bin\"", false, "filename.bin")]
+        [InlineData("\"filename.bin\"", true, "filename.bin")]
+        [InlineData("<filename.bin>", false, "filename.bin")]
+        [InlineData("<filename.bin>", true, "filename.bin")]
+        [InlineData("1.2.3.4..bin", false, "1.2.3.4..bin")]
+        [InlineData("1.2.3.4..bin", true, "1.2.3.4..bin")]
+        [InlineData("dir/filename.bin", false, "dir/filename.bin")]
+        [InlineData("dir/filename.bin", true, "dir/filename.bin")]
+        [InlineData(" dir / filename.bin", false, "dir/filename.bin")]
+        [InlineData(" dir / filename.bin", true, "dir/filename.bin")]
+        [InlineData("\0dir/\0filename.bin", false, "_dir/_filename.bin")]
+        [InlineData("\0dir/\0filename.bin", true, "_dir/_filename.bin")]
+        public void NormalizeOutputPathsTest(string? path, bool getFullPath, string expected)
+        {
+            // Modify expected to account for test data if necessary
+            if (getFullPath && !string.IsNullOrEmpty(expected))
+                expected = Path.GetFullPath(expected);
+
+            string actual = PathTool.NormalizeFilePath(path, getFullPath);
+            Assert.Equal(expected, actual);
+        }
     }
 }

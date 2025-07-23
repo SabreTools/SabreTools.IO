@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using SabreTools.IO.Extensions;
 using SabreTools.Matching.Compare;
 
@@ -189,6 +190,64 @@ namespace SabreTools.IO
 #else
             return AppContext.BaseDirectory;
 #endif
+        }
+
+        /// <inheritdoc cref="NormalizeFilePath(string?, bool)"/>
+        public static string NormalizeFilePath(string? path)
+            => NormalizeFilePath(path, fullPath: true);
+
+        /// <summary>
+        /// Normalize a file path
+        /// </summary>
+        /// <param name="path">Path value to normalize</param>
+        /// <param name="fullPath">Indicates if the full path is used</param>
+        /// <returns>The normalized path on success, an empty path if null, or the original path on error</returns>
+        /// <remarks>
+        /// This method performs the following steps:
+        /// - Remove quotes and angle brackets from the start and end
+        /// - Replaces invalid path characters with '_'
+        /// - Remove spaces before and after directory separators
+        /// </remarks>
+        public static string NormalizeFilePath(string? path, bool fullPath)
+        {
+            try
+            {
+                // If we have an invalid path
+                if (string.IsNullOrEmpty(path))
+                    return string.Empty;
+
+                // Remove quotes and angle brackets from path
+                path = path!.Trim('\"');
+                path = path!.Trim('<');
+                path = path!.Trim('>');
+
+                // Remove invalid path characters
+                foreach (char c in Path.GetInvalidPathChars())
+                {
+                    path = path.Replace(c, '_');
+                }
+
+                // Try getting the combined path and returning that directly
+                string usablePath = fullPath ? Path.GetFullPath(path) : path;
+                var fullDirectory = Path.GetDirectoryName(usablePath)?.Trim();
+                string fullFile = Path.GetFileName(usablePath).Trim();
+
+                // Remove invalid filename characters
+                foreach (char c in Path.GetInvalidFileNameChars())
+                {
+                    fullFile = fullFile.Replace(c, '_');
+                }
+
+                // Rebuild the path, if necessary
+                if (!string.IsNullOrEmpty(fullDirectory))
+                    fullFile = Path.Combine(fullDirectory, fullFile);
+
+                // Remove spaces before and after separators
+                return Regex.Replace(fullFile, @"\s*([\\|/])\s*", @"$1");
+            }
+            catch { }
+
+            return path ?? string.Empty;
         }
     }
 }
