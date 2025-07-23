@@ -301,7 +301,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Calls <see cref="SafeGetFileSystemEntries(string, string, SearchOption)"/> implementation</remarks>
         public static IEnumerable<string> SafeEnumerateFileSystemEntries(this string path, string searchPattern, SearchOption searchOption)
             => path.SafeGetFileSystemEntries(searchPattern, searchOption);
-#elif NET40_OR_GREATER
+#elif NET40_OR_GREATER || NETSTANDARD2_0
         /// <inheritdoc cref="Directory.EnumerateDirectories(string)"/>
         public static IEnumerable<string> SafeEnumerateDirectories(this string path)
         {
