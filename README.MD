@@ -27,7 +27,7 @@ Various compression implementations that are used across multiple projects. Most
 | Deflate | Yes | Yes | Sourced from DotNetZip |
 | LZ | Yes | No | KWAJ, QBasic 4.5, and SZDD variants; KWAJ incomplete |
 | LZX | No | No | |
-| MSZIP | Yes | No | |
+| MSZIP | Yes* | No | |
 | Quantum | Yes* | No | Partial implementation based on standalone archives |
 
 **Note:** If something is marked with a `*` it means that it need testing.
