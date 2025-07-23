@@ -763,7 +763,7 @@ namespace SabreTools.IO.Extensions
                 case null:
                     return stream.WriteNullTerminatedAnsiString(fieldValue);
 
-#if NET472_OR_GREATER || NETCOREAPP
+#if NET472_OR_GREATER || NETCOREAPP || NETSTANDARD2_1_OR_GREATER
                 case UnmanagedType.LPUTF8Str:
                     return stream.WriteNullTerminatedUTF8String(fieldValue);
 #endif

@@ -761,7 +761,7 @@ namespace SabreTools.IO.Extensions
                 case null:
                     return content.WriteNullTerminatedAnsiString(ref offset, fieldValue);
 
-#if NET472_OR_GREATER || NETCOREAPP
+#if NET472_OR_GREATER || NETCOREAPP || NETSTANDARD2_1_OR_GREATER
                 case UnmanagedType.LPUTF8Str:
                     return content.WriteNullTerminatedUTF8String(ref offset, fieldValue);
 #endif

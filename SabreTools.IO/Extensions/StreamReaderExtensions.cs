@@ -976,7 +976,7 @@ namespace SabreTools.IO.Extensions
                 case null:
                     return stream.ReadNullTerminatedAnsiString();
 
-#if NET472_OR_GREATER || NETCOREAPP
+#if NET472_OR_GREATER || NETCOREAPP || NETSTANDARD2_1_OR_GREATER
                 case UnmanagedType.LPUTF8Str:
                     return stream.ReadNullTerminatedUTF8String();
 #endif
