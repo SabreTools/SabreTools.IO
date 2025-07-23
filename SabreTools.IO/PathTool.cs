@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using SabreTools.IO.Extensions;
@@ -167,6 +168,18 @@ namespace SabreTools.IO
         }
 
         /// <summary>
+        /// Get the home directory for the current user
+        /// </summary>
+        public static string GetHomeDirectory()
+        {
+#if NET20 || NET35
+            return Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+#else
+            return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+#endif
+        }
+
+        /// <summary>
         /// Get the runtime directory
         /// </summary>
         public static string GetRuntimeDirectory()
@@ -174,7 +187,7 @@ namespace SabreTools.IO
 #if NET20 || NET35 || NET40 || NET452
             return Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 #else
-            return System.AppContext.BaseDirectory;
+            return AppContext.BaseDirectory;
 #endif
         }
     }
