@@ -2,15 +2,42 @@
 
 [![Build and Test](https://github.com/SabreTools/SabreTools.IO/actions/workflows/build_and_test.yml/badge.svg)](https://github.com/SabreTools/SabreTools.IO/actions/workflows/build_and_test.yml)
 
-This library comprises I/O functionality for the following file types:
+This library compries of I/O functionality used by other SabreTools projects.
+
+Find the link to the Nuget package [here](https://www.nuget.org/packages/SabreTools.IO).
+
+## Namespaces
+
+### SabreTools.IO
+
+Generic helper classes that involve custom functionality and utility.
+
+### SabreTools.IO.Extensions
+
+Extensions for `BinaryReader`, `byte[]`, and `Stream` to help with reading and writing various data types. Some data types are locked behind .NET version support.
+
+This namespace also contains other various extensions that help with common functionality and safe access.
+
+### SabreTools.IO.Logging
+
+Logic for a logging system, including writing to console and textfile outputs. There are 4 possible log levels for logging statements to be invoked with. There is also a stopwatch implementation included for logging statements with automatic timespan tracking.
+
+### SabreTools.IO.Readers and SabreTools.IO.Writers
+
+Reading and writing support for the following file types:
 
 - ClrMamePro-derived Metadata files
 - Standard and non-standard INI files
 - Separated-Value files (e.g. CSV, SSV, TSV)
 
-There are also some extensions that are useful for wrapping common functionality required by SabreTools.
+For a generic INI implementation, see `SabreTools.IO.IniFile`.
 
-Find the link to the Nuget package [here](https://www.nuget.org/packages/SabreTools.IO).
+### SabreTools.IO.Streams
+
+Custom `Stream` implementations that are required for specialized use:
+
+- `ReadOnlyBitStream`: A readonly stream implementation allowing bitwise reading
+- `ReadOnlyCompositeStream`: A readonly stream implementation that wraps multiple source streams in a set order
 
 ## Releases
 
