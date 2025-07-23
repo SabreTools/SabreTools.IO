@@ -6,17 +6,23 @@ namespace SabreTools.IO.Writers
 {
     public class IniWriter : IDisposable
     {
+        #region Private Properties
+
         /// <summary>
-        /// Internal stream writer for outputting
+        /// Internal stream writer
         /// </summary>
-        private readonly StreamWriter? sw;
+        private readonly StreamWriter? _writer;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Constructor for writing to a file
         /// </summary>
         public IniWriter(string filename)
         {
-            sw = new StreamWriter(filename);
+            _writer = new StreamWriter(filename);
         }
 
         /// <summary>
@@ -25,24 +31,34 @@ namespace SabreTools.IO.Writers
         public IniWriter(Stream stream, Encoding encoding)
         {
 #if NET20 || NET35 || NET40
-            sw = new StreamWriter(stream, encoding);
+            _writer = new StreamWriter(stream, encoding);
 #else
-            sw = new StreamWriter(stream, encoding, 1024, leaveOpen: true);
+            _writer = new StreamWriter(stream, encoding, 1024, leaveOpen: true);
 #endif
         }
+
+        /// <summary>
+        /// Constructor for writing to a stream writer
+        /// </summary>
+        public IniWriter(StreamWriter streamWriter)
+        {
+            _writer = streamWriter;
+        }
+
+        #endregion
 
         /// <summary>
         /// Write a section tag
         /// </summary>
         public void WriteSection(string? value)
         {
-            if (sw?.BaseStream == null)
+            if (_writer?.BaseStream == null)
                 return;
 
             if (string.IsNullOrEmpty(value))
                 throw new ArgumentException("Section tag cannot be null or empty", nameof(value));
 
-            sw.WriteLine($"[{value!.TrimStart('[').TrimEnd(']')}]");
+            _writer.WriteLine($"[{value!.TrimStart('[').TrimEnd(']')}]");
         }
 
         /// <summary>
@@ -50,14 +66,14 @@ namespace SabreTools.IO.Writers
         /// </summary>
         public void WriteKeyValuePair(string key, string? value)
         {
-            if (sw?.BaseStream == null)
+            if (_writer?.BaseStream == null)
                 return;
 
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentException("Key cannot be null or empty", nameof(key));
 
             value ??= string.Empty;
-            sw.WriteLine($"{key}={value}");
+            _writer.WriteLine($"{key}={value}");
         }
 
         /// <summary>
@@ -65,11 +81,11 @@ namespace SabreTools.IO.Writers
         /// </summary>
         public void WriteComment(string? value)
         {
-            if (sw?.BaseStream == null)
+            if (_writer?.BaseStream == null)
                 return;
 
             value ??= string.Empty;
-            sw.WriteLine($";{value}");
+            _writer.WriteLine($";{value}");
         }
 
         /// <summary>
@@ -77,11 +93,11 @@ namespace SabreTools.IO.Writers
         /// </summary>
         public void WriteString(string? value)
         {
-            if (sw?.BaseStream == null)
+            if (_writer?.BaseStream == null)
                 return;
 
             value ??= string.Empty;
-            sw.Write(value);
+            _writer.Write(value);
         }
 
         /// <summary>
@@ -89,10 +105,10 @@ namespace SabreTools.IO.Writers
         /// </summary>
         public void WriteLine()
         {
-            if (sw?.BaseStream == null)
+            if (_writer?.BaseStream == null)
                 return;
 
-            sw.WriteLine();
+            _writer.WriteLine();
         }
 
         /// <summary>
@@ -100,15 +116,19 @@ namespace SabreTools.IO.Writers
         /// </summary>
         public void Flush()
         {
-            sw?.Flush();
+            _writer?.Flush();
         }
+
+        #region IDisposable Implementation
 
         /// <summary>
         /// Dispose of the underlying writer
         /// </summary>
         public void Dispose()
         {
-            sw?.Dispose();
+            _writer?.Dispose();
         }
+
+        #endregion
     }
 }

@@ -10,6 +10,8 @@ namespace SabreTools.IO.Writers
     /// <see cref="https://referencesource.microsoft.com/#System.Xml/System/Xml/Core/XmlTextWriter.cs"/>
     public class ClrMameProWriter : IDisposable
     {
+        #region Private Enums and Structs
+
         /// <summary>
         /// State machine state for use in the table
         /// </summary>
@@ -53,25 +55,14 @@ namespace SabreTools.IO.Writers
             }
         }
 
-        /// <summary>
-        /// Internal stream writer
-        /// </summary>
-        private readonly StreamWriter sw;
+        #endregion
 
-        /// <summary>
-        /// Stack for tracking current node
-        /// </summary>
-        private TagInfo[] stack;
-
-        /// <summary>
-        /// Pointer to current top element in the stack
-        /// </summary>
-        private int top;
+        #region Constants
 
         /// <summary>
         /// State table for determining the state machine
         /// </summary>
-        private readonly State[] stateTable = [
+        private readonly State[] StateTable = [
             //                         State.Start      State.Prolog     State.Element    State.Attribute  State.Content   State.AttrOnly   State.Epilog
             //
             /* Token.None           */ State.Prolog,    State.Prolog,    State.Content,   State.Content,   State.Content,  State.Error,     State.Epilog,
@@ -84,52 +75,95 @@ namespace SabreTools.IO.Writers
             /* Token.Content        */ State.Content,   State.Content,   State.Content,   State.Attribute, State.Content,  State.Attribute, State.Epilog,
         ];
 
-        /// <summary>
-        /// Current state in the machine
-        /// </summary>
-        private State currentState;
+        #endregion
 
-        /// <summary>
-        /// Last seen token
-        /// </summary>
-        private Token lastToken;
+        #region Fields
 
         /// <summary>
         /// Get if quotes should surround attribute values
         /// </summary>
         public bool Quotes { get; set; }
 
+        #endregion
+
+        #region Private Properties
+
         /// <summary>
-        /// Constructor for opening a write from a file
+        /// Internal stream writer
+        /// </summary>
+        private readonly StreamWriter _writer;
+
+        /// <summary>
+        /// Stack for tracking current node
+        /// </summary>
+        private TagInfo[] _stack;
+
+        /// <summary>
+        /// Pointer to current top element in the stack
+        /// </summary>
+        private int _topPtr;
+
+        /// <summary>
+        /// Current state in the machine
+        /// </summary>
+        private State _currentState;
+
+        /// <summary>
+        /// Last seen token
+        /// </summary>
+        private Token _lastToken;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Constructor for writing to a file
         /// </summary>
         public ClrMameProWriter(string filename)
         {
-            sw = new StreamWriter(filename);
+            _writer = new StreamWriter(filename);
             Quotes = true;
 
             // Element stack
-            stack = new TagInfo[10];
-            top = 0;
-            stack[top].Init();
+            _stack = new TagInfo[10];
+            _topPtr = 0;
+            _stack[_topPtr].Init();
         }
 
         /// <summary>
-        /// Constructor for opening a write from a stream and encoding
+        /// Constructor for writing to a stream
         /// </summary>
         public ClrMameProWriter(Stream stream, Encoding encoding)
         {
 #if NET20 || NET35 || NET40
-            sw = new StreamWriter(stream, encoding);
+            _writer = new StreamWriter(stream, encoding);
 #else
-            sw = new StreamWriter(stream, encoding, 1024, leaveOpen: true);
+            _writer = new StreamWriter(stream, encoding, 1024, leaveOpen: true);
 #endif
             Quotes = true;
 
             // Element stack
-            stack = new TagInfo[10];
-            top = 0;
-            stack[top].Init();
+            _stack = new TagInfo[10];
+            _topPtr = 0;
+            _stack[_topPtr].Init();
         }
+
+        /// <summary>
+        /// Constructor for writing to a stream writer
+        /// </summary>
+        public ClrMameProWriter(StreamWriter streamWriter)
+        {
+            _writer = streamWriter;
+            Quotes = true;
+
+            // Element stack
+            _stack = new TagInfo[10];
+            _topPtr = 0;
+            _stack[_topPtr].Init();
+        }
+
+        #endregion
 
         /// <summary>
         /// Write the start of an element node
@@ -144,13 +178,13 @@ namespace SabreTools.IO.Writers
 
                 AutoComplete(Token.StartElement);
                 PushStack();
-                stack[top].Name = name;
-                sw.Write(name);
-                sw.Write(" (");
+                _stack[_topPtr].Name = name;
+                _writer.Write(name);
+                _writer.Write(" (");
             }
             catch
             {
-                currentState = State.Error;
+                _currentState = State.Error;
                 throw;
             }
         }
@@ -184,14 +218,14 @@ namespace SabreTools.IO.Writers
                     name = name.Replace("\"", "''");
 
                 AutoComplete(Token.StartAttribute);
-                sw.Write(name);
-                sw.Write(" ");
+                _writer.Write(name);
+                _writer.Write(" ");
                 if ((quoteOverride == null && Quotes) || (quoteOverride == true))
-                    sw.Write("\"");
+                    _writer.Write("\"");
             }
             catch
             {
-                currentState = State.Error;
+                _currentState = State.Error;
                 throw;
             }
         }
@@ -207,7 +241,7 @@ namespace SabreTools.IO.Writers
             }
             catch
             {
-                currentState = State.Error;
+                _currentState = State.Error;
                 throw;
             }
         }
@@ -275,23 +309,23 @@ namespace SabreTools.IO.Writers
                 }
 
                 AutoComplete(Token.Standalone);
-                sw.Write(name);
-                sw.Write(" ");
+                _writer.Write(name);
+                _writer.Write(" ");
                 if ((quoteOverride == null && Quotes)
                     || (quoteOverride == true))
                 {
-                    sw.Write("\"");
+                    _writer.Write("\"");
                 }
-                sw.Write(value);
+                _writer.Write(value);
                 if ((quoteOverride == null && Quotes)
                     || (quoteOverride == true))
                 {
-                    sw.Write("\"");
+                    _writer.Write("\"");
                 }
             }
             catch
             {
-                currentState = State.Error;
+                _currentState = State.Error;
                 throw;
             }
         }
@@ -339,12 +373,12 @@ namespace SabreTools.IO.Writers
                     if (Quotes)
                         value = value!.Replace("\"", "''");
 
-                    sw.Write(value);
+                    _writer.Write(value);
                 }
             }
             catch
             {
-                currentState = State.Error;
+                _currentState = State.Error;
                 throw;
             }
         }
@@ -364,18 +398,9 @@ namespace SabreTools.IO.Writers
             }
             finally
             {
-                currentState = State.Closed;
-                sw.Close();
+                _currentState = State.Closed;
+                _writer.Close();
             }
-        }
-
-        /// <summary>
-        /// Close and dispose
-        /// </summary>
-        public void Dispose()
-        {
-            Close();
-            sw.Dispose();
         }
 
         /// <summary>
@@ -383,7 +408,7 @@ namespace SabreTools.IO.Writers
         /// </summary>
         public void Flush()
         {
-            sw.Flush();
+            _writer.Flush();
         }
 
         /// <summary>
@@ -392,12 +417,12 @@ namespace SabreTools.IO.Writers
         private void AutoComplete(Token token, bool? quoteOverride = null)
         {
             // Handle the error cases
-            if (currentState == State.Closed)
+            if (_currentState == State.Closed)
                 throw new InvalidOperationException();
-            else if (currentState == State.Error)
+            else if (_currentState == State.Error)
                 throw new InvalidOperationException();
 
-            State newState = stateTable[(int)token * 7 + (int)currentState];
+            State newState = StateTable[(int)token * 7 + (int)_currentState];
             if (newState == State.Error)
                 throw new InvalidOperationException();
 
@@ -406,27 +431,27 @@ namespace SabreTools.IO.Writers
             {
                 case Token.StartElement:
                 case Token.Standalone:
-                    if (currentState == State.Attribute)
+                    if (_currentState == State.Attribute)
                     {
                         WriteEndAttributeQuote(quoteOverride);
                         WriteEndStartTag(false);
                     }
-                    else if (currentState == State.Element)
+                    else if (_currentState == State.Element)
                     {
                         WriteEndStartTag(false);
                     }
 
-                    if (currentState != State.Start)
+                    if (_currentState != State.Start)
                         Indent(false);
 
                     break;
 
                 case Token.EndElement:
                 case Token.LongEndElement:
-                    if (currentState == State.Attribute)
+                    if (_currentState == State.Attribute)
                         WriteEndAttributeQuote(quoteOverride);
 
-                    if (currentState == State.Content)
+                    if (_currentState == State.Content)
                         token = Token.LongEndElement;
                     else
                         WriteEndStartTag(token == Token.EndElement);
@@ -434,14 +459,14 @@ namespace SabreTools.IO.Writers
                     break;
 
                 case Token.StartAttribute:
-                    if (currentState == State.Attribute)
+                    if (_currentState == State.Attribute)
                     {
                         WriteEndAttributeQuote(quoteOverride);
-                        sw.Write(' ');
+                        _writer.Write(' ');
                     }
-                    else if (currentState == State.Element)
+                    else if (_currentState == State.Element)
                     {
-                        sw.Write(' ');
+                        _writer.Write(' ');
                     }
 
                     break;
@@ -451,11 +476,11 @@ namespace SabreTools.IO.Writers
                     break;
 
                 case Token.Content:
-                    if (currentState == State.Element && lastToken != Token.Content)
+                    if (_currentState == State.Element && _lastToken != Token.Content)
                         WriteEndStartTag(false);
 
                     if (newState == State.Content)
-                        stack[top].Mixed = true;
+                        _stack[_topPtr].Mixed = true;
 
                     break;
 
@@ -463,8 +488,8 @@ namespace SabreTools.IO.Writers
                     throw new InvalidOperationException();
             }
 
-            currentState = newState;
-            lastToken = token;
+            _currentState = newState;
+            _lastToken = token;
         }
 
         /// <summary>
@@ -472,7 +497,7 @@ namespace SabreTools.IO.Writers
         /// </summary>
         private void AutoCompleteAll()
         {
-            while (top > 0)
+            while (_topPtr > 0)
             {
                 WriteEndElement();
             }
@@ -485,21 +510,21 @@ namespace SabreTools.IO.Writers
         {
             try
             {
-                if (top <= 0)
+                if (_topPtr <= 0)
                     throw new InvalidOperationException();
 
                 AutoComplete(longFormat ? Token.LongEndElement : Token.EndElement);
-                if (this.lastToken == Token.LongEndElement)
+                if (this._lastToken == Token.LongEndElement)
                 {
                     Indent(true);
-                    sw.Write(')');
+                    _writer.Write(')');
                 }
 
-                top--;
+                _topPtr--;
             }
             catch
             {
-                currentState = State.Error;
+                _currentState = State.Error;
                 throw;
             }
         }
@@ -510,7 +535,7 @@ namespace SabreTools.IO.Writers
         private void WriteEndStartTag(bool empty)
         {
             if (empty)
-                sw.Write(" )");
+                _writer.Write(" )");
         }
 
         /// <summary>
@@ -519,7 +544,7 @@ namespace SabreTools.IO.Writers
         private void WriteEndAttributeQuote(bool? quoteOverride = null)
         {
             if ((quoteOverride == null && Quotes) || (quoteOverride == true))
-                sw.Write("\"");
+                _writer.Write("\"");
         }
 
         /// <summary>
@@ -527,17 +552,17 @@ namespace SabreTools.IO.Writers
         /// </summary>
         private void Indent(bool beforeEndElement)
         {
-            if (top == 0)
+            if (_topPtr == 0)
             {
-                sw.WriteLine();
+                _writer.WriteLine();
             }
-            else if (!stack[top].Mixed)
+            else if (!_stack[_topPtr].Mixed)
             {
-                sw.WriteLine();
-                int i = beforeEndElement ? top - 1 : top;
+                _writer.WriteLine();
+                int i = beforeEndElement ? _topPtr - 1 : _topPtr;
                 for (; i > 0; i--)
                 {
-                    sw.Write('\t');
+                    _writer.Write('\t');
                 }
             }
         }
@@ -547,15 +572,28 @@ namespace SabreTools.IO.Writers
         /// </summary>
         private void PushStack()
         {
-            if (top == stack.Length - 1)
+            if (_topPtr == _stack.Length - 1)
             {
-                TagInfo[] na = new TagInfo[stack.Length + 10];
-                if (top > 0) Array.Copy(stack, na, top + 1);
-                stack = na;
+                TagInfo[] na = new TagInfo[_stack.Length + 10];
+                if (_topPtr > 0) Array.Copy(_stack, na, _topPtr + 1);
+                _stack = na;
             }
 
-            top++; // Move up stack
-            stack[top].Init();
+            _topPtr++; // Move up stack
+            _stack[_topPtr].Init();
         }
+
+        #region IDisposable Implementation
+
+        /// <summary>
+        /// Close and dispose
+        /// </summary>
+        public void Dispose()
+        {
+            Close();
+            _writer.Dispose();
+        }
+
+        #endregion
     }
 }

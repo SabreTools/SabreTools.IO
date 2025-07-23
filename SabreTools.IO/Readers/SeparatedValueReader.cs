@@ -8,15 +8,7 @@ namespace SabreTools.IO.Readers
 {
     public class SeparatedValueReader : IDisposable
     {
-        /// <summary>
-        /// Internal stream reader for inputting
-        /// </summary>
-        private readonly StreamReader? sr;
-
-        /// <summary>
-        /// Internal value to say how many fields should be written
-        /// </summary>
-        private int fields = -1;
+        #region Fields
 
         /// <summary>
         /// Get if at end of stream
@@ -25,7 +17,7 @@ namespace SabreTools.IO.Readers
         {
             get
             {
-                return sr?.EndOfStream ?? true;
+                return _reader?.EndOfStream ?? true;
             }
         }
 
@@ -69,12 +61,30 @@ namespace SabreTools.IO.Readers
         /// </summary>
         public bool VerifyFieldCount { get; set; } = true;
 
+        #endregion
+
+        #region Private Properties
+
+        /// <summary>
+        /// Internal stream reader
+        /// </summary>
+        private readonly StreamReader? _reader;
+
+        /// <summary>
+        /// How many fields should be written
+        /// </summary>
+        private int _fieldCount = -1;
+
+        #endregion
+
+        #region Constructors
+
         /// <summary>
         /// Constructor for reading from a file
         /// </summary>
         public SeparatedValueReader(string filename)
         {
-            sr = new StreamReader(filename);
+            _reader = new StreamReader(filename);
         }
 
         /// <summary>
@@ -82,8 +92,18 @@ namespace SabreTools.IO.Readers
         /// </summary>
         public SeparatedValueReader(Stream stream, Encoding encoding)
         {
-            sr = new StreamReader(stream, encoding);
+            _reader = new StreamReader(stream, encoding);
         }
+
+        /// <summary>
+        /// Constructor for reading from a stream reader
+        /// </summary>
+        public SeparatedValueReader(StreamReader streamReader)
+        {
+            _reader = streamReader;
+        }
+
+        #endregion
 
         /// <summary>
         /// Read the header line
@@ -104,13 +124,13 @@ namespace SabreTools.IO.Readers
         /// </summary>
         public bool ReadNextLine()
         {
-            if (sr?.BaseStream == null)
+            if (_reader?.BaseStream == null)
                 return false;
 
-            if (!sr.BaseStream.CanRead || sr.EndOfStream)
+            if (!_reader.BaseStream.CanRead || _reader.EndOfStream)
                 return false;
 
-            string? fullLine = sr.ReadLine();
+            string? fullLine = _reader.ReadLine();
             CurrentLine = fullLine;
             LineNumber++;
 
@@ -151,11 +171,11 @@ namespace SabreTools.IO.Readers
             if (Header && HeaderValues == null)
             {
                 HeaderValues = Line;
-                fields = HeaderValues.Count;
+                _fieldCount = HeaderValues.Count;
             }
 
             // If we're verifying field counts and the numbers are off, error out
-            if (VerifyFieldCount && fields != -1 && Line.Count != fields)
+            if (VerifyFieldCount && _fieldCount != -1 && Line.Count != _fieldCount)
                 throw new InvalidDataException($"Invalid row found, cannot continue: {fullLine}");
 
             return true;
@@ -198,12 +218,16 @@ namespace SabreTools.IO.Readers
             return Line[index];
         }
 
+        #region IDisposable Implementation
+
         /// <summary>
         /// Dispose of the underlying reader
         /// </summary>
         public void Dispose()
         {
-            sr?.Dispose();
+            _reader?.Dispose();
         }
+
+        #endregion
     }
 }

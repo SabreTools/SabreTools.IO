@@ -19,10 +19,7 @@ namespace SabreTools.IO.Readers
 
         #endregion
 
-        /// <summary>
-        /// Internal stream reader for inputting
-        /// </summary>
-        private readonly StreamReader? sr;
+        #region Fields
 
         /// <summary>
         /// Contents of the current line, unprocessed
@@ -41,7 +38,7 @@ namespace SabreTools.IO.Readers
         {
             get
             {
-                return sr?.EndOfStream ?? true;
+                return _reader?.EndOfStream ?? true;
             }
         }
 
@@ -86,34 +83,57 @@ namespace SabreTools.IO.Readers
         /// </summary>
         public string? TopLevel { get; private set; } = string.Empty;
 
+        #endregion
+
+        #region Private Properties
+
         /// <summary>
-        /// Constructor for opening a write from a file
+        /// Internal stream reader
+        /// </summary>
+        private readonly StreamReader? _reader;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Constructor for reading from a file
         /// </summary>
         public ClrMameProReader(string filename)
         {
-            sr = new StreamReader(filename);
+            _reader = new StreamReader(filename);
         }
 
         /// <summary>
-        /// Constructor for opening a write from a stream and encoding
+        /// Constructor for reading from a stream and encoding
         /// </summary>
         public ClrMameProReader(Stream stream, Encoding encoding)
         {
-            sr = new StreamReader(stream, encoding);
+            _reader = new StreamReader(stream, encoding);
         }
+
+        /// <summary>
+        /// Constructor for reading from a stream reader
+        /// </summary>
+        public ClrMameProReader(StreamReader streamReader)
+        {
+            _reader = streamReader;
+        }
+
+        #endregion
 
         /// <summary>
         /// Read the next line in the file
         /// </summary>
         public bool ReadNextLine()
         {
-            if (sr?.BaseStream == null)
+            if (_reader?.BaseStream == null)
                 return false;
 
-            if (!sr.BaseStream.CanRead || sr.EndOfStream)
+            if (!_reader.BaseStream.CanRead || _reader.EndOfStream)
                 return false;
 
-            CurrentLine = sr.ReadLine()?.Trim();
+            CurrentLine = _reader.ReadLine()?.Trim();
             LineNumber++;
             ProcessLine();
             return true;
@@ -300,12 +320,16 @@ namespace SabreTools.IO.Readers
             return Array.ConvertAll(matchArr, m => m.Groups[0].Value);
         }
 
+        #region IDisposable Implementation
+
         /// <summary>
         /// Dispose of the underlying reader
         /// </summary>
         public void Dispose()
         {
-            sr?.Dispose();
+            _reader?.Dispose();
         }
+
+        #endregion
     }
 }

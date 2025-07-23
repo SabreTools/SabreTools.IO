@@ -6,25 +6,7 @@ namespace SabreTools.IO.Writers
 {
     public class SeparatedValueWriter : IDisposable
     {
-        /// <summary>
-        /// Internal stream writer for outputting
-        /// </summary>
-        private readonly StreamWriter sw;
-
-        /// <summary>
-        /// Internal value if we've written a header before
-        /// </summary>
-        private bool header = false;
-
-        /// <summary>
-        /// Internal value if we've written our first line before
-        /// </summary>
-        private bool firstRow = false;
-
-        /// <summary>
-        /// Internal value to say how many fields should be written
-        /// </summary>
-        private int fields = -1;
+        #region Fields
 
         /// <summary>
         /// Set if values should be wrapped in quotes
@@ -41,12 +23,40 @@ namespace SabreTools.IO.Writers
         /// </summary>
         public bool VerifyFieldCount { get; set; } = true;
 
+        #endregion
+
+        #region Private Properties
+
+        /// <summary>
+        /// Internal stream writer
+        /// </summary>
+        private readonly StreamWriter _writer;
+
+        /// <summary>
+        /// Internal value if we've written a header before
+        /// </summary>
+        private bool _header = false;
+
+        /// <summary>
+        /// Internal value if we've written our first line before
+        /// </summary>
+        private bool _firstRow = false;
+
+        /// <summary>
+        /// Internal value to say how many fields should be written
+        /// </summary>
+        private int _fields = -1;
+
+        #endregion
+
+        #region Constructors
+
         /// <summary>
         /// Constructor for writing to a file
         /// </summary>
         public SeparatedValueWriter(string filename)
         {
-            sw = new StreamWriter(filename);
+            _writer = new StreamWriter(filename);
         }
 
         /// <summary>
@@ -55,11 +65,21 @@ namespace SabreTools.IO.Writers
         public SeparatedValueWriter(Stream stream, Encoding encoding)
         {
 #if NET20 || NET35 || NET40
-            sw = new StreamWriter(stream, encoding);
+            _writer = new StreamWriter(stream, encoding);
 #else
-            sw = new StreamWriter(stream, encoding, 1024, leaveOpen: true);
+            _writer = new StreamWriter(stream, encoding, 1024, leaveOpen: true);
 #endif
         }
+
+        /// <summary>
+        /// Consturctor for writing to a stream writer
+        /// </summary>
+        public SeparatedValueWriter(StreamWriter streamWriter)
+        {
+            _writer = streamWriter;
+        }
+
+        #endregion
 
         /// <summary>
         /// Write a header row
@@ -67,10 +87,10 @@ namespace SabreTools.IO.Writers
         public void WriteHeader(string?[] headers)
         {
             // If we haven't written anything out, we can write headers
-            if (!header && !firstRow)
+            if (!_header && !_firstRow)
                 WriteValues(headers);
 
-            header = true;
+            _header = true;
         }
 
         /// <summary>
@@ -79,25 +99,25 @@ namespace SabreTools.IO.Writers
         public void WriteValues(object?[] values, bool newline = true)
         {
             // If the writer can't be used, we error
-            if (sw == null || !sw.BaseStream.CanWrite)
-                throw new ArgumentException(nameof(sw));
+            if (_writer == null || !_writer.BaseStream.CanWrite)
+                throw new ArgumentException(nameof(_writer));
 
             // If the separator character is invalid, we error
             if (Separator == default(char))
                 throw new ArgumentException(nameof(Separator));
 
             // If we have the first row, set the bool and the field count
-            if (!firstRow)
+            if (!_firstRow)
             {
-                firstRow = true;
-                if (VerifyFieldCount && fields == -1)
-                    fields = values.Length;
+                _firstRow = true;
+                if (VerifyFieldCount && _fields == -1)
+                    _fields = values.Length;
             }
 
             // Get the number of fields to write out
             int fieldCount = values.Length;
             if (VerifyFieldCount)
-                fieldCount = Math.Min(fieldCount, fields);
+                fieldCount = Math.Min(fieldCount, _fields);
 
             // Iterate over the fields, writing out each
             bool firstField = true;
@@ -106,32 +126,32 @@ namespace SabreTools.IO.Writers
                 var value = values[i];
 
                 if (!firstField)
-                    sw.Write(Separator);
+                    _writer.Write(Separator);
 
                 if (Quotes)
-                    sw.Write("\"");
-                sw.Write(value?.ToString() ?? string.Empty);
+                    _writer.Write("\"");
+                _writer.Write(value?.ToString() ?? string.Empty);
                 if (Quotes)
-                    sw.Write("\"");
+                    _writer.Write("\"");
 
                 firstField = false;
             }
 
             // If we need to pad out the number of fields, add empties
-            if (VerifyFieldCount && values.Length < fields)
+            if (VerifyFieldCount && values.Length < _fields)
             {
-                for (int i = 0; i < fields - values.Length; i++)
+                for (int i = 0; i < _fields - values.Length; i++)
                 {
-                    sw.Write(Separator);
+                    _writer.Write(Separator);
 
                     if (Quotes)
-                        sw.Write("\"\"");
+                        _writer.Write("\"\"");
                 }
             }
 
             // Add a newline, if needed
             if (newline)
-                sw.WriteLine();
+                _writer.WriteLine();
         }
 
         /// <summary>
@@ -142,7 +162,7 @@ namespace SabreTools.IO.Writers
             if (string.IsNullOrEmpty(value))
                 return;
 
-            sw.Write(value);
+            _writer.Write(value);
         }
 
         /// <summary>
@@ -150,15 +170,19 @@ namespace SabreTools.IO.Writers
         /// </summary>
         public void Flush()
         {
-            sw.Flush();
+            _writer.Flush();
         }
+
+        #region IDisposable Implementation
 
         /// <summary>
         /// Dispose of the underlying writer
         /// </summary>
         public void Dispose()
         {
-            sw.Dispose();
+            _writer.Dispose();
         }
+
+        #endregion
     }
 }
