@@ -99,7 +99,7 @@ namespace SabreTools.IO.Writers
         public void WriteValues(object?[] values, bool newline = true)
         {
             // If the writer can't be used, we error
-            if (_writer == null || !_writer.BaseStream.CanWrite)
+            if (!_writer.BaseStream.CanWrite)
                 throw new ArgumentException(nameof(_writer));
 
             // If the separator character is invalid, we error

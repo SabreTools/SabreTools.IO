@@ -13,13 +13,7 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Get if at end of stream
         /// </summary>
-        public bool EndOfStream
-        {
-            get
-            {
-                return _reader?.EndOfStream ?? true;
-            }
-        }
+        public bool EndOfStream => _reader.EndOfStream;
 
         /// <summary>
         /// Contents of the current line, unprocessed
@@ -68,7 +62,7 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Internal stream reader
         /// </summary>
-        private readonly StreamReader? _reader;
+        private readonly StreamReader _reader;
 
         /// <summary>
         /// How many fields should be written
@@ -124,7 +118,7 @@ namespace SabreTools.IO.Readers
         /// </summary>
         public bool ReadNextLine()
         {
-            if (_reader?.BaseStream == null)
+            if (_reader.BaseStream == null)
                 return false;
 
             if (!_reader.BaseStream.CanRead || _reader.EndOfStream)
@@ -225,7 +219,7 @@ namespace SabreTools.IO.Readers
         /// </summary>
         public void Dispose()
         {
-            _reader?.Dispose();
+            _reader.Dispose();
         }
 
         #endregion

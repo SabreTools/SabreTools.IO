@@ -11,7 +11,7 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// Internal stream writer
         /// </summary>
-        private readonly StreamWriter? _writer;
+        private readonly StreamWriter _writer;
 
         #endregion
 
@@ -52,7 +52,7 @@ namespace SabreTools.IO.Writers
         /// </summary>
         public void WriteSection(string? value)
         {
-            if (_writer?.BaseStream == null)
+            if (_writer.BaseStream == null)
                 return;
 
             if (string.IsNullOrEmpty(value))
@@ -66,7 +66,7 @@ namespace SabreTools.IO.Writers
         /// </summary>
         public void WriteKeyValuePair(string key, string? value)
         {
-            if (_writer?.BaseStream == null)
+            if (_writer.BaseStream == null)
                 return;
 
             if (string.IsNullOrEmpty(key))
@@ -81,7 +81,7 @@ namespace SabreTools.IO.Writers
         /// </summary>
         public void WriteComment(string? value)
         {
-            if (_writer?.BaseStream == null)
+            if (_writer.BaseStream == null)
                 return;
 
             value ??= string.Empty;
@@ -93,7 +93,7 @@ namespace SabreTools.IO.Writers
         /// </summary>
         public void WriteString(string? value)
         {
-            if (_writer?.BaseStream == null)
+            if (_writer.BaseStream == null)
                 return;
 
             value ??= string.Empty;
@@ -105,7 +105,7 @@ namespace SabreTools.IO.Writers
         /// </summary>
         public void WriteLine()
         {
-            if (_writer?.BaseStream == null)
+            if (_writer.BaseStream == null)
                 return;
 
             _writer.WriteLine();
@@ -116,7 +116,7 @@ namespace SabreTools.IO.Writers
         /// </summary>
         public void Flush()
         {
-            _writer?.Flush();
+            _writer.Flush();
         }
 
         #region IDisposable Implementation
@@ -126,7 +126,7 @@ namespace SabreTools.IO.Writers
         /// </summary>
         public void Dispose()
         {
-            _writer?.Dispose();
+            _writer.Dispose();
         }
 
         #endregion
