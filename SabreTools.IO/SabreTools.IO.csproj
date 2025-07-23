@@ -28,7 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="SabreTools.Matching" Version="1.5.2" />
+        <PackageReference Include="SabreTools.Matching" Version="1.6.0" />
     </ItemGroup>
 
 </Project>
