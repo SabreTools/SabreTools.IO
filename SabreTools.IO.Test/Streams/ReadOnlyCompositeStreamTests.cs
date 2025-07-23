@@ -59,7 +59,7 @@ namespace SabreTools.IO.Test.Streams
             Assert.Equal(2048, stream.Length);
             Assert.Equal(0, stream.Position);
         }
-    
+
         [Fact]
         public void AddStreamTest()
         {

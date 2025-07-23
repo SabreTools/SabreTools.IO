@@ -5,5 +5,5 @@ namespace SabreTools.IO.Test.Extensions
         None = 0x00000000,
         RecognizedTestValue = 0x03020100,
         UpperBoundaryValue = 0xFFFFFFFF,
-    } 
+    }
 }

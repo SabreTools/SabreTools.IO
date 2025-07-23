@@ -124,7 +124,7 @@ namespace SabreTools.IO.Test.Extensions
             string actual = Encoding.UTF8.GetString(stream.ToArray(), 3, (int)stream.Length - 3);
             Assert.Equal(expected, actual);
         }
-    
+
         [Fact]
         public void WriteOptionalAttributeString_NullInput_NoWrite()
         {
@@ -184,7 +184,7 @@ namespace SabreTools.IO.Test.Extensions
             string actual = Encoding.UTF8.GetString(stream.ToArray(), 3, (int)stream.Length - 3);
             Assert.Equal(expected, actual);
         }
-    
+
         [Fact]
         public void WriteOptionalElementString_NullInput_NoWrite()
         {

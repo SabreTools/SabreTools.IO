@@ -186,7 +186,7 @@ namespace SabreTools.IO.Test.Extensions
             var dirs = dir.SafeGetDirectories("*", SearchOption.AllDirectories);
             Assert.Single(dirs);
         }
-        
+
         [Fact]
         public void SafeGetFiles_ValidDirectory()
         {
@@ -258,7 +258,7 @@ namespace SabreTools.IO.Test.Extensions
             var dirs = dir.SafeEnumerateDirectories("*", SearchOption.AllDirectories);
             Assert.Single(dirs);
         }
-        
+
         [Fact]
         public void SafeEnumerateFiles_ValidDirectory()
         {
