@@ -200,7 +200,7 @@ namespace SabreTools.IO.Streams
             {
                 case SeekOrigin.Begin: _position = offset; break;
                 case SeekOrigin.Current: _position += offset; break;
-                case SeekOrigin.End: _position = _length - offset - 1; break;
+                case SeekOrigin.End: _position = _length + offset - 1; break;
                 default: throw new ArgumentException($"Invalid value for {nameof(origin)}");
             }
             ;
