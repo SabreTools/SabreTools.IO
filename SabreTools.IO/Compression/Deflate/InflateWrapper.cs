@@ -31,7 +31,7 @@ namespace SabreTools.IO.Compression.Deflate
         /// <param name="filename">Output filename, null to auto-generate</param>
         /// <param name="outputDirectory">Output directory to write to</param>
         /// <param name="expected">Expected DEFLATE stream information</param>
-        /// <param name="isPkzip">Indicates if PKZIP containers are used</param>
+        /// <param name="pkzip">Indicates if PKZIP containers are used</param>
         /// <param name="includeDebug">True to include debug data, false otherwise</param>
         /// <returns>Extraction status representing the final state</returns>
         /// <remarks>Assumes that the current stream position is where the compressed data lives</remarks>
@@ -39,7 +39,7 @@ namespace SabreTools.IO.Compression.Deflate
             string? filename,
             string outputDirectory,
             DeflateInfo expected,
-            bool isPkzip,
+            bool pkzip,
             bool includeDebug)
         {
             // Debug output
@@ -50,12 +50,12 @@ namespace SabreTools.IO.Compression.Deflate
             ExtractionStatus status = ExtractStream(source,
                 destination,
                 expected,
-                isPkzip,
+                pkzip,
                 includeDebug,
                 out var foundFilename);
 
             // If the extracted data is invalid
-            if (destination == null)
+            if (status != ExtractionStatus.GOOD || destination == null)
                 return status;
 
             // Ensure directory separators are consistent
@@ -82,7 +82,7 @@ namespace SabreTools.IO.Compression.Deflate
         /// <param name="source">Stream representing the deflated data</param>
         /// <param name="destination">Stream where the inflated data will be written</param>
         /// <param name="expected">Expected DEFLATE stream information</param>
-        /// <param name="isPkzip">Indicates if PKZIP containers are used</param>
+        /// <param name="pkzip">Indicates if PKZIP containers are used</param>
         /// <param name="includeDebug">True to include debug data, false otherwise</param>
         /// <param name="filename">Output filename if extracted from the data, null otherwise</param>
         /// <returns>Extraction status representing the final state</returns>
@@ -90,12 +90,12 @@ namespace SabreTools.IO.Compression.Deflate
         public static ExtractionStatus ExtractStream(Stream source,
             Stream destination,
             DeflateInfo expected,
-            bool isPkzip,
+            bool pkzip,
             bool includeDebug,
             out string? filename)
         {
             // If PKZIP containers are used
-            if (isPkzip)
+            if (pkzip)
                 return ExtractStreamWithContainer(source, destination, expected, includeDebug, out filename);
 
             // If post-data checksums are used
