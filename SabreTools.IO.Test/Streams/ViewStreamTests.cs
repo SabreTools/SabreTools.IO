@@ -366,6 +366,22 @@ namespace SabreTools.IO.Test.Streams
         #region Unimplemented
 
         [Fact]
+        public void Flush_Array_Throws()
+        {
+            byte[] data = new byte[1024];
+            var stream = new ViewStream(data, 0, 1024);
+            Assert.Throws<NotImplementedException>(() => stream.Flush());
+        }
+
+        [Fact]
+        public void Flush_Stream_Throws()
+        {
+            Stream data = new MemoryStream(new byte[1024]);
+            var stream = new ViewStream(data, 0, 1024);
+            Assert.Throws<NotImplementedException>(() => stream.Flush());
+        }
+
+        [Fact]
         public void SetLength_Array_Throws()
         {
             byte[] data = new byte[1024];

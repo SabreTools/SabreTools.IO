@@ -10,6 +10,15 @@ namespace SabreTools.IO.Streams
     {
         #region Properties
 
+        /// <inheritdoc/>
+        public override bool CanRead => true;
+
+        /// <inheritdoc/>
+        public override bool CanSeek => _source.CanSeek;
+
+        /// <inheritdoc/>
+        public override bool CanWrite => false;
+
         /// <summary>
         /// Filename from the source, if possible
         /// </summary>
@@ -183,16 +192,8 @@ namespace SabreTools.IO.Streams
         #region Stream Implementations
 
         /// <inheritdoc/>
-        public override bool CanRead => true;
-
-        /// <inheritdoc/>
-        public override bool CanWrite => false;
-
-        /// <inheritdoc/>
-        public override bool CanSeek => _source.CanSeek;
-
-        /// <inheritdoc/>
-        public override void Flush() => _source.Flush();
+        public override void Flush()
+            => throw new NotImplementedException();
 
         /// <inheritdoc/>
         public override int Read(byte[] buffer, int offset, int count)

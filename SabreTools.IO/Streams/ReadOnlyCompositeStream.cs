@@ -39,7 +39,7 @@ namespace SabreTools.IO.Streams
 
         #endregion
 
-        #region Internal State
+        #region Instance Variables
 
         /// <summary>
         /// Internal collection of streams to read from
@@ -57,6 +57,8 @@ namespace SabreTools.IO.Streams
         private long _position;
 
         #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Create a new, empty ReadOnlyCompositeStream
@@ -109,7 +111,7 @@ namespace SabreTools.IO.Streams
         /// </summary>
         public ReadOnlyCompositeStream(IEnumerable<Stream> streams)
         {
-            _streams = new List<Stream>(streams);
+            _streams = [.. streams];
             _length = 0;
             _position = 0;
 
@@ -122,6 +124,10 @@ namespace SabreTools.IO.Streams
                 _length += stream.Length;
             }
         }
+
+        #endregion
+
+        #region Data
 
         /// <summary>
         /// Add a new stream to the collection
@@ -138,10 +144,13 @@ namespace SabreTools.IO.Streams
             return true;
         }
 
+        #endregion
+
         #region Stream Implementations
 
         /// <inheritdoc/>
-        public override void Flush() => throw new NotImplementedException();
+        public override void Flush()
+            => throw new NotImplementedException();
 
         /// <inheritdoc/>
         public override int Read(byte[] buffer, int offset, int count)
@@ -198,27 +207,22 @@ namespace SabreTools.IO.Streams
             // Handle the "seek"
             switch (origin)
             {
-                case SeekOrigin.Begin: _position = offset; break;
-                case SeekOrigin.Current: _position += offset; break;
-                case SeekOrigin.End: _position = _length + offset - 1; break;
+                case SeekOrigin.Begin: Position = offset; break;
+                case SeekOrigin.Current: Position += offset; break;
+                case SeekOrigin.End: Position = _length + offset - 1; break;
                 default: throw new ArgumentException($"Invalid value for {nameof(origin)}");
             }
-            ;
 
-            // Handle out-of-bounds seeks
-            if (_position < 0)
-                _position = 0;
-            else if (_position >= _length)
-                _position = _length - 1;
-
-            return _position;
+            return Position;
         }
 
         /// <inheritdoc/>
-        public override void SetLength(long value) => throw new NotImplementedException();
+        public override void SetLength(long value)
+            => throw new NotImplementedException();
 
         /// <inheritdoc/>
-        public override void Write(byte[] buffer, int offset, int count) => throw new NotImplementedException();
+        public override void Write(byte[] buffer, int offset, int count)
+            => throw new NotImplementedException();
 
         #endregion
 
