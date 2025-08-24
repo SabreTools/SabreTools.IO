@@ -10,10 +10,22 @@ namespace SabreTools.IO.Test.Streams
         #region Constructor
 
         [Theory]
+        [InlineData(0, 0, 0)]
+        [InlineData(1024, 0, 1024)]
+        [InlineData(1024, 256, 768)]
+        public void Constructor_Array(int size, long offset, long expectedLength)
+        {
+            byte[] data = new byte[size];
+            var stream = new ViewStream(data, offset);
+            Assert.Equal(expectedLength, stream.Length);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Theory]
         [InlineData(0, 0, 0, 0)]
         [InlineData(1024, 0, 1024, 1024)]
         [InlineData(1024, 256, 512, 512)]
-        public void Constructor_Array(int size, long offset, long length, long expectedLength)
+        public void Constructor_Array_Length(int size, long offset, long length, long expectedLength)
         {
             byte[] data = new byte[size];
             var stream = new ViewStream(data, offset, length);
@@ -48,10 +60,22 @@ namespace SabreTools.IO.Test.Streams
         }
 
         [Theory]
+        [InlineData(0, 0, 0)]
+        [InlineData(1024, 0, 1024)]
+        [InlineData(1024, 256, 768)]
+        public void Constructor_Stream(int size, long offset, long expectedLength)
+        {
+            Stream data = new MemoryStream(new byte[size]);
+            var stream = new ViewStream(data, offset);
+            Assert.Equal(expectedLength, stream.Length);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Theory]
         [InlineData(0, 0, 0, 0)]
         [InlineData(1024, 0, 1024, 1024)]
         [InlineData(1024, 256, 512, 512)]
-        public void Constructor_Stream(int size, long offset, long length, long expectedLength)
+        public void Constructor_Stream_Length(int size, long offset, long length, long expectedLength)
         {
             Stream data = new MemoryStream(new byte[size]);
             var stream = new ViewStream(data, offset, length);

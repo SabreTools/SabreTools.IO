@@ -92,6 +92,23 @@ namespace SabreTools.IO.Streams
         /// <summary>
         /// Construct a new ViewStream from a Stream
         /// </summary>
+        public ViewStream(Stream data, long offset)
+        {
+            if (!data.CanRead)
+                throw new ArgumentException(nameof(data));
+            if (offset < 0 || offset > data.Length)
+                throw new ArgumentOutOfRangeException(nameof(offset));
+
+            _source = data;
+            _initialPosition = offset;
+            _length = data.Length - offset;
+
+            _source.Seek(_initialPosition, SeekOrigin.Begin);
+        }
+
+        /// <summary>
+        /// Construct a new ViewStream from a Stream
+        /// </summary>
         public ViewStream(Stream data, long offset, long length)
         {
             if (!data.CanRead)
@@ -103,6 +120,22 @@ namespace SabreTools.IO.Streams
 
             _source = data;
             _initialPosition = offset;
+            _length = length;
+
+            _source.Seek(_initialPosition, SeekOrigin.Begin);
+        }
+
+         /// <summary>
+        /// Construct a new ViewStream from a byte array
+        /// </summary>
+        public ViewStream(byte[] data, long offset)
+        {
+            if (offset < 0 || offset > data.Length)
+                throw new ArgumentOutOfRangeException(nameof(offset));
+
+            long length = data.Length - offset;
+            _source = new MemoryStream(data, (int)offset, (int)length);
+            _initialPosition = 0;
             _length = length;
 
             _source.Seek(_initialPosition, SeekOrigin.Begin);
