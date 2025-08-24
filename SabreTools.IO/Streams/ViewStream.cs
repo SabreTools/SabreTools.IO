@@ -201,11 +201,9 @@ namespace SabreTools.IO.Streams
             // Invalid cases always return 0
             if (buffer.Length == 0)
                 return 0;
-            if (offset < 0 || offset > buffer.Length)
+            if (offset < 0 || offset >= buffer.Length)
                 return 0;
             if (count < 0 || offset + count > buffer.Length)
-                return 0;
-            if (!SegmentValid(Position, count))
                 return 0;
 
             // Short-circuit 0-byte reads
