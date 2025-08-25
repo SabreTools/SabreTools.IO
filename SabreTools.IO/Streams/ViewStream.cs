@@ -169,26 +169,6 @@ namespace SabreTools.IO.Streams
 
         #endregion
 
-        #region Data
-
-        /// <summary>
-        /// Check if a data segment is valid in the data source 
-        /// </summary>
-        /// <param name="offset">Position in the source</param>
-        /// <param name="count">Length of the data to check</param>
-        /// <returns>True if the positional data is valid, false otherwise</returns>
-        public bool SegmentValid(long offset, long count)
-        {
-            if (offset < 0 || offset > Length)
-                return false;
-            if (count < 0 || offset + count > Length)
-                return false;
-
-            return true;
-        }
-
-        #endregion
-
         #region Stream Implementations
 
         /// <inheritdoc/>

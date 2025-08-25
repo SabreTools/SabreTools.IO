@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using SabreTools.IO.Extensions;
 using SabreTools.IO.Streams;
 using Xunit;
 

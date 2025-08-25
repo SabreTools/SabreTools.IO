@@ -31,6 +31,47 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Read a number of bytes from an offset in a stream, if possible
+        /// </summary>
+        /// <param name="input">Input stream to read from</param>
+        /// <param name="offset">Offset within the stream to start reading</param>
+        /// <param name="length">Number of bytes to read from the offset</param>
+        /// <param name="retainPosition">Indicates if the original position of the stream should be retained after reading</param>
+        /// <returns>Filled byte array on success, null on error</returns>
+        /// <remarks>
+        /// This method will return a null array if the length is greater than what is left
+        /// in the stream. This is different behavior than a normal stream read that would
+        /// attempt to read as much as possible, returning the amount of bytes read.
+        /// </remarks>
+        public static byte[]? ReadFrom(this Stream? input, long offset, int length, bool retainPosition)
+        {
+            if (input == null || !input.CanRead || !input.CanSeek)
+                return null;
+            if (offset < 0 || offset >= input.Length)
+                return null;
+            if (length < 0 || offset + length > input.Length)
+                return null;
+
+            // Cache the current location
+            long currentLocation = input.Position;
+
+            // Seek to the requested offset
+            long newPosition = input.SeekIfPossible(offset);
+            if (newPosition != offset)
+                return null;
+
+            // Read from the position
+            byte[] data = input.ReadBytes(length);
+
+            // Seek back if requested
+            if (retainPosition)
+                _ = input.SeekIfPossible(currentLocation);
+
+            // Return the read data
+            return data;
+        }
+
+        /// <summary>
         /// Seek to a specific point in the stream, if possible
         /// </summary>
         /// <param name="input">Input stream to try seeking on</param>
@@ -61,6 +102,25 @@ namespace SabreTools.IO.Extensions
             {
                 return -1;
             }
+        }
+
+        /// <summary>
+        /// Check if a segment is valid in the stream
+        /// </summary>
+        /// <param name="input">Input stream to validate</param>
+        /// <param name="offset">Position in the source</param>
+        /// <param name="count">Length of the data to check</param>
+        /// <returns>True if segment could be read fully, false otherwise</returns>
+        public static bool SegmentValid(this Stream? input, long offset, long count)
+        {
+            if (input == null)
+                return false;
+            if (offset < 0 || offset > input.Length)
+                return false;
+            if (count < 0 || offset + count > input.Length)
+                return false;
+
+            return true;
         }
     }
 }

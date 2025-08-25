@@ -7,7 +7,7 @@ namespace SabreTools.IO.Test.Extensions
 {
     public class StreamExtensionsTests
     {
-        #region Align to Boundary
+        #region AlignToBoundary
 
         [Fact]
         public void AlignToBoundary_Null_False()
@@ -62,7 +62,82 @@ namespace SabreTools.IO.Test.Extensions
 
         #endregion
 
-        #region Seek If Possible
+        #region ReadFrom
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ReadFrom_Null_Null(bool retainPosition)
+        {
+            Stream? stream = null;
+            byte[]? actual = stream.ReadFrom(0, 1, retainPosition);
+            Assert.Null(actual);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ReadFrom_NonSeekable_Null(bool retainPosition)
+        {
+            Stream? stream = new NonSeekableStream();
+            byte[]? actual = stream.ReadFrom(0, 1, retainPosition);
+            Assert.Null(actual);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ReadFrom_Empty_Null(bool retainPosition)
+        {
+            Stream? stream = new MemoryStream([]);
+            byte[]? actual = stream.ReadFrom(0, 1, retainPosition);
+            Assert.Null(actual);
+        }
+
+        [Theory]
+        [InlineData(-1, true)]
+        [InlineData(2048, true)]
+        [InlineData(-1, false)]
+        [InlineData(2048, false)]
+        public void ReadFrom_InvalidOffset_Null(long offset, bool retainPosition)
+        {
+            Stream? stream = new MemoryStream(new byte[1024]);
+            byte[]? actual = stream.ReadFrom(offset, 1, retainPosition);
+            Assert.Null(actual);
+        }
+
+        [Theory]
+        [InlineData(-1, true)]
+        [InlineData(2048, true)]
+        [InlineData(-1, false)]
+        [InlineData(2048, false)]
+        public void ReadFrom_InvalidLength_Null(int length, bool retainPosition)
+        {
+            Stream? stream = new MemoryStream(new byte[1024]);
+            byte[]? actual = stream.ReadFrom(0, length, retainPosition);
+            Assert.Null(actual);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void ReadFrom_Valid_Filled(bool retainPosition)
+        {
+            Stream? stream = new MemoryStream(new byte[1024]);
+            byte[]? actual = stream.ReadFrom(0, 512, retainPosition);
+
+            Assert.NotNull(actual);
+            Assert.Equal(512, actual.Length);
+
+            if (retainPosition)
+                Assert.Equal(0, stream.Position);
+            else
+                Assert.Equal(512, stream.Position);
+        }
+
+        #endregion
+
+        #region SeekIfPossible
 
         [Fact]
         public void SeekIfPossible_NonSeekable_CurrentPosition()
@@ -102,6 +177,46 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(new byte[16], 0, 16, false, true);
             long actual = stream.SeekIfPossible(-3);
             Assert.Equal(13, actual);
+        }
+
+        #endregion
+
+        #region SegmentValid
+
+        [Fact]
+        public void SegmentValid_Null_False()
+        {
+            Stream? stream = null;
+            bool actual = stream.SegmentValid(0, 1);
+            Assert.False(actual);
+        }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(2048)]
+        public void SegmentValid_InvalidOffset_False(long offset)
+        {
+            Stream? stream = new MemoryStream(new byte[1024]);
+            bool actual = stream.SegmentValid(offset, 1);
+            Assert.False(actual);
+        }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(2048)]
+        public void SegmentValid_InvalidLength_False(int length)
+        {
+            Stream? stream = new MemoryStream(new byte[1024]);
+            bool actual = stream.SegmentValid(0, length);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void SegmentValid_ValidSegment_True()
+        {
+            Stream? stream = new MemoryStream(new byte[1024]);
+            bool actual = stream.SegmentValid(0, 1024);
+            Assert.True(actual);
         }
 
         #endregion
