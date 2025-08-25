@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 using SabreTools.IO.Extensions;
 using Xunit;
 
@@ -133,6 +134,145 @@ namespace SabreTools.IO.Test.Extensions
                 Assert.Equal(0, stream.Position);
             else
                 Assert.Equal(512, stream.Position);
+        }
+
+        #endregion
+
+        #region ReadStringsFrom
+
+        [Fact]
+        public void ReadStringsFrom_Null_Null()
+        {
+            Stream? stream = null;
+            var actual = stream.ReadStringsFrom(0, 1, 3);
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public void ReadStringsFrom_NonSeekable_Null()
+        {
+            Stream? stream = new NonSeekableStream();
+            var actual = stream.ReadStringsFrom(0, 1, 3);
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public void ReadStringsFrom_Empty_Null()
+        {
+            Stream? stream = new MemoryStream([]);
+            var actual = stream.ReadStringsFrom(0, 1, 3);
+            Assert.Null(actual);
+        }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(0)]
+        [InlineData(2048)]
+        public void ReadStringsFrom_InvalidLimit_Empty(int charLimit)
+        {
+            Stream? stream = new MemoryStream(new byte[1024]);
+            var actual = stream.ReadStringsFrom(0, 1024, charLimit);
+            Assert.NotNull(actual);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public void ReadStringsFrom_NoValidStrings_Empty()
+        {
+            Stream? stream = new MemoryStream(new byte[1024]);
+            var actual = stream.ReadStringsFrom(0, 1024, 4);
+            Assert.NotNull(actual);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public void ReadStringsFrom_AsciiStrings_Filled()
+        {
+            byte[]? bytes =
+            [
+                .. Encoding.ASCII.GetBytes("TEST"),
+                .. new byte[] { 0x00 },
+                .. Encoding.ASCII.GetBytes("TWO"),
+                .. new byte[] { 0x00 },
+                .. Encoding.ASCII.GetBytes("DATA"),
+                .. new byte[] { 0x00 },
+            ];
+            Stream? stream = new MemoryStream(bytes);
+            var actual = stream.ReadStringsFrom(0, bytes.Length, 4);
+            Assert.NotNull(actual);
+
+            // ASCII and UTF-8 are identical for the character range
+            Assert.Equal(4, actual.Count);
+        }
+
+        [Fact]
+        public void ReadStringsFrom_UTF8_Filled()
+        {
+            byte[]? bytes =
+            [
+                .. Encoding.UTF8.GetBytes("TEST"),
+                .. new byte[] { 0x00 },
+                .. Encoding.UTF8.GetBytes("TWO"),
+                .. new byte[] { 0x00 },
+                .. Encoding.UTF8.GetBytes("DATA"),
+                .. new byte[] { 0x00 },
+            ];
+            Stream? stream = new MemoryStream(bytes);
+            var actual = stream.ReadStringsFrom(0, bytes.Length, 4);
+            Assert.NotNull(actual);
+
+            // ASCII and UTF-8 are identical for the character range
+            Assert.Equal(4, actual.Count);
+        }
+
+        [Fact]
+        public void ReadStringsFrom_UTF16_Filled()
+        {
+            byte[]? bytes =
+            [
+                .. Encoding.Unicode.GetBytes("TEST"),
+                .. new byte[] { 0x00 },
+                .. Encoding.Unicode.GetBytes("TWO"),
+                .. new byte[] { 0x00 },
+                .. Encoding.Unicode.GetBytes("DATA"),
+                .. new byte[] { 0x00 },
+            ];
+            Stream? stream = new MemoryStream(bytes);
+            var actual = stream.ReadStringsFrom(0, bytes.Length, 4);
+            Assert.NotNull(actual);
+            Assert.Equal(2, actual.Count);
+        }
+
+        [Fact]
+        public void ReadStringsFrom_Mixed_Filled()
+        {
+            byte[]? bytes =
+            [
+                .. Encoding.ASCII.GetBytes("TEST1"),
+                .. new byte[] { 0x00 },
+                .. Encoding.ASCII.GetBytes("TWO1"),
+                .. new byte[] { 0x00 },
+                .. Encoding.ASCII.GetBytes("DATA1"),
+                .. new byte[] { 0x00 },
+                .. Encoding.UTF8.GetBytes("TEST2"),
+                .. new byte[] { 0x00 },
+                .. Encoding.UTF8.GetBytes("TWO2"),
+                .. new byte[] { 0x00 },
+                .. Encoding.UTF8.GetBytes("DATA2"),
+                .. new byte[] { 0x00 },
+                .. Encoding.Unicode.GetBytes("TEST3"),
+                .. new byte[] { 0x00 },
+                .. Encoding.Unicode.GetBytes("TWO3"),
+                .. new byte[] { 0x00 },
+                .. Encoding.Unicode.GetBytes("DATA3"),
+                .. new byte[] { 0x00 },
+            ];
+            Stream? stream = new MemoryStream(bytes);
+            var actual = stream.ReadStringsFrom(0, bytes.Length, 5);
+            Assert.NotNull(actual);
+
+            // ASCII and UTF-8 are identical for the character range
+            Assert.Equal(10, actual.Count);
         }
 
         #endregion

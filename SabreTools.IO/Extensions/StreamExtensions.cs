@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace SabreTools.IO.Extensions
 {
@@ -69,6 +71,39 @@ namespace SabreTools.IO.Extensions
 
             // Return the read data
             return data;
+        }
+
+        /// <summary>
+        /// Read string data from the source
+        /// </summary>
+        /// <param name="position">Position in the source to read from</param>
+        /// <param name="length">Length of the requested data</param>
+        /// <param name="charLimit">Number of characters needed to be a valid string, default 5</param>
+        /// <returns>String list containing the requested data, null on error</returns>
+        public static List<string>? ReadStringsFrom(this Stream? input, int position, int length, int charLimit = 5)
+        {
+            // Read the data as a byte array first
+            byte[]? data = input.ReadFrom(position, length, retainPosition: true);
+            if (data == null)
+                return null;
+
+            // Check for ASCII strings
+            var asciiStrings = data.ReadStringsWithEncoding(charLimit, Encoding.ASCII);
+
+            // Check for UTF-8 strings
+            // We are limiting the check for Unicode characters with a second byte of 0x00 for now
+            var utf8Strings = data.ReadStringsWithEncoding(charLimit, Encoding.UTF8);
+
+            // Check for Unicode strings
+            // We are limiting the check for Unicode characters with a second byte of 0x00 for now
+            var unicodeStrings = data.ReadStringsWithEncoding(charLimit, Encoding.Unicode);
+
+            // Ignore duplicate strings across encodings
+            List<string> sourceStrings = [.. asciiStrings, .. utf8Strings, .. unicodeStrings];
+
+            // Sort the strings and return
+            sourceStrings.Sort();
+            return sourceStrings;
         }
 
         /// <summary>

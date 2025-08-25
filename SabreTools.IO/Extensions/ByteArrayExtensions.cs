@@ -1,9 +1,17 @@
 using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace SabreTools.IO.Extensions
 {
     public static class ByteArrayExtensions
     {
+        /// <summary>
+        /// Defines the maximum number of characters in a string
+        /// as used in <see cref="ReadStringsWithEncoding"/> 
+        /// </summary>
+        private const int MaximumCharactersInString = 64;
+
         /// <summary>
         /// Indicates whether the specified array is null or has a length of zero
         /// </summary>
@@ -49,6 +57,72 @@ namespace SabreTools.IO.Extensions
             {
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Read string data from the source with an encoding
+        /// </summary>
+        /// <param name="bytes">Byte array representing the source data</param>
+        /// <param name="charLimit">Number of characters needed to be a valid string</param>
+        /// <param name="encoding">Character encoding to use for checking</param>
+        /// <returns>String list containing the requested data, empty on error</returns>
+        /// <remarks>
+        /// This method has a couple of notable implementation details:
+        /// - Strings can only have a maximum of 64 characters
+        /// - Characters that fall outside of the extended ASCII set will be unused
+        /// </remarks>
+#if NET20
+        public static List<string> ReadStringsWithEncoding(this byte[]? bytes, int charLimit, Encoding encoding)
+#else
+        public static HashSet<string> ReadStringsWithEncoding(this byte[]? bytes, int charLimit, Encoding encoding)
+#endif
+        {
+            if (bytes == null || bytes.Length == 0)
+                return [];
+            if (charLimit <= 0 || charLimit > bytes.Length)
+                return [];
+
+            // Create the string set to return
+#if NET20
+            var strings = new List<string>();
+#else
+            var strings = new HashSet<string>();
+#endif
+
+            // Check for strings
+            int index = 0;
+            while (index < bytes.Length)
+            {
+                // Get the maximum number of characters
+                int maxChars = encoding.GetMaxCharCount(bytes.Length - index);
+                int maxBytes = encoding.GetMaxByteCount(Math.Min(MaximumCharactersInString, maxChars));
+
+                // Read the longest string allowed
+                int maxRead = Math.Min(maxBytes, bytes.Length - index);
+                string temp = encoding.GetString(bytes, index, maxRead);
+                char[] tempArr = temp.ToCharArray();
+
+                // Ignore empty strings
+                if (temp.Length == 0)
+                {
+                    index++;
+                    continue;
+                }
+
+                // Find the first instance of a control character
+                int endOfString = Array.FindIndex(tempArr, c => char.IsControl(c) || (c & 0xFF00) != 0);
+                if (endOfString > -1)
+                    temp = temp.Substring(0, endOfString);
+
+                // Otherwise, just add the string if long enough
+                if (temp.Length >= charLimit)
+                    strings.Add(temp);
+
+                // Increment and continue
+                index += Math.Max(encoding.GetByteCount(temp), 1);
+            }
+
+            return strings;
         }
     }
 }
