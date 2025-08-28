@@ -12,7 +12,7 @@ namespace SabreTools.IO.Extensions
         /// <param name="input">Input stream to try aligning</param>
         /// <param name="alignment">Number of bytes to align on</param>
         /// <returns>True if the stream could be aligned, false otherwise</returns>
-        public static bool AlignToBoundary(this Stream? input, byte alignment)
+        public static bool AlignToBoundary(this Stream? input, int alignment)
         {
             // If the stream is invalid
             if (input == null || input.Length == 0 || !input.CanRead)
