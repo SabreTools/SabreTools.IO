@@ -301,13 +301,13 @@ namespace SabreTools.IO.Compression.Deflate
 
                 header.FileName = Encoding.ASCII.GetString(filenameBytes);
             }
+
+            // Parsing extras is skipped here, unlike in Serialization
             if (header.ExtraFieldLength > 0 && data.Position + header.ExtraFieldLength <= data.Length)
             {
                 byte[] extraBytes = data.ReadBytes(header.ExtraFieldLength);
                 if (extraBytes.Length != header.ExtraFieldLength)
                     return null;
-
-                header.ExtraField = extraBytes;
             }
 
             return header;

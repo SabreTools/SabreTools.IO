@@ -135,7 +135,7 @@ namespace SabreTools.IO.Streams
             _source.Seek(_initialPosition, SeekOrigin.Begin);
         }
 
-         /// <summary>
+        /// <summary>
         /// Construct a new ViewStream from a byte array
         /// </summary>
         public ViewStream(byte[] data, long offset)
@@ -166,6 +166,26 @@ namespace SabreTools.IO.Streams
             _length = length;
 
             _source.Seek(_initialPosition, SeekOrigin.Begin);
+        }
+
+        #endregion
+
+        #region Data
+
+        /// <summary>
+        /// Check if a data segment is valid in the data source 
+        /// </summary>
+        /// <param name="offset">Position in the source</param>
+        /// <param name="count">Length of the data to check</param>
+        /// <returns>True if the positional data is valid, false otherwise</returns>
+        public bool SegmentValid(long offset, long count)
+        {
+            if (offset < 0 || offset > Length)
+                return false;
+            if (count < 0 || offset + count > Length)
+                return false;
+
+            return true;
         }
 
         #endregion
