@@ -142,7 +142,11 @@ namespace SabreTools.IO.Extensions
                         strings.Add(str);
 
                     // Clear the builder and continue
+#if NET20 || NET35
+                    sb = new();
+#else
                     sb.Clear();
+#endif
                     continue;
                 }
 
