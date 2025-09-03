@@ -261,6 +261,8 @@ namespace SabreTools.IO.Test.Extensions
             [
                 .. Encoding.ASCII.GetBytes("TEST"),
                 .. new byte[] { 0x00 },
+                .. Encoding.ASCII.GetBytes("ONE"),
+                .. new byte[] { 0x00 },
                 .. Encoding.ASCII.GetBytes("TWO"),
                 .. new byte[] { 0x00 },
                 .. Encoding.ASCII.GetBytes("DATA"),
@@ -276,6 +278,8 @@ namespace SabreTools.IO.Test.Extensions
             byte[]? bytes =
             [
                 .. Encoding.Latin1.GetBytes("TEST"),
+                .. new byte[] { 0x00 },
+                .. Encoding.Latin1.GetBytes("ONE"),
                 .. new byte[] { 0x00 },
                 .. Encoding.Latin1.GetBytes("TWO"),
                 .. new byte[] { 0x00 },
@@ -293,6 +297,8 @@ namespace SabreTools.IO.Test.Extensions
             [
                 .. Encoding.UTF8.GetBytes("TEST"),
                 .. new byte[] { 0x00 },
+                .. Encoding.UTF8.GetBytes("ONE"),
+                .. new byte[] { 0x00 },
                 .. Encoding.UTF8.GetBytes("TWO"),
                 .. new byte[] { 0x00 },
                 .. Encoding.UTF8.GetBytes("DATA"),
@@ -309,6 +315,8 @@ namespace SabreTools.IO.Test.Extensions
             [
                 .. Encoding.Unicode.GetBytes("TEST"),
                 .. new byte[] { 0x00 },
+                .. Encoding.Unicode.GetBytes("ONE"),
+                .. new byte[] { 0x00 },
                 .. Encoding.Unicode.GetBytes("TWO"),
                 .. new byte[] { 0x00 },
                 .. Encoding.Unicode.GetBytes("DATA"),
@@ -324,6 +332,8 @@ namespace SabreTools.IO.Test.Extensions
             byte[]? bytes =
             [
                 .. Encoding.UTF32.GetBytes("TEST"),
+                .. new byte[] { 0x00 },
+                .. Encoding.UTF32.GetBytes("ONE"),
                 .. new byte[] { 0x00 },
                 .. Encoding.UTF32.GetBytes("TWO"),
                 .. new byte[] { 0x00 },

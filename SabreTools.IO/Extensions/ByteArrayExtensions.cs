@@ -1,17 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace SabreTools.IO.Extensions
 {
     public static class ByteArrayExtensions
     {
-        /// <summary>
-        /// Defines the maximum number of characters in a string
-        /// as used in <see cref="ReadStringsWithEncoding"/> 
-        /// </summary>
-        private const int MaximumCharactersInString = 64;
-
         /// <summary>
         /// Indicates whether the specified array is null or has a length of zero
         /// </summary>
@@ -119,38 +114,45 @@ namespace SabreTools.IO.Extensions
             var strings = new HashSet<string>();
 #endif
 
+            // Open the text reader with the correct encoding
+            using var ms = new MemoryStream(bytes);
+            using var reader = new StreamReader(ms, encoding);
+
+            // Create a string builder for the loop
+            var sb = new StringBuilder();
+
             // Check for strings
-            int index = 0;
-            while (index < bytes.Length)
+            long lastOffset = 0;
+            while (!reader.EndOfStream)
             {
-                // Get the maximum number of characters
-                int maxChars = encoding.GetMaxCharCount(bytes.Length - index);
-                int maxBytes = encoding.GetMaxByteCount(Math.Min(MaximumCharactersInString, maxChars));
+                // Read the next character from the stream
+                char c = (char)reader.Read();
 
-                // Read the longest string allowed
-                int maxRead = Math.Min(maxBytes, bytes.Length - index);
-                string temp = encoding.GetString(bytes, index, maxRead);
-                char[] tempArr = temp.ToCharArray();
-
-                // Ignore empty strings
-                if (temp.Length == 0)
+                // If the character is invalid
+                if (char.IsControl(c) || (c & 0xFF00) != 0)
                 {
-                    index++;
+                    // Seek to the end of the last found string
+                    string str = sb.ToString();
+                    lastOffset += encoding.GetByteCount(str) + 1;
+                    ms.Seek(lastOffset, SeekOrigin.Begin);
+                    reader.DiscardBufferedData();
+
+                    // Add the string if long enough
+                    if (str.Length >= charLimit)
+                        strings.Add(str);
+
+                    // Clear the builder and continue
+                    sb.Clear();
                     continue;
                 }
 
-                // Find the first instance of a control character
-                int endOfString = Array.FindIndex(tempArr, c => char.IsControl(c) || (c & 0xFF00) != 0);
-                if (endOfString > -1)
-                    temp = temp.Substring(0, endOfString);
-
-                // Otherwise, just add the string if long enough
-                if (temp.Length >= charLimit)
-                    strings.Add(temp);
-
-                // Increment and continue
-                index += Math.Max(encoding.GetByteCount(temp), 1);
+                // Otherwise, add the character to the builder and continue
+                sb.Append(c);
             }
+
+            // Handle any remaining data
+            if (sb.Length >= charLimit)
+                strings.Add(sb.ToString());
 
             return strings;
         }
