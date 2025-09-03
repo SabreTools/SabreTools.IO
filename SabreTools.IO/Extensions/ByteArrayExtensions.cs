@@ -67,7 +67,7 @@ namespace SabreTools.IO.Extensions
         public static List<string>? ReadStringsFrom(this byte[]? input, int charLimit = 5)
         {
             // Validate the data
-            if (input == null)
+            if (input == null || input.Length == 0)
                 return null;
 
             // Check for ASCII strings
