@@ -8,6 +8,7 @@
         <LangVersion>latest</LangVersion>
         <NoWarn>CS0618</NoWarn>
         <Nullable>enable</Nullable>
+        <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <Version>1.7.1</Version>
