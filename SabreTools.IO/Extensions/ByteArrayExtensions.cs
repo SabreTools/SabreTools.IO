@@ -59,11 +59,19 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         /// <param name="charLimit">Number of characters needed to be a valid string, default 5</param>
         /// <returns>String list containing the requested data, null on error</returns>
+        /// <remarks>A maximum of 16KiB of data can be scanned at a time</remarks>
         public static List<string>? ReadStringsFrom(this byte[]? input, int charLimit = 5)
         {
             // Validate the data
             if (input == null || input.Length == 0)
                 return null;
+
+            // Limit to 16KiB of data
+            if (input.Length > 16384)
+            {
+                int offset = 0;
+                input = input.ReadBytes(ref offset, 16384);
+            }
 
             // Check for ASCII strings
             var asciiStrings = input.ReadStringsWithEncoding(charLimit, Encoding.ASCII);
