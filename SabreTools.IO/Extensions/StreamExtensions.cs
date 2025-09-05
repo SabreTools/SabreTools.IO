@@ -74,7 +74,7 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read string data from the source
+        /// Read string data from a Stream
         /// </summary>
         /// <param name="position">Position in the source to read from</param>
         /// <param name="length">Length of the requested data</param>

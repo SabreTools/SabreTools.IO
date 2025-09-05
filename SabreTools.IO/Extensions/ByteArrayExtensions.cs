@@ -55,7 +55,7 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read string data from the source
+        /// Read string data from a byte array
         /// </summary>
         /// <param name="charLimit">Number of characters needed to be a valid string, default 5</param>
         /// <returns>String list containing the requested data, null on error</returns>
@@ -93,7 +93,7 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read string data from the source with an encoding
+        /// Read string data from a byte array with an encoding
         /// </summary>
         /// <param name="bytes">Byte array representing the source data</param>
         /// <param name="charLimit">Number of characters needed to be a valid string</param>
