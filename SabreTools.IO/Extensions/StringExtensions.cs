@@ -14,7 +14,7 @@ namespace SabreTools.IO.Extensions
             if (self == null)
                 return false;
 
-#if NETFRAMEWORK
+#if NETFRAMEWORK || NETSTANDARD2_0
             return self.Contains(value);
 #else
             return self.Contains(value, comparisonType);
