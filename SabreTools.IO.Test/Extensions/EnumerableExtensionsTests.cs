@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using SabreTools.IO.Extensions;
 using Xunit;
 
@@ -9,6 +10,22 @@ namespace SabreTools.IO.Test.Extensions
 {
     public class EnumerableExtensionsTests
     {
+        #region IterateWithAction
+
+        [Fact]
+        public void IterateWithActionTest()
+        {
+            List<int> source = [1, 2, 3, 4];
+            int actual = 0;
+
+            source.IterateWithAction(i => Interlocked.Add(ref actual, i));
+            Assert.Equal(10, actual);
+        }
+
+        #endregion
+
+        #region SafeEnumerate
+
         [Fact]
         public void SafeEnumerate_Empty()
         {
@@ -59,6 +76,8 @@ namespace SabreTools.IO.Test.Extensions
             var list = safe.ToList();
             Assert.Equal(2, list.Count);
         }
+
+        #endregion
 
         /// <summary>
         /// Fake enumerable that uses <see cref="ErrorEnumerator"/> 
