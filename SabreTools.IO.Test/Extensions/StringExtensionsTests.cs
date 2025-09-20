@@ -22,6 +22,23 @@ namespace SabreTools.IO.Test.Extensions
 
         #endregion
 
+        #region OptionalEndsWith
+
+        [Theory]
+        [InlineData(null, "ANY", false)]
+        [InlineData("", "ANY", false)]
+        [InlineData("ANY", "ANY", true)]
+        [InlineData("ANYTHING", "ANY", false)]
+        [InlineData("THING", "ANY", false)]
+        [InlineData("THINGANY", "ANY", true)]
+        public void OptionalEndsWithTest(string? haystack, string needle, bool expected)
+        {
+            bool actual = haystack.OptionalEndsWith(needle);
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion
+
         #region OptionalEquals
 
         [Theory]
