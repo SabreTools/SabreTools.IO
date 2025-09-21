@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace SabreTools.IO.Extensions
 {
@@ -87,19 +86,7 @@ namespace SabreTools.IO.Extensions
             if (data == null)
                 return null;
 
-            // Check for ASCII strings
-            var asciiStrings = data.ReadStringsWithEncoding(charLimit, Encoding.ASCII);
-
-            // Check for Unicode strings
-            // We are limiting the check for Unicode characters with a second byte of 0x00 for now
-            var unicodeStrings = data.ReadStringsWithEncoding(charLimit, Encoding.Unicode);
-
-            // Ignore duplicate strings across encodings
-            List<string> sourceStrings = [.. asciiStrings, .. unicodeStrings];
-
-            // Sort the strings and return
-            sourceStrings.Sort();
-            return sourceStrings;
+            return data.ReadStringsFrom(charLimit);
         }
 
         /// <summary>
