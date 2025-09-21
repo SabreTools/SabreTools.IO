@@ -59,15 +59,24 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         /// <param name="charLimit">Number of characters needed to be a valid string, default 5</param>
         /// <returns>String list containing the requested data, null on error</returns>
+#if NET5_0_OR_GREATER
+        /// <remarks>This reads both Latin1 and UTF-16 strings from the input data</remarks>
+#else
         /// <remarks>This reads both ASCII and UTF-16 strings from the input data</remarks>
+#endif
         public static List<string>? ReadStringsFrom(this byte[]? input, int charLimit = 5)
         {
             // Validate the data
             if (input == null || input.Length == 0)
                 return null;
 
+#if NET5_0_OR_GREATER
+            // Check for Latin1 strings
+            var asciiStrings = input.ReadStringsWithEncoding(charLimit, Encoding.Latin1);
+#else
             // Check for ASCII strings
             var asciiStrings = input.ReadStringsWithEncoding(charLimit, Encoding.ASCII);
+#endif
 
             // Check for Unicode strings
             // We are limiting the check for Unicode characters with a second byte of 0x00 for now

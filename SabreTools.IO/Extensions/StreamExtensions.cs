@@ -79,7 +79,11 @@ namespace SabreTools.IO.Extensions
         /// <param name="position">Position in the source to read from</param>
         /// <param name="length">Length of the requested data</param>
         /// <returns>String list containing the requested data, null on error</returns>
+#if NET5_0_OR_GREATER
+        /// <remarks>This reads both Latin1 and UTF-16 strings from the input data</remarks>
+#else
         /// <remarks>This reads both ASCII and UTF-16 strings from the input data</remarks>
+#endif
         public static List<string>? ReadStringsFrom(this Stream? input, int position, int length, int charLimit = 5)
         {
             // Read the data as a byte array first

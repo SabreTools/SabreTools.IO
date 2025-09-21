@@ -147,6 +147,23 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void ReadStringsFrom_Latin1Strings_Filled()
+        {
+            byte[]? arr =
+            [
+                .. Encoding.Latin1.GetBytes("TEST"),
+                .. new byte[] { 0x00 },
+                .. Encoding.Latin1.GetBytes("TWO"),
+                .. new byte[] { 0x00 },
+                .. Encoding.Latin1.GetBytes("DATA"),
+                .. new byte[] { 0x00 },
+            ];
+            var actual = arr.ReadStringsFrom(4);
+            Assert.NotNull(actual);
+            Assert.Equal(2, actual.Count);
+        }
+
+        [Fact]
         public void ReadStringsFrom_UTF16_Filled()
         {
             byte[]? arr =
@@ -174,16 +191,22 @@ namespace SabreTools.IO.Test.Extensions
                 .. new byte[] { 0x00 },
                 .. Encoding.ASCII.GetBytes("DATA1"),
                 .. new byte[] { 0x00 },
-                .. Encoding.Unicode.GetBytes("TEST2"),
+                .. Encoding.ASCII.GetBytes("TEST2"),
                 .. new byte[] { 0x00 },
-                .. Encoding.Unicode.GetBytes("TWO2"),
+                .. Encoding.ASCII.GetBytes("TWO2"),
                 .. new byte[] { 0x00 },
-                .. Encoding.Unicode.GetBytes("DATA2"),
+                .. Encoding.ASCII.GetBytes("DATA2"),
+                .. new byte[] { 0x00 },
+                .. Encoding.Unicode.GetBytes("TEST3"),
+                .. new byte[] { 0x00 },
+                .. Encoding.Unicode.GetBytes("TWO3"),
+                .. new byte[] { 0x00 },
+                .. Encoding.Unicode.GetBytes("DATA3"),
                 .. new byte[] { 0x00 },
             ];
             var actual = arr.ReadStringsFrom(5);
             Assert.NotNull(actual);
-            Assert.Equal(4, actual.Count);
+            Assert.Equal(6, actual.Count);
         }
 
         /// <summary>
