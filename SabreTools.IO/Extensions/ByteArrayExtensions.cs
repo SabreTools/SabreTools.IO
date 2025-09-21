@@ -222,9 +222,8 @@ namespace SabreTools.IO.Extensions
                         continue;
 
                     // Add the string if long enough
-                    string str = sb.ToString();
-                    if (str.Length >= charLimit)
-                        strings.Add(str);
+                    if (sb.Length >= charLimit)
+                        strings.Add(sb.ToString());
 
                     // Clear the builder and continue
 #if NET20 || NET35
