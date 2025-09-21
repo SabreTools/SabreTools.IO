@@ -222,7 +222,7 @@ namespace SabreTools.IO.Extensions
                         continue;
 
                     // Add the string if long enough
-                        string str = sb.ToString();
+                    string str = sb.ToString();
                     if (str.Length >= charLimit)
                         strings.Add(str);
 
