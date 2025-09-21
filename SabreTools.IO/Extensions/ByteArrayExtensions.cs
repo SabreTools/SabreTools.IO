@@ -141,6 +141,10 @@ namespace SabreTools.IO.Extensions
                     ms.Seek(lastOffset, SeekOrigin.Begin);
                     reader.DiscardBufferedData();
 
+                    // If there is no cached string
+                    if (str.Length == 0)
+                        continue;
+
                     // Add the string if long enough
                     if (str.Length >= charLimit)
                         strings.Add(str);
@@ -209,8 +213,12 @@ namespace SabreTools.IO.Extensions
                     // Pretend only one byte was read
                     offset -= width - 1;
 
+                    // If there is no cached string
+                    if (sb.Length == 0)
+                        continue;
+
                     // Add the string if long enough
-                    string str = sb.ToString();
+                        string str = sb.ToString();
                     if (str.Length >= charLimit)
                         strings.Add(str);
 
