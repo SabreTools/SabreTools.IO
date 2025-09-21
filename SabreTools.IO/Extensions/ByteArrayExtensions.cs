@@ -59,33 +59,21 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         /// <param name="charLimit">Number of characters needed to be a valid string, default 5</param>
         /// <returns>String list containing the requested data, null on error</returns>
-        /// <remarks>A maximum of 16KiB of data can be scanned at a time</remarks>
         public static List<string>? ReadStringsFrom(this byte[]? input, int charLimit = 5)
         {
             // Validate the data
             if (input == null || input.Length == 0)
                 return null;
 
-            // Limit to 16KiB of data
-            if (input.Length > 16384)
-            {
-                int offset = 0;
-                input = input.ReadBytes(ref offset, 16384);
-            }
-
             // Check for ASCII strings
             var asciiStrings = input.ReadStringsWithEncoding(charLimit, Encoding.ASCII);
-
-            // Check for UTF-8 strings
-            // We are limiting the check for Unicode characters with a second byte of 0x00 for now
-            var utf8Strings = input.ReadStringsWithEncoding(charLimit, Encoding.UTF8);
 
             // Check for Unicode strings
             // We are limiting the check for Unicode characters with a second byte of 0x00 for now
             var unicodeStrings = input.ReadStringsWithEncoding(charLimit, Encoding.Unicode);
 
             // Ignore duplicate strings across encodings
-            List<string> sourceStrings = [.. asciiStrings, .. utf8Strings, .. unicodeStrings];
+            List<string> sourceStrings = [.. asciiStrings, .. unicodeStrings];
 
             // Sort the strings and return
             sourceStrings.Sort();
@@ -99,11 +87,7 @@ namespace SabreTools.IO.Extensions
         /// <param name="charLimit">Number of characters needed to be a valid string</param>
         /// <param name="encoding">Character encoding to use for checking</param>
         /// <returns>String list containing the requested data, empty on error</returns>
-        /// <remarks>
-        /// This method has a couple of notable implementation details:
-        /// - Strings can only have a maximum of 64 characters
-        /// - Characters that fall outside of the extended ASCII set will be unused
-        /// </remarks>
+        /// <remarks>Characters with the higher bytes set are unused</remarks>
 #if NET20
         public static List<string> ReadStringsWithEncoding(this byte[]? bytes, int charLimit, Encoding encoding)
 #else
@@ -114,6 +98,18 @@ namespace SabreTools.IO.Extensions
                 return [];
             if (charLimit <= 0 || charLimit > bytes.Length)
                 return [];
+
+            // Short-circuit for some encoding types
+            if (encoding.CodePage == Encoding.ASCII.CodePage)
+                return bytes.ReadFixedWidthEncodingStrings(charLimit, Encoding.ASCII, 1);
+#if NET5_0_OR_GREATER
+            else if (encoding.CodePage == Encoding.Latin1.CodePage)
+                return bytes.ReadFixedWidthEncodingStrings(charLimit, Encoding.Latin1, 1);
+#endif
+            else if (encoding.CodePage == Encoding.Unicode.CodePage)
+                return bytes.ReadFixedWidthEncodingStrings(charLimit, Encoding.Unicode, 2);
+            else if (encoding.CodePage == Encoding.UTF32.CodePage)
+                return bytes.ReadFixedWidthEncodingStrings(charLimit, Encoding.UTF32, 4);
 
             // Create the string set to return
 #if NET20
@@ -168,5 +164,76 @@ namespace SabreTools.IO.Extensions
 
             return strings;
         }
+
+        #region Fixed Byte-Width Encoding Helpers
+
+        /// <summary>
+        /// Read string data from a byte array using an encoding with a fixed width
+        /// </summary>
+        /// <param name="bytes">Byte array representing the source data</param>
+        /// <param name="charLimit">Number of characters needed to be a valid string</param>
+        /// <param name="encoding">Character encoding to use for checking</param>
+        /// <param name="width">Character width of the encoding</param>
+        /// <returns>String list containing the requested data, empty on error</returns>
+        /// <remarks>Characters with the higher bytes set are unused</remarks>
+#if NET20
+        private static List<string> ReadFixedWidthEncodingStrings(this byte[] bytes, int charLimit, Encoding encoding, int width)
+#else
+        private static HashSet<string> ReadFixedWidthEncodingStrings(this byte[] bytes, int charLimit, Encoding encoding, int width)
+#endif
+        {
+            if (charLimit <= 0 || charLimit > bytes.Length)
+                return [];
+
+            // Create the string set to return
+#if NET20
+            var strings = new List<string>();
+#else
+            var strings = new HashSet<string>();
+#endif
+
+            // Create a string builder for the loop
+            var sb = new StringBuilder();
+
+            // Check for strings
+            int offset = 0;
+            while (offset <= bytes.Length - width)
+            {
+                // Read the next character from the stream
+                char c = encoding.GetChars(bytes, offset, width)[0];
+                offset += width;
+
+                // If the character is invalid
+                if (char.IsControl(c) || (c & 0xFFFFFF00) != 0)
+                {
+                    // Pretend only one byte was read
+                    offset -= width - 1;
+
+                    // Add the string if long enough
+                    string str = sb.ToString();
+                    if (str.Length >= charLimit)
+                        strings.Add(str);
+
+                    // Clear the builder and continue
+#if NET20 || NET35
+                    sb = new();
+#else
+                    sb.Clear();
+#endif
+                    continue;
+                }
+
+                // Otherwise, add the character to the builder and continue
+                sb.Append(c);
+            }
+
+            // Handle any remaining data
+            if (sb.Length >= charLimit)
+                strings.Add(sb.ToString());
+
+            return strings;
+        }
+
+        #endregion
     }
 }

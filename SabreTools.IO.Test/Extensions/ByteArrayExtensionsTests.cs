@@ -145,7 +145,7 @@ namespace SabreTools.IO.Test.Extensions
             Assert.NotNull(actual);
 
             // ASCII and UTF-8 are identical for the character range
-            Assert.Equal(4, actual.Count);
+            Assert.Equal(2, actual.Count);
         }
 
         [Fact]
@@ -164,7 +164,7 @@ namespace SabreTools.IO.Test.Extensions
             Assert.NotNull(actual);
 
             // ASCII and UTF-8 are identical for the character range
-            Assert.Equal(4, actual.Count);
+            Assert.Equal(2, actual.Count);
         }
 
         [Fact]
@@ -212,8 +212,55 @@ namespace SabreTools.IO.Test.Extensions
             Assert.NotNull(actual);
 
             // ASCII and UTF-8 are identical for the character range
-            Assert.Equal(10, actual.Count);
+            Assert.Equal(6, actual.Count);
         }
+
+        /// <summary>
+        /// This test is here mainly for performance testing
+        /// and should not be enabled unless there are changes
+        /// to the core reading methods that need comparison.
+        /// </summary>
+        // [Fact]
+        // public void ReadStringsFrom_Mixed_MASSIVE()
+        // {
+        //     byte[]? arr =
+        //     [
+        //         .. Encoding.ASCII.GetBytes("TEST1"),
+        //         .. new byte[] { 0x00 },
+        //         .. Encoding.ASCII.GetBytes("TWO1"),
+        //         .. new byte[] { 0x00 },
+        //         .. Encoding.ASCII.GetBytes("DATA1"),
+        //         .. new byte[] { 0x00 },
+        //         .. Encoding.UTF8.GetBytes("TEST2"),
+        //         .. new byte[] { 0x00 },
+        //         .. Encoding.UTF8.GetBytes("TWO2"),
+        //         .. new byte[] { 0x00 },
+        //         .. Encoding.UTF8.GetBytes("DATA2"),
+        //         .. new byte[] { 0x00 },
+        //         .. Encoding.Unicode.GetBytes("TEST3"),
+        //         .. new byte[] { 0x00 },
+        //         .. Encoding.Unicode.GetBytes("TWO3"),
+        //         .. new byte[] { 0x00 },
+        //         .. Encoding.Unicode.GetBytes("DATA3"),
+        //         .. new byte[] { 0x00 },
+        //     ];
+        //     arr = [.. arr, .. arr, .. arr, .. arr];
+        //     arr = [.. arr, .. arr, .. arr, .. arr];
+        //     arr = [.. arr, .. arr, .. arr, .. arr];
+        //     arr = [.. arr, .. arr, .. arr, .. arr];
+        //     arr = [.. arr, .. arr, .. arr, .. arr];
+        //     arr = [.. arr, .. arr, .. arr, .. arr];
+        //     arr = [.. arr, .. arr, .. arr, .. arr];
+        //     arr = [.. arr, .. arr, .. arr, .. arr];
+        //     arr = [.. arr, .. arr, .. arr, .. arr];
+        //     arr = [.. arr, .. arr, .. arr, .. arr];
+        //     // arr = [.. arr, .. arr, .. arr, .. arr];
+        //     // arr = [.. arr, .. arr, .. arr, .. arr];
+
+        //     var actual = arr.ReadStringsFrom(5);
+        //     Assert.NotNull(actual);
+        //     Assert.NotEmpty(actual);
+        // }
 
         #endregion
 
