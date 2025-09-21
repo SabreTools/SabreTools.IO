@@ -108,6 +108,8 @@ namespace SabreTools.IO.Extensions
 #endif
             else if (encoding.CodePage == Encoding.Unicode.CodePage)
                 return bytes.ReadFixedWidthEncodingStrings(charLimit, Encoding.Unicode, 2);
+            else if (encoding.CodePage == Encoding.BigEndianUnicode.CodePage)
+                return bytes.ReadFixedWidthEncodingStrings(charLimit, Encoding.BigEndianUnicode, 2);
             else if (encoding.CodePage == Encoding.UTF32.CodePage)
                 return bytes.ReadFixedWidthEncodingStrings(charLimit, Encoding.UTF32, 4);
 
