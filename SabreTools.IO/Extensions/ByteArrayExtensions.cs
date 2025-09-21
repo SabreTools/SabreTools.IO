@@ -111,7 +111,7 @@ namespace SabreTools.IO.Extensions
 
             // Short-circuit for some encoding types
             if (encoding.CodePage == Encoding.ASCII.CodePage)
-                return bytes.ReadFixedWidthEncodingStrings(charLimit, Encoding.ASCII, 1);
+                return bytes.ReadAsciiStrings(charLimit);
 #if NET5_0_OR_GREATER
             else if (encoding.CodePage == Encoding.Latin1.CodePage)
                 return bytes.ReadFixedWidthEncodingStrings(charLimit, Encoding.Latin1, 1);
@@ -227,6 +227,70 @@ namespace SabreTools.IO.Extensions
                     // Pretend only one byte was read
                     offset -= width - 1;
 
+                    // If there is no cached string
+                    if (sb.Length == 0)
+                        continue;
+
+                    // Add the string if long enough
+                    if (sb.Length >= charLimit)
+                        strings.Add(sb.ToString());
+
+                    // Clear the builder and continue
+#if NET20 || NET35
+                    sb = new();
+#else
+                    sb.Clear();
+#endif
+                    continue;
+                }
+
+                // Otherwise, add the character to the builder and continue
+                sb.Append(c);
+            }
+
+            // Handle any remaining data
+            if (sb.Length >= charLimit)
+                strings.Add(sb.ToString());
+
+            return strings;
+        }
+
+        /// <summary>
+        /// Read string data from a byte array using ASCII encoding
+        /// </summary>
+        /// <param name="bytes">Byte array representing the source data</param>
+        /// <param name="charLimit">Number of characters needed to be a valid string</param>
+        /// <returns>String list containing the requested data, empty on error</returns>
+        /// <remarks>Handling for 7-bit ASCII needs to be done differently than other fixed-width encodings</remarks>
+#if NET20
+        private static List<string> ReadAsciiStrings(this byte[] bytes, int charLimit)
+#else
+        private static HashSet<string> ReadAsciiStrings(this byte[] bytes, int charLimit)
+#endif
+        {
+            if (charLimit <= 0 || charLimit > bytes.Length)
+                return [];
+
+            // Create the string set to return
+#if NET20
+            var strings = new List<string>();
+#else
+            var strings = new HashSet<string>();
+#endif
+
+            // Create a string builder for the loop
+            var sb = new StringBuilder();
+
+            // Check for strings
+            int offset = 0;
+            while (offset < bytes.Length)
+            {
+                // Read the next character from the stream
+                char c = bytes.ReadChar(ref offset);
+
+                // If the character is invalid
+                if (char.IsControl(c) || c > 0x7F)
+                {
                     // If there is no cached string
                     if (sb.Length == 0)
                         continue;

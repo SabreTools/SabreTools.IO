@@ -314,6 +314,22 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void ReadStringsWithEncoding_InvalidAsciiChars_Empty()
+        {
+            byte[]? arr =
+            [
+                0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+                0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+                0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
+                0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
+                .. Enumerable.Range(0x80, 0x80).Select(i => (byte)i),
+            ];
+            var actual = arr.ReadStringsWithEncoding(1, Encoding.ASCII);
+            Assert.NotNull(actual);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
         public void ReadStringsWithEncoding_Latin1_Filled()
         {
             byte[]? bytes =
@@ -329,6 +345,25 @@ namespace SabreTools.IO.Test.Extensions
             ];
             var actual = bytes.ReadStringsWithEncoding(4, Encoding.Latin1);
             Assert.Equal(2, actual.Count);
+        }
+
+        [Fact]
+        public void ReadStringsWithEncoding_InvalidLatin1Chars_Empty()
+        {
+            byte[]? arr =
+            [
+                0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+                0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+                0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
+                0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
+                0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87,
+                0x88, 0x89, 0x8A, 0x8B, 0x8C, 0x8D, 0x8E, 0x8F,
+                0x90, 0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97,
+                0x98, 0x99, 0x9A, 0x9B, 0x9C, 0x9D, 0x9E, 0x9F,
+            ];
+            var actual = arr.ReadStringsWithEncoding(1, Encoding.Latin1);
+            Assert.NotNull(actual);
+            Assert.Empty(actual);
         }
 
         [Fact]
@@ -350,6 +385,21 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void ReadStringsWithEncoding_InvalidUTF8Chars_Empty()
+        {
+            byte[]? arr =
+            [
+                0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+                0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+                0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
+                0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
+            ];
+            var actual = arr.ReadStringsWithEncoding(1, Encoding.UTF8);
+            Assert.NotNull(actual);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
         public void ReadStringsWithEncoding_UTF16_Filled()
         {
             byte[]? bytes =
@@ -368,6 +418,21 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void ReadStringsWithEncoding_InvalidUTF16Chars_Empty()
+        {
+            byte[]? arr =
+            [
+                0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+                0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+                0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
+                0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
+            ];
+            var actual = arr.ReadStringsWithEncoding(1, Encoding.Unicode);
+            Assert.NotNull(actual);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
         public void ReadStringsWithEncoding_UTF32_Filled()
         {
             byte[]? bytes =
@@ -383,6 +448,21 @@ namespace SabreTools.IO.Test.Extensions
             ];
             var actual = bytes.ReadStringsWithEncoding(4, Encoding.UTF32);
             Assert.Equal(2, actual.Count);
+        }
+
+        [Fact]
+        public void ReadStringsWithEncoding_InvalidUTF32Chars_Empty()
+        {
+            byte[]? arr =
+            [
+                0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+                0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+                0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
+                0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
+            ];
+            var actual = arr.ReadStringsWithEncoding(1, Encoding.UTF32);
+            Assert.NotNull(actual);
+            Assert.Empty(actual);
         }
 
         #endregion
