@@ -59,6 +59,7 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         /// <param name="charLimit">Number of characters needed to be a valid string, default 5</param>
         /// <returns>String list containing the requested data, null on error</returns>
+        /// <remarks>This reads both ASCII and UTF-16 strings from the input data</remarks>
         public static List<string>? ReadStringsFrom(this byte[]? input, int charLimit = 5)
         {
             // Validate the data
