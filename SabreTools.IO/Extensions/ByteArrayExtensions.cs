@@ -147,7 +147,7 @@ namespace SabreTools.IO.Extensions
                 char c = (char)reader.Read();
 
                 // If the character is invalid
-                if (char.IsControl(c) || (c & 0xFF00) != 0)
+                if (char.IsControl(c) || (c & 0xFFFFFF00) != 0)
                 {
                     // Seek to the end of the last found string
                     string str = sb.ToString();
