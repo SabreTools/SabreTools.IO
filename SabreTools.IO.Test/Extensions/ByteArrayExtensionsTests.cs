@@ -143,27 +143,6 @@ namespace SabreTools.IO.Test.Extensions
             ];
             var actual = arr.ReadStringsFrom(4);
             Assert.NotNull(actual);
-
-            // ASCII and UTF-8 are identical for the character range
-            Assert.Equal(2, actual.Count);
-        }
-
-        [Fact]
-        public void ReadStringsFrom_UTF8_Filled()
-        {
-            byte[]? arr =
-            [
-                .. Encoding.UTF8.GetBytes("TEST"),
-                .. new byte[] { 0x00 },
-                .. Encoding.UTF8.GetBytes("TWO"),
-                .. new byte[] { 0x00 },
-                .. Encoding.UTF8.GetBytes("DATA"),
-                .. new byte[] { 0x00 },
-            ];
-            var actual = arr.ReadStringsFrom(4);
-            Assert.NotNull(actual);
-
-            // ASCII and UTF-8 are identical for the character range
             Assert.Equal(2, actual.Count);
         }
 
@@ -195,24 +174,16 @@ namespace SabreTools.IO.Test.Extensions
                 .. new byte[] { 0x00 },
                 .. Encoding.ASCII.GetBytes("DATA1"),
                 .. new byte[] { 0x00 },
-                .. Encoding.UTF8.GetBytes("TEST2"),
+                .. Encoding.Unicode.GetBytes("TEST2"),
                 .. new byte[] { 0x00 },
-                .. Encoding.UTF8.GetBytes("TWO2"),
+                .. Encoding.Unicode.GetBytes("TWO2"),
                 .. new byte[] { 0x00 },
-                .. Encoding.UTF8.GetBytes("DATA2"),
-                .. new byte[] { 0x00 },
-                .. Encoding.Unicode.GetBytes("TEST3"),
-                .. new byte[] { 0x00 },
-                .. Encoding.Unicode.GetBytes("TWO3"),
-                .. new byte[] { 0x00 },
-                .. Encoding.Unicode.GetBytes("DATA3"),
+                .. Encoding.Unicode.GetBytes("DATA2"),
                 .. new byte[] { 0x00 },
             ];
             var actual = arr.ReadStringsFrom(5);
             Assert.NotNull(actual);
-
-            // ASCII and UTF-8 are identical for the character range
-            Assert.Equal(6, actual.Count);
+            Assert.Equal(4, actual.Count);
         }
 
         /// <summary>
