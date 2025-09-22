@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using SabreTools.Hashing;
 using SabreTools.Matching;
-using static SabreTools.Models.MoPaQ.Constants;
 
 namespace SabreTools.IO.Encryption
 {
@@ -11,6 +10,14 @@ namespace SabreTools.IO.Encryption
     /// </summary>
     public class MoPaQDecrypter
     {
+        #region Constants
+
+        private const uint MPQ_HASH_KEY2_MIX = 0x400;
+
+        private const uint STORM_BUFFER_SIZE = 0x500;
+
+        #endregion
+
         #region Private Instance Variables
 
         /// <summary>
