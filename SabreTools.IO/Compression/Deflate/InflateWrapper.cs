@@ -4,7 +4,6 @@ using System.Text;
 using SabreTools.Hashing;
 using SabreTools.IO.Extensions;
 using SabreTools.Models.PKZIP;
-using static SabreTools.Models.PKZIP.Constants;
 
 namespace SabreTools.IO.Compression.Deflate
 {
@@ -19,6 +18,11 @@ namespace SabreTools.IO.Compression.Deflate
         /// Buffer size for decompression
         /// </summary>
         private const int BufferSize = 1024 * 1024;
+
+        /// <summary>
+        /// Local file header signature
+        /// </summary>
+        private const uint LocalFileHeaderSignature = 0x04034B50;
 
         #endregion
 
