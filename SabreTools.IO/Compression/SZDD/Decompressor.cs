@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using SabreTools.Models.LZ;
 
 namespace SabreTools.IO.Compression.SZDD
 {
@@ -43,13 +42,13 @@ namespace SabreTools.IO.Compression.SZDD
         /// <summary>
         /// Create a KWAJ decompressor
         /// </summary>
-        public static Decompressor CreateKWAJ(byte[] source, KWAJCompressionType compressionType)
+        public static Decompressor CreateKWAJ(byte[] source, ushort compressionType)
             => CreateKWAJ(new MemoryStream(source), compressionType);
 
         /// <summary>
         /// Create a KWAJ decompressor
         /// </summary>
-        public static Decompressor CreateKWAJ(Stream source, KWAJCompressionType compressionType)
+        public static Decompressor CreateKWAJ(Stream source, ushort compressionType)
         {
             // Create the decompressor
             var decompressor = new Decompressor(source);
@@ -57,11 +56,11 @@ namespace SabreTools.IO.Compression.SZDD
             // Set the format and return
             decompressor._format = compressionType switch
             {
-                KWAJCompressionType.NoCompression => Format.KWAJNoCompression,
-                KWAJCompressionType.NoCompressionXor => Format.KWAJXor,
-                KWAJCompressionType.QBasic => Format.KWAJQBasic,
-                KWAJCompressionType.LZH => Format.KWAJLZH,
-                KWAJCompressionType.MSZIP => Format.KWAJMSZIP,
+                0x0000 => Format.KWAJNoCompression,
+                0x0001 => Format.KWAJXor,
+                0x0002 => Format.KWAJQBasic,
+                0x0003 => Format.KWAJLZH,
+                0x0004 => Format.KWAJMSZIP,
                 _ => throw new IndexOutOfRangeException(nameof(source)),
             };
             return decompressor;
