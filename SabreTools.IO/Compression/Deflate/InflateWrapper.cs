@@ -3,7 +3,6 @@ using System.IO;
 using System.Text;
 using SabreTools.Hashing;
 using SabreTools.IO.Extensions;
-using SabreTools.Models.PKZIP;
 
 namespace SabreTools.IO.Compression.Deflate
 {
@@ -23,6 +22,41 @@ namespace SabreTools.IO.Compression.Deflate
         /// Local file header signature
         /// </summary>
         private const uint LocalFileHeaderSignature = 0x04034B50;
+
+        #endregion
+
+        #region Private Classes
+
+        /// <summary>
+        /// Minimal PKZIP local file header information
+        /// </summary>
+        private class MinLocalFileHeader
+        {
+            /// <summary>
+            /// Signature (0x04034B50)
+            /// </summary>
+            public uint Signature { get; set; }
+
+            /// <summary>
+            /// CRC-32
+            /// </summary>
+            public uint CRC32 { get; set; }
+
+            /// <summary>
+            /// Compressed size
+            /// </summary>
+            public uint CompressedSize { get; set; }
+
+            /// <summary>
+            /// Uncompressed size
+            /// </summary>
+            public uint UncompressedSize { get; set; }
+
+            /// <summary>
+            /// File name (variable size)
+            /// </summary>
+            public string? FileName { get; set; }
+        }
 
         #endregion
 
@@ -144,7 +178,7 @@ namespace SabreTools.IO.Compression.Deflate
             long current = source.Position;
 
             // Parse the PKZIP header, if it exists
-            LocalFileHeader? zipHeader = ParseLocalFileHeader(source);
+            MinLocalFileHeader? zipHeader = ParseLocalFileHeader(source);
             long zipHeaderBytes = source.Position - current;
 
             // Always trust the PKZIP CRC-32 value over what is supplied
@@ -273,46 +307,39 @@ namespace SabreTools.IO.Compression.Deflate
         }
 
         /// <summary>
-        /// Parse a Stream into a local file header
+        /// Parse a Stream into a minimal local file header
         /// </summary>
         /// <param name="data">Stream to parse</param>
-        /// <returns>Filled local file header on success, null on error</returns>
-        /// <remarks>Mirror of method in Serialization</remarks>
-        private static LocalFileHeader? ParseLocalFileHeader(Stream data)
+        /// <returns>Filled minimal local file header on success, null on error</returns>
+        /// <remarks>Partial mirror of method in Serialization</remarks>
+        private static MinLocalFileHeader? ParseLocalFileHeader(Stream data)
         {
-            var header = new LocalFileHeader();
+            var header = new MinLocalFileHeader();
 
             header.Signature = data.ReadUInt32LittleEndian();
             if (header.Signature != LocalFileHeaderSignature)
                 return null;
 
-            header.Version = data.ReadUInt16LittleEndian();
-            header.Flags = (GeneralPurposeBitFlags)data.ReadUInt16LittleEndian();
-            header.CompressionMethod = (CompressionMethod)data.ReadUInt16LittleEndian();
-            header.LastModifedFileTime = data.ReadUInt16LittleEndian();
-            header.LastModifiedFileDate = data.ReadUInt16LittleEndian();
+            _ = data.ReadUInt16LittleEndian(); // Version
+            _ = data.ReadUInt16LittleEndian(); // Flags
+            _ = data.ReadUInt16LittleEndian(); // CompressionMethod
+            _ = data.ReadUInt16LittleEndian(); // LastModifedFileTime
+            _ = data.ReadUInt16LittleEndian(); // LastModifiedFileDate
             header.CRC32 = data.ReadUInt32LittleEndian();
             header.CompressedSize = data.ReadUInt32LittleEndian();
             header.UncompressedSize = data.ReadUInt32LittleEndian();
-            header.FileNameLength = data.ReadUInt16LittleEndian();
-            header.ExtraFieldLength = data.ReadUInt16LittleEndian();
+            ushort fileNameLength = data.ReadUInt16LittleEndian();
+            ushort extraFieldLength = data.ReadUInt16LittleEndian();
 
-            if (header.FileNameLength > 0 && data.Position + header.FileNameLength <= data.Length)
+            if (fileNameLength > 0 && data.Position + fileNameLength <= data.Length)
             {
-                byte[] filenameBytes = data.ReadBytes(header.FileNameLength);
-                if (filenameBytes.Length != header.FileNameLength)
-                    return null;
-
+                byte[] filenameBytes = data.ReadBytes(fileNameLength);
                 header.FileName = Encoding.ASCII.GetString(filenameBytes);
             }
 
             // Parsing extras is skipped here, unlike in Serialization
-            if (header.ExtraFieldLength > 0 && data.Position + header.ExtraFieldLength <= data.Length)
-            {
-                byte[] extraBytes = data.ReadBytes(header.ExtraFieldLength);
-                if (extraBytes.Length != header.ExtraFieldLength)
-                    return null;
-            }
+            if (extraFieldLength > 0 && data.Position + extraFieldLength <= data.Length)
+                _ = data.ReadBytes(extraFieldLength);
 
             return header;
         }
