@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using SabreTools.IO.Extensions;
-using SabreTools.Models.Compression.MSZIP;
 
 namespace SabreTools.IO.Compression.MSZIP
 {
