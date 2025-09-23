@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using SabreTools.Hashing;
-using SabreTools.Matching;
+using SabreTools.IO.Extensions;
 
 namespace SabreTools.IO.Encryption
 {

@@ -1,8 +1,6 @@
 using System;
 using System.Linq;
-#if NET7_0_OR_GREATER
 using System.Numerics;
-#endif
 using System.Text;
 using SabreTools.IO.Extensions;
 using Xunit;
@@ -139,7 +137,6 @@ namespace SabreTools.IO.Test.Extensions
             ValidateBytes(expected, buffer);
         }
 
-#if NET6_0_OR_GREATER
         [Fact]
         public void WriteHalfTest()
         {
@@ -161,7 +158,6 @@ namespace SabreTools.IO.Test.Extensions
             Assert.True(write);
             ValidateBytes(expected, buffer);
         }
-#endif
 
         [Fact]
         public void WriteInt24Test()
@@ -427,7 +423,6 @@ namespace SabreTools.IO.Test.Extensions
             ValidateBytes(expected, buffer);
         }
 
-#if NET7_0_OR_GREATER
         [Fact]
         public void WriteInt128Test()
         {
@@ -471,7 +466,6 @@ namespace SabreTools.IO.Test.Extensions
             Assert.True(write);
             ValidateBytes(expected, buffer);
         }
-#endif
 
         [Fact]
         public void WriteNullTerminatedAnsiStringTest()
@@ -555,16 +549,13 @@ namespace SabreTools.IO.Test.Extensions
             Assert.True(actual);
             ValidateBytes(_bytes, buffer);
 
-#if NET6_0_OR_GREATER
             // Half
             offset = 0;
             buffer = new byte[2];
             actual = buffer.WriteType<Half>(ref offset, BitConverter.Int16BitsToHalf(0x0100));
             Assert.True(actual);
             ValidateBytes([.. _bytes.Take(2)], buffer);
-#endif
 
-#if NET7_0_OR_GREATER
             // Int128
             offset = 0;
             buffer = new byte[16];
@@ -578,7 +569,6 @@ namespace SabreTools.IO.Test.Extensions
             actual = buffer.WriteType<UInt128>(ref offset, (UInt128)new BigInteger(_bytes));
             Assert.True(actual);
             ValidateBytes(_bytes, buffer);
-#endif
 
             // Enum
             offset = 0;

@@ -1,9 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
-#if NET7_0_OR_GREATER
 using System.Numerics;
-#endif
 using System.Text;
 using SabreTools.IO.Extensions;
 using Xunit;
@@ -132,7 +130,6 @@ namespace SabreTools.IO.Test.Extensions
             ValidateBytes(expected, stream.GetBuffer());
         }
 
-#if NET6_0_OR_GREATER
         [Fact]
         public void WriteHalfTest()
         {
@@ -153,7 +150,6 @@ namespace SabreTools.IO.Test.Extensions
             Assert.True(write);
             ValidateBytes(expected, stream.GetBuffer());
         }
-#endif
 
         [Fact]
         public void WriteInt24Test()
@@ -408,7 +404,6 @@ namespace SabreTools.IO.Test.Extensions
             ValidateBytes(expected, stream.GetBuffer());
         }
 
-#if NET7_0_OR_GREATER
         [Fact]
         public void WriteInt128Test()
         {
@@ -452,7 +447,6 @@ namespace SabreTools.IO.Test.Extensions
             Assert.True(write);
             ValidateBytes(expected, stream.GetBuffer());
         }
-#endif
 
         [Fact]
         public void WriteNullTerminatedAnsiStringTest()
@@ -536,16 +530,13 @@ namespace SabreTools.IO.Test.Extensions
             Assert.True(actual);
             ValidateBytes(_bytes, stream.GetBuffer());
 
-#if NET6_0_OR_GREATER
             // Half
             stream = new MemoryStream(new byte[2], 0, 2, true, true);
             bw = new BinaryWriter(stream);
             actual = bw.WriteType<Half>(BitConverter.Int16BitsToHalf(0x0100));
             Assert.True(actual);
             ValidateBytes([.. _bytes.Take(2)], stream.GetBuffer());
-#endif
 
-#if NET7_0_OR_GREATER
             // Int128
             stream = new MemoryStream(new byte[16], 0, 16, true, true);
             bw = new BinaryWriter(stream);
@@ -559,7 +550,6 @@ namespace SabreTools.IO.Test.Extensions
             actual = bw.WriteType<UInt128>((UInt128)new BigInteger(_bytes));
             Assert.True(actual);
             ValidateBytes(_bytes, stream.GetBuffer());
-#endif
 
             // Enum
             stream = new MemoryStream(new byte[4], 0, 4, true, true);

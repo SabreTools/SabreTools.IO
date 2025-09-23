@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using SabreTools.IO.Compare;
 using SabreTools.IO.Extensions;
-using SabreTools.Matching.Compare;
 
 namespace SabreTools.IO
 {

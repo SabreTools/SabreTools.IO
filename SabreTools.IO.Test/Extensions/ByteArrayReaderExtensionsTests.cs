@@ -1,8 +1,6 @@
 using System;
 using System.Linq;
-#if NET7_0_OR_GREATER
 using System.Numerics;
-#endif
 using System.Text;
 using SabreTools.IO.Extensions;
 using Xunit;
@@ -142,7 +140,6 @@ namespace SabreTools.IO.Test.Extensions
             Assert.Equal(0x0100, read);
         }
 
-#if NET6_0_OR_GREATER
         [Fact]
         public void ReadHalfTest()
         {
@@ -160,7 +157,6 @@ namespace SabreTools.IO.Test.Extensions
             Half read = _bytes.ReadHalfBigEndian(ref offset);
             Assert.Equal(expected, read);
         }
-#endif
 
         [Fact]
         public void ReadInt24Test()
@@ -474,7 +470,6 @@ namespace SabreTools.IO.Test.Extensions
             Assert.Equal(expected, read);
         }
 
-#if NET7_0_OR_GREATER
         [Fact]
         public void ReadInt128Test()
         {
@@ -512,7 +507,6 @@ namespace SabreTools.IO.Test.Extensions
             UInt128 read = _bytes.ReadUInt128BigEndian(ref offset);
             Assert.Equal(expected, read);
         }
-#endif
 
         [Fact]
         public void ReadNullTerminatedStringTest()
@@ -557,15 +551,12 @@ namespace SabreTools.IO.Test.Extensions
             Guid actualGuid = _bytes.ReadType<Guid>(ref offset);
             Assert.Equal(expectedGuid, actualGuid);
 
-#if NET6_0_OR_GREATER
             // Half
             offset = 0;
             Half expectedHalf = BitConverter.Int16BitsToHalf(0x0100);
             Half actualHalf = _bytes.ReadType<Half>(ref offset);
             Assert.Equal(expectedHalf, actualHalf);
-#endif
 
-#if NET7_0_OR_GREATER
             // Int128
             offset = 0;
             Int128 expectedInt128 = (Int128)new BigInteger(_bytes);
@@ -577,7 +568,6 @@ namespace SabreTools.IO.Test.Extensions
             UInt128 expectedUInt128 = (UInt128)new BigInteger(_bytes);
             UInt128 actualUInt128 = _bytes.ReadType<UInt128>(ref offset);
             Assert.Equal(expectedHalf, actualHalf);
-#endif
 
             // Enum
             offset = 0;
