@@ -1,6 +1,6 @@
-﻿namespace SabreTools.IO
+﻿namespace SabreTools.IO.Compare
 {
-    public static class NaturalComparerUtil
+    internal static class NaturalComparerUtil
     {
         /// <summary>
         /// Compare two strings by path parts

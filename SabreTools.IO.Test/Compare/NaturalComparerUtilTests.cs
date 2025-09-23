@@ -1,6 +1,7 @@
+using SabreTools.IO.Compare;
 using Xunit;
 
-namespace SabreTools.IO.Test
+namespace SabreTools.IO.Test.Compare
 {
     public class NaturalComparerUtilTests
     {

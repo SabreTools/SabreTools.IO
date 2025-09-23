@@ -30,6 +30,10 @@
     </ItemGroup>
 
     <ItemGroup>
+        <InternalsVisibleTo Include="SabreTools.IO.Test" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="SabreTools.Hashing" Version="1.5.0" />
     </ItemGroup>
 
