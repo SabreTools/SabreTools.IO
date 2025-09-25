@@ -17,7 +17,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a UInt8 and increment the pointer to an array
         /// </summary>
-        public static byte ReadByte(this byte[] content, ref int offset)
+        public static byte ReadByte(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 1);
             return buffer[0];
@@ -26,20 +26,20 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a UInt8 and increment the pointer to an array
         /// </summary>
-        public static byte ReadByteValue(this byte[] content, ref int offset)
+        public static byte ReadByteValue(this byte[] content, ref long offset)
             => content.ReadByte(ref offset);
 
         /// <summary>
         /// Read a UInt8[] and increment the pointer to an array
         /// </summary>
-        public static byte[] ReadBytes(this byte[] content, ref int offset, int count)
+        public static byte[] ReadBytes(this byte[] content, ref long offset, long count)
             => ReadExactlyToBuffer(content, ref offset, count);
 
         /// <summary>
         /// Read a UInt8[] and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] ReadBytesBigEndian(this byte[] content, ref int offset, int count)
+        public static byte[] ReadBytesBigEndian(this byte[] content, ref long offset, long count)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, count);
             Array.Reverse(buffer);
@@ -49,7 +49,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read an Int8 and increment the pointer to an array
         /// </summary>
-        public static sbyte ReadSByte(this byte[] content, ref int offset)
+        public static sbyte ReadSByte(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 1);
             return (sbyte)buffer[0];
@@ -58,7 +58,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a Char and increment the pointer to an array
         /// </summary>
-        public static char ReadChar(this byte[] content, ref int offset)
+        public static char ReadChar(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 1);
             return (char)buffer[0];
@@ -68,7 +68,7 @@ namespace SabreTools.IO.Extensions
         /// Read an Int16 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static short ReadInt16(this byte[] content, ref int offset)
+        public static short ReadInt16(this byte[] content, ref long offset)
         {
             if (BitConverter.IsLittleEndian)
                 return content.ReadInt16LittleEndian(ref offset);
@@ -80,7 +80,7 @@ namespace SabreTools.IO.Extensions
         /// Read an Int16 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static short ReadInt16BigEndian(this byte[] content, ref int offset)
+        public static short ReadInt16BigEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 2);
             return (short)(buffer[1]
@@ -91,7 +91,7 @@ namespace SabreTools.IO.Extensions
         /// Read an Int16 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static short ReadInt16LittleEndian(this byte[] content, ref int offset)
+        public static short ReadInt16LittleEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 2);
             return (short)(buffer[0]
@@ -102,7 +102,7 @@ namespace SabreTools.IO.Extensions
         /// Read a UInt16 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static ushort ReadUInt16(this byte[] content, ref int offset)
+        public static ushort ReadUInt16(this byte[] content, ref long offset)
         {
             if (BitConverter.IsLittleEndian)
                 return content.ReadUInt16LittleEndian(ref offset);
@@ -114,7 +114,7 @@ namespace SabreTools.IO.Extensions
         /// Read a UInt16 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static ushort ReadUInt16BigEndian(this byte[] content, ref int offset)
+        public static ushort ReadUInt16BigEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 2);
             return (ushort)(buffer[1]
@@ -125,7 +125,7 @@ namespace SabreTools.IO.Extensions
         /// Read a UInt16 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static ushort ReadUInt16LittleEndian(this byte[] content, ref int offset)
+        public static ushort ReadUInt16LittleEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 2);
             return (ushort)(buffer[0]
@@ -136,21 +136,21 @@ namespace SabreTools.IO.Extensions
         /// Read a WORD (2-byte) and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static ushort ReadWORD(this byte[] content, ref int offset)
+        public static ushort ReadWORD(this byte[] content, ref long offset)
             => content.ReadUInt16(ref offset);
 
         /// <summary>
         /// Read a WORD (2-byte) and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static ushort ReadWORDBigEndian(this byte[] content, ref int offset)
+        public static ushort ReadWORDBigEndian(this byte[] content, ref long offset)
             => content.ReadUInt16BigEndian(ref offset);
 
         /// <summary>
         /// Read a WORD (2-byte) and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static ushort ReadWORDLittleEndian(this byte[] content, ref int offset)
+        public static ushort ReadWORDLittleEndian(this byte[] content, ref long offset)
             => content.ReadUInt16LittleEndian(ref offset);
 
         // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
@@ -159,7 +159,7 @@ namespace SabreTools.IO.Extensions
         /// Read a Half and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static Half ReadHalf(this byte[] content, ref int offset)
+        public static Half ReadHalf(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 2);
             return BitConverter.ToHalf(buffer, 0);
@@ -169,7 +169,7 @@ namespace SabreTools.IO.Extensions
         /// Read a Half and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static Half ReadHalfBigEndian(this byte[] content, ref int offset)
+        public static Half ReadHalfBigEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 2);
             Array.Reverse(buffer);
@@ -181,7 +181,7 @@ namespace SabreTools.IO.Extensions
         /// Read an Int24 encoded as an Int32 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static int ReadInt24(this byte[] content, ref int offset)
+        public static int ReadInt24(this byte[] content, ref long offset)
         {
             if (BitConverter.IsLittleEndian)
                 return content.ReadInt24LittleEndian(ref offset);
@@ -193,7 +193,7 @@ namespace SabreTools.IO.Extensions
         /// Read an Int24 encoded as an Int32 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static int ReadInt24BigEndian(this byte[] content, ref int offset)
+        public static int ReadInt24BigEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 3);
             return (int)(buffer[2]
@@ -205,7 +205,7 @@ namespace SabreTools.IO.Extensions
         /// Read an Int24 encoded as an Int32 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static int ReadInt24LittleEndian(this byte[] content, ref int offset)
+        public static int ReadInt24LittleEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 3);
             return (int)(buffer[0]
@@ -217,7 +217,7 @@ namespace SabreTools.IO.Extensions
         /// Read a UInt24 encoded as a UInt32 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static uint ReadUInt24(this byte[] content, ref int offset)
+        public static uint ReadUInt24(this byte[] content, ref long offset)
         {
             if (BitConverter.IsLittleEndian)
                 return content.ReadUInt24LittleEndian(ref offset);
@@ -229,7 +229,7 @@ namespace SabreTools.IO.Extensions
         /// Read a UInt24 encoded as a UInt32 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static uint ReadUInt24BigEndian(this byte[] content, ref int offset)
+        public static uint ReadUInt24BigEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 3);
             return (uint)(buffer[2]
@@ -241,7 +241,7 @@ namespace SabreTools.IO.Extensions
         /// Read a UInt24 encoded as a UInt32 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static uint ReadUInt24LittleEndian(this byte[] content, ref int offset)
+        public static uint ReadUInt24LittleEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 3);
             return (uint)(buffer[0]
@@ -253,7 +253,7 @@ namespace SabreTools.IO.Extensions
         /// Read an Int32 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static int ReadInt32(this byte[] content, ref int offset)
+        public static int ReadInt32(this byte[] content, ref long offset)
         {
             if (BitConverter.IsLittleEndian)
                 return content.ReadInt32LittleEndian(ref offset);
@@ -265,7 +265,7 @@ namespace SabreTools.IO.Extensions
         /// Read an Int32 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static int ReadInt32BigEndian(this byte[] content, ref int offset)
+        public static int ReadInt32BigEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 4);
             return (int)(buffer[3]
@@ -278,7 +278,7 @@ namespace SabreTools.IO.Extensions
         /// Read an Int32 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static int ReadInt32LittleEndian(this byte[] content, ref int offset)
+        public static int ReadInt32LittleEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 4);
             return (int)(buffer[0]
@@ -291,7 +291,7 @@ namespace SabreTools.IO.Extensions
         /// Read a UInt32 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static uint ReadUInt32(this byte[] content, ref int offset)
+        public static uint ReadUInt32(this byte[] content, ref long offset)
         {
             if (BitConverter.IsLittleEndian)
                 return content.ReadUInt32LittleEndian(ref offset);
@@ -303,7 +303,7 @@ namespace SabreTools.IO.Extensions
         /// Read a UInt32 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static uint ReadUInt32BigEndian(this byte[] content, ref int offset)
+        public static uint ReadUInt32BigEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 4);
             return (uint)(buffer[3]
@@ -316,7 +316,7 @@ namespace SabreTools.IO.Extensions
         /// Read a UInt32 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static uint ReadUInt32LittleEndian(this byte[] content, ref int offset)
+        public static uint ReadUInt32LittleEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 4);
             return (uint)(buffer[0]
@@ -329,28 +329,28 @@ namespace SabreTools.IO.Extensions
         /// Read a DWORD (4-byte) and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static uint ReadDWORD(this byte[] content, ref int offset)
+        public static uint ReadDWORD(this byte[] content, ref long offset)
             => content.ReadUInt32(ref offset);
 
         /// <summary>
         /// Read a DWORD (4-byte) and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static uint ReadDWORDBigEndian(this byte[] content, ref int offset)
+        public static uint ReadDWORDBigEndian(this byte[] content, ref long offset)
             => content.ReadUInt32BigEndian(ref offset);
 
         /// <summary>
         /// Read a DWORD (4-byte) and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static uint ReadDWORDLittleEndian(this byte[] content, ref int offset)
+        public static uint ReadDWORDLittleEndian(this byte[] content, ref long offset)
             => content.ReadUInt32LittleEndian(ref offset);
 
         /// <summary>
         /// Read a Single and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static float ReadSingle(this byte[] content, ref int offset)
+        public static float ReadSingle(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 4);
             return BitConverter.ToSingle(buffer, 0);
@@ -360,7 +360,7 @@ namespace SabreTools.IO.Extensions
         /// Read a Single and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static float ReadSingleBigEndian(this byte[] content, ref int offset)
+        public static float ReadSingleBigEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 4);
             Array.Reverse(buffer);
@@ -371,7 +371,7 @@ namespace SabreTools.IO.Extensions
         /// Read an Int48 encoded as an Int64 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static long ReadInt48(this byte[] content, ref int offset)
+        public static long ReadInt48(this byte[] content, ref long offset)
         {
             if (BitConverter.IsLittleEndian)
                 return content.ReadInt48LittleEndian(ref offset);
@@ -383,7 +383,7 @@ namespace SabreTools.IO.Extensions
         /// Read an Int48 encoded as an Int64 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static long ReadInt48BigEndian(this byte[] content, ref int offset)
+        public static long ReadInt48BigEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 6);
             return ((long)buffer[5] << 0)
@@ -398,7 +398,7 @@ namespace SabreTools.IO.Extensions
         /// Read an Int48 encoded as an Int64 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static long ReadInt48LittleEndian(this byte[] content, ref int offset)
+        public static long ReadInt48LittleEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 6);
             return ((long)buffer[0] << 0)
@@ -413,7 +413,7 @@ namespace SabreTools.IO.Extensions
         /// Read a UInt48 encoded as a UInt64 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static ulong ReadUInt48(this byte[] content, ref int offset)
+        public static ulong ReadUInt48(this byte[] content, ref long offset)
         {
             if (BitConverter.IsLittleEndian)
                 return content.ReadUInt48LittleEndian(ref offset);
@@ -425,7 +425,7 @@ namespace SabreTools.IO.Extensions
         /// Read an UInt48 encoded as an UInt64 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static ulong ReadUInt48BigEndian(this byte[] content, ref int offset)
+        public static ulong ReadUInt48BigEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 6);
             return ((ulong)buffer[5] << 0)
@@ -440,7 +440,7 @@ namespace SabreTools.IO.Extensions
         /// Read an UInt48 encoded as an UInt64 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static ulong ReadUInt48LittleEndian(this byte[] content, ref int offset)
+        public static ulong ReadUInt48LittleEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 6);
             return ((ulong)buffer[0] << 0)
@@ -455,7 +455,7 @@ namespace SabreTools.IO.Extensions
         /// Read an Int64 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static long ReadInt64(this byte[] content, ref int offset)
+        public static long ReadInt64(this byte[] content, ref long offset)
         {
             if (BitConverter.IsLittleEndian)
                 return content.ReadInt64LittleEndian(ref offset);
@@ -467,7 +467,7 @@ namespace SabreTools.IO.Extensions
         /// Read an Int64 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static long ReadInt64BigEndian(this byte[] content, ref int offset)
+        public static long ReadInt64BigEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 8);
             return ((long)buffer[7] << 0)
@@ -484,7 +484,7 @@ namespace SabreTools.IO.Extensions
         /// Read an Int64 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static long ReadInt64LittleEndian(this byte[] content, ref int offset)
+        public static long ReadInt64LittleEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 8);
             return ((long)buffer[0] << 0)
@@ -501,7 +501,7 @@ namespace SabreTools.IO.Extensions
         /// Read a UInt64 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static ulong ReadUInt64(this byte[] content, ref int offset)
+        public static ulong ReadUInt64(this byte[] content, ref long offset)
         {
             if (BitConverter.IsLittleEndian)
                 return content.ReadUInt64LittleEndian(ref offset);
@@ -513,7 +513,7 @@ namespace SabreTools.IO.Extensions
         /// Read a UInt64 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static ulong ReadUInt64BigEndian(this byte[] content, ref int offset)
+        public static ulong ReadUInt64BigEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 8);
             return ((ulong)buffer[7] << 0)
@@ -530,7 +530,7 @@ namespace SabreTools.IO.Extensions
         /// Read a UInt64 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static ulong ReadUInt64LittleEndian(this byte[] content, ref int offset)
+        public static ulong ReadUInt64LittleEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 8);
             return ((ulong)buffer[0] << 0)
@@ -547,28 +547,28 @@ namespace SabreTools.IO.Extensions
         /// Read a QWORD (8-byte) and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static ulong ReadQWORD(this byte[] content, ref int offset)
+        public static ulong ReadQWORD(this byte[] content, ref long offset)
             => content.ReadUInt64(ref offset);
 
         /// <summary>
         /// Read a QWORD (8-byte) and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static ulong ReadQWORDBigEndian(this byte[] content, ref int offset)
+        public static ulong ReadQWORDBigEndian(this byte[] content, ref long offset)
             => content.ReadUInt64BigEndian(ref offset);
 
         /// <summary>
         /// Read a QWORD (8-byte) and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static ulong ReadQWORDLittleEndian(this byte[] content, ref int offset)
+        public static ulong ReadQWORDLittleEndian(this byte[] content, ref long offset)
             => content.ReadUInt64LittleEndian(ref offset);
 
         /// <summary>
         /// Read a Double and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static double ReadDouble(this byte[] content, ref int offset)
+        public static double ReadDouble(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 8);
             return BitConverter.ToDouble(buffer, 0);
@@ -578,7 +578,7 @@ namespace SabreTools.IO.Extensions
         /// Read a Double and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static double ReadDoubleBigEndian(this byte[] content, ref int offset)
+        public static double ReadDoubleBigEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 8);
             Array.Reverse(buffer);
@@ -589,7 +589,7 @@ namespace SabreTools.IO.Extensions
         /// Read a Decimal and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static decimal ReadDecimal(this byte[] content, ref int offset)
+        public static decimal ReadDecimal(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
 
@@ -605,7 +605,7 @@ namespace SabreTools.IO.Extensions
         /// Read a Decimal and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static decimal ReadDecimalBigEndian(this byte[] content, ref int offset)
+        public static decimal ReadDecimalBigEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
             Array.Reverse(buffer);
@@ -622,7 +622,7 @@ namespace SabreTools.IO.Extensions
         /// Read a Guid and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static Guid ReadGuid(this byte[] content, ref int offset)
+        public static Guid ReadGuid(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
             return new Guid(buffer);
@@ -632,7 +632,7 @@ namespace SabreTools.IO.Extensions
         /// Read a Guid and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static Guid ReadGuidBigEndian(this byte[] content, ref int offset)
+        public static Guid ReadGuidBigEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
             Array.Reverse(buffer);
@@ -644,7 +644,7 @@ namespace SabreTools.IO.Extensions
         /// Read an Int128 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static Int128 ReadInt128(this byte[] content, ref int offset)
+        public static Int128 ReadInt128(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
             return (Int128)new BigInteger(buffer);
@@ -654,7 +654,7 @@ namespace SabreTools.IO.Extensions
         /// Read an Int128 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static Int128 ReadInt128BigEndian(this byte[] content, ref int offset)
+        public static Int128 ReadInt128BigEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
             Array.Reverse(buffer);
@@ -665,7 +665,7 @@ namespace SabreTools.IO.Extensions
         /// Read a UInt128 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static UInt128 ReadUInt128(this byte[] content, ref int offset)
+        public static UInt128 ReadUInt128(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
             return (UInt128)new BigInteger(buffer);
@@ -675,7 +675,7 @@ namespace SabreTools.IO.Extensions
         /// Read a UInt128 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static UInt128 ReadUInt128BigEndian(this byte[] content, ref int offset)
+        public static UInt128 ReadUInt128BigEndian(this byte[] content, ref long offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
             Array.Reverse(buffer);
@@ -686,7 +686,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a null-terminated string from the array
         /// </summary>
-        public static string? ReadNullTerminatedString(this byte[] content, ref int offset, Encoding encoding)
+        public static string? ReadNullTerminatedString(this byte[] content, ref long offset, Encoding encoding)
         {
             // Short-circuit to explicit implementations
             if (encoding.Equals(Encoding.ASCII))
@@ -717,7 +717,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a null-terminated ASCII string from the byte array
         /// </summary>
-        public static string? ReadNullTerminatedAnsiString(this byte[] content, ref int offset)
+        public static string? ReadNullTerminatedAnsiString(this byte[] content, ref long offset)
         {
             if (offset >= content.Length)
                 return null;
@@ -729,7 +729,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a null-terminated UTF-8 string from the byte array
         /// </summary>
-        public static string? ReadNullTerminatedUTF8String(this byte[] content, ref int offset)
+        public static string? ReadNullTerminatedUTF8String(this byte[] content, ref long offset)
         {
             if (offset >= content.Length)
                 return null;
@@ -741,7 +741,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a null-terminated UTF-16 (Unicode) string from the byte array
         /// </summary>
-        public static string? ReadNullTerminatedUnicodeString(this byte[] content, ref int offset)
+        public static string? ReadNullTerminatedUnicodeString(this byte[] content, ref long offset)
         {
             if (offset >= content.Length)
                 return null;
@@ -753,7 +753,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a null-terminated UTF-32 string from the byte array
         /// </summary>
-        public static string? ReadNullTerminatedUTF32String(this byte[] content, ref int offset)
+        public static string? ReadNullTerminatedUTF32String(this byte[] content, ref long offset)
         {
             if (offset >= content.Length)
                 return null;
@@ -765,7 +765,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a byte-prefixed ASCII string from the byte array
         /// </summary>
-        public static string? ReadPrefixedAnsiString(this byte[] content, ref int offset)
+        public static string? ReadPrefixedAnsiString(this byte[] content, ref long offset)
         {
             if (offset >= content.Length)
                 return null;
@@ -781,7 +781,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a ushort-prefixed Unicode string from the byte array
         /// </summary>
-        public static string? ReadPrefixedUnicodeString(this byte[] content, ref int offset)
+        public static string? ReadPrefixedUnicodeString(this byte[] content, ref long offset)
         {
             if (offset >= content.Length)
                 return null;
@@ -805,7 +805,7 @@ namespace SabreTools.IO.Extensions
         /// - Arrays of the above are handled sequentially as above
         /// - Inherited fields from parents are deserialized BEFORE fields in the child
         /// </remarks>
-        public static T? ReadType<T>(this byte[] content, ref int offset)
+        public static T? ReadType<T>(this byte[] content, ref long offset)
             => (T?)content.ReadType(ref offset, typeof(T));
 
         /// <summary>
@@ -819,7 +819,7 @@ namespace SabreTools.IO.Extensions
         /// - Arrays of the above are handled sequentially as above
         /// - Inherited fields from parents are deserialized BEFORE fields in the child
         /// </remarks>
-        public static object? ReadType(this byte[] content, ref int offset, Type type)
+        public static object? ReadType(this byte[] content, ref long offset, Type type)
         {
             // Handle special struct cases
             if (type == typeof(Guid))
@@ -846,7 +846,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a <paramref name="type"/> from the stream
         /// </summary>
-        private static object? ReadNormalType(byte[] content, ref int offset, Type type)
+        private static object? ReadNormalType(byte[] content, ref long offset, Type type)
         {
             try
             {
@@ -868,7 +868,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a <paramref name="type"/> from the stream
         /// </summary>
-        private static object? ReadComplexType(byte[] content, ref int offset, Type type)
+        private static object? ReadComplexType(byte[] content, ref long offset, Type type)
         {
             try
             {
@@ -883,7 +883,7 @@ namespace SabreTools.IO.Extensions
                 Encoding encoding = MarshalHelpers.DetermineEncoding(layoutAttr);
 
                 // Cache the current offset
-                int currentOffset = offset;
+                long currentOffset = offset;
 
                 // Generate the fields by parent first
                 var fields = MarshalHelpers.GetFields(type);
@@ -912,7 +912,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Set a single field on an object
         /// </summary>
-        private static void SetField(byte[] content, ref int offset, Encoding encoding, FieldInfo[] fields, object instance, FieldInfo fi)
+        private static void SetField(byte[] content, ref long offset, Encoding encoding, FieldInfo[] fields, object instance, FieldInfo fi)
         {
             if (fi.FieldType.IsAssignableFrom(typeof(string)))
             {
@@ -937,7 +937,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read an array type field for an object
         /// </summary>
-        private static Array ReadArrayType(byte[] content, ref int offset, FieldInfo[] fields, object instance, FieldInfo fi)
+        private static Array ReadArrayType(byte[] content, ref long offset, FieldInfo[] fields, object instance, FieldInfo fi)
         {
             var marshalAsAttr = MarshalHelpers.GetAttribute<MarshalAsAttribute>(fi);
             if (marshalAsAttr == null)
@@ -969,7 +969,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a string type field for an object
         /// </summary>
-        private static string? ReadStringType(byte[] content, ref int offset, Encoding encoding, object instance, FieldInfo fi)
+        private static string? ReadStringType(byte[] content, ref long offset, Encoding encoding, object instance, FieldInfo fi)
         {
             var marshalAsAttr = MarshalHelpers.GetAttribute<MarshalAsAttribute>(fi);
 
@@ -1009,7 +1009,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read bytes until a 1-byte null terminator is found
         /// </summary>
-        private static byte[] ReadUntilNull1Byte(byte[] content, ref int offset)
+        private static byte[] ReadUntilNull1Byte(byte[] content, ref long offset)
         {
             var bytes = new List<byte>();
             while (offset < content.Length)
@@ -1027,7 +1027,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read bytes until a 2-byte null terminator is found
         /// </summary>
-        private static byte[] ReadUntilNull2Byte(byte[] content, ref int offset)
+        private static byte[] ReadUntilNull2Byte(byte[] content, ref long offset)
         {
             var bytes = new List<byte>();
             while (offset < content.Length)
@@ -1045,7 +1045,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read bytes until a 4-byte null terminator is found
         /// </summary>
-        private static byte[] ReadUntilNull4Byte(byte[] content, ref int offset)
+        private static byte[] ReadUntilNull4Byte(byte[] content, ref long offset)
         {
             var bytes = new List<byte>();
             while (offset < content.Length)
@@ -1063,7 +1063,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a number of bytes from the byte array to a buffer
         /// </summary>
-        private static byte[] ReadExactlyToBuffer(byte[] content, ref int offset, int length)
+        private static byte[] ReadExactlyToBuffer(byte[] content, ref long offset, long length)
         {
             // If we have an invalid offset
             if (offset < 0 || offset >= content.Length)

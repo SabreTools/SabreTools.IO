@@ -27,7 +27,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a UInt8[] from the stream
         /// </summary>
-        public static byte[] ReadBytes(this Stream stream, int count)
+        public static byte[] ReadBytes(this Stream stream, long count)
             => ReadExactlyToBuffer(stream, count);
 
         /// <summary>
@@ -1047,7 +1047,7 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a number of bytes from the stream to a buffer
         /// </summary>
-        private static byte[] ReadExactlyToBuffer(Stream stream, int length)
+        private static byte[] ReadExactlyToBuffer(Stream stream, long length)
         {
             // If we have an invalid length
             if (length < 0)
@@ -1059,7 +1059,7 @@ namespace SabreTools.IO.Extensions
 
             // Handle the general case, forcing a read of the correct length
             byte[] buffer = new byte[length];
-            int read = stream.Read(buffer, 0, length);
+            int read = stream.Read(buffer, 0, (int)Math.Min(length, int.MaxValue));
             if (read < length)
                 throw new EndOfStreamException($"Requested to read {length} bytes from {nameof(stream)}, {read} returned");
 

@@ -30,7 +30,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadByteTest()
         {
-            int offset = 0;
+            long offset = 0;
             byte read = _bytes.ReadByte(ref offset);
             Assert.Equal(0x00, read);
         }
@@ -38,7 +38,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadByteValueTest()
         {
-            int offset = 0;
+            long offset = 0;
             byte read = _bytes.ReadByteValue(ref offset);
             Assert.Equal(0x00, read);
         }
@@ -46,16 +46,16 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadBytesTest()
         {
-            int offset = 0, length = 4;
+            long offset = 0, length = 4;
             byte[] read = _bytes.ReadBytes(ref offset, length);
             Assert.Equal(length, read.Length);
-            Assert.True(read.SequenceEqual(_bytes.Take(length)));
+            Assert.True(read.SequenceEqual(_bytes.Take((int)length)));
         }
 
         [Fact]
         public void ReadSByteTest()
         {
-            int offset = 0;
+            long offset = 0;
             sbyte read = _bytes.ReadSByte(ref offset);
             Assert.Equal(0x00, read);
         }
@@ -63,7 +63,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadCharTest()
         {
-            int offset = 0;
+            long offset = 0;
             char read = _bytes.ReadChar(ref offset);
             Assert.Equal('\0', read);
         }
@@ -71,7 +71,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadInt16Test()
         {
-            int offset = 0;
+            long offset = 0;
             short read = _bytes.ReadInt16(ref offset);
             Assert.Equal(0x0100, read);
         }
@@ -79,7 +79,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadInt16BigEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             short read = _bytes.ReadInt16BigEndian(ref offset);
             Assert.Equal(0x0001, read);
         }
@@ -87,7 +87,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadInt16LittleEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             short read = _bytes.ReadInt16LittleEndian(ref offset);
             Assert.Equal(0x0100, read);
         }
@@ -95,7 +95,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadUInt16Test()
         {
-            int offset = 0;
+            long offset = 0;
             ushort read = _bytes.ReadUInt16(ref offset);
             Assert.Equal(0x0100, read);
         }
@@ -103,7 +103,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadUInt16BigEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             ushort read = _bytes.ReadUInt16BigEndian(ref offset);
             Assert.Equal(0x0001, read);
         }
@@ -111,7 +111,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadUInt16LittleEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             ushort read = _bytes.ReadUInt16LittleEndian(ref offset);
             Assert.Equal(0x0100, read);
         }
@@ -119,7 +119,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadWORDTest()
         {
-            int offset = 0;
+            long offset = 0;
             ushort read = _bytes.ReadWORD(ref offset);
             Assert.Equal(0x0100, read);
         }
@@ -127,7 +127,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadWORDBigEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             ushort read = _bytes.ReadWORDBigEndian(ref offset);
             Assert.Equal(0x0001, read);
         }
@@ -135,7 +135,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadWORDLittleEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             ushort read = _bytes.ReadWORDLittleEndian(ref offset);
             Assert.Equal(0x0100, read);
         }
@@ -143,7 +143,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadHalfTest()
         {
-            int offset = 0;
+            long offset = 0;
             Half expected = BitConverter.Int16BitsToHalf(0x0100);
             Half read = _bytes.ReadHalf(ref offset);
             Assert.Equal(expected, read);
@@ -152,7 +152,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadHalfBigEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             Half expected = BitConverter.Int16BitsToHalf(0x0001);
             Half read = _bytes.ReadHalfBigEndian(ref offset);
             Assert.Equal(expected, read);
@@ -161,7 +161,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadInt24Test()
         {
-            int offset = 0;
+            long offset = 0;
             int read = _bytes.ReadInt24(ref offset);
             Assert.Equal(0x020100, read);
         }
@@ -169,7 +169,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadInt24BigEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             int read = _bytes.ReadInt24BigEndian(ref offset);
             Assert.Equal(0x000102, read);
         }
@@ -177,7 +177,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadInt24LittleEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             int read = _bytes.ReadInt24LittleEndian(ref offset);
             Assert.Equal(0x020100, read);
         }
@@ -185,7 +185,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadUInt24Test()
         {
-            int offset = 0;
+            long offset = 0;
             uint read = _bytes.ReadUInt24(ref offset);
             Assert.Equal((uint)0x020100, read);
         }
@@ -193,7 +193,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadUInt24BigEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             uint read = _bytes.ReadUInt24BigEndian(ref offset);
             Assert.Equal((uint)0x000102, read);
         }
@@ -201,7 +201,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadUInt24LittleEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             uint read = _bytes.ReadUInt24LittleEndian(ref offset);
             Assert.Equal((uint)0x020100, read);
         }
@@ -209,7 +209,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadInt32Test()
         {
-            int offset = 0;
+            long offset = 0;
             int read = _bytes.ReadInt32(ref offset);
             Assert.Equal(0x03020100, read);
         }
@@ -217,7 +217,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadInt32BigEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             int read = _bytes.ReadInt32BigEndian(ref offset);
             Assert.Equal(0x00010203, read);
         }
@@ -225,7 +225,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadInt32LittleEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             int read = _bytes.ReadInt32LittleEndian(ref offset);
             Assert.Equal(0x03020100, read);
         }
@@ -233,7 +233,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadUInt32Test()
         {
-            int offset = 0;
+            long offset = 0;
             uint read = _bytes.ReadUInt32(ref offset);
             Assert.Equal((uint)0x03020100, read);
         }
@@ -241,7 +241,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadUInt32BigEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             uint read = _bytes.ReadUInt32BigEndian(ref offset);
             Assert.Equal((uint)0x00010203, read);
         }
@@ -249,7 +249,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadUInt32LittleEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             uint read = _bytes.ReadUInt32LittleEndian(ref offset);
             Assert.Equal((uint)0x03020100, read);
         }
@@ -257,7 +257,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadDWORDTest()
         {
-            int offset = 0;
+            long offset = 0;
             uint read = _bytes.ReadDWORD(ref offset);
             Assert.Equal((uint)0x03020100, read);
         }
@@ -265,7 +265,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadDWORDBigEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             uint read = _bytes.ReadDWORDBigEndian(ref offset);
             Assert.Equal((uint)0x00010203, read);
         }
@@ -273,7 +273,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadDWORDLittleEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             uint read = _bytes.ReadDWORDLittleEndian(ref offset);
             Assert.Equal((uint)0x03020100, read);
         }
@@ -281,7 +281,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadSingleTest()
         {
-            int offset = 0;
+            long offset = 0;
             float expected = BitConverter.Int32BitsToSingle(0x03020100);
             float read = _bytes.ReadSingle(ref offset);
             Assert.Equal(expected, read);
@@ -290,7 +290,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadSingleBigEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             float expected = BitConverter.Int32BitsToSingle(0x00010203);
             float read = _bytes.ReadSingleBigEndian(ref offset);
             Assert.Equal(expected, read);
@@ -299,7 +299,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadInt48Test()
         {
-            int offset = 0;
+            long offset = 0;
             long read = _bytes.ReadInt48(ref offset);
             Assert.Equal(0x050403020100, read);
         }
@@ -307,7 +307,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadInt48BigEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             long read = _bytes.ReadInt48BigEndian(ref offset);
             Assert.Equal(0x000102030405, read);
         }
@@ -315,7 +315,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadInt48LittleEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             long read = _bytes.ReadInt48LittleEndian(ref offset);
             Assert.Equal(0x050403020100, read);
         }
@@ -323,7 +323,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadUInt48Test()
         {
-            int offset = 0;
+            long offset = 0;
             ulong read = _bytes.ReadUInt48(ref offset);
             Assert.Equal((ulong)0x050403020100, read);
         }
@@ -331,7 +331,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadUInt48BigEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             ulong read = _bytes.ReadUInt48BigEndian(ref offset);
             Assert.Equal((ulong)0x000102030405, read);
         }
@@ -339,7 +339,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadUInt48LittleEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             ulong read = _bytes.ReadUInt48LittleEndian(ref offset);
             Assert.Equal((ulong)0x050403020100, read);
         }
@@ -347,7 +347,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadInt64Test()
         {
-            int offset = 0;
+            long offset = 0;
             long read = _bytes.ReadInt64(ref offset);
             Assert.Equal(0x0706050403020100, read);
         }
@@ -355,7 +355,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadInt64BigEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             long read = _bytes.ReadInt64BigEndian(ref offset);
             Assert.Equal(0x0001020304050607, read);
         }
@@ -363,7 +363,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadInt64LittleEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             long read = _bytes.ReadInt64LittleEndian(ref offset);
             Assert.Equal(0x0706050403020100, read);
         }
@@ -371,7 +371,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadUInt64Test()
         {
-            int offset = 0;
+            long offset = 0;
             ulong read = _bytes.ReadUInt64(ref offset);
             Assert.Equal((ulong)0x0706050403020100, read);
         }
@@ -379,7 +379,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadUInt64BigEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             ulong read = _bytes.ReadUInt64BigEndian(ref offset);
             Assert.Equal((ulong)0x0001020304050607, read);
         }
@@ -387,7 +387,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadUInt64LittleEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             ulong read = _bytes.ReadUInt64LittleEndian(ref offset);
             Assert.Equal((ulong)0x0706050403020100, read);
         }
@@ -395,7 +395,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadQWORDTest()
         {
-            int offset = 0;
+            long offset = 0;
             ulong read = _bytes.ReadQWORD(ref offset);
             Assert.Equal((ulong)0x0706050403020100, read);
         }
@@ -403,7 +403,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadQWORDBigEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             ulong read = _bytes.ReadQWORDBigEndian(ref offset);
             Assert.Equal((ulong)0x0001020304050607, read);
         }
@@ -411,7 +411,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadQWORDLittleEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             ulong read = _bytes.ReadQWORDLittleEndian(ref offset);
             Assert.Equal((ulong)0x0706050403020100, read);
         }
@@ -419,7 +419,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadDoubleTest()
         {
-            int offset = 0;
+            long offset = 0;
             double expected = BitConverter.Int64BitsToDouble(0x0706050403020100);
             double read = _bytes.ReadDouble(ref offset);
             Assert.Equal(expected, read);
@@ -428,7 +428,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadDoubleBigEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             double expected = BitConverter.Int64BitsToDouble(0x0001020304050607);
             double read = _bytes.ReadDoubleBigEndian(ref offset);
             Assert.Equal(expected, read);
@@ -437,7 +437,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadDecimalTest()
         {
-            int offset = 0;
+            long offset = 0;
             decimal expected = 0.0123456789M;
             decimal read = _decimalBytes.ReadDecimal(ref offset);
             Assert.Equal(expected, read);
@@ -446,7 +446,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadDecimalBigEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             decimal expected = 0.0123456789M;
             decimal read = _decimalBytes.Reverse().ToArray().ReadDecimalBigEndian(ref offset);
             Assert.Equal(expected, read);
@@ -455,7 +455,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadGuidTest()
         {
-            int offset = 0;
+            long offset = 0;
             var expected = new Guid(_bytes);
             Guid read = _bytes.ReadGuid(ref offset);
             Assert.Equal(expected, read);
@@ -464,7 +464,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadGuidBigEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             var expected = new Guid(_bytes.Reverse().ToArray());
             Guid read = _bytes.ReadGuidBigEndian(ref offset);
             Assert.Equal(expected, read);
@@ -473,7 +473,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadInt128Test()
         {
-            int offset = 0;
+            long offset = 0;
             var expected = (Int128)new BigInteger(_bytes);
             Int128 read = _bytes.ReadInt128(ref offset);
             Assert.Equal(expected, read);
@@ -482,7 +482,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadInt128BigEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             var reversed = _bytes.Reverse().ToArray();
             var expected = (Int128)new BigInteger(reversed);
             Int128 read = _bytes.ReadInt128BigEndian(ref offset);
@@ -492,7 +492,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadUInt128Test()
         {
-            int offset = 0;
+            long offset = 0;
             var expected = (UInt128)new BigInteger(_bytes);
             UInt128 read = _bytes.ReadUInt128(ref offset);
             Assert.Equal(expected, read);
@@ -501,7 +501,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadUInt128BigEndianTest()
         {
-            int offset = 0;
+            long offset = 0;
             var reversed = _bytes.Reverse().ToArray();
             var expected = (UInt128)new BigInteger(reversed);
             UInt128 read = _bytes.ReadUInt128BigEndian(ref offset);
@@ -512,7 +512,7 @@ namespace SabreTools.IO.Test.Extensions
         public void ReadNullTerminatedStringTest()
         {
             // Encoding.ASCII
-            int offset = 0;
+            long offset = 0;
             byte[] bytes = [0x41, 0x42, 0x43, 0x00];
             string? actual = bytes.ReadNullTerminatedString(ref offset, Encoding.ASCII);
             Assert.Equal("ABC", actual);
@@ -546,7 +546,7 @@ namespace SabreTools.IO.Test.Extensions
         public void ReadTypeTest()
         {
             // Guid
-            int offset = 0;
+            long offset = 0;
             var expectedGuid = new Guid(_bytes);
             Guid actualGuid = _bytes.ReadType<Guid>(ref offset);
             Assert.Equal(expectedGuid, actualGuid);
@@ -585,7 +585,7 @@ namespace SabreTools.IO.Test.Extensions
                 0x41, 0x42, 0x43, 0x00,
             ];
 
-            int offset = 0;
+            long offset = 0;
             var expected = new TestStructExplicit
             {
                 FirstValue = TestEnum.RecognizedTestValue,
@@ -610,7 +610,7 @@ namespace SabreTools.IO.Test.Extensions
                 0x08, 0x09, 0x0A, 0x0B, 0x41, 0x42, 0x43, 0x00,
             ];
 
-            int offset = 0;
+            long offset = 0;
             var expected = new TestStructSequential
             {
                 FirstValue = TestEnum.RecognizedTestValue,
@@ -639,7 +639,7 @@ namespace SabreTools.IO.Test.Extensions
                 0x41, 0x00, 0x42, 0x00, 0x43, 0x00, 0x00, 0x00, // LPWStr
             ];
 
-            int offset = 0;
+            long offset = 0;
             var expected = new TestStructStrings
             {
                 AnsiBStr = "ABC",
@@ -687,7 +687,7 @@ namespace SabreTools.IO.Test.Extensions
                 0x00, 0x01, 0x02, 0x03,
             ];
 
-            int offset = 0;
+            long offset = 0;
             var expected = new TestStructArrays
             {
                 ByteArray = [0x00, 0x01, 0x02, 0x03],
@@ -734,7 +734,7 @@ namespace SabreTools.IO.Test.Extensions
                 0x55, 0xAA, 0x55, 0xAA, // FieldB
             ];
 
-            int offset1 = 0;
+            long offset1 = 0;
             var expected1 = new TestStructInheritanceChild1
             {
                 Signature = [0x41, 0x42, 0x43, 0x44],
@@ -757,7 +757,7 @@ namespace SabreTools.IO.Test.Extensions
                 0x55, 0xAA, // FieldB
             ];
 
-            int offset2 = 0;
+            long offset2 = 0;
             var expected2 = new TestStructInheritanceChild2
             {
                 Signature = [0x41, 0x42, 0x43, 0x44],
