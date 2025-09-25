@@ -504,7 +504,7 @@ namespace SabreTools.IO.Extensions
             var sb = new StringBuilder();
 
             // Check for strings
-            long offset = 0;
+            int offset = 0;
             while (offset < bytes.Length)
             {
                 // Read the next character from the stream
