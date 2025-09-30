@@ -14,7 +14,7 @@ Below are a list of the included namespaces and their overall utility.
 
 Generic helper classes that involve custom functionality and utility.
 
-### `SabreTools.Compare`
+### `SabreTools.IO.Compare`
 
 Classes focused on string comparison by natural sorting. For example, "5" would be sorted before "100".
 
