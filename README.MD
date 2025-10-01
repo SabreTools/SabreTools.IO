@@ -14,10 +14,6 @@ Below are a list of the included namespaces and their overall utility.
 
 Generic helper classes that involve custom functionality and utility.
 
-### `SabreTools.IO.Compare`
-
-Classes focused on string comparison by natural sorting. For example, "5" would be sorted before "100".
-
 ### `SabreTools.IO.Compression`
 
 Various compression implementations that are used across multiple projects. Most of the implementations are be ports of existing C and C++ code.
@@ -95,6 +91,10 @@ Custom `Stream` implementations that are required for specialized use:
 - `ReadOnlyBitStream`: A readonly stream implementation allowing bitwise reading
 - `ReadOnlyCompositeStream`: A readonly stream implementation that wraps multiple source streams in a set order
 - `ViewStream`: A readonly stream implementation representing a view into source data
+
+### `SabreTools.Text.Compare`
+
+Classes focused on string comparison by natural sorting. For example, "5" would be sorted before "100".
 
 ## Releases
 

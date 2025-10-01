@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace SabreTools.IO.Compare
+namespace SabreTools.Text.Compare
 {
     public class NaturalComparer : Comparer<string>, IDisposable
     {

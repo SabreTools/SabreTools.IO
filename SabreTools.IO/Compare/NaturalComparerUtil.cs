@@ -1,4 +1,4 @@
-﻿namespace SabreTools.IO.Compare
+﻿namespace SabreTools.Text.Compare
 {
     internal static class NaturalComparerUtil
     {

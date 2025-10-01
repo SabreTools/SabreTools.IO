@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using SabreTools.IO.Compare;
+using SabreTools.Text.Compare;
 using Xunit;
 
 namespace SabreTools.IO.Test.Compare
