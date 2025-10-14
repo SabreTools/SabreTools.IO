@@ -92,6 +92,14 @@ Custom `Stream` implementations that are required for specialized use:
 - `ReadOnlyCompositeStream`: A readonly stream implementation that wraps multiple source streams in a set order
 - `ViewStream`: A readonly stream implementation representing a view into source data
 
+### `SabreTools.IO.Transform`
+
+File and stream implementations of common data transformations:
+
+- Combine using either ordered concatenation or interleaving
+- Split by even/odd chunks or based on block size
+- Convert data either by bit-swapping, byte-swapping, word-swapping, or word/byte-swapping
+
 ### `SabreTools.Text.Compare`
 
 Classes focused on string comparison by natural sorting. For example, "5" would be sorted before "100".
