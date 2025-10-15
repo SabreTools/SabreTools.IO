@@ -1082,6 +1082,618 @@ namespace SabreTools.IO.Extensions
 
         #endregion
 
+        #region Peek Read
+
+        /// <summary>
+        /// Peek a UInt8 without incrementing the pointer to an array
+        /// </summary>
+        public static byte PeekByte(this byte[] content, ref int offset)
+        {
+            byte value = content.ReadByte(ref offset);
+            offset -= 1;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt8 without incrementing the pointer to an array
+        /// </summary>
+        public static byte PeekByteValue(this byte[] content, ref int offset)
+            => content.PeekByte(ref offset);
+
+        /// <summary>
+        /// Peek a UInt8[] without incrementing the pointer to an array
+        /// </summary>
+        public static byte[] PeekBytes(this byte[] content, ref int offset, int count)
+        {
+            byte[] value = content.ReadBytes(ref offset, count);
+            offset -= count;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int8 without incrementing the pointer to an array
+        /// </summary>
+        public static sbyte PeekSByte(this byte[] content, ref int offset)
+        {
+            sbyte value = content.ReadSByte(ref offset);
+            offset -= 1;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Char without incrementing the pointer to an array
+        /// </summary>
+        public static char PeekChar(this byte[] content, ref int offset)
+        {
+            char value = content.ReadChar(ref offset);
+            offset -= 1;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int16 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static short PeekInt16(this byte[] content, ref int offset)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.PeekInt16LittleEndian(ref offset);
+            else
+                return content.PeekInt16BigEndian(ref offset);
+        }
+
+        /// <summary>
+        /// Peek an Int16 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static short PeekInt16BigEndian(this byte[] content, ref int offset)
+        {
+            short value = content.ReadInt16BigEndian(ref offset);
+            offset -= 2;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int16 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static short PeekInt16LittleEndian(this byte[] content, ref int offset)
+        {
+            short value = content.ReadInt16LittleEndian(ref offset);
+            offset -= 2;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt16 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static ushort PeekUInt16(this byte[] content, ref int offset)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.PeekUInt16LittleEndian(ref offset);
+            else
+                return content.PeekUInt16BigEndian(ref offset);
+        }
+
+        /// <summary>
+        /// Peek a UInt16 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static ushort PeekUInt16BigEndian(this byte[] content, ref int offset)
+        {
+            ushort value = content.ReadUInt16BigEndian(ref offset);
+            offset -= 2;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt16 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static ushort PeekUInt16LittleEndian(this byte[] content, ref int offset)
+        {
+            ushort value = content.ReadUInt16LittleEndian(ref offset);
+            offset -= 2;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a WORD (2-byte) without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static ushort PeekWORD(this byte[] content, ref int offset)
+            => content.PeekUInt16(ref offset);
+
+        /// <summary>
+        /// Peek a WORD (2-byte) without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static ushort PeekWORDBigEndian(this byte[] content, ref int offset)
+            => content.PeekUInt16BigEndian(ref offset);
+
+        /// <summary>
+        /// Peek a WORD (2-byte) without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static ushort PeekWORDLittleEndian(this byte[] content, ref int offset)
+            => content.PeekUInt16LittleEndian(ref offset);
+
+        // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
+#if NET6_0_OR_GREATER
+        /// <summary>
+        /// Peek a Half without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static Half PeekHalf(this byte[] content, ref int offset)
+        {
+            Half value = content.ReadHalf(ref offset);
+            offset -= 2;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Half without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static Half PeekHalfBigEndian(this byte[] content, ref int offset)
+        {
+            Half value = content.ReadHalfBigEndian(ref offset);
+            offset -= 2;
+            return value;
+        }
+#endif
+
+        /// <summary>
+        /// Peek an Int24 encoded as an Int32 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static int PeekInt24(this byte[] content, ref int offset)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.PeekInt24LittleEndian(ref offset);
+            else
+                return content.PeekInt24BigEndian(ref offset);
+        }
+
+        /// <summary>
+        /// Peek an Int24 encoded as an Int32 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static int PeekInt24BigEndian(this byte[] content, ref int offset)
+        {
+            int value = content.ReadInt24BigEndian(ref offset);
+            offset -= 3;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int24 encoded as an Int32 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static int PeekInt24LittleEndian(this byte[] content, ref int offset)
+        {
+            int value = content.ReadInt24LittleEndian(ref offset);
+            offset -= 3;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt24 encoded as a UInt32 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static uint PeekUInt24(this byte[] content, ref int offset)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.PeekUInt24LittleEndian(ref offset);
+            else
+                return content.PeekUInt24BigEndian(ref offset);
+        }
+
+        /// <summary>
+        /// Peek a UInt24 encoded as a UInt32 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static uint PeekUInt24BigEndian(this byte[] content, ref int offset)
+        {
+            uint value = content.ReadUInt24BigEndian(ref offset);
+            offset -= 3;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt24 encoded as a UInt32 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static uint PeekUInt24LittleEndian(this byte[] content, ref int offset)
+        {
+            uint value = content.ReadUInt24LittleEndian(ref offset);
+            offset -= 3;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int32 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static int PeekInt32(this byte[] content, ref int offset)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.PeekInt32LittleEndian(ref offset);
+            else
+                return content.PeekInt32BigEndian(ref offset);
+        }
+
+        /// <summary>
+        /// Peek an Int32 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static int PeekInt32BigEndian(this byte[] content, ref int offset)
+        {
+            int value = content.ReadInt32BigEndian(ref offset);
+            offset -= 4;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int32 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static int PeekInt32LittleEndian(this byte[] content, ref int offset)
+        {
+            int value = content.ReadInt32LittleEndian(ref offset);
+            offset -= 4;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt32 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static uint PeekUInt32(this byte[] content, ref int offset)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.PeekUInt32LittleEndian(ref offset);
+            else
+                return content.PeekUInt32BigEndian(ref offset);
+        }
+
+        /// <summary>
+        /// Peek a UInt32 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static uint PeekUInt32BigEndian(this byte[] content, ref int offset)
+        {
+            uint value = content.ReadUInt32BigEndian(ref offset);
+            offset -= 4;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt32 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static uint PeekUInt32LittleEndian(this byte[] content, ref int offset)
+        {
+            uint value = content.ReadUInt32LittleEndian(ref offset);
+            offset -= 4;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a DWORD (4-byte) without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static uint PeekDWORD(this byte[] content, ref int offset)
+            => content.PeekUInt32(ref offset);
+
+        /// <summary>
+        /// Peek a DWORD (4-byte) without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static uint PeekDWORDBigEndian(this byte[] content, ref int offset)
+            => content.PeekUInt32BigEndian(ref offset);
+
+        /// <summary>
+        /// Peek a DWORD (4-byte) without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static uint PeekDWORDLittleEndian(this byte[] content, ref int offset)
+            => content.PeekUInt32LittleEndian(ref offset);
+
+        /// <summary>
+        /// Peek a Single without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static float PeekSingle(this byte[] content, ref int offset)
+        {
+            float value = content.ReadSingle(ref offset);
+            offset -= 4;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Single without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static float PeekSingleBigEndian(this byte[] content, ref int offset)
+        {
+            float value = content.ReadSingleBigEndian(ref offset);
+            offset -= 4;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int48 encoded as an Int64 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static long PeekInt48(this byte[] content, ref int offset)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.PeekInt48LittleEndian(ref offset);
+            else
+                return content.PeekInt48BigEndian(ref offset);
+        }
+
+        /// <summary>
+        /// Peek an Int48 encoded as an Int64 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static long PeekInt48BigEndian(this byte[] content, ref int offset)
+        {
+            long value = content.ReadInt48BigEndian(ref offset);
+            offset -= 6;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int48 encoded as an Int64 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static long PeekInt48LittleEndian(this byte[] content, ref int offset)
+        {
+            long value = content.ReadInt48LittleEndian(ref offset);
+            offset -= 6;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt48 encoded as a UInt64 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static ulong PeekUInt48(this byte[] content, ref int offset)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.PeekUInt48LittleEndian(ref offset);
+            else
+                return content.PeekUInt48BigEndian(ref offset);
+        }
+
+        /// <summary>
+        /// Peek an UInt48 encoded as an UInt64 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static ulong PeekUInt48BigEndian(this byte[] content, ref int offset)
+        {
+            ulong value = content.ReadUInt48BigEndian(ref offset);
+            offset -= 6;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an UInt48 encoded as an UInt64 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static ulong PeekUInt48LittleEndian(this byte[] content, ref int offset)
+        {
+            ulong value = content.ReadUInt48LittleEndian(ref offset);
+            offset -= 6;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int64 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static long PeekInt64(this byte[] content, ref int offset)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.PeekInt64LittleEndian(ref offset);
+            else
+                return content.PeekInt64BigEndian(ref offset);
+        }
+
+        /// <summary>
+        /// Peek an Int64 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static long PeekInt64BigEndian(this byte[] content, ref int offset)
+        {
+            long value = content.ReadInt64BigEndian(ref offset);
+            offset -= 8;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int64 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static long PeekInt64LittleEndian(this byte[] content, ref int offset)
+        {
+            long value = content.ReadInt64LittleEndian(ref offset);
+            offset -= 8;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt64 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static ulong PeekUInt64(this byte[] content, ref int offset)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.PeekUInt64LittleEndian(ref offset);
+            else
+                return content.PeekUInt64BigEndian(ref offset);
+        }
+
+        /// <summary>
+        /// Peek a UInt64 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static ulong PeekUInt64BigEndian(this byte[] content, ref int offset)
+        {
+            ulong value = content.ReadUInt64BigEndian(ref offset);
+            offset -= 8;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt64 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static ulong PeekUInt64LittleEndian(this byte[] content, ref int offset)
+        {
+            ulong value = content.ReadUInt64LittleEndian(ref offset);
+            offset -= 8;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a QWORD (8-byte) without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static ulong PeekQWORD(this byte[] content, ref int offset)
+            => content.PeekUInt64(ref offset);
+
+        /// <summary>
+        /// Peek a QWORD (8-byte) without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static ulong PeekQWORDBigEndian(this byte[] content, ref int offset)
+            => content.PeekUInt64BigEndian(ref offset);
+
+        /// <summary>
+        /// Peek a QWORD (8-byte) without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static ulong PeekQWORDLittleEndian(this byte[] content, ref int offset)
+            => content.PeekUInt64LittleEndian(ref offset);
+
+        /// <summary>
+        /// Peek a Double without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static double PeekDouble(this byte[] content, ref int offset)
+        {
+            double value = content.ReadDouble(ref offset);
+            offset -= 8;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Double without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static double PeekDoubleBigEndian(this byte[] content, ref int offset)
+        {
+            double value = content.ReadDoubleBigEndian(ref offset);
+            offset -= 8;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Decimal without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static decimal PeekDecimal(this byte[] content, ref int offset)
+        {
+            decimal value = content.ReadDecimal(ref offset);
+            offset -= 16;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Decimal without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static decimal PeekDecimalBigEndian(this byte[] content, ref int offset)
+        {
+            decimal value = content.ReadDecimalBigEndian(ref offset);
+            offset -= 16;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Guid without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static Guid PeekGuid(this byte[] content, ref int offset)
+        {
+            Guid value = content.ReadGuid(ref offset);
+            offset -= 16;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Guid without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static Guid PeekGuidBigEndian(this byte[] content, ref int offset)
+        {
+            Guid value = content.ReadGuidBigEndian(ref offset);
+            offset -= 16;
+            return value;
+        }
+
+#if NET7_0_OR_GREATER
+        /// <summary>
+        /// Peek an Int128 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static Int128 PeekInt128(this byte[] content, ref int offset)
+        {
+            Int128 value = content.ReadInt128(ref offset);
+            offset -= 16;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int128 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static Int128 PeekInt128BigEndian(this byte[] content, ref int offset)
+        {
+            Int128 value = content.ReadInt128BigEndian(ref offset);
+            offset -= 16;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt128 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static UInt128 PeekUInt128(this byte[] content, ref int offset)
+        {
+            UInt128 value = content.ReadUInt128(ref offset);
+            offset -= 16;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt128 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static UInt128 PeekUInt128BigEndian(this byte[] content, ref int offset)
+        {
+            UInt128 value = content.ReadUInt128BigEndian(ref offset);
+            offset -= 16;
+            return value;
+        }
+#endif
+
+        #endregion
+
         #region Try Read
 
         /// <summary>

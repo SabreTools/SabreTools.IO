@@ -870,6 +870,665 @@ namespace SabreTools.IO.Extensions
 
         #endregion
 
+        #region Peek Read
+
+        /// <summary>
+        /// Peek a UInt8 from the base stream
+        /// </summary>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static byte PeekByte(this BinaryReader reader)
+        {
+            byte value = reader.ReadByte();
+            reader.BaseStream.SeekIfPossible(-1, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt8 from the base stream
+        /// </summary>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static byte PeekByteValue(this BinaryReader reader)
+            => reader.PeekByte();
+
+        /// <summary>
+        /// Peek a UInt8[] from the base stream
+        /// </summary>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static byte[] PeekBytes(this BinaryReader reader, int count)
+        {
+            byte[] value = reader.ReadBytes(count);
+            reader.BaseStream.SeekIfPossible(-count, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int8 from the base stream
+        /// </summary>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static sbyte PeekSByte(this BinaryReader reader)
+        {
+            sbyte value = reader.ReadSByte();
+            reader.BaseStream.SeekIfPossible(-1, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int16 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static short PeekInt16(this BinaryReader reader)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.PeekInt16LittleEndian();
+            else
+                return reader.PeekInt16BigEndian();
+        }
+
+        /// <summary>
+        /// Peek an Int16 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static short PeekInt16BigEndian(this BinaryReader reader)
+        {
+            short value = reader.ReadInt16BigEndian();
+            reader.BaseStream.SeekIfPossible(-2, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int16 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static short PeekInt16LittleEndian(this BinaryReader reader)
+        {
+            short value = reader.ReadInt16LittleEndian();
+            reader.BaseStream.SeekIfPossible(-2, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt16 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static ushort PeekUInt16(this BinaryReader reader)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.PeekUInt16LittleEndian();
+            else
+                return reader.PeekUInt16BigEndian();
+        }
+
+        /// <summary>
+        /// Peek a UInt16 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static ushort PeekUInt16BigEndian(this BinaryReader reader)
+        {
+            ushort value = reader.ReadUInt16BigEndian();
+            reader.BaseStream.SeekIfPossible(-2, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt16 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static ushort PeekUInt16LittleEndian(this BinaryReader reader)
+        {
+            ushort value = reader.ReadUInt16LittleEndian();
+            reader.BaseStream.SeekIfPossible(-2, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a WORD (2-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static ushort PeekWORD(this BinaryReader reader)
+            => reader.PeekUInt16();
+
+        /// <summary>
+        /// Peek a WORD (2-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static ushort PeekWORDBigEndian(this BinaryReader reader)
+            => reader.PeekUInt16BigEndian();
+
+        /// <summary>
+        /// Peek a WORD (2-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static ushort PeekWORDLittleEndian(this BinaryReader reader)
+            => reader.PeekUInt16LittleEndian();
+
+        // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
+#if NET6_0_OR_GREATER
+        /// <summary>
+        /// Peek a Half from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static Half PeekHalf(this BinaryReader reader)
+        {
+            Half value = reader.ReadHalf();
+            reader.BaseStream.SeekIfPossible(-2, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Half from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static Half PeekHalfBigEndian(this BinaryReader reader)
+        {
+            Half value = reader.ReadHalfBigEndian();
+            reader.BaseStream.SeekIfPossible(-2, SeekOrigin.Current);
+            return value;
+        }
+#endif
+
+        /// <summary>
+        /// Peek an Int24 encoded as an Int32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static int PeekInt24(this BinaryReader reader)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.PeekInt24LittleEndian();
+            else
+                return reader.PeekInt24BigEndian();
+        }
+
+        /// <summary>
+        /// Peek an Int24 encoded as an Int32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static int PeekInt24BigEndian(this BinaryReader reader)
+        {
+            int value = reader.ReadInt24BigEndian();
+            reader.BaseStream.SeekIfPossible(-3, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int24 encoded as an Int32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static int PeekInt24LittleEndian(this BinaryReader reader)
+        {
+            int value = reader.ReadInt24LittleEndian();
+            reader.BaseStream.SeekIfPossible(-3, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt24 encoded as a UInt32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static uint PeekUInt24(this BinaryReader reader)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.PeekUInt24LittleEndian();
+            else
+                return reader.PeekUInt24BigEndian();
+        }
+
+        /// <summary>
+        /// Peek a UInt24 encoded as a UInt32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static uint PeekUInt24BigEndian(this BinaryReader reader)
+        {
+            uint value = reader.ReadUInt24BigEndian();
+            reader.BaseStream.SeekIfPossible(-3, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt24 encoded as a UInt32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static uint PeekUInt24LittleEndian(this BinaryReader reader)
+        {
+            uint value = reader.ReadUInt24LittleEndian();
+            reader.BaseStream.SeekIfPossible(-3, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static int PeekInt32(this BinaryReader reader)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.PeekInt32LittleEndian();
+            else
+                return reader.PeekInt32BigEndian();
+        }
+
+        /// <summary>
+        /// Peek an Int32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static int PeekInt32BigEndian(this BinaryReader reader)
+        {
+            int value = reader.ReadInt32BigEndian();
+            reader.BaseStream.SeekIfPossible(-4, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static int PeekInt32LittleEndian(this BinaryReader reader)
+        {
+            int value = reader.ReadInt32LittleEndian();
+            reader.BaseStream.SeekIfPossible(-4, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static uint PeekUInt32(this BinaryReader reader)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.PeekUInt32LittleEndian();
+            else
+                return reader.PeekUInt32BigEndian();
+        }
+
+        /// <summary>
+        /// Peek a UInt32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static uint PeekUInt32BigEndian(this BinaryReader reader)
+        {
+            uint value = reader.ReadUInt32BigEndian();
+            reader.BaseStream.SeekIfPossible(-4, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static uint PeekUInt32LittleEndian(this BinaryReader reader)
+        {
+            uint value = reader.ReadUInt32LittleEndian();
+            reader.BaseStream.SeekIfPossible(-4, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a DWORD (4-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static uint PeekDWORD(this BinaryReader reader)
+            => reader.PeekUInt32();
+
+        /// <summary>
+        /// Peek a DWORD (4-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static uint PeekDWORDBigEndian(this BinaryReader reader)
+            => reader.PeekUInt32BigEndian();
+
+        /// <summary>
+        /// Peek a DWORD (4-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static uint PeekDWORDLittleEndian(this BinaryReader reader)
+            => reader.PeekUInt32LittleEndian();
+
+        /// <summary>
+        /// Peek a Single from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static float PeekSingle(this BinaryReader reader)
+        {
+            float value = reader.ReadSingle();
+            reader.BaseStream.SeekIfPossible(-4, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Single from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static float PeekSingleBigEndian(this BinaryReader reader)
+        {
+            float value = reader.ReadSingleBigEndian();
+            reader.BaseStream.SeekIfPossible(-4, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int48 encoded as an Int64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static long PeekInt48(this BinaryReader reader)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.PeekInt48LittleEndian();
+            else
+                return reader.PeekInt48BigEndian();
+        }
+
+        /// <summary>
+        /// Peek an Int48 encoded as an Int64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static long PeekInt48BigEndian(this BinaryReader reader)
+        {
+            long value = reader.ReadInt48BigEndian();
+            reader.BaseStream.SeekIfPossible(-6, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int48 encoded as an Int64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static long PeekInt48LittleEndian(this BinaryReader reader)
+        {
+            long value = reader.ReadInt48LittleEndian();
+            reader.BaseStream.SeekIfPossible(-6, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt48 encoded as a UInt64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static ulong PeekUInt48(this BinaryReader reader)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.PeekUInt48LittleEndian();
+            else
+                return reader.PeekUInt48BigEndian();
+        }
+
+        /// <summary>
+        /// Peek an UInt48 encoded as an UInt64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static ulong PeekUInt48BigEndian(this BinaryReader reader)
+        {
+            ulong value = reader.ReadUInt48BigEndian();
+            reader.BaseStream.SeekIfPossible(-6, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an UInt48 encoded as an UInt64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static ulong PeekUInt48LittleEndian(this BinaryReader reader)
+        {
+            ulong value = reader.ReadUInt48LittleEndian();
+            reader.BaseStream.SeekIfPossible(-6, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static long PeekInt64(this BinaryReader reader)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.PeekInt64LittleEndian();
+            else
+                return reader.PeekInt64BigEndian();
+        }
+
+        /// <summary>
+        /// Peek an Int64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static long PeekInt64BigEndian(this BinaryReader reader)
+        {
+            long value = reader.ReadInt64BigEndian();
+            reader.BaseStream.SeekIfPossible(-8, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static long PeekInt64LittleEndian(this BinaryReader reader)
+        {
+            long value = reader.ReadInt64LittleEndian();
+            reader.BaseStream.SeekIfPossible(-8, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static ulong PeekUInt64(this BinaryReader reader)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.PeekUInt64LittleEndian();
+            else
+                return reader.PeekUInt64BigEndian();
+        }
+
+        /// <summary>
+        /// Peek a UInt64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static ulong PeekUInt64BigEndian(this BinaryReader reader)
+        {
+            ulong value = reader.ReadUInt64BigEndian();
+            reader.BaseStream.SeekIfPossible(-8, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static ulong PeekUInt64LittleEndian(this BinaryReader reader)
+        {
+            ulong value = reader.ReadUInt64LittleEndian();
+            reader.BaseStream.SeekIfPossible(-8, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a QWORD (8-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static ulong PeekQWORD(this BinaryReader reader)
+            => reader.PeekUInt64();
+
+        /// <summary>
+        /// Peek a QWORD (8-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static ulong PeekQWORDBigEndian(this BinaryReader reader)
+            => reader.PeekUInt64BigEndian();
+
+        /// <summary>
+        /// Peek a QWORD (8-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static ulong PeekQWORDLittleEndian(this BinaryReader reader)
+            => reader.PeekUInt64LittleEndian();
+
+        /// <summary>
+        /// Peek a Double from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static double PeekDouble(this BinaryReader reader)
+        {
+            double value = reader.ReadDouble();
+            reader.BaseStream.SeekIfPossible(-8, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Double from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static double PeekDoubleBigEndian(this BinaryReader reader)
+        {
+            double value = reader.ReadDoubleBigEndian();
+            reader.BaseStream.SeekIfPossible(-8, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Decimal from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static decimal PeekDecimal(this BinaryReader reader)
+        {
+            decimal value = reader.ReadDecimal();
+            reader.BaseStream.SeekIfPossible(-16, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Decimal from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static decimal PeekDecimalBigEndian(this BinaryReader reader)
+        {
+            decimal value = reader.ReadDecimalBigEndian();
+            reader.BaseStream.SeekIfPossible(-16, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Guid from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static Guid PeekGuid(this BinaryReader reader)
+        {
+            Guid value = reader.ReadGuid();
+            reader.BaseStream.SeekIfPossible(-16, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Guid from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static Guid PeekGuidBigEndian(this BinaryReader reader)
+        {
+            Guid value = reader.ReadGuidBigEndian();
+            reader.BaseStream.SeekIfPossible(-16, SeekOrigin.Current);
+            return value;
+        }
+
+#if NET7_0_OR_GREATER
+        /// <summary>
+        /// Peek an Int128 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static Int128 PeekInt128(this BinaryReader reader)
+        {
+            Int128 value = reader.ReadInt128();
+            reader.BaseStream.SeekIfPossible(-16, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek an Int128 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static Int128 PeekInt128BigEndian(this BinaryReader reader)
+        {
+            Int128 value = reader.ReadInt128BigEndian();
+            reader.BaseStream.SeekIfPossible(-16, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt128 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static UInt128 PeekUInt128(this BinaryReader reader)
+        {
+            UInt128 value = reader.ReadUInt128();
+            reader.BaseStream.SeekIfPossible(-16, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt128 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static UInt128 PeekUInt128BigEndian(this BinaryReader reader)
+        {
+            UInt128 value = reader.ReadUInt128BigEndian();
+            reader.BaseStream.SeekIfPossible(-16, SeekOrigin.Current);
+            return value;
+        }
+#endif
+
+        #endregion
+
         #region Try Read
 
         /// <summary>

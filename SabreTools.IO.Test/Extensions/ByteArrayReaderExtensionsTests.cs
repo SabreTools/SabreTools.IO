@@ -777,6 +777,549 @@ namespace SabreTools.IO.Test.Extensions
 
         #endregion
 
+        #region Peek Read
+
+        [Fact]
+        public void PeekByteTest()
+        {
+            int offset = 0;
+            byte read = _bytes.PeekByte(ref offset);
+            Assert.Equal(0x00, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekByteValueTest()
+        {
+            int offset = 0;
+            byte read = _bytes.PeekByteValue(ref offset);
+            Assert.Equal(0x00, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekBytesTest()
+        {
+            int offset = 0, length = 4;
+            byte[] read = _bytes.PeekBytes(ref offset, length);
+            Assert.Equal(length, read.Length);
+            Assert.True(read.SequenceEqual(_bytes.Take(length)));
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekSByteTest()
+        {
+            int offset = 0;
+            sbyte read = _bytes.PeekSByte(ref offset);
+            Assert.Equal(0x00, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekCharTest()
+        {
+            int offset = 0;
+            char read = _bytes.PeekChar(ref offset);
+            Assert.Equal('\0', read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekInt16Test()
+        {
+            int offset = 0;
+            short read = _bytes.PeekInt16(ref offset);
+            Assert.Equal(0x0100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekInt16BigEndianTest()
+        {
+            int offset = 0;
+            short read = _bytes.PeekInt16BigEndian(ref offset);
+            Assert.Equal(0x0001, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekInt16LittleEndianTest()
+        {
+            int offset = 0;
+            short read = _bytes.PeekInt16LittleEndian(ref offset);
+            Assert.Equal(0x0100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekUInt16Test()
+        {
+            int offset = 0;
+            ushort read = _bytes.PeekUInt16(ref offset);
+            Assert.Equal(0x0100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekUInt16BigEndianTest()
+        {
+            int offset = 0;
+            ushort read = _bytes.PeekUInt16BigEndian(ref offset);
+            Assert.Equal(0x0001, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekUInt16LittleEndianTest()
+        {
+            int offset = 0;
+            ushort read = _bytes.PeekUInt16LittleEndian(ref offset);
+            Assert.Equal(0x0100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekWORDTest()
+        {
+            int offset = 0;
+            ushort read = _bytes.PeekWORD(ref offset);
+            Assert.Equal(0x0100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekWORDBigEndianTest()
+        {
+            int offset = 0;
+            ushort read = _bytes.PeekWORDBigEndian(ref offset);
+            Assert.Equal(0x0001, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekWORDLittleEndianTest()
+        {
+            int offset = 0;
+            ushort read = _bytes.PeekWORDLittleEndian(ref offset);
+            Assert.Equal(0x0100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekHalfTest()
+        {
+            int offset = 0;
+            Half expected = BitConverter.Int16BitsToHalf(0x0100);
+            Half read = _bytes.PeekHalf(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekHalfBigEndianTest()
+        {
+            int offset = 0;
+            Half expected = BitConverter.Int16BitsToHalf(0x0001);
+            Half read = _bytes.PeekHalfBigEndian(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekInt24Test()
+        {
+            int offset = 0;
+            int read = _bytes.PeekInt24(ref offset);
+            Assert.Equal(0x020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekInt24BigEndianTest()
+        {
+            int offset = 0;
+            int read = _bytes.PeekInt24BigEndian(ref offset);
+            Assert.Equal(0x000102, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekInt24LittleEndianTest()
+        {
+            int offset = 0;
+            int read = _bytes.PeekInt24LittleEndian(ref offset);
+            Assert.Equal(0x020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekUInt24Test()
+        {
+            int offset = 0;
+            uint read = _bytes.PeekUInt24(ref offset);
+            Assert.Equal((uint)0x020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekUInt24BigEndianTest()
+        {
+            int offset = 0;
+            uint read = _bytes.PeekUInt24BigEndian(ref offset);
+            Assert.Equal((uint)0x000102, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekUInt24LittleEndianTest()
+        {
+            int offset = 0;
+            uint read = _bytes.PeekUInt24LittleEndian(ref offset);
+            Assert.Equal((uint)0x020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekInt32Test()
+        {
+            int offset = 0;
+            int read = _bytes.PeekInt32(ref offset);
+            Assert.Equal(0x03020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekInt32BigEndianTest()
+        {
+            int offset = 0;
+            int read = _bytes.PeekInt32BigEndian(ref offset);
+            Assert.Equal(0x00010203, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekInt32LittleEndianTest()
+        {
+            int offset = 0;
+            int read = _bytes.PeekInt32LittleEndian(ref offset);
+            Assert.Equal(0x03020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekUInt32Test()
+        {
+            int offset = 0;
+            uint read = _bytes.PeekUInt32(ref offset);
+            Assert.Equal((uint)0x03020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekUInt32BigEndianTest()
+        {
+            int offset = 0;
+            uint read = _bytes.PeekUInt32BigEndian(ref offset);
+            Assert.Equal((uint)0x00010203, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekUInt32LittleEndianTest()
+        {
+            int offset = 0;
+            uint read = _bytes.PeekUInt32LittleEndian(ref offset);
+            Assert.Equal((uint)0x03020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekDWORDTest()
+        {
+            int offset = 0;
+            uint read = _bytes.PeekDWORD(ref offset);
+            Assert.Equal((uint)0x03020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekDWORDBigEndianTest()
+        {
+            int offset = 0;
+            uint read = _bytes.PeekDWORDBigEndian(ref offset);
+            Assert.Equal((uint)0x00010203, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekDWORDLittleEndianTest()
+        {
+            int offset = 0;
+            uint read = _bytes.PeekDWORDLittleEndian(ref offset);
+            Assert.Equal((uint)0x03020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekSingleTest()
+        {
+            int offset = 0;
+            float expected = BitConverter.Int32BitsToSingle(0x03020100);
+            float read = _bytes.PeekSingle(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekSingleBigEndianTest()
+        {
+            int offset = 0;
+            float expected = BitConverter.Int32BitsToSingle(0x00010203);
+            float read = _bytes.PeekSingleBigEndian(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekInt48Test()
+        {
+            int offset = 0;
+            long read = _bytes.PeekInt48(ref offset);
+            Assert.Equal(0x050403020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekInt48BigEndianTest()
+        {
+            int offset = 0;
+            long read = _bytes.PeekInt48BigEndian(ref offset);
+            Assert.Equal(0x000102030405, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekInt48LittleEndianTest()
+        {
+            int offset = 0;
+            long read = _bytes.PeekInt48LittleEndian(ref offset);
+            Assert.Equal(0x050403020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekUInt48Test()
+        {
+            int offset = 0;
+            ulong read = _bytes.PeekUInt48(ref offset);
+            Assert.Equal((ulong)0x050403020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekUInt48BigEndianTest()
+        {
+            int offset = 0;
+            ulong read = _bytes.PeekUInt48BigEndian(ref offset);
+            Assert.Equal((ulong)0x000102030405, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekUInt48LittleEndianTest()
+        {
+            int offset = 0;
+            ulong read = _bytes.PeekUInt48LittleEndian(ref offset);
+            Assert.Equal((ulong)0x050403020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekInt64Test()
+        {
+            int offset = 0;
+            long read = _bytes.PeekInt64(ref offset);
+            Assert.Equal(0x0706050403020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekInt64BigEndianTest()
+        {
+            int offset = 0;
+            long read = _bytes.PeekInt64BigEndian(ref offset);
+            Assert.Equal(0x0001020304050607, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekInt64LittleEndianTest()
+        {
+            int offset = 0;
+            long read = _bytes.PeekInt64LittleEndian(ref offset);
+            Assert.Equal(0x0706050403020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekUInt64Test()
+        {
+            int offset = 0;
+            ulong read = _bytes.PeekUInt64(ref offset);
+            Assert.Equal((ulong)0x0706050403020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekUInt64BigEndianTest()
+        {
+            int offset = 0;
+            ulong read = _bytes.PeekUInt64BigEndian(ref offset);
+            Assert.Equal((ulong)0x0001020304050607, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekUInt64LittleEndianTest()
+        {
+            int offset = 0;
+            ulong read = _bytes.PeekUInt64LittleEndian(ref offset);
+            Assert.Equal((ulong)0x0706050403020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekQWORDTest()
+        {
+            int offset = 0;
+            ulong read = _bytes.PeekQWORD(ref offset);
+            Assert.Equal((ulong)0x0706050403020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekQWORDBigEndianTest()
+        {
+            int offset = 0;
+            ulong read = _bytes.PeekQWORDBigEndian(ref offset);
+            Assert.Equal((ulong)0x0001020304050607, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekQWORDLittleEndianTest()
+        {
+            int offset = 0;
+            ulong read = _bytes.PeekQWORDLittleEndian(ref offset);
+            Assert.Equal((ulong)0x0706050403020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekDoubleTest()
+        {
+            int offset = 0;
+            double expected = BitConverter.Int64BitsToDouble(0x0706050403020100);
+            double read = _bytes.PeekDouble(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekDoubleBigEndianTest()
+        {
+            int offset = 0;
+            double expected = BitConverter.Int64BitsToDouble(0x0001020304050607);
+            double read = _bytes.PeekDoubleBigEndian(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekDecimalTest()
+        {
+            int offset = 0;
+            decimal expected = 0.0123456789M;
+            decimal read = _decimalBytes.PeekDecimal(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekDecimalBigEndianTest()
+        {
+            int offset = 0;
+            decimal expected = 0.0123456789M;
+            decimal read = _decimalBytes.Reverse().ToArray().PeekDecimalBigEndian(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekGuidTest()
+        {
+            int offset = 0;
+            var expected = new Guid(_bytes);
+            Guid read = _bytes.PeekGuid(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekGuidBigEndianTest()
+        {
+            int offset = 0;
+            var expected = new Guid(_bytes.Reverse().ToArray());
+            Guid read = _bytes.PeekGuidBigEndian(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekInt128Test()
+        {
+            int offset = 0;
+            var expected = (Int128)new BigInteger(_bytes);
+            Int128 read = _bytes.PeekInt128(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekInt128BigEndianTest()
+        {
+            int offset = 0;
+            var reversed = _bytes.Reverse().ToArray();
+            var expected = (Int128)new BigInteger(reversed);
+            Int128 read = _bytes.PeekInt128BigEndian(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekUInt128Test()
+        {
+            int offset = 0;
+            var expected = (UInt128)new BigInteger(_bytes);
+            UInt128 read = _bytes.PeekUInt128(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekUInt128BigEndianTest()
+        {
+            int offset = 0;
+            var reversed = _bytes.Reverse().ToArray();
+            var expected = (UInt128)new BigInteger(reversed);
+            UInt128 read = _bytes.PeekUInt128BigEndian(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        #endregion
+
         #region Try Read
 
         [Fact]

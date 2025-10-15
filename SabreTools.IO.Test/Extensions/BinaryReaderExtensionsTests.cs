@@ -878,6 +878,587 @@ namespace SabreTools.IO.Test.Extensions
 
         #endregion
 
+        #region Peek Read
+
+        [Fact]
+        public void PeekByteTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            byte read = br.PeekByte();
+            Assert.Equal(0x00, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekBytesTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            int length = 4;
+            byte[] read = br.PeekBytes(length);
+            Assert.Equal(length, read.Length);
+            Assert.True(read.SequenceEqual(_bytes.Take(length)));
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekSByteTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            sbyte read = br.PeekSByte();
+            Assert.Equal(0x00, read);
+        }
+
+        [Fact]
+        public void PeekInt16Test()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            short read = br.PeekInt16();
+            Assert.Equal(0x0100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekInt16BigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            short read = br.PeekInt16BigEndian();
+            Assert.Equal(0x0001, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekInt16LittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            short read = br.PeekInt16LittleEndian();
+            Assert.Equal(0x0100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekUInt16Test()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            ushort read = br.PeekUInt16();
+            Assert.Equal(0x0100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekUInt16BigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            ushort read = br.PeekUInt16BigEndian();
+            Assert.Equal(0x0001, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekUInt16LittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            ushort read = br.PeekUInt16LittleEndian();
+            Assert.Equal(0x0100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekWORDTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            ushort read = br.PeekWORD();
+            Assert.Equal(0x0100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekWORDBigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            ushort read = br.PeekWORDBigEndian();
+            Assert.Equal(0x0001, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekWORDLittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            ushort read = br.PeekWORDLittleEndian();
+            Assert.Equal(0x0100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekHalfTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            Half expected = BitConverter.Int16BitsToHalf(0x0100);
+            Half read = br.PeekHalf();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekHalfBigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            Half expected = BitConverter.Int16BitsToHalf(0x0001);
+            Half read = br.PeekHalfBigEndian();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekInt24Test()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            int read = br.PeekInt24();
+            Assert.Equal(0x020100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekInt24BigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            int read = br.PeekInt24BigEndian();
+            Assert.Equal(0x000102, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekInt24LittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            int read = br.PeekInt24LittleEndian();
+            Assert.Equal(0x020100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekUInt24Test()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            uint read = br.PeekUInt24();
+            Assert.Equal((uint)0x020100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekUInt24BigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            uint read = br.PeekUInt24BigEndian();
+            Assert.Equal((uint)0x000102, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekUInt24LittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            uint read = br.PeekUInt24LittleEndian();
+            Assert.Equal((uint)0x020100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekInt32Test()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            int read = br.PeekInt32();
+            Assert.Equal(0x03020100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekInt32BigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            int read = br.PeekInt32BigEndian();
+            Assert.Equal(0x00010203, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekInt32LittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            int read = br.PeekInt32LittleEndian();
+            Assert.Equal(0x03020100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekUInt32Test()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            uint read = br.PeekUInt32();
+            Assert.Equal((uint)0x03020100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekUInt32BigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            uint read = br.PeekUInt32BigEndian();
+            Assert.Equal((uint)0x00010203, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekUInt32LittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            uint read = br.PeekUInt32LittleEndian();
+            Assert.Equal((uint)0x03020100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekDWORDTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            uint read = br.PeekDWORD();
+            Assert.Equal((uint)0x03020100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekDWORDBigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            uint read = br.PeekDWORDBigEndian();
+            Assert.Equal((uint)0x00010203, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekDWORDLittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            uint read = br.PeekDWORDLittleEndian();
+            Assert.Equal((uint)0x03020100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekSingleTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            float expected = BitConverter.Int32BitsToSingle(0x03020100);
+            float read = br.PeekSingle();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekSingleBigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            float expected = BitConverter.Int32BitsToSingle(0x00010203);
+            float read = br.PeekSingleBigEndian();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekInt48Test()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            long read = br.PeekInt48();
+            Assert.Equal(0x050403020100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekInt48BigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            long read = br.PeekInt48BigEndian();
+            Assert.Equal(0x000102030405, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekInt48LittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            long read = br.PeekInt48LittleEndian();
+            Assert.Equal(0x050403020100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekUInt48Test()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            ulong read = br.PeekUInt48();
+            Assert.Equal((ulong)0x050403020100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekUInt48BigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            ulong read = br.PeekUInt48BigEndian();
+            Assert.Equal((ulong)0x000102030405, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekUInt48LittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            ulong read = br.PeekUInt48LittleEndian();
+            Assert.Equal((ulong)0x050403020100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekInt64Test()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            long read = br.PeekInt64();
+            Assert.Equal(0x0706050403020100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekInt64BigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            long read = br.PeekInt64BigEndian();
+            Assert.Equal(0x0001020304050607, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekInt64LittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            long read = br.PeekInt64LittleEndian();
+            Assert.Equal(0x0706050403020100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekUInt64Test()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            ulong read = br.PeekUInt64();
+            Assert.Equal((ulong)0x0706050403020100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekUInt64BigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            ulong read = br.PeekUInt64BigEndian();
+            Assert.Equal((ulong)0x0001020304050607, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekUInt64LittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            ulong read = br.PeekUInt64LittleEndian();
+            Assert.Equal((ulong)0x0706050403020100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekQWORDTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            ulong read = br.PeekQWORD();
+            Assert.Equal((ulong)0x0706050403020100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekQWORDBigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            ulong read = br.PeekQWORDBigEndian();
+            Assert.Equal((ulong)0x0001020304050607, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekQWORDLittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            ulong read = br.PeekQWORDLittleEndian();
+            Assert.Equal((ulong)0x0706050403020100, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekDoubleTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            double expected = BitConverter.Int64BitsToDouble(0x0706050403020100);
+            double read = br.PeekDouble();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekDoubleBigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            double expected = BitConverter.Int64BitsToDouble(0x0001020304050607);
+            double read = br.PeekDoubleBigEndian();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekDecimalTest()
+        {
+            var stream = new MemoryStream(_decimalBytes);
+            var br = new BinaryReader(stream);
+            decimal expected = 0.0123456789M;
+            decimal read = br.PeekDecimal();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekDecimalBigEndianTest()
+        {
+            var stream = new MemoryStream(_decimalBytes.Reverse().ToArray());
+            var br = new BinaryReader(stream);
+            decimal expected = 0.0123456789M;
+            decimal read = br.PeekDecimalBigEndian();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekGuidTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            var expected = new Guid(_bytes);
+            Guid read = br.PeekGuid();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekGuidBigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            var expected = new Guid(_bytes.Reverse().ToArray());
+            Guid read = br.PeekGuidBigEndian();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekInt128Test()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            var expected = (Int128)new BigInteger(_bytes);
+            Int128 read = br.PeekInt128();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekInt128BigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            var reversed = _bytes.Reverse().ToArray();
+            var expected = (Int128)new BigInteger(reversed);
+            Int128 read = br.PeekInt128BigEndian();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekUInt128Test()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            var expected = (UInt128)new BigInteger(_bytes);
+            UInt128 read = br.PeekUInt128();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        [Fact]
+        public void PeekUInt128BigEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var br = new BinaryReader(stream);
+            var reversed = _bytes.Reverse().ToArray();
+            var expected = (UInt128)new BigInteger(reversed);
+            UInt128 read = br.PeekUInt128BigEndian();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, br.BaseStream.Position);
+        }
+
+        #endregion
+
         #region Try Read
 
         [Fact]
