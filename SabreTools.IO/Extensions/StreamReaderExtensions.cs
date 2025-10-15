@@ -15,6 +15,8 @@ namespace SabreTools.IO.Extensions
     /// </summary>
     public static class StreamReaderExtensions
     {
+        #region Exact Read
+
         /// <summary>
         /// Read a UInt8 from the stream
         /// </summary>
@@ -1065,5 +1067,803 @@ namespace SabreTools.IO.Extensions
 
             return buffer;
         }
+
+        #endregion
+
+        #region Try Read
+
+        /// <summary>
+        /// Read a UInt8 from the stream
+        /// </summary>
+        public static bool TryReadByteValue(this Stream stream, out byte value)
+        {
+            if (stream.Position > stream.Length - 1)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadByteValue();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt8[] from the stream
+        /// </summary>
+        public static bool TryReadBytes(this Stream stream, int count, out byte[] value)
+        {
+            if (stream.Position > stream.Length - count)
+            {
+                value = [];
+                return false;
+            }
+
+            value = stream.ReadBytes(count);
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int8 from the stream
+        /// </summary>
+        public static bool TryReadSByte(this Stream stream, out sbyte value)
+        {
+            if (stream.Position > stream.Length - 1)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadSByte();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Char from the stream
+        /// </summary>
+        public static bool TryReadChar(this Stream stream, out char value)
+        {
+            if (stream.Position > stream.Length - 1)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadChar();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int16 from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadInt16(this Stream stream, out short value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return stream.TryReadInt16LittleEndian(out value);
+            else
+                return stream.TryReadInt16BigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read an Int16 from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadInt16BigEndian(this Stream stream, out short value)
+        {
+            if (stream.Position > stream.Length - 2)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadInt16BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int16 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadInt16LittleEndian(this Stream stream, out short value)
+        {
+            if (stream.Position > stream.Length - 2)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadInt16LittleEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt16 from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt16(this Stream stream, out ushort value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return stream.TryReadUInt16LittleEndian(out value);
+            else
+                return stream.TryReadUInt16BigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read a UInt16 from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadUInt16BigEndian(this Stream stream, out ushort value)
+        {
+            if (stream.Position > stream.Length - 2)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadUInt16BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt16 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadUInt16LittleEndian(this Stream stream, out ushort value)
+        {
+            if (stream.Position > stream.Length - 2)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadUInt16LittleEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a WORD (2-byte) from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadWORD(this Stream stream, out ushort value)
+            => stream.TryReadUInt16(out value);
+
+        /// <summary>
+        /// Read a WORD (2-byte) from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadWORDBigEndian(this Stream stream, out ushort value)
+            => stream.TryReadUInt16BigEndian(out value);
+
+        /// <summary>
+        /// Read a WORD (2-byte) from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadWORDLittleEndian(this Stream stream, out ushort value)
+            => stream.TryReadUInt16LittleEndian(out value);
+
+        // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
+#if NET6_0_OR_GREATER
+        /// <summary>
+        /// Read a Half from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadHalf(this Stream stream, out Half value)
+        {
+            if (stream.Position > stream.Length - 2)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadHalf();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Half from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadHalfBigEndian(this Stream stream, out Half value)
+        {
+            if (stream.Position > stream.Length - 2)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadHalfBigEndian();
+            return true;
+        }
+#endif
+
+        /// <summary>
+        /// Read an Int24 encoded as an Int32 from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadInt24(this Stream stream, out int value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return stream.TryReadInt24LittleEndian(out value);
+            else
+                return stream.TryReadInt24BigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read an Int24 encoded as an Int32 from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadInt24BigEndian(this Stream stream, out int value)
+        {
+            if (stream.Position > stream.Length - 3)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadInt24BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int24 encoded as an Int32 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadInt24LittleEndian(this Stream stream, out int value)
+        {
+            if (stream.Position > stream.Length - 3)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadInt24LittleEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt24 encoded as a UInt32 from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt24(this Stream stream, out uint value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return stream.TryReadUInt24LittleEndian(out value);
+            else
+                return stream.TryReadUInt24BigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read a UInt24 encoded as a UInt32 from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadUInt24BigEndian(this Stream stream, out uint value)
+        {
+            if (stream.Position > stream.Length - 3)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadUInt24BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt24 encoded as a UInt32 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadUInt24LittleEndian(this Stream stream, out uint value)
+        {
+            if (stream.Position > stream.Length - 3)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadUInt24LittleEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int32 from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadInt32(this Stream stream, out int value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return stream.TryReadInt32LittleEndian(out value);
+            else
+                return stream.TryReadInt32BigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read an Int32 from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadInt32BigEndian(this Stream stream, out int value)
+        {
+            if (stream.Position > stream.Length - 4)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadInt32BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int32 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadInt32LittleEndian(this Stream stream, out int value)
+        {
+            if (stream.Position > stream.Length - 4)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadInt32LittleEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt32 from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt32(this Stream stream, out uint value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return stream.TryReadUInt32LittleEndian(out value);
+            else
+                return stream.TryReadUInt32BigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read a UInt32 from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadUInt32BigEndian(this Stream stream, out uint value)
+        {
+            if (stream.Position > stream.Length - 4)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadUInt32BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt32 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadUInt32LittleEndian(this Stream stream, out uint value)
+        {
+            if (stream.Position > stream.Length - 4)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadUInt32LittleEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a DWORD (4-byte) from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadDWORD(this Stream stream, out uint value)
+            => stream.TryReadUInt32(out value);
+
+        /// <summary>
+        /// Read a DWORD (4-byte) from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadDWORDBigEndian(this Stream stream, out uint value)
+            => stream.TryReadUInt32BigEndian(out value);
+
+        /// <summary>
+        /// Read a DWORD (4-byte) from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadDWORDLittleEndian(this Stream stream, out uint value)
+            => stream.TryReadUInt32LittleEndian(out value);
+
+        /// <summary>
+        /// Read a Single from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadSingle(this Stream stream, out float value)
+        {
+            if (stream.Position > stream.Length - 4)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadSingle();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Single from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadSingleBigEndian(this Stream stream, out float value)
+        {
+            if (stream.Position > stream.Length - 4)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadSingleBigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int48 encoded as an Int64 from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadInt48(this Stream stream, out long value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return stream.TryReadInt48LittleEndian(out value);
+            else
+                return stream.TryReadInt48BigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read an Int48 encoded as an Int64 from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadInt48BigEndian(this Stream stream, out long value)
+        {
+            if (stream.Position > stream.Length - 6)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadInt48BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int48 encoded as an Int64 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadInt48LittleEndian(this Stream stream, out long value)
+        {
+            if (stream.Position > stream.Length - 6)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadInt48LittleEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt48 encoded as a UInt64 from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt48(this Stream stream, out ulong value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return stream.TryReadUInt48LittleEndian(out value);
+            else
+                return stream.TryReadUInt48BigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read a UInt48 encoded as a UInt64 from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadUInt48BigEndian(this Stream stream, out ulong value)
+        {
+            if (stream.Position > stream.Length - 6)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadUInt48BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an UInt48 encoded as an UInt64 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadUInt48LittleEndian(this Stream stream, out ulong value)
+        {
+            if (stream.Position > stream.Length - 6)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadUInt48LittleEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int64 from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadInt64(this Stream stream, out long value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return stream.TryReadInt64LittleEndian(out value);
+            else
+                return stream.TryReadInt64BigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read an Int64 from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadInt64BigEndian(this Stream stream, out long value)
+        {
+            if (stream.Position > stream.Length - 8)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadInt48BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int64 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadInt64LittleEndian(this Stream stream, out long value)
+        {
+            if (stream.Position > stream.Length - 8)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadInt48BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt64 from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt64(this Stream stream, out ulong value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return stream.TryReadUInt64LittleEndian(out value);
+            else
+                return stream.TryReadUInt64BigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read a UInt64 from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadUInt64BigEndian(this Stream stream, out ulong value)
+        {
+            if (stream.Position > stream.Length - 8)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadUInt64BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt64 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadUInt64LittleEndian(this Stream stream, out ulong value)
+        {
+            if (stream.Position > stream.Length - 8)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadUInt64LittleEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a QWORD (8-byte) from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadQWORD(this Stream stream, out ulong value)
+            => stream.TryReadUInt64(out value);
+
+        /// <summary>
+        /// Read a QWORD (8-byte) from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadQWORDBigEndian(this Stream stream, out ulong value)
+            => stream.TryReadUInt64BigEndian(out value);
+
+        /// <summary>
+        /// Read a QWORD (8-byte) from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadQWORDLittleEndian(this Stream stream, out ulong value)
+            => stream.TryReadUInt64LittleEndian(out value);
+
+        /// <summary>
+        /// Read a Double from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadDouble(this Stream stream, out double value)
+        {
+            if (stream.Position > stream.Length - 8)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadDouble();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Double from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadDoubleBigEndian(this Stream stream, out double value)
+        {
+            if (stream.Position > stream.Length - 8)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadDoubleBigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Decimal from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadDecimal(this Stream stream, out decimal value)
+        {
+            if (stream.Position > stream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadDecimal();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Decimal from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadDecimalBigEndian(this Stream stream, out decimal value)
+        {
+            if (stream.Position > stream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadDecimalBigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Guid from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadGuid(this Stream stream, out Guid value)
+        {
+            if (stream.Position > stream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadGuid();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Guid from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadGuidBigEndian(this Stream stream, out Guid value)
+        {
+            if (stream.Position > stream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadGuidBigEndian();
+            return true;
+        }
+
+#if NET7_0_OR_GREATER
+        /// <summary>
+        /// Read an Int128 from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadInt128(this Stream stream, out Int128 value)
+        {
+            if (stream.Position > stream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadInt128();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int128 from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadInt128BigEndian(this Stream stream, out Int128 value)
+        {
+            if (stream.Position > stream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadInt128BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt128 from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt128(this Stream stream, out UInt128 value)
+        {
+            if (stream.Position > stream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadUInt128();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt128 from the stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadUInt128BigEndian(this Stream stream, out UInt128 value)
+        {
+            if (stream.Position > stream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadUInt128BigEndian();
+            return true;
+        }
+#endif
+
+        #endregion
     }
 }

@@ -28,6 +28,8 @@ namespace SabreTools.IO.Test.Extensions
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0A, 0x00,
         ];
 
+        #region Exact Read
+
         [Fact]
         public void ReadByteArrayTest()
         {
@@ -917,5 +919,606 @@ namespace SabreTools.IO.Test.Extensions
             Assert.Equal(expected2.FieldA, read2.FieldA);
             Assert.Equal(expected2.FieldB, read2.FieldB);
         }
+
+        #endregion
+
+        #region Try Read
+
+        [Fact]
+        public void TryReadByteArrayTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadBytes(4, out byte[] read);
+            Assert.False(actual);
+            Assert.Empty(read);
+        }
+
+        [Fact]
+        public void TryReadByteTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadByteValue(out byte read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadBytesTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            int length = 4;
+            bool actual = br.TryReadBytes(length, out byte[] read);
+            Assert.False(actual);
+            Assert.Empty(read);
+        }
+
+        [Fact]
+        public void TryReadSByteTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadSByte(out sbyte read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadCharTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadChar(out char read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt16Test()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadInt16(out short read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt16BigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadInt16BigEndian(out short read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt16LittleEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadInt16LittleEndian(out short read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt16Test()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadUInt16(out ushort read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt16BigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadUInt16BigEndian(out ushort read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt16LittleEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadUInt16LittleEndian(out ushort read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadWORDTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadWORD(out ushort read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadWORDBigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadWORDBigEndian(out ushort read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadWORDLittleEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadWORDLittleEndian(out ushort read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadHalfTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            Half expected = BitConverter.Int16BitsToHalf(0x0100);
+            bool actual = br.TryReadHalf(out Half read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadHalfBigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            Half expected = BitConverter.Int16BitsToHalf(0x0001);
+            bool actual = br.TryReadHalfBigEndian(out Half read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt24Test()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadInt24(out int read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt24BigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadInt24BigEndian(out int read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt24LittleEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadInt24LittleEndian(out int read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt24Test()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadUInt24(out uint read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt24BigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadUInt24BigEndian(out uint read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt24LittleEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadUInt24LittleEndian(out uint read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt32Test()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadInt32(out int read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt32BigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadInt32BigEndian(out int read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt32LittleEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadInt32LittleEndian(out int read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt32Test()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadUInt32(out uint read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt32BigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadUInt32BigEndian(out uint read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt32LittleEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadUInt32LittleEndian(out uint read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDWORDTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadDWORD(out uint read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDWORDBigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadDWORDBigEndian(out uint read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDWORDLittleEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadDWORDLittleEndian(out uint read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadSingleTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            float expected = BitConverter.Int32BitsToSingle(0x03020100);
+            bool actual = br.TryReadSingle(out float read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadSingleBigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            float expected = BitConverter.Int32BitsToSingle(0x00010203);
+            bool actual = br.TryReadSingleBigEndian(out float read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt48Test()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadInt48(out long read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt48BigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadInt48BigEndian(out long read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt48LittleEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadInt48LittleEndian(out long read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt48Test()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadUInt48(out ulong read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt48BigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadUInt48BigEndian(out ulong read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt48LittleEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadUInt48LittleEndian(out ulong read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt64Test()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadInt64(out long read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt64BigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadInt64BigEndian(out long read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt64LittleEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadInt64LittleEndian(out long read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt64Test()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadUInt64(out ulong read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt64BigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadUInt64BigEndian(out ulong read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt64LittleEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadUInt64LittleEndian(out ulong read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadQWORDTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadQWORD(out ulong read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadQWORDBigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadQWORDBigEndian(out ulong read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadQWORDLittleEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadQWORDLittleEndian(out ulong read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDoubleTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            double expected = BitConverter.Int64BitsToDouble(0x0706050403020100);
+            bool actual = br.TryReadDouble(out double read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDoubleBigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            double expected = BitConverter.Int64BitsToDouble(0x0001020304050607);
+            bool actual = br.TryReadDoubleBigEndian(out double read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDecimalTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadDecimal(out decimal read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDecimalBigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadDecimalBigEndian(out decimal read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadGuidTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            var expected = new Guid(_bytes);
+            bool actual = br.TryReadGuid(out Guid read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadGuidBigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            var expected = new Guid(_bytes.Reverse().ToArray());
+            bool actual = br.TryReadGuidBigEndian(out Guid read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt128Test()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            var expected = (Int128)new BigInteger(_bytes);
+            bool actual = br.TryReadInt128(out Int128 read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt128BigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            var reversed = _bytes.Reverse().ToArray();
+            var expected = (Int128)new BigInteger(reversed);
+            bool actual = br.TryReadInt128BigEndian(out Int128 read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt128Test()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            var expected = (UInt128)new BigInteger(_bytes);
+            bool actual = br.TryReadUInt128(out UInt128 read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt128BigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            var reversed = _bytes.Reverse().ToArray();
+            var expected = (UInt128)new BigInteger(reversed);
+            bool actual = br.TryReadUInt128BigEndian(out UInt128 read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        #endregion
     }
 }

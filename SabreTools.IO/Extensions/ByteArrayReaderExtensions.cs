@@ -14,6 +14,8 @@ namespace SabreTools.IO.Extensions
     /// </summary>
     public static class ByteArrayReaderExtensions
     {
+        #region Exact Read
+
         /// <summary>
         /// Read a UInt8 and increment the pointer to an array
         /// </summary>
@@ -795,7 +797,7 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a <typeparamref name="T"/> from the stream
+        /// Read a <typeparamref name="T"/> and increment the pointer to an array
         /// </summary>
         /// <remarks>
         /// This method is different than standard marshalling in a few notable ways:
@@ -809,7 +811,7 @@ namespace SabreTools.IO.Extensions
             => (T?)content.ReadType(ref offset, typeof(T));
 
         /// <summary>
-        /// Read a <paramref name="type"/> from the stream
+        /// Read a <paramref name="type"/> and increment the pointer to an array
         /// </summary>
         /// <remarks>
         /// This method is different than standard marshalling in a few notable ways:
@@ -844,7 +846,7 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a <paramref name="type"/> from the stream
+        /// Read a <paramref name="type"/> and increment the pointer to an array
         /// </summary>
         private static object? ReadNormalType(byte[] content, ref int offset, Type type)
         {
@@ -866,7 +868,7 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a <paramref name="type"/> from the stream
+        /// Read a <paramref name="type"/> and increment the pointer to an array
         /// </summary>
         private static object? ReadComplexType(byte[] content, ref int offset, Type type)
         {
@@ -1088,5 +1090,818 @@ namespace SabreTools.IO.Extensions
 
             return buffer;
         }
+
+        #endregion
+
+        #region Try Read
+
+        /// <summary>
+        /// Read a UInt8 and increment the pointer to an array
+        /// </summary>
+        public static bool TryReadByte(this byte[] content, ref int offset, out byte value)
+        {
+            if (offset > content.Length - 1)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadByte(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt8 and increment the pointer to an array
+        /// </summary>
+        public static bool TryReadByteValue(this byte[] content, ref int offset, out byte value)
+        {
+            if (offset > content.Length - 1)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadByteValue(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt8[] and increment the pointer to an array
+        /// </summary>
+        public static bool TryReadBytes(this byte[] content, ref int offset, int count, out byte[] value)
+        {
+            if (offset > content.Length - count)
+            {
+                value = [];
+                return false;
+            }
+
+            value = content.ReadBytes(ref offset, count);
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int8 and increment the pointer to an array
+        /// </summary>
+        public static bool TryReadSByte(this byte[] content, ref int offset, out sbyte value)
+        {
+            if (offset > content.Length - 1)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadSByte(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Char and increment the pointer to an array
+        /// </summary>
+        public static bool TryReadChar(this byte[] content, ref int offset, out char value)
+        {
+            if (offset > content.Length - 1)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadChar(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int16 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadInt16(this byte[] content, ref int offset, out short value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.TryReadInt16LittleEndian(ref offset, out value);
+            else
+                return content.TryReadInt16BigEndian(ref offset, out value);
+        }
+
+        /// <summary>
+        /// Read an Int16 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadInt16BigEndian(this byte[] content, ref int offset, out short value)
+        {
+            if (offset > content.Length - 2)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadInt16BigEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int16 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadInt16LittleEndian(this byte[] content, ref int offset, out short value)
+        {
+            if (offset > content.Length - 2)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadInt16LittleEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt16 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt16(this byte[] content, ref int offset, out ushort value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.TryReadUInt16LittleEndian(ref offset, out value);
+            else
+                return content.TryReadUInt16BigEndian(ref offset, out value);
+        }
+
+        /// <summary>
+        /// Read a UInt16 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadUInt16BigEndian(this byte[] content, ref int offset, out ushort value)
+        {
+            if (offset > content.Length - 2)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadUInt16BigEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt16 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadUInt16LittleEndian(this byte[] content, ref int offset, out ushort value)
+        {
+            if (offset > content.Length - 2)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadUInt16LittleEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a WORD (2-byte) and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadWORD(this byte[] content, ref int offset, out ushort value)
+            => content.TryReadUInt16(ref offset, out value);
+
+        /// <summary>
+        /// Read a WORD (2-byte) and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadWORDBigEndian(this byte[] content, ref int offset, out ushort value)
+            => content.TryReadUInt16BigEndian(ref offset, out value);
+
+        /// <summary>
+        /// Read a WORD (2-byte) and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadWORDLittleEndian(this byte[] content, ref int offset, out ushort value)
+            => content.TryReadUInt16LittleEndian(ref offset, out value);
+
+        // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
+#if NET6_0_OR_GREATER
+        /// <summary>
+        /// Read a Half and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadHalf(this byte[] content, ref int offset, out Half value)
+        {
+            if (offset > content.Length - 2)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadHalf(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Half and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadHalfBigEndian(this byte[] content, ref int offset, out Half value)
+        {
+            if (offset > content.Length - 2)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadHalfBigEndian(ref offset);
+            return true;
+        }
+#endif
+
+        /// <summary>
+        /// Read an Int24 encoded as an Int32 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadInt24(this byte[] content, ref int offset, out int value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.TryReadInt24LittleEndian(ref offset, out value);
+            else
+                return content.TryReadInt24BigEndian(ref offset, out value);
+        }
+
+        /// <summary>
+        /// Read an Int24 encoded as an Int32 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadInt24BigEndian(this byte[] content, ref int offset, out int value)
+        {
+            if (offset > content.Length - 3)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadInt24BigEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int24 encoded as an Int32 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadInt24LittleEndian(this byte[] content, ref int offset, out int value)
+        {
+            if (offset > content.Length - 3)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadInt24LittleEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt24 encoded as a UInt32 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt24(this byte[] content, ref int offset, out uint value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.TryReadUInt24LittleEndian(ref offset, out value);
+            else
+                return content.TryReadUInt24BigEndian(ref offset, out value);
+        }
+
+        /// <summary>
+        /// Read a UInt24 encoded as a UInt32 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadUInt24BigEndian(this byte[] content, ref int offset, out uint value)
+        {
+            if (offset > content.Length - 3)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadUInt24BigEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt24 encoded as a UInt32 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadUInt24LittleEndian(this byte[] content, ref int offset, out uint value)
+        {
+            if (offset > content.Length - 3)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadUInt24LittleEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int32 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadInt32(this byte[] content, ref int offset, out int value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.TryReadInt32LittleEndian(ref offset, out value);
+            else
+                return content.TryReadInt32BigEndian(ref offset, out value);
+        }
+
+        /// <summary>
+        /// Read an Int32 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadInt32BigEndian(this byte[] content, ref int offset, out int value)
+        {
+            if (offset > content.Length - 4)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadInt32BigEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int32 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadInt32LittleEndian(this byte[] content, ref int offset, out int value)
+        {
+            if (offset > content.Length - 4)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadInt32LittleEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt32 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt32(this byte[] content, ref int offset, out uint value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.TryReadUInt32LittleEndian(ref offset, out value);
+            else
+                return content.TryReadUInt32BigEndian(ref offset, out value);
+        }
+
+        /// <summary>
+        /// Read a UInt32 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadUInt32BigEndian(this byte[] content, ref int offset, out uint value)
+        {
+            if (offset > content.Length - 4)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadUInt32BigEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt32 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadUInt32LittleEndian(this byte[] content, ref int offset, out uint value)
+        {
+            if (offset > content.Length - 4)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadUInt32LittleEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a DWORD (4-byte) and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadDWORD(this byte[] content, ref int offset, out uint value)
+            => content.TryReadUInt32(ref offset, out value);
+
+        /// <summary>
+        /// Read a DWORD (4-byte) and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadDWORDBigEndian(this byte[] content, ref int offset, out uint value)
+            => content.TryReadUInt32BigEndian(ref offset, out value);
+
+        /// <summary>
+        /// Read a DWORD (4-byte) and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadDWORDLittleEndian(this byte[] content, ref int offset, out uint value)
+            => content.TryReadUInt32LittleEndian(ref offset, out value);
+
+        /// <summary>
+        /// Read a Single and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadSingle(this byte[] content, ref int offset, out float value)
+        {
+            if (offset > content.Length - 4)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadSingle(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Single and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadSingleBigEndian(this byte[] content, ref int offset, out float value)
+        {
+            if (offset > content.Length - 4)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadSingleBigEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int48 encoded as an Int64 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadInt48(this byte[] content, ref int offset, out long value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.TryReadInt48LittleEndian(ref offset, out value);
+            else
+                return content.TryReadInt48BigEndian(ref offset, out value);
+        }
+
+        /// <summary>
+        /// Read an Int48 encoded as an Int64 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadInt48BigEndian(this byte[] content, ref int offset, out long value)
+        {
+            if (offset > content.Length - 6)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadInt48BigEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int48 encoded as an Int64 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadInt48LittleEndian(this byte[] content, ref int offset, out long value)
+        {
+            if (offset > content.Length - 6)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadInt48LittleEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt48 encoded as a UInt64 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt48(this byte[] content, ref int offset, out ulong value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.TryReadUInt48LittleEndian(ref offset, out value);
+            else
+                return content.TryReadUInt48BigEndian(ref offset, out value);
+        }
+
+        /// <summary>
+        /// Read a UInt48 encoded as a UInt64 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadUInt48BigEndian(this byte[] content, ref int offset, out ulong value)
+        {
+            if (offset > content.Length - 6)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadUInt48BigEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read an UInt48 encoded as an UInt64 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadUInt48LittleEndian(this byte[] content, ref int offset, out ulong value)
+        {
+            if (offset > content.Length - 6)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadUInt48LittleEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int64 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadInt64(this byte[] content, ref int offset, out long value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.TryReadInt64LittleEndian(ref offset, out value);
+            else
+                return content.TryReadInt64BigEndian(ref offset, out value);
+        }
+
+        /// <summary>
+        /// Read an Int64 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadInt64BigEndian(this byte[] content, ref int offset, out long value)
+        {
+            if (offset > content.Length - 8)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadInt48BigEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int64 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadInt64LittleEndian(this byte[] content, ref int offset, out long value)
+        {
+            if (offset > content.Length - 8)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadInt48BigEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt64 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt64(this byte[] content, ref int offset, out ulong value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.TryReadUInt64LittleEndian(ref offset, out value);
+            else
+                return content.TryReadUInt64BigEndian(ref offset, out value);
+        }
+
+        /// <summary>
+        /// Read a UInt64 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadUInt64BigEndian(this byte[] content, ref int offset, out ulong value)
+        {
+            if (offset > content.Length - 8)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadUInt64BigEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt64 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadUInt64LittleEndian(this byte[] content, ref int offset, out ulong value)
+        {
+            if (offset > content.Length - 8)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadUInt64LittleEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a QWORD (8-byte) and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadQWORD(this byte[] content, ref int offset, out ulong value)
+            => content.TryReadUInt64(ref offset, out value);
+
+        /// <summary>
+        /// Read a QWORD (8-byte) and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadQWORDBigEndian(this byte[] content, ref int offset, out ulong value)
+            => content.TryReadUInt64BigEndian(ref offset, out value);
+
+        /// <summary>
+        /// Read a QWORD (8-byte) and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadQWORDLittleEndian(this byte[] content, ref int offset, out ulong value)
+            => content.TryReadUInt64LittleEndian(ref offset, out value);
+
+        /// <summary>
+        /// Read a Double and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadDouble(this byte[] content, ref int offset, out double value)
+        {
+            if (offset > content.Length - 8)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadDouble(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Double and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadDoubleBigEndian(this byte[] content, ref int offset, out double value)
+        {
+            if (offset > content.Length - 8)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadDoubleBigEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Decimal and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadDecimal(this byte[] content, ref int offset, out decimal value)
+        {
+            if (offset > content.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadDecimal(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Decimal and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadDecimalBigEndian(this byte[] content, ref int offset, out decimal value)
+        {
+            if (offset > content.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadDecimalBigEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Guid and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadGuid(this byte[] content, ref int offset, out Guid value)
+        {
+            if (offset > content.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadGuid(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Guid and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadGuidBigEndian(this byte[] content, ref int offset, out Guid value)
+        {
+            if (offset > content.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadGuidBigEndian(ref offset);
+            return true;
+        }
+
+#if NET7_0_OR_GREATER
+        /// <summary>
+        /// Read an Int128 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadInt128(this byte[] content, ref int offset, out Int128 value)
+        {
+            if (offset > content.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadInt128(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int128 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadInt128BigEndian(this byte[] content, ref int offset, out Int128 value)
+        {
+            if (offset > content.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadInt128BigEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt128 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt128(this byte[] content, ref int offset, out UInt128 value)
+        {
+            if (offset > content.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadUInt128(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt128 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadUInt128BigEndian(this byte[] content, ref int offset, out UInt128 value)
+        {
+            if (offset > content.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadUInt128BigEndian(ref offset);
+            return true;
+        }
+#endif
+
+        #endregion
     }
 }

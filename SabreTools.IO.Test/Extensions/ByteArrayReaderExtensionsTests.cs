@@ -27,6 +27,8 @@ namespace SabreTools.IO.Test.Extensions
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0A, 0x00,
         ];
 
+        #region Exact Read
+
         [Fact]
         public void ReadByteTest()
         {
@@ -772,5 +774,547 @@ namespace SabreTools.IO.Test.Extensions
             Assert.Equal(expected2.FieldA, read2.FieldA);
             Assert.Equal(expected2.FieldB, read2.FieldB);
         }
+
+        #endregion
+
+        #region Try Read
+
+        [Fact]
+        public void TryReadByteTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadByte(ref offset, out byte read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadByteValueTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadByteValue(ref offset, out byte read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadBytesTest()
+        {
+            int offset = 0, length = 4;
+            bool actual = Array.Empty<byte>().TryReadBytes(ref offset, length, out byte[] read);
+            Assert.False(actual);
+            Assert.Empty(read);
+        }
+
+        [Fact]
+        public void TryReadSByteTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadSByte(ref offset, out sbyte read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadCharTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadChar(ref offset, out char read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt16Test()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadInt16(ref offset, out short read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt16BigEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadInt16BigEndian(ref offset, out short read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt16LittleEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadInt16LittleEndian(ref offset, out short read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt16Test()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadUInt16(ref offset, out ushort read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt16BigEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadUInt16BigEndian(ref offset, out ushort read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt16LittleEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadUInt16LittleEndian(ref offset, out ushort read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadWORDTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadWORD(ref offset, out ushort read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadWORDBigEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadWORDBigEndian(ref offset, out ushort read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadWORDLittleEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadWORDLittleEndian(ref offset, out ushort read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadHalfTest()
+        {
+            int offset = 0;
+            Half expected = BitConverter.Int16BitsToHalf(0x0100);
+            bool actual = Array.Empty<byte>().TryReadHalf(ref offset, out Half read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadHalfBigEndianTest()
+        {
+            int offset = 0;
+            Half expected = BitConverter.Int16BitsToHalf(0x0001);
+            bool actual = Array.Empty<byte>().TryReadHalfBigEndian(ref offset, out Half read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt24Test()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadInt24(ref offset, out int read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt24BigEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadInt24BigEndian(ref offset, out int read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt24LittleEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadInt24LittleEndian(ref offset, out int read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt24Test()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadUInt24(ref offset, out uint read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt24BigEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadUInt24BigEndian(ref offset, out uint read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt24LittleEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadUInt24LittleEndian(ref offset, out uint read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt32Test()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadInt32(ref offset, out int read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt32BigEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadInt32BigEndian(ref offset, out int read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt32LittleEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadInt32LittleEndian(ref offset, out int read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt32Test()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadUInt32(ref offset, out uint read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt32BigEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadUInt32BigEndian(ref offset, out uint read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt32LittleEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadUInt32LittleEndian(ref offset, out uint read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDWORDTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadDWORD(ref offset, out uint read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDWORDBigEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadDWORDBigEndian(ref offset, out uint read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDWORDLittleEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadDWORDLittleEndian(ref offset, out uint read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadSingleTest()
+        {
+            int offset = 0;
+            float expected = BitConverter.Int32BitsToSingle(0x03020100);
+            bool actual = Array.Empty<byte>().TryReadSingle(ref offset, out float read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadSingleBigEndianTest()
+        {
+            int offset = 0;
+            float expected = BitConverter.Int32BitsToSingle(0x00010203);
+            bool actual = Array.Empty<byte>().TryReadSingleBigEndian(ref offset, out float read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt48Test()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadInt48(ref offset, out long read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt48BigEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadInt48BigEndian(ref offset, out long read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt48LittleEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadInt48LittleEndian(ref offset, out long read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt48Test()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadUInt48(ref offset, out ulong read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt48BigEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadUInt48BigEndian(ref offset, out ulong read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt48LittleEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadUInt48LittleEndian(ref offset, out ulong read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt64Test()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadInt64(ref offset, out long read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt64BigEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadInt64BigEndian(ref offset, out long read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt64LittleEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadInt64LittleEndian(ref offset, out long read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt64Test()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadUInt64(ref offset, out ulong read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt64BigEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadUInt64BigEndian(ref offset, out ulong read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt64LittleEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadUInt64LittleEndian(ref offset, out ulong read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadQWORDTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadQWORD(ref offset, out ulong read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadQWORDBigEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadQWORDBigEndian(ref offset, out ulong read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadQWORDLittleEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadQWORDLittleEndian(ref offset, out ulong read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDoubleTest()
+        {
+            int offset = 0;
+            double expected = BitConverter.Int64BitsToDouble(0x0706050403020100);
+            bool actual = Array.Empty<byte>().TryReadDouble(ref offset, out double read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDoubleBigEndianTest()
+        {
+            int offset = 0;
+            double expected = BitConverter.Int64BitsToDouble(0x0001020304050607);
+            bool actual = Array.Empty<byte>().TryReadDoubleBigEndian(ref offset, out double read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDecimalTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadDecimal(ref offset, out decimal read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDecimalBigEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadDecimalBigEndian(ref offset, out decimal read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadGuidTest()
+        {
+            int offset = 0;
+            var expected = new Guid(_bytes);
+            bool actual = Array.Empty<byte>().TryReadGuid(ref offset, out Guid read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadGuidBigEndianTest()
+        {
+            int offset = 0;
+            var expected = new Guid(_bytes.Reverse().ToArray());
+            bool actual = Array.Empty<byte>().TryReadGuidBigEndian(ref offset, out Guid read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt128Test()
+        {
+            int offset = 0;
+            var expected = (Int128)new BigInteger(_bytes);
+            bool actual = Array.Empty<byte>().TryReadInt128(ref offset, out Int128 read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadInt128BigEndianTest()
+        {
+            int offset = 0;
+            var reversed = _bytes.Reverse().ToArray();
+            var expected = (Int128)new BigInteger(reversed);
+            bool actual = Array.Empty<byte>().TryReadInt128BigEndian(ref offset, out Int128 read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt128Test()
+        {
+            int offset = 0;
+            var expected = (UInt128)new BigInteger(_bytes);
+            bool actual = Array.Empty<byte>().TryReadUInt128(ref offset, out UInt128 read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt128BigEndianTest()
+        {
+            int offset = 0;
+            var reversed = _bytes.Reverse().ToArray();
+            var expected = (UInt128)new BigInteger(reversed);
+            bool actual = Array.Empty<byte>().TryReadUInt128BigEndian(ref offset, out UInt128 read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        #endregion
     }
 }

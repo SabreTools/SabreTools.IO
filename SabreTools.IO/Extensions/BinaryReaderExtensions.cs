@@ -15,6 +15,8 @@ namespace SabreTools.IO.Extensions
     /// </summary>
     public static class BinaryReaderExtensions
     {
+        #region Exact Read
+
         /// <inheritdoc cref="BinaryReader.Read(byte[], int, int)"/>
         /// <remarks>Reads in big-endian format</remarks>
         public static int ReadBigEndian(this BinaryReader reader, byte[] buffer, int index, int count)
@@ -901,5 +903,803 @@ namespace SabreTools.IO.Extensions
 
             return [.. bytes];
         }
+
+        #endregion
+
+        #region Try Read
+
+        /// <summary>
+        /// Read a UInt8 from the base stream
+        /// </summary>
+        public static bool TryReadByteValue(this BinaryReader reader, out byte value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 1)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadByte();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt8[] from the base stream
+        /// </summary>
+        public static bool TryReadBytes(this BinaryReader reader, int count, out byte[] value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - count)
+            {
+                value = [];
+                return false;
+            }
+
+            value = reader.ReadBytes(count);
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int8 from the base stream
+        /// </summary>
+        public static bool TryReadSByte(this BinaryReader reader, out sbyte value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 1)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadSByte();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Char from the base stream
+        /// </summary>
+        public static bool TryReadChar(this BinaryReader reader, out char value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 1)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadChar();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int16 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadInt16(this BinaryReader reader, out short value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.TryReadInt16LittleEndian(out value);
+            else
+                return reader.TryReadInt16BigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read an Int16 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadInt16BigEndian(this BinaryReader reader, out short value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 2)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadInt16BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int16 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadInt16LittleEndian(this BinaryReader reader, out short value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 2)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadInt16LittleEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt16 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt16(this BinaryReader reader, out ushort value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.TryReadUInt16LittleEndian(out value);
+            else
+                return reader.TryReadUInt16BigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read a UInt16 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadUInt16BigEndian(this BinaryReader reader, out ushort value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 2)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadUInt16BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt16 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadUInt16LittleEndian(this BinaryReader reader, out ushort value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 2)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadUInt16LittleEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a WORD (2-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadWORD(this BinaryReader reader, out ushort value)
+            => reader.TryReadUInt16(out value);
+
+        /// <summary>
+        /// Read a WORD (2-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadWORDBigEndian(this BinaryReader reader, out ushort value)
+            => reader.TryReadUInt16BigEndian(out value);
+
+        /// <summary>
+        /// Read a WORD (2-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadWORDLittleEndian(this BinaryReader reader, out ushort value)
+            => reader.TryReadUInt16LittleEndian(out value);
+
+        // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
+#if NET6_0_OR_GREATER
+        /// <summary>
+        /// Read a Half from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadHalf(this BinaryReader reader, out Half value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 2)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadHalf();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Half from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadHalfBigEndian(this BinaryReader reader, out Half value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 2)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadHalfBigEndian();
+            return true;
+        }
+#endif
+
+        /// <summary>
+        /// Read an Int24 encoded as an Int32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadInt24(this BinaryReader reader, out int value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.TryReadInt24LittleEndian(out value);
+            else
+                return reader.TryReadInt24BigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read an Int24 encoded as an Int32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadInt24BigEndian(this BinaryReader reader, out int value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 3)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadInt24BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int24 encoded as an Int32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadInt24LittleEndian(this BinaryReader reader, out int value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 3)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadInt24LittleEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt24 encoded as a UInt32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt24(this BinaryReader reader, out uint value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.TryReadUInt24LittleEndian(out value);
+            else
+                return reader.TryReadUInt24BigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read a UInt24 encoded as a UInt32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadUInt24BigEndian(this BinaryReader reader, out uint value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 3)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadUInt24BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt24 encoded as a UInt32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadUInt24LittleEndian(this BinaryReader reader, out uint value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 3)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadUInt24LittleEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadInt32(this BinaryReader reader, out int value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.TryReadInt32LittleEndian(out value);
+            else
+                return reader.TryReadInt32BigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read an Int32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadInt32BigEndian(this BinaryReader reader, out int value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 4)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadInt32BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadInt32LittleEndian(this BinaryReader reader, out int value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 4)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadInt32LittleEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt32(this BinaryReader reader, out uint value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.TryReadUInt32LittleEndian(out value);
+            else
+                return reader.TryReadUInt32BigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read a UInt32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadUInt32BigEndian(this BinaryReader reader, out uint value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 4)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadUInt32BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt32 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadUInt32LittleEndian(this BinaryReader reader, out uint value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 4)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadUInt32LittleEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a DWORD (4-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadDWORD(this BinaryReader reader, out uint value)
+            => reader.TryReadUInt32(out value);
+
+        /// <summary>
+        /// Read a DWORD (4-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadDWORDBigEndian(this BinaryReader reader, out uint value)
+            => reader.TryReadUInt32BigEndian(out value);
+
+        /// <summary>
+        /// Read a DWORD (4-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadDWORDLittleEndian(this BinaryReader reader, out uint value)
+            => reader.TryReadUInt32LittleEndian(out value);
+
+        /// <summary>
+        /// Read a Single from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadSingle(this BinaryReader reader, out float value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 4)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadSingle();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Single from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadSingleBigEndian(this BinaryReader reader, out float value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 4)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadSingleBigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int48 encoded as an Int64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadInt48(this BinaryReader reader, out long value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.TryReadInt48LittleEndian(out value);
+            else
+                return reader.TryReadInt48BigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read an Int48 encoded as an Int64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadInt48BigEndian(this BinaryReader reader, out long value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 6)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadInt48BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int48 encoded as an Int64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadInt48LittleEndian(this BinaryReader reader, out long value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 6)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadInt48LittleEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt48 encoded as a UInt64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt48(this BinaryReader reader, out ulong value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.TryReadUInt48LittleEndian(out value);
+            else
+                return reader.TryReadUInt48BigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read a UInt48 encoded as a UInt64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadUInt48BigEndian(this BinaryReader reader, out ulong value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 6)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadUInt48BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an UInt48 encoded as an UInt64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadUInt48LittleEndian(this BinaryReader reader, out ulong value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 6)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadUInt48LittleEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadInt64(this BinaryReader reader, out long value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.TryReadInt64LittleEndian(out value);
+            else
+                return reader.TryReadInt64BigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read an Int64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadInt64BigEndian(this BinaryReader reader, out long value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 8)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadInt48BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadInt64LittleEndian(this BinaryReader reader, out long value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 8)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadInt48BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt64(this BinaryReader reader, out ulong value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.TryReadUInt64LittleEndian(out value);
+            else
+                return reader.TryReadUInt64BigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read a UInt64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadUInt64BigEndian(this BinaryReader reader, out ulong value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 8)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadUInt64BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt64 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadUInt64LittleEndian(this BinaryReader reader, out ulong value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 8)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadUInt64LittleEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a QWORD (8-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadQWORD(this BinaryReader reader, out ulong value)
+            => reader.TryReadUInt64(out value);
+
+        /// <summary>
+        /// Read a QWORD (8-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadQWORDBigEndian(this BinaryReader reader, out ulong value)
+            => reader.TryReadUInt64BigEndian(out value);
+
+        /// <summary>
+        /// Read a QWORD (8-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadQWORDLittleEndian(this BinaryReader reader, out ulong value)
+            => reader.TryReadUInt64LittleEndian(out value);
+
+        /// <summary>
+        /// Read a Double from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadDouble(this BinaryReader reader, out double value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 8)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadDouble();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Double from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadDoubleBigEndian(this BinaryReader reader, out double value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 8)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadDoubleBigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Decimal from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadDecimal(this BinaryReader reader, out decimal value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadDecimal();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Decimal from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadDecimalBigEndian(this BinaryReader reader, out decimal value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadDecimalBigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Guid from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadGuid(this BinaryReader reader, out Guid value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadGuid();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Guid from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadGuidBigEndian(this BinaryReader reader, out Guid value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadGuidBigEndian();
+            return true;
+        }
+
+#if NET7_0_OR_GREATER
+        /// <summary>
+        /// Read an Int128 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadInt128(this BinaryReader reader, out Int128 value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadInt128();
+            return true;
+        }
+
+        /// <summary>
+        /// Read an Int128 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadInt128BigEndian(this BinaryReader reader, out Int128 value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadInt128BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt128 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt128(this BinaryReader reader, out UInt128 value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadUInt128();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt128 from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadUInt128BigEndian(this BinaryReader reader, out UInt128 value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadUInt128BigEndian();
+            return true;
+        }
+#endif
+
+        #endregion
     }
 }
