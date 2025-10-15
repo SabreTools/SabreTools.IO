@@ -42,17 +42,6 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
-        public void ReadByteArrayBigEndianTest()
-        {
-            byte[] arr = new byte[4];
-            var stream = new MemoryStream(_bytes);
-            var br = new BinaryReader(stream);
-            int read = br.ReadBigEndian(arr, 0, 4);
-            Assert.Equal(4, read);
-            Assert.True(arr.SequenceEqual(_bytes.Take(4).Reverse()));
-        }
-
-        [Fact]
         public void ReadCharArrayTest()
         {
             char[] arr = new char[4];
@@ -61,17 +50,6 @@ namespace SabreTools.IO.Test.Extensions
             int read = br.Read(arr, 0, 4);
             Assert.Equal(4, read);
             Assert.True(arr.SequenceEqual(_bytes.Take(4).Select(b => (char)b)));
-        }
-
-        [Fact]
-        public void ReadCharArrayBigEndianTest()
-        {
-            char[] arr = new char[4];
-            var stream = new MemoryStream(_bytes);
-            var br = new BinaryReader(stream);
-            int read = br.ReadBigEndian(arr, 0, 4);
-            Assert.Equal(4, read);
-            Assert.True(arr.SequenceEqual(_bytes.Take(4).Select(b => (char)b).Reverse()));
         }
 
         [Fact]
@@ -95,17 +73,6 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
-        public void ReadBytesBigEndianTest()
-        {
-            var stream = new MemoryStream(_bytes);
-            var br = new BinaryReader(stream);
-            int length = 4;
-            byte[] read = br.ReadBytesBigEndian(length);
-            Assert.Equal(length, read.Length);
-            Assert.True(read.SequenceEqual(_bytes.Take(length).Reverse()));
-        }
-
-        [Fact]
         public void ReadCharsTest()
         {
             var stream = new MemoryStream(_bytes);
@@ -114,17 +81,6 @@ namespace SabreTools.IO.Test.Extensions
             char[] read = br.ReadChars(length);
             Assert.Equal(length, read.Length);
             Assert.True(read.SequenceEqual(_bytes.Take(length).Select(b => (char)b)));
-        }
-
-        [Fact]
-        public void ReadCharsBigEndianTest()
-        {
-            var stream = new MemoryStream(_bytes);
-            var br = new BinaryReader(stream);
-            int length = 4;
-            char[] read = br.ReadCharsBigEndian(length);
-            Assert.Equal(length, read.Length);
-            Assert.True(read.SequenceEqual(_bytes.Take(length).Select(b => (char)b).Reverse()));
         }
 
         [Fact]

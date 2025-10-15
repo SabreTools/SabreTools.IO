@@ -17,42 +17,6 @@ namespace SabreTools.IO.Extensions
     {
         #region Exact Read
 
-        /// <inheritdoc cref="BinaryReader.Read(byte[], int, int)"/>
-        /// <remarks>Reads in big-endian format</remarks>
-        public static int ReadBigEndian(this BinaryReader reader, byte[] buffer, int index, int count)
-        {
-            int retval = reader.Read(buffer, index, count);
-            Array.Reverse(buffer);
-            return retval;
-        }
-
-        /// <inheritdoc cref="BinaryReader.Read(char[], int, int)"/>
-        /// <remarks>Reads in big-endian format</remarks>
-        public static int ReadBigEndian(this BinaryReader reader, char[] buffer, int index, int count)
-        {
-            int retval = reader.Read(buffer, index, count);
-            Array.Reverse(buffer);
-            return retval;
-        }
-
-        /// <inheritdoc cref="BinaryReader.ReadBytes(int)"/>
-        /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] ReadBytesBigEndian(this BinaryReader reader, int count)
-        {
-            byte[] buffer = reader.ReadBytes(count);
-            Array.Reverse(buffer);
-            return buffer;
-        }
-
-        /// <inheritdoc cref="BinaryReader.ReadChars(int)"/>
-        /// <remarks>Reads in big-endian format</remarks>
-        public static char[] ReadCharsBigEndian(this BinaryReader reader, int count)
-        {
-            char[] buffer = reader.ReadChars(count);
-            Array.Reverse(buffer);
-            return buffer;
-        }
-
         /// <inheritdoc cref="BinaryReader.ReadInt16"/>
         /// <remarks>Reads in big-endian format</remarks>
         public static short ReadInt16BigEndian(this BinaryReader reader)

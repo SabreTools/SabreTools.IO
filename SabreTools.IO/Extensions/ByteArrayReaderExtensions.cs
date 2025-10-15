@@ -38,17 +38,6 @@ namespace SabreTools.IO.Extensions
             => ReadExactlyToBuffer(content, ref offset, count);
 
         /// <summary>
-        /// Read a UInt8[] and increment the pointer to an array
-        /// </summary>
-        /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] ReadBytesBigEndian(this byte[] content, ref int offset, int count)
-        {
-            byte[] buffer = ReadExactlyToBuffer(content, ref offset, count);
-            Array.Reverse(buffer);
-            return buffer;
-        }
-
-        /// <summary>
         /// Read an Int8 and increment the pointer to an array
         /// </summary>
         public static sbyte ReadSByte(this byte[] content, ref int offset)
