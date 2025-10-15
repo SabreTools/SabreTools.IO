@@ -100,6 +100,14 @@ namespace SabreTools.IO.Extensions
         /// <param name="input">Input stream to try seeking on</param>
         /// <param name="offset">Optional offset to seek to</param>
         public static long SeekIfPossible(this Stream input, long offset = 0)
+            => input.SeekIfPossible(offset, offset < 0 ? SeekOrigin.End : SeekOrigin.Begin);
+
+        /// <summary>
+        /// Seek to a specific point in the stream, if possible
+        /// </summary>
+        /// <param name="input">Input stream to try seeking on</param>
+        /// <param name="offset">Optional offset to seek to</param>
+        public static long SeekIfPossible(this Stream input, long offset, SeekOrigin origin)
         {
             // If the input is not seekable, just return the current position
             if (!input.CanSeek)
@@ -116,10 +124,7 @@ namespace SabreTools.IO.Extensions
             // Attempt to seek to the offset
             try
             {
-                if (offset < 0)
-                    return input.Seek(offset, SeekOrigin.End);
-                else
-                    return input.Seek(offset, SeekOrigin.Begin);
+                return input.Seek(offset, origin);
             }
             catch
             {

@@ -313,6 +313,52 @@ namespace SabreTools.IO.Test.Extensions
             Assert.Equal(13, actual);
         }
 
+        [Theory]
+        [InlineData(SeekOrigin.Begin)]
+        [InlineData(SeekOrigin.Current)]
+        [InlineData(SeekOrigin.End)]
+        public void SeekIfPossible_NonSeekable_OriginTest(SeekOrigin origin)
+        {
+            var stream = new NonSeekableStream();
+            long actual = stream.SeekIfPossible(0, origin);
+            Assert.Equal(8, actual);
+        }
+        
+        [Theory]
+        [InlineData(SeekOrigin.Begin)]
+        [InlineData(SeekOrigin.Current)]
+        [InlineData(SeekOrigin.End)]
+        public void SeekIfPossible_NonPositionable_OriginTest(SeekOrigin origin)
+        {
+            var stream = new NonPositionableStream();
+            long actual = stream.SeekIfPossible(0, origin);
+            Assert.Equal(-1, actual);
+        }
+        
+        [Theory]
+        [InlineData(SeekOrigin.Begin)]
+        [InlineData(SeekOrigin.Current)]
+        [InlineData(SeekOrigin.End)]
+        public void SeekIfPossible_HiddenNonSeekable_OriginTest(SeekOrigin origin)
+        {
+            var stream = new HiddenNonSeekableStream();
+            long actual = stream.SeekIfPossible(0, origin);
+            Assert.Equal(-1, actual);
+        }
+        
+        [Theory]
+        [InlineData(SeekOrigin.Begin, 5, 5)]
+        [InlineData(SeekOrigin.Current, 5, 7)]
+        [InlineData(SeekOrigin.End, -5, 11)]
+        public void SeekIfPossible_Seekable_OriginTest(SeekOrigin origin, long offset, long expected)
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, false, true);
+            stream.Position = 2;
+
+            long actual = stream.SeekIfPossible(offset, origin);
+            Assert.Equal(expected, actual);
+        }
+
         #endregion
 
         #region SegmentValid
