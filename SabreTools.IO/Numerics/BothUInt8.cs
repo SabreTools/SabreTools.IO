@@ -42,6 +42,20 @@ namespace SabreTools.Numerics
             return new BothUInt8(le, be);
         }
 
+        public static BothUInt8 operator |(BothUInt8 a, BothUInt8 b)
+        {
+            byte le = (byte)(a.LittleEndian | b.LittleEndian);
+            byte be = (byte)(a.BigEndian | b.BigEndian);
+            return new BothUInt8(le, be);
+        }
+
+        public static BothUInt8 operator &(BothUInt8 a, BothUInt8 b)
+        {
+            byte le = (byte)(a.LittleEndian & b.LittleEndian);
+            byte be = (byte)(a.BigEndian & b.BigEndian);
+            return new BothUInt8(le, be);
+        }
+
         public static implicit operator BothUInt8(byte val)
             => new(val, val);
 

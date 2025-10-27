@@ -163,6 +163,16 @@ namespace SabreTools.IO.Test.Numerics
             actual = valA ^ valB;
             Assert.Equal(expected, actual.LittleEndian);
             Assert.Equal(expected, actual.BigEndian);
+
+            expected = (ushort)2 & (ushort)1;
+            actual = valA & valB;
+            Assert.Equal(expected, actual.LittleEndian);
+            Assert.Equal(expected, actual.BigEndian);
+
+            expected = (ushort)2 | (ushort)1;
+            actual = valA | valB;
+            Assert.Equal(expected, actual.LittleEndian);
+            Assert.Equal(expected, actual.BigEndian);
         }
     }
 }
