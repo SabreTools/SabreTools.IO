@@ -160,6 +160,38 @@ namespace SabreTools.IO.Test.Numerics
         }
 
         [Fact]
+        public void ArithmeticBinaryOperatorsTest()
+        {
+            var valA = new BothInt16(3, 3);
+            var valB = new BothInt16(2, 2);
+
+            short expected = 6;
+            BothInt16 actual = valA * valB;
+            Assert.Equal(expected, actual.LittleEndian);
+            Assert.Equal(expected, actual.BigEndian);
+
+            expected = 1;
+            actual = valA / valB;
+            Assert.Equal(expected, actual.LittleEndian);
+            Assert.Equal(expected, actual.BigEndian);
+
+            expected = 1;
+            actual = valA % valB;
+            Assert.Equal(expected, actual.LittleEndian);
+            Assert.Equal(expected, actual.BigEndian);
+
+            expected = 5;
+            actual = valA + valB;
+            Assert.Equal(expected, actual.LittleEndian);
+            Assert.Equal(expected, actual.BigEndian);
+
+            expected = 1;
+            actual = valA - valB;
+            Assert.Equal(expected, actual.LittleEndian);
+            Assert.Equal(expected, actual.BigEndian);
+        }
+
+        [Fact]
         public void OperatorsTest()
         {
             var valA = new BothInt16(2, 2);
