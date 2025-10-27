@@ -182,6 +182,16 @@ namespace SabreTools.IO.Test.Numerics
         }
 
         [Fact]
+        public void BitwiseUnaryOperatorsTest()
+        {
+            var valA = new BothUInt32(2, 2);
+            uint expected = ~((uint)2);
+            BothUInt32 actual = ~valA;
+            Assert.Equal(expected, actual.LittleEndian);
+            Assert.Equal(expected, actual.BigEndian);
+        }
+
+        [Fact]
         public void OperatorsTest()
         {
             var valA = new BothUInt32(2, 2);
