@@ -137,19 +137,20 @@ namespace SabreTools.IO.Test.Numerics
         public void ArithmeticUnaryOperatorsTest()
         {
             var valA = new BothInt32(2, 2);
-
             int expected = 3;
-            BothInt32 actual = valA++;
-            Assert.Equal(expected, actual.LittleEndian);
-            Assert.Equal(expected, actual.BigEndian);
+            valA++;
+            Assert.Equal(expected, valA.LittleEndian);
+            Assert.Equal(expected, valA.BigEndian);
 
+            valA = new BothInt32(2, 2);
             expected = 1;
-            actual = valA--;
-            Assert.Equal(expected, actual.LittleEndian);
-            Assert.Equal(expected, actual.BigEndian);
+            valA--;
+            Assert.Equal(expected, valA.LittleEndian);
+            Assert.Equal(expected, valA.BigEndian);
 
+            valA = new BothInt32(2, 2);
             expected = 2;
-            actual = +valA;
+            BothInt32 actual = +valA;
             Assert.Equal(expected, actual.LittleEndian);
             Assert.Equal(expected, actual.BigEndian);
 
