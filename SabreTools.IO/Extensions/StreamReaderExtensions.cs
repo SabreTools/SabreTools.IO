@@ -785,13 +785,19 @@ namespace SabreTools.IO.Extensions
         public static string? ReadNullTerminatedString(this Stream stream, Encoding encoding)
         {
             // Short-circuit to explicit implementations
-            if (encoding.Equals(Encoding.ASCII))
+            if (encoding.CodePage == Encoding.ASCII.CodePage)
                 return stream.ReadNullTerminatedAnsiString();
-            else if (encoding.Equals(Encoding.UTF8))
+#if NET5_0_OR_GREATER
+            else if (encoding.CodePage == Encoding.Latin1.CodePage)
+                return stream.ReadNullTerminatedLatin1String();
+#endif
+            else if (encoding.CodePage == Encoding.UTF8.CodePage)
                 return stream.ReadNullTerminatedUTF8String();
-            else if (encoding.Equals(Encoding.Unicode))
+            else if (encoding.CodePage == Encoding.Unicode.CodePage)
                 return stream.ReadNullTerminatedUnicodeString();
-            else if (encoding.Equals(Encoding.UTF32))
+            else if (encoding.CodePage == Encoding.BigEndianUnicode.CodePage)
+                return stream.ReadNullTerminatedBigEndianUnicodeString();
+            else if (encoding.CodePage == Encoding.UTF32.CodePage)
                 return stream.ReadNullTerminatedUTF32String();
 
             if (stream.Position >= stream.Length)
@@ -822,6 +828,20 @@ namespace SabreTools.IO.Extensions
             return Encoding.ASCII.GetString(buffer);
         }
 
+#if NET5_0_OR_GREATER
+        /// <summary>
+        /// Read a null-terminated Latin1 string from the stream
+        /// </summary>
+        public static string? ReadNullTerminatedLatin1String(this Stream stream)
+        {
+            if (stream.Position >= stream.Length)
+                return null;
+
+            byte[] buffer = ReadUntilNull1Byte(stream);
+            return Encoding.Latin1.GetString(buffer);
+        }
+#endif
+
         /// <summary>
         /// Read a null-terminated UTF-8 string from the stream
         /// </summary>
@@ -844,6 +864,18 @@ namespace SabreTools.IO.Extensions
 
             byte[] buffer = ReadUntilNull2Byte(stream);
             return Encoding.Unicode.GetString(buffer);
+        }
+
+        /// <summary>
+        /// Read a null-terminated UTF-16 (Unicode) string from the stream
+        /// </summary>
+        public static string? ReadNullTerminatedBigEndianUnicodeString(this Stream stream)
+        {
+            if (stream.Position >= stream.Length)
+                return null;
+
+            byte[] buffer = ReadUntilNull2Byte(stream);
+            return Encoding.BigEndianUnicode.GetString(buffer);
         }
 
         /// <summary>
@@ -874,6 +906,24 @@ namespace SabreTools.IO.Extensions
             return Encoding.ASCII.GetString(buffer);
         }
 
+#if NET5_0_OR_GREATER
+        /// <summary>
+        /// Read a byte-prefixed Latin1 string from the stream
+        /// </summary>
+        public static string? ReadPrefixedLatin1String(this Stream stream)
+        {
+            if (stream.Position >= stream.Length)
+                return null;
+
+            byte size = stream.ReadByteValue();
+            if (stream.Position + size >= stream.Length)
+                return null;
+
+            byte[] buffer = stream.ReadBytes(size);
+            return Encoding.Latin1.GetString(buffer);
+        }
+#endif
+
         /// <summary>
         /// Read a ushort-prefixed Unicode string from the stream
         /// </summary>
@@ -888,6 +938,22 @@ namespace SabreTools.IO.Extensions
 
             byte[] buffer = stream.ReadBytes(size * 2);
             return Encoding.Unicode.GetString(buffer);
+        }
+
+        /// <summary>
+        /// Read a ushort-prefixed Unicode string from the stream
+        /// </summary>
+        public static string? ReadPrefixedBigEndianUnicodeString(this Stream stream)
+        {
+            if (stream.Position >= stream.Length)
+                return null;
+
+            ushort size = stream.ReadUInt16();
+            if (stream.Position + (size * 2) >= stream.Length)
+                return null;
+
+            byte[] buffer = stream.ReadBytes(size * 2);
+            return Encoding.BigEndianUnicode.GetString(buffer);
         }
 
         /// <summary>

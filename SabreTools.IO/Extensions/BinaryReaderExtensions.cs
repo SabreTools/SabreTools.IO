@@ -582,13 +582,19 @@ namespace SabreTools.IO.Extensions
         public static string? ReadNullTerminatedString(this BinaryReader reader, Encoding encoding)
         {
             // Short-circuit to explicit implementations
-            if (encoding.Equals(Encoding.ASCII))
+            if (encoding.CodePage == Encoding.ASCII.CodePage)
                 return reader.ReadNullTerminatedAnsiString();
-            else if (encoding.Equals(Encoding.UTF8))
+#if NET5_0_OR_GREATER
+            else if (encoding.CodePage == Encoding.Latin1.CodePage)
+                return reader.ReadNullTerminatedLatin1String();
+#endif
+            else if (encoding.CodePage == Encoding.UTF8.CodePage)
                 return reader.ReadNullTerminatedUTF8String();
-            else if (encoding.Equals(Encoding.Unicode))
+            else if (encoding.CodePage == Encoding.Unicode.CodePage)
                 return reader.ReadNullTerminatedUnicodeString();
-            else if (encoding.Equals(Encoding.UTF32))
+            else if (encoding.CodePage == Encoding.BigEndianUnicode.CodePage)
+                return reader.ReadNullTerminatedBigEndianUnicodeString();
+            else if (encoding.CodePage == Encoding.UTF32.CodePage)
                 return reader.ReadNullTerminatedUTF32String();
 
             if (reader.BaseStream.Position >= reader.BaseStream.Length)
@@ -619,6 +625,20 @@ namespace SabreTools.IO.Extensions
             return Encoding.ASCII.GetString(buffer);
         }
 
+#if NET5_0_OR_GREATER
+        /// <summary>
+        /// Read a null-terminated Latin1 string from the underlying stream
+        /// </summary>
+        public static string? ReadNullTerminatedLatin1String(this BinaryReader reader)
+        {
+            if (reader.BaseStream.Position >= reader.BaseStream.Length)
+                return null;
+
+            byte[] buffer = ReadUntilNull1Byte(reader);
+            return Encoding.Latin1.GetString(buffer);
+        }
+#endif
+
         /// <summary>
         /// Read a null-terminated UTF-8 string from the underlying stream
         /// </summary>
@@ -641,6 +661,18 @@ namespace SabreTools.IO.Extensions
 
             byte[] buffer = ReadUntilNull2Byte(reader);
             return Encoding.Unicode.GetString(buffer);
+        }
+
+        /// <summary>
+        /// Read a null-terminated UTF-16 (Unicode) string from the underlying stream
+        /// </summary>
+        public static string? ReadNullTerminatedBigEndianUnicodeString(this BinaryReader reader)
+        {
+            if (reader.BaseStream.Position >= reader.BaseStream.Length)
+                return null;
+
+            byte[] buffer = ReadUntilNull2Byte(reader);
+            return Encoding.BigEndianUnicode.GetString(buffer);
         }
 
         /// <summary>
@@ -685,6 +717,22 @@ namespace SabreTools.IO.Extensions
 
             byte[] buffer = reader.ReadBytes(size * 2);
             return Encoding.Unicode.GetString(buffer);
+        }
+
+        /// <summary>
+        /// Read a ushort-prefixed Unicode string from the underlying stream
+        /// </summary>
+        public static string? ReadPrefixedBigEndianUnicodeString(this BinaryReader reader)
+        {
+            if (reader.BaseStream.Position >= reader.BaseStream.Length)
+                return null;
+
+            ushort size = reader.ReadUInt16();
+            if (reader.BaseStream.Position + (size * 2) >= reader.BaseStream.Length)
+                return null;
+
+            byte[] buffer = reader.ReadBytes(size * 2);
+            return Encoding.BigEndianUnicode.GetString(buffer);
         }
 
         /// <summary>

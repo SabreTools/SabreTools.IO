@@ -584,6 +584,14 @@ namespace SabreTools.IO.Extensions
         public static bool WriteNullTerminatedAnsiString(this Stream stream, string? value)
             => stream.WriteNullTerminatedString(value, Encoding.ASCII);
 
+#if NET5_0_OR_GREATER
+        /// <summary>
+        /// Write a null-terminated Latin1 string to the stream
+        /// </summary>
+        public static bool WriteNullTerminatedLatin1String(this Stream stream, string? value)
+            => stream.WriteNullTerminatedString(value, Encoding.Latin1);
+#endif
+
         /// <summary>
         /// Write a null-terminated UTF-8 string to the stream
         /// </summary>
@@ -595,6 +603,12 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         public static bool WriteNullTerminatedUnicodeString(this Stream stream, string? value)
             => stream.WriteNullTerminatedString(value, Encoding.Unicode);
+
+        /// <summary>
+        /// Write a null-terminated UTF-16 (Unicode) string to the stream
+        /// </summary>
+        public static bool WriteNullTerminatedBigEndianUnicodeString(this Stream stream, string? value)
+            => stream.WriteNullTerminatedString(value, Encoding.BigEndianUnicode);
 
         /// <summary>
         /// Write a null-terminated UTF-32 string to the stream
@@ -622,6 +636,28 @@ namespace SabreTools.IO.Extensions
             return WriteFromBuffer(stream, buffer);
         }
 
+#if NET5_0_OR_GREATER
+        //// <summary>
+        /// Write a byte-prefixed Latin1 string to the stream
+        /// </summary>
+        public static bool WritePrefixedLatin1String(this Stream stream, string? value)
+        {
+            // If the value is null
+            if (value == null)
+                return false;
+
+            // Get the buffer
+            byte[] buffer = Encoding.Latin1.GetBytes(value);
+
+            // Write the length as a byte
+            if (!stream.Write((byte)value.Length))
+                return false;
+
+            // Write the buffer
+            return WriteFromBuffer(stream, buffer);
+        }
+#endif
+
         /// <summary>
         /// Write a ushort-prefixed Unicode string to the stream
         /// </summary>
@@ -633,6 +669,26 @@ namespace SabreTools.IO.Extensions
 
             // Get the buffer
             byte[] buffer = Encoding.Unicode.GetBytes(value);
+
+            // Write the length as a ushort
+            if (!stream.Write((ushort)value.Length))
+                return false;
+
+            // Write the buffer
+            return WriteFromBuffer(stream, buffer);
+        }
+
+        /// <summary>
+        /// Write a ushort-prefixed Unicode string to the stream
+        /// </summary>
+        public static bool WritePrefixedBigEndianUnicodeString(this Stream stream, string? value)
+        {
+            // If the value is null
+            if (value == null)
+                return false;
+
+            // Get the buffer
+            byte[] buffer = Encoding.BigEndianUnicode.GetBytes(value);
 
             // Write the length as a ushort
             if (!stream.Write((ushort)value.Length))

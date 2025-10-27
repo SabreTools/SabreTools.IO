@@ -790,13 +790,19 @@ namespace SabreTools.IO.Extensions
         public static string? ReadNullTerminatedString(this byte[] content, ref int offset, Encoding encoding)
         {
             // Short-circuit to explicit implementations
-            if (encoding.Equals(Encoding.ASCII))
+            if (encoding.CodePage == Encoding.ASCII.CodePage)
                 return content.ReadNullTerminatedAnsiString(ref offset);
-            else if (encoding.Equals(Encoding.UTF8))
+#if NET5_0_OR_GREATER
+            else if (encoding.CodePage == Encoding.Latin1.CodePage)
+                return content.ReadNullTerminatedAnsiString(ref offset);
+#endif
+            else if (encoding.CodePage == Encoding.UTF8.CodePage)
                 return content.ReadNullTerminatedUTF8String(ref offset);
-            else if (encoding.Equals(Encoding.Unicode))
+            else if (encoding.CodePage == Encoding.Unicode.CodePage)
                 return content.ReadNullTerminatedUnicodeString(ref offset);
-            else if (encoding.Equals(Encoding.UTF32))
+            else if (encoding.CodePage == Encoding.BigEndianUnicode.CodePage)
+                return content.ReadNullTerminatedBigEndianUnicodeString(ref offset);
+            else if (encoding.CodePage == Encoding.UTF32.CodePage)
                 return content.ReadNullTerminatedUTF32String(ref offset);
 
             if (offset >= content.Length)
@@ -827,6 +833,20 @@ namespace SabreTools.IO.Extensions
             return Encoding.ASCII.GetString(buffer);
         }
 
+#if NET5_0_OR_GREATER
+        /// <summary>
+        /// Read a null-terminated Latin1 string from the byte array
+        /// </summary>
+        public static string? ReadNullTerminatedLatin1String(this byte[] content, ref int offset)
+        {
+            if (offset >= content.Length)
+                return null;
+
+            byte[] buffer = ReadUntilNull1Byte(content, ref offset);
+            return Encoding.Latin1.GetString(buffer);
+        }
+#endif
+
         /// <summary>
         /// Read a null-terminated UTF-8 string from the byte array
         /// </summary>
@@ -849,6 +869,18 @@ namespace SabreTools.IO.Extensions
 
             byte[] buffer = ReadUntilNull2Byte(content, ref offset);
             return Encoding.Unicode.GetString(buffer);
+        }
+
+        /// <summary>
+        /// Read a null-terminated UTF-16 (Unicode) string from the byte array
+        /// </summary>
+        public static string? ReadNullTerminatedBigEndianUnicodeString(this byte[] content, ref int offset)
+        {
+            if (offset >= content.Length)
+                return null;
+
+            byte[] buffer = ReadUntilNull2Byte(content, ref offset);
+            return Encoding.BigEndianUnicode.GetString(buffer);
         }
 
         /// <summary>
@@ -879,6 +911,24 @@ namespace SabreTools.IO.Extensions
             return Encoding.ASCII.GetString(buffer);
         }
 
+#if NET5_0_OR_GREATER
+        /// <summary>
+        /// Read a byte-prefixed Latin1 string from the byte array
+        /// </summary>
+        public static string? ReadPrefixedLatin1String(this byte[] content, ref int offset)
+        {
+            if (offset >= content.Length)
+                return null;
+
+            byte size = content.ReadByteValue(ref offset);
+            if (offset + size >= content.Length)
+                return null;
+
+            byte[] buffer = content.ReadBytes(ref offset, size);
+            return Encoding.Latin1.GetString(buffer);
+        }
+#endif
+
         /// <summary>
         /// Read a ushort-prefixed Unicode string from the byte array
         /// </summary>
@@ -893,6 +943,22 @@ namespace SabreTools.IO.Extensions
 
             byte[] buffer = content.ReadBytes(ref offset, size * 2);
             return Encoding.Unicode.GetString(buffer);
+        }
+
+        /// <summary>
+        /// Read a ushort-prefixed Unicode string from the byte array
+        /// </summary>
+        public static string? ReadPrefixedBigEndianUnicodeString(this byte[] content, ref int offset)
+        {
+            if (offset >= content.Length)
+                return null;
+
+            ushort size = content.ReadUInt16(ref offset);
+            if (offset + (size * 2) >= content.Length)
+                return null;
+
+            byte[] buffer = content.ReadBytes(ref offset, size * 2);
+            return Encoding.BigEndianUnicode.GetString(buffer);
         }
 
         /// <summary>

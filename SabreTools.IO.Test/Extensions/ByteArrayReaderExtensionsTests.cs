@@ -619,6 +619,12 @@ namespace SabreTools.IO.Test.Extensions
             string? actual = bytes.ReadNullTerminatedString(ref offset, Encoding.ASCII);
             Assert.Equal("ABC", actual);
 
+            // Encoding.Latin1
+            offset = 0;
+            bytes = [0x41, 0x42, 0x43, 0x00];
+            actual = bytes.ReadNullTerminatedString(ref offset, Encoding.Latin1);
+            Assert.Equal("ABC", actual);
+
             // Encoding.UTF8
             offset = 0;
             bytes = [0x41, 0x42, 0x43, 0x00];
@@ -629,6 +635,12 @@ namespace SabreTools.IO.Test.Extensions
             offset = 0;
             bytes = [0x41, 0x00, 0x42, 0x00, 0x43, 0x00, 0x00, 0x00];
             actual = bytes.ReadNullTerminatedString(ref offset, Encoding.Unicode);
+            Assert.Equal("ABC", actual);
+
+            // Encoding.BigEndianUnicode
+            offset = 0;
+            bytes = [0x00, 0x41, 0x00, 0x42, 0x00, 0x43, 0x00, 0x00];
+            actual = bytes.ReadNullTerminatedString(ref offset, Encoding.BigEndianUnicode);
             Assert.Equal("ABC", actual);
 
             // Encoding.UTF32

@@ -583,6 +583,14 @@ namespace SabreTools.IO.Extensions
         public static bool WriteNullTerminatedAnsiString(this byte[] content, ref int offset, string? value)
             => content.WriteNullTerminatedString(ref offset, value, Encoding.ASCII);
 
+#if NET5_0_OR_GREATER
+        /// <summary>
+        /// Write a null-terminated Latin1 string to the byte array
+        /// </summary>
+        public static bool WriteNullTerminatedLatin1String(this byte[] content, ref int offset, string? value)
+            => content.WriteNullTerminatedString(ref offset, value, Encoding.Latin1);
+#endif
+
         /// <summary>
         /// Write a null-terminated UTF-8 string to the byte array
         /// </summary>
@@ -594,6 +602,12 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         public static bool WriteNullTerminatedUnicodeString(this byte[] content, ref int offset, string? value)
             => content.WriteNullTerminatedString(ref offset, value, Encoding.Unicode);
+
+        /// <summary>
+        /// Write a null-terminated UTF-16 (Unicode) string to the byte array
+        /// </summary>
+        public static bool WriteNullTerminatedBigEndianUnicodeString(this byte[] content, ref int offset, string? value)
+            => content.WriteNullTerminatedString(ref offset, value, Encoding.BigEndianUnicode);
 
         /// <summary>
         /// Write a null-terminated UTF-32 string to the byte array
@@ -621,6 +635,28 @@ namespace SabreTools.IO.Extensions
             return WriteFromBuffer(content, ref offset, buffer);
         }
 
+#if NET5_0_OR_GREATER
+        /// <summary>
+        /// Write a byte-prefixed Latin1 string to the byte array
+        /// </summary>
+        public static bool WritePrefixedLatin1String(this byte[] content, ref int offset, string? value)
+        {
+            // If the value is null
+            if (value == null)
+                return false;
+
+            // Get the buffer
+            byte[] buffer = Encoding.Latin1.GetBytes(value);
+
+            // Write the length as a byte
+            if (!content.Write(ref offset, (byte)value.Length))
+                return false;
+
+            // Write the buffer
+            return WriteFromBuffer(content, ref offset, buffer);
+        }
+#endif
+
         /// <summary>
         /// Write a ushort-prefixed Unicode string to the byte array
         /// </summary>
@@ -632,6 +668,26 @@ namespace SabreTools.IO.Extensions
 
             // Get the buffer
             byte[] buffer = Encoding.Unicode.GetBytes(value);
+
+            // Write the length as a ushort
+            if (!content.Write(ref offset, (ushort)value.Length))
+                return false;
+
+            // Write the buffer
+            return WriteFromBuffer(content, ref offset, buffer);
+        }
+
+        /// <summary>
+        /// Write a ushort-prefixed Unicode string to the byte array
+        /// </summary>
+        public static bool WritePrefixedBigEndianUnicodeString(this byte[] content, ref int offset, string? value)
+        {
+            // If the value is null
+            if (value == null)
+                return false;
+
+            // Get the buffer
+            byte[] buffer = Encoding.BigEndianUnicode.GetBytes(value);
 
             // Write the length as a ushort
             if (!content.Write(ref offset, (ushort)value.Length))
