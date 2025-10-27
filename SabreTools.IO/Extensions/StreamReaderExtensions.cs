@@ -1201,6 +1201,18 @@ namespace SabreTools.IO.Extensions
             => stream.PeekByte();
 
         /// <summary>
+        /// Peek a UInt8 from the stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static BothUInt8 PeekByteBothEndian(this Stream stream)
+        {
+            BothUInt8 value = stream.ReadByteBothEndian();
+            stream.SeekIfPossible(-2, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
         /// Peek a UInt8[] from the stream
         /// </summary>
         /// <remarks>Only works properly on seekable streams</remarks>
@@ -1219,6 +1231,18 @@ namespace SabreTools.IO.Extensions
         {
             sbyte value = stream.ReadSByte();
             stream.SeekIfPossible(-1, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Int8 from the stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static BothInt8 PeekSByteBothEndian(this Stream stream)
+        {
+            BothInt8 value = stream.ReadSByteBothEndian();
+            stream.SeekIfPossible(-2, SeekOrigin.Current);
             return value;
         }
 
@@ -1271,6 +1295,18 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Peek a Int16 from the stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static BothInt16 PeekInt16BothEndian(this Stream stream)
+        {
+            BothInt16 value = stream.ReadInt16BothEndian();
+            stream.SeekIfPossible(-4, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
         /// Peek a UInt16 from the stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -1308,6 +1344,18 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Peek a UInt16 from the stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static BothUInt16 PeekUInt16BothEndian(this Stream stream)
+        {
+            BothUInt16 value = stream.ReadUInt16BothEndian();
+            stream.SeekIfPossible(-4, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
         /// Peek a WORD (2-byte) from the stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -1330,6 +1378,14 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Only works properly on seekable streams</remarks>
         public static ushort PeekWORDLittleEndian(this Stream stream)
             => stream.PeekUInt16LittleEndian();
+
+        /// <summary>
+        /// Peek a WORD (2-byte) from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static BothUInt16 PeekWORDBothEndian(this Stream stream)
+            => stream.PeekUInt16BothEndian();
 
         // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
 #if NET6_0_OR_GREATER
@@ -1470,6 +1526,18 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Peek a Int32 from the stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static BothInt32 PeekInt32BothEndian(this Stream stream)
+        {
+            BothInt32 value = stream.ReadInt32BothEndian();
+            stream.SeekIfPossible(-8, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
         /// Peek a UInt32 from the stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -1507,6 +1575,18 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Peek a UInt32 from the stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static BothUInt32 PeekUInt32BothEndian(this Stream stream)
+        {
+            BothUInt32 value = stream.ReadUInt32BothEndian();
+            stream.SeekIfPossible(-8, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
         /// Peek a DWORD (4-byte) from the stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -1529,6 +1609,14 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Only works properly on seekable streams</remarks>
         public static uint PeekDWORDLittleEndian(this Stream stream)
             => stream.PeekUInt32LittleEndian();
+
+        /// <summary>
+        /// Peek a DWORD (4-byte) from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static BothUInt32 PeekDWORDBothEndian(this Stream stream)
+            => stream.PeekUInt32BothEndian();
 
         /// <summary>
         /// Peek a Single from the stream
@@ -1666,6 +1754,18 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Peek a Int64 from the stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static BothInt64 PeekInt64BothEndian(this Stream stream)
+        {
+            BothInt64 value = stream.ReadInt64BothEndian();
+            stream.SeekIfPossible(-16, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
         /// Peek a UInt64 from the stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -1703,6 +1803,18 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Peek a UInt64 from the stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static BothUInt64 PeekUInt64BothEndian(this Stream stream)
+        {
+            BothUInt64 value = stream.ReadUInt64BothEndian();
+            stream.SeekIfPossible(-16, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
         /// Peek a QWORD (8-byte) from the stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -1725,6 +1837,14 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Only works properly on seekable streams</remarks>
         public static ulong PeekQWORDLittleEndian(this Stream stream)
             => stream.PeekUInt64LittleEndian();
+
+        /// <summary>
+        /// Peek a QWORD (8-byte) from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static BothUInt64 PeekQWORDBothEndian(this Stream stream)
+            => stream.PeekUInt64BothEndian();
 
         /// <summary>
         /// Peek a Double from the stream

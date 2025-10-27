@@ -1211,6 +1211,17 @@ namespace SabreTools.IO.Extensions
             => content.PeekByte(ref offset);
 
         /// <summary>
+        /// Peek a UInt8 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt8 PeekByteBothEndian(this byte[] content, ref int offset)
+        {
+            BothUInt8 value = content.ReadByteBothEndian(ref offset);
+            offset -= 2;
+            return value;
+        }
+
+        /// <summary>
         /// Peek a UInt8[] without incrementing the pointer to an array
         /// </summary>
         public static byte[] PeekBytes(this byte[] content, ref int offset, int count)
@@ -1227,6 +1238,17 @@ namespace SabreTools.IO.Extensions
         {
             sbyte value = content.ReadSByte(ref offset);
             offset -= 1;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Int8 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothInt8 PeekSByteBothEndian(this byte[] content, ref int offset)
+        {
+            BothInt8 value = content.ReadSByteBothEndian(ref offset);
+            offset -= 2;
             return value;
         }
 
@@ -1275,6 +1297,17 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Peek a Int16 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothInt16 PeekInt16BothEndian(this byte[] content, ref int offset)
+        {
+            BothInt16 value = content.ReadInt16BothEndian(ref offset);
+            offset -= 4;
+            return value;
+        }
+
+        /// <summary>
         /// Peek a UInt16 without incrementing the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -1309,6 +1342,17 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Peek a UInt16 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt16 PeekUInt16BothEndian(this byte[] content, ref int offset)
+        {
+            BothUInt16 value = content.ReadUInt16BothEndian(ref offset);
+            offset -= 4;
+            return value;
+        }
+
+        /// <summary>
         /// Peek a WORD (2-byte) without incrementing the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -1328,6 +1372,13 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in little-endian format</remarks>
         public static ushort PeekWORDLittleEndian(this byte[] content, ref int offset)
             => content.PeekUInt16LittleEndian(ref offset);
+
+        /// <summary>
+        /// Peek a WORD (2-byte) without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt16 PeekWORDBothEndian(this byte[] content, ref int offset)
+            => content.PeekUInt16BothEndian(ref offset);
 
         // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
 #if NET6_0_OR_GREATER
@@ -1457,6 +1508,17 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Peek a Int32 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothInt32 PeekInt32BothEndian(this byte[] content, ref int offset)
+        {
+            BothInt32 value = content.ReadInt32BothEndian(ref offset);
+            offset -= 8;
+            return value;
+        }
+
+        /// <summary>
         /// Peek a UInt32 without incrementing the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -1491,6 +1553,17 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Peek a UInt32 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt32 PeekUInt32BothEndian(this byte[] content, ref int offset)
+        {
+            BothUInt32 value = content.ReadUInt32BothEndian(ref offset);
+            offset -= 8;
+            return value;
+        }
+
+        /// <summary>
         /// Peek a DWORD (4-byte) without incrementing the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -1510,6 +1583,13 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in little-endian format</remarks>
         public static uint PeekDWORDLittleEndian(this byte[] content, ref int offset)
             => content.PeekUInt32LittleEndian(ref offset);
+
+        /// <summary>
+        /// Peek a DWORD (4-byte) without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt32 PeekDWORDBothEndian(this byte[] content, ref int offset)
+            => content.PeekUInt32BothEndian(ref offset);
 
         /// <summary>
         /// Peek a Single without incrementing the pointer to an array
@@ -1636,6 +1716,17 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Peek a Int64 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothInt64 PeekInt64BothEndian(this byte[] content, ref int offset)
+        {
+            BothInt64 value = content.ReadInt64BothEndian(ref offset);
+            offset -= 16;
+            return value;
+        }
+
+        /// <summary>
         /// Peek a UInt64 without incrementing the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -1670,6 +1761,17 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Peek a UInt64 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt64 PeekUInt64BothEndian(this byte[] content, ref int offset)
+        {
+            BothUInt64 value = content.ReadUInt64BothEndian(ref offset);
+            offset -= 16;
+            return value;
+        }
+
+        /// <summary>
         /// Peek a QWORD (8-byte) without incrementing the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -1689,6 +1791,13 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in little-endian format</remarks>
         public static ulong PeekQWORDLittleEndian(this byte[] content, ref int offset)
             => content.PeekUInt64LittleEndian(ref offset);
+
+        /// <summary>
+        /// Peek a QWORD (8-byte) without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt64 PeekQWORDBothEndian(this byte[] content, ref int offset)
+            => content.PeekUInt64BothEndian(ref offset);
 
         /// <summary>
         /// Peek a Double without incrementing the pointer to an array

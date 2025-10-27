@@ -893,6 +893,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void PeekByteBothEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            BothUInt8 read = stream.PeekByteBothEndian();
+            Assert.Equal(0x00, read.LittleEndian);
+            Assert.Equal(0x01, read.BigEndian);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Fact]
         public void PeekBytesTest()
         {
             var stream = new MemoryStream(_bytes);
@@ -909,6 +919,16 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(_bytes);
             sbyte read = stream.PeekSByte();
             Assert.Equal(0x00, read);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Fact]
+        public void PeekSByteBothEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            BothInt8 read = stream.PeekSByteBothEndian();
+            Assert.Equal(0x00, read.LittleEndian);
+            Assert.Equal(0x01, read.BigEndian);
             Assert.Equal(0, stream.Position);
         }
 
@@ -949,6 +969,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void PeekInt16BothEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            BothInt16 read = stream.PeekInt16BothEndian();
+            Assert.Equal(0x0100, read.LittleEndian);
+            Assert.Equal(0x0203, read.BigEndian);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Fact]
         public void PeekUInt16Test()
         {
             var stream = new MemoryStream(_bytes);
@@ -976,6 +1006,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void PeekUInt16BothEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            BothUInt16 read = stream.PeekUInt16BothEndian();
+            Assert.Equal(0x0100, read.LittleEndian);
+            Assert.Equal(0x0203, read.BigEndian);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Fact]
         public void PeekWORDTest()
         {
             var stream = new MemoryStream(_bytes);
@@ -999,6 +1039,16 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(_bytes);
             ushort read = stream.PeekWORDLittleEndian();
             Assert.Equal(0x0100, read);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Fact]
+        public void PeekWORDBothEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            BothUInt16 read = stream.PeekWORDBothEndian();
+            Assert.Equal(0x0100, read.LittleEndian);
+            Assert.Equal(0x0203, read.BigEndian);
             Assert.Equal(0, stream.Position);
         }
 
@@ -1104,6 +1154,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void PeekInt32BothEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            BothInt32 read = stream.PeekInt32BothEndian();
+            Assert.Equal(0x03020100, read.LittleEndian);
+            Assert.Equal(0x04050607, read.BigEndian);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Fact]
         public void PeekUInt32Test()
         {
             var stream = new MemoryStream(_bytes);
@@ -1131,6 +1191,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void PeekUInt32BothEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            BothUInt32 read = stream.PeekUInt32BothEndian();
+            Assert.Equal((uint)0x03020100, read.LittleEndian);
+            Assert.Equal((uint)0x04050607, read.BigEndian);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Fact]
         public void PeekDWORDTest()
         {
             var stream = new MemoryStream(_bytes);
@@ -1154,6 +1224,16 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(_bytes);
             uint read = stream.PeekDWORDLittleEndian();
             Assert.Equal((uint)0x03020100, read);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Fact]
+        public void PeekDWORDBothEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            BothUInt32 read = stream.PeekDWORDBothEndian();
+            Assert.Equal((uint)0x03020100, read.LittleEndian);
+            Assert.Equal((uint)0x04050607, read.BigEndian);
             Assert.Equal(0, stream.Position);
         }
 
@@ -1259,6 +1339,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void PeekInt64BothEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            BothInt64 read = stream.PeekInt64BothEndian();
+            Assert.Equal(0x0706050403020100, read.LittleEndian);
+            Assert.Equal(0x08090A0B0C0D0E0F, read.BigEndian);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Fact]
         public void PeekUInt64Test()
         {
             var stream = new MemoryStream(_bytes);
@@ -1286,6 +1376,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void PeekUInt64BothEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            BothUInt64 read = stream.PeekUInt64BothEndian();
+            Assert.Equal((ulong)0x0706050403020100, read.LittleEndian);
+            Assert.Equal((ulong)0x08090A0B0C0D0E0F, read.BigEndian);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Fact]
         public void PeekQWORDTest()
         {
             var stream = new MemoryStream(_bytes);
@@ -1309,6 +1409,16 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(_bytes);
             ulong read = stream.PeekQWORDLittleEndian();
             Assert.Equal((ulong)0x0706050403020100, read);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Fact]
+        public void PeekQWORDBothEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            BothUInt64 read = stream.PeekQWORDBothEndian();
+            Assert.Equal((ulong)0x0706050403020100, read.LittleEndian);
+            Assert.Equal((ulong)0x08090A0B0C0D0E0F, read.BigEndian);
             Assert.Equal(0, stream.Position);
         }
 

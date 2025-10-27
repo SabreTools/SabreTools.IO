@@ -898,6 +898,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void PeekByteBothEndianTest()
+        {
+            int offset = 0;
+            BothUInt8 read = _bytes.PeekByteBothEndian(ref offset);
+            Assert.Equal(0x00, read.LittleEndian);
+            Assert.Equal(0x01, read.BigEndian);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
         public void PeekBytesTest()
         {
             int offset = 0, length = 4;
@@ -913,6 +923,16 @@ namespace SabreTools.IO.Test.Extensions
             int offset = 0;
             sbyte read = _bytes.PeekSByte(ref offset);
             Assert.Equal(0x00, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekSByteBothEndianTest()
+        {
+            int offset = 0;
+            BothInt8 read = _bytes.PeekSByteBothEndian(ref offset);
+            Assert.Equal(0x00, read.LittleEndian);
+            Assert.Equal(0x01, read.BigEndian);
             Assert.Equal(0, offset);
         }
 
@@ -953,6 +973,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void PeekInt16BothEndianTest()
+        {
+            int offset = 0;
+            BothInt16 read = _bytes.PeekInt16BothEndian(ref offset);
+            Assert.Equal(0x0100, read.LittleEndian);
+            Assert.Equal(0x0203, read.BigEndian);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
         public void PeekUInt16Test()
         {
             int offset = 0;
@@ -980,6 +1010,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void PeekUInt16BothEndianTest()
+        {
+            int offset = 0;
+            BothUInt16 read = _bytes.PeekUInt16BothEndian(ref offset);
+            Assert.Equal(0x0100, read.LittleEndian);
+            Assert.Equal(0x0203, read.BigEndian);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
         public void PeekWORDTest()
         {
             int offset = 0;
@@ -1003,6 +1043,16 @@ namespace SabreTools.IO.Test.Extensions
             int offset = 0;
             ushort read = _bytes.PeekWORDLittleEndian(ref offset);
             Assert.Equal(0x0100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekWORDBothEndianTest()
+        {
+            int offset = 0;
+            BothUInt16 read = _bytes.PeekWORDBothEndian(ref offset);
+            Assert.Equal(0x0100, read.LittleEndian);
+            Assert.Equal(0x0203, read.BigEndian);
             Assert.Equal(0, offset);
         }
 
@@ -1108,6 +1158,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void PeekInt32BothEndianTest()
+        {
+            int offset = 0;
+            BothInt32 read = _bytes.PeekInt32BothEndian(ref offset);
+            Assert.Equal(0x03020100, read.LittleEndian);
+            Assert.Equal(0x04050607, read.BigEndian);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
         public void PeekUInt32Test()
         {
             int offset = 0;
@@ -1135,6 +1195,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void PeekUInt32BothEndianTest()
+        {
+            int offset = 0;
+            BothUInt32 read = _bytes.PeekUInt32BothEndian(ref offset);
+            Assert.Equal((uint)0x03020100, read.LittleEndian);
+            Assert.Equal((uint)0x04050607, read.BigEndian);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
         public void PeekDWORDTest()
         {
             int offset = 0;
@@ -1158,6 +1228,16 @@ namespace SabreTools.IO.Test.Extensions
             int offset = 0;
             uint read = _bytes.PeekDWORDLittleEndian(ref offset);
             Assert.Equal((uint)0x03020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekDWORDBothEndianTest()
+        {
+            int offset = 0;
+            BothUInt32 read = _bytes.PeekDWORDBothEndian(ref offset);
+            Assert.Equal((uint)0x03020100, read.LittleEndian);
+            Assert.Equal((uint)0x04050607, read.BigEndian);
             Assert.Equal(0, offset);
         }
 
@@ -1263,6 +1343,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void PeekInt64BothEndianTest()
+        {
+            int offset = 0;
+            BothInt64 read = _bytes.PeekInt64BothEndian(ref offset);
+            Assert.Equal(0x0706050403020100, read.LittleEndian);
+            Assert.Equal(0x08090A0B0C0D0E0F, read.BigEndian);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
         public void PeekUInt64Test()
         {
             int offset = 0;
@@ -1290,6 +1380,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void PeekUInt64BothEndianTest()
+        {
+            int offset = 0;
+            BothUInt64 read = _bytes.PeekUInt64BothEndian(ref offset);
+            Assert.Equal((ulong)0x0706050403020100, read.LittleEndian);
+            Assert.Equal((ulong)0x08090A0B0C0D0E0F, read.BigEndian);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
         public void PeekQWORDTest()
         {
             int offset = 0;
@@ -1313,6 +1413,16 @@ namespace SabreTools.IO.Test.Extensions
             int offset = 0;
             ulong read = _bytes.PeekQWORDLittleEndian(ref offset);
             Assert.Equal((ulong)0x0706050403020100, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekQWORDBothEndianTest()
+        {
+            int offset = 0;
+            BothUInt64 read = _bytes.PeekQWORDBothEndian(ref offset);
+            Assert.Equal((ulong)0x0706050403020100, read.LittleEndian);
+            Assert.Equal((ulong)0x08090A0B0C0D0E0F, read.BigEndian);
             Assert.Equal(0, offset);
         }
 
