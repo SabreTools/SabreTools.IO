@@ -14,24 +14,10 @@ namespace SabreTools.IO.Numerics
             return new BothInt8(le, be);
         }
 
-        public static BothInt8 operator +(BothInt8 a, sbyte b)
-        {
-            sbyte le = (sbyte)(a.LittleEndian + b);
-            sbyte be = (sbyte)(a.BigEndian + b);
-            return new BothInt8(le, be);
-        }
-
         public static BothInt8 operator -(BothInt8 a, BothInt8 b)
         {
             sbyte le = (sbyte)(a.LittleEndian - b.LittleEndian);
             sbyte be = (sbyte)(a.BigEndian - b.BigEndian);
-            return new BothInt8(le, be);
-        }
-
-        public static BothInt8 operator -(BothInt8 a, sbyte b)
-        {
-            sbyte le = (sbyte)(a.LittleEndian - b);
-            sbyte be = (sbyte)(a.BigEndian - b);
             return new BothInt8(le, be);
         }
 
@@ -42,13 +28,6 @@ namespace SabreTools.IO.Numerics
             return new BothInt8(le, be);
         }
 
-        public static BothInt8 operator *(BothInt8 a, sbyte b)
-        {
-            sbyte le = (sbyte)(a.LittleEndian * b);
-            sbyte be = (sbyte)(a.BigEndian * b);
-            return new BothInt8(le, be);
-        }
-
         public static BothInt8 operator /(BothInt8 a, BothInt8 b)
         {
             sbyte le = (sbyte)(a.LittleEndian / b.LittleEndian);
@@ -56,24 +35,10 @@ namespace SabreTools.IO.Numerics
             return new BothInt8(le, be);
         }
 
-        public static BothInt8 operator /(BothInt8 a, sbyte b)
-        {
-            sbyte le = (sbyte)(a.LittleEndian / b);
-            sbyte be = (sbyte)(a.BigEndian / b);
-            return new BothInt8(le, be);
-        }
-
         public static BothInt8 operator ^(BothInt8 a, BothInt8 b)
         {
             sbyte le = (sbyte)(a.LittleEndian ^ b.LittleEndian);
             sbyte be = (sbyte)(a.BigEndian ^ b.BigEndian);
-            return new BothInt8(le, be);
-        }
-
-        public static BothInt8 operator ^(BothInt8 a, sbyte b)
-        {
-            sbyte le = (sbyte)(a.LittleEndian ^ b);
-            sbyte be = (sbyte)(a.BigEndian ^ b);
             return new BothInt8(le, be);
         }
 

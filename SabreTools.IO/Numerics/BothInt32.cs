@@ -14,24 +14,10 @@ namespace SabreTools.IO.Numerics
             return new BothInt32(le, be);
         }
 
-        public static BothInt32 operator +(BothInt32 a, int b)
-        {
-            int le = (int)(a.LittleEndian + b);
-            int be = (int)(a.BigEndian + b);
-            return new BothInt32(le, be);
-        }
-
         public static BothInt32 operator -(BothInt32 a, BothInt32 b)
         {
             int le = (int)(a.LittleEndian - b.LittleEndian);
             int be = (int)(a.BigEndian - b.BigEndian);
-            return new BothInt32(le, be);
-        }
-
-        public static BothInt32 operator -(BothInt32 a, int b)
-        {
-            int le = (int)(a.LittleEndian - b);
-            int be = (int)(a.BigEndian - b);
             return new BothInt32(le, be);
         }
 
@@ -42,13 +28,6 @@ namespace SabreTools.IO.Numerics
             return new BothInt32(le, be);
         }
 
-        public static BothInt32 operator *(BothInt32 a, int b)
-        {
-            int le = (int)(a.LittleEndian * b);
-            int be = (int)(a.BigEndian * b);
-            return new BothInt32(le, be);
-        }
-
         public static BothInt32 operator /(BothInt32 a, BothInt32 b)
         {
             int le = (int)(a.LittleEndian / b.LittleEndian);
@@ -56,24 +35,10 @@ namespace SabreTools.IO.Numerics
             return new BothInt32(le, be);
         }
 
-        public static BothInt32 operator /(BothInt32 a, int b)
-        {
-            int le = (int)(a.LittleEndian / b);
-            int be = (int)(a.BigEndian / b);
-            return new BothInt32(le, be);
-        }
-
         public static BothInt32 operator ^(BothInt32 a, BothInt32 b)
         {
             int le = (int)(a.LittleEndian ^ b.LittleEndian);
             int be = (int)(a.BigEndian ^ b.BigEndian);
-            return new BothInt32(le, be);
-        }
-
-        public static BothInt32 operator ^(BothInt32 a, int b)
-        {
-            int le = (int)(a.LittleEndian ^ b);
-            int be = (int)(a.BigEndian ^ b);
             return new BothInt32(le, be);
         }
 

@@ -14,24 +14,10 @@ namespace SabreTools.IO.Numerics
             return new BothUInt32(le, be);
         }
 
-        public static BothUInt32 operator +(BothUInt32 a, uint b)
-        {
-            uint le = (uint)(a.LittleEndian + b);
-            uint be = (uint)(a.BigEndian + b);
-            return new BothUInt32(le, be);
-        }
-
         public static BothUInt32 operator -(BothUInt32 a, BothUInt32 b)
         {
             uint le = (uint)(a.LittleEndian - b.LittleEndian);
             uint be = (uint)(a.BigEndian - b.BigEndian);
-            return new BothUInt32(le, be);
-        }
-
-        public static BothUInt32 operator -(BothUInt32 a, uint b)
-        {
-            uint le = (uint)(a.LittleEndian - b);
-            uint be = (uint)(a.BigEndian - b);
             return new BothUInt32(le, be);
         }
 
@@ -42,13 +28,6 @@ namespace SabreTools.IO.Numerics
             return new BothUInt32(le, be);
         }
 
-        public static BothUInt32 operator *(BothUInt32 a, uint b)
-        {
-            uint le = (uint)(a.LittleEndian * b);
-            uint be = (uint)(a.BigEndian * b);
-            return new BothUInt32(le, be);
-        }
-
         public static BothUInt32 operator /(BothUInt32 a, BothUInt32 b)
         {
             uint le = (uint)(a.LittleEndian / b.LittleEndian);
@@ -56,24 +35,10 @@ namespace SabreTools.IO.Numerics
             return new BothUInt32(le, be);
         }
 
-        public static BothUInt32 operator /(BothUInt32 a, uint b)
-        {
-            uint le = (uint)(a.LittleEndian / b);
-            uint be = (uint)(a.BigEndian / b);
-            return new BothUInt32(le, be);
-        }
-
         public static BothUInt32 operator ^(BothUInt32 a, BothUInt32 b)
         {
-            uint le = (uint)(a.LittleEndian ^ b);
-            uint be = (uint)(a.BigEndian ^ b);
-            return new BothUInt32(le, be);
-        }
-
-        public static BothUInt32 operator ^(BothUInt32 a, uint b)
-        {
-            uint le = (uint)(a.LittleEndian ^ b);
-            uint be = (uint)(a.BigEndian ^ b);
+            uint le = (uint)(a.LittleEndian ^ b.LittleEndian);
+            uint be = (uint)(a.BigEndian ^ b.BigEndian);
             return new BothUInt32(le, be);
         }
 

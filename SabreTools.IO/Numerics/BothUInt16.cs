@@ -14,24 +14,10 @@ namespace SabreTools.IO.Numerics
             return new BothUInt16(le, be);
         }
 
-        public static BothUInt16 operator +(BothUInt16 a, ushort b)
-        {
-            ushort le = (ushort)(a.LittleEndian + b);
-            ushort be = (ushort)(a.BigEndian + b);
-            return new BothUInt16(le, be);
-        }
-
         public static BothUInt16 operator -(BothUInt16 a, BothUInt16 b)
         {
             ushort le = (ushort)(a.LittleEndian - b.LittleEndian);
             ushort be = (ushort)(a.BigEndian - b.BigEndian);
-            return new BothUInt16(le, be);
-        }
-
-        public static BothUInt16 operator -(BothUInt16 a, ushort b)
-        {
-            ushort le = (ushort)(a.LittleEndian - b);
-            ushort be = (ushort)(a.BigEndian - b);
             return new BothUInt16(le, be);
         }
 
@@ -42,13 +28,6 @@ namespace SabreTools.IO.Numerics
             return new BothUInt16(le, be);
         }
 
-        public static BothUInt16 operator *(BothUInt16 a, ushort b)
-        {
-            ushort le = (ushort)(a.LittleEndian * b);
-            ushort be = (ushort)(a.BigEndian * b);
-            return new BothUInt16(le, be);
-        }
-
         public static BothUInt16 operator /(BothUInt16 a, BothUInt16 b)
         {
             ushort le = (ushort)(a.LittleEndian / b.LittleEndian);
@@ -56,24 +35,10 @@ namespace SabreTools.IO.Numerics
             return new BothUInt16(le, be);
         }
 
-        public static BothUInt16 operator /(BothUInt16 a, ushort b)
-        {
-            ushort le = (ushort)(a.LittleEndian / b);
-            ushort be = (ushort)(a.BigEndian / b);
-            return new BothUInt16(le, be);
-        }
-
         public static BothUInt16 operator ^(BothUInt16 a, BothUInt16 b)
         {
             ushort le = (ushort)(a.LittleEndian ^ b.LittleEndian);
             ushort be = (ushort)(a.BigEndian ^ b.BigEndian);
-            return new BothUInt16(le, be);
-        }
-
-        public static BothUInt16 operator ^(BothUInt16 a, ushort b)
-        {
-            ushort le = (ushort)(a.LittleEndian ^ b);
-            ushort be = (ushort)(a.BigEndian ^ b);
             return new BothUInt16(le, be);
         }
 
