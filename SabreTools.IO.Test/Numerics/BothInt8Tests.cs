@@ -203,6 +203,28 @@ namespace SabreTools.IO.Test.Numerics
         }
 
         [Fact]
+        public void ShiftBinaryOperatorsTest()
+        {
+            var valA = new BothInt8(2, 2);
+            var valB = new BothInt8(1, 1);
+
+            sbyte expected = 2 << 1;
+            BothInt8 actual = valA << valB;
+            Assert.Equal(expected, actual.LittleEndian);
+            Assert.Equal(expected, actual.BigEndian);
+
+            expected = 2 >> 1;
+            actual = valA >> valB;
+            Assert.Equal(expected, actual.LittleEndian);
+            Assert.Equal(expected, actual.BigEndian);
+
+            expected = 2 >>> 1;
+            actual = valA >>> valB;
+            Assert.Equal(expected, actual.LittleEndian);
+            Assert.Equal(expected, actual.BigEndian);
+        }
+
+        [Fact]
         public void OperatorsTest()
         {
             var valA = new BothInt8(2, 2);
