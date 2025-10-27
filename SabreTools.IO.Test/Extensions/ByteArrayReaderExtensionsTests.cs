@@ -1551,6 +1551,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void TryReadByteBothEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadByteBothEndian(ref offset, out BothUInt8 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
+        }
+
+        [Fact]
         public void TryReadBytesTest()
         {
             int offset = 0, length = 4;
@@ -1566,6 +1576,16 @@ namespace SabreTools.IO.Test.Extensions
             bool actual = Array.Empty<byte>().TryReadSByte(ref offset, out sbyte read);
             Assert.False(actual);
             Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadSByteBothEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadSByteBothEndian(ref offset, out BothInt8 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
         }
 
         [Fact]
@@ -1605,6 +1625,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void TryReadInt16BothEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadInt16BothEndian(ref offset, out BothInt16 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
+        }
+
+        [Fact]
         public void TryReadUInt16Test()
         {
             int offset = 0;
@@ -1632,6 +1662,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void TryReadUInt16BothEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadUInt16BothEndian(ref offset, out BothUInt16 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
+        }
+
+        [Fact]
         public void TryReadWORDTest()
         {
             int offset = 0;
@@ -1656,6 +1696,16 @@ namespace SabreTools.IO.Test.Extensions
             bool actual = Array.Empty<byte>().TryReadWORDLittleEndian(ref offset, out ushort read);
             Assert.False(actual);
             Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadWORDBothEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadWORDBothEndian(ref offset, out BothUInt16 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
         }
 
         [Fact]
@@ -1760,6 +1810,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void TryReadInt32BothEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadInt32BothEndian(ref offset, out BothInt32 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
+        }
+
+        [Fact]
         public void TryReadUInt32Test()
         {
             int offset = 0;
@@ -1787,6 +1847,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void TryReadUInt32BothEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadUInt32BothEndian(ref offset, out BothUInt32 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
+        }
+
+        [Fact]
         public void TryReadDWORDTest()
         {
             int offset = 0;
@@ -1811,6 +1881,16 @@ namespace SabreTools.IO.Test.Extensions
             bool actual = Array.Empty<byte>().TryReadDWORDLittleEndian(ref offset, out uint read);
             Assert.False(actual);
             Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDWORDBothEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadDWORDBothEndian(ref offset, out BothUInt32 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
         }
 
         [Fact]
@@ -1915,6 +1995,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void TryReadInt64BothEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadInt64BothEndian(ref offset, out BothInt64 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
+        }
+
+        [Fact]
         public void TryReadUInt64Test()
         {
             int offset = 0;
@@ -1942,6 +2032,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void TryReadUInt64BothEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadUInt64BothEndian(ref offset, out BothUInt64 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
+        }
+
+        [Fact]
         public void TryReadQWORDTest()
         {
             int offset = 0;
@@ -1966,6 +2066,16 @@ namespace SabreTools.IO.Test.Extensions
             bool actual = Array.Empty<byte>().TryReadQWORDLittleEndian(ref offset, out ulong read);
             Assert.False(actual);
             Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadQWORDBothEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadQWORDBothEndian(ref offset, out BothUInt64 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
         }
 
         [Fact]

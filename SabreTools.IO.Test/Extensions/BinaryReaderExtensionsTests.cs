@@ -1714,6 +1714,17 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void TryReadByteBothEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadByteBothEndian(out BothUInt8 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
+        }
+
+        [Fact]
         public void TryReadBytesTest()
         {
             var stream = new MemoryStream([]);
@@ -1732,6 +1743,17 @@ namespace SabreTools.IO.Test.Extensions
             bool actual = br.TryReadSByte(out sbyte read);
             Assert.False(actual);
             Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadSByteBothEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadSByteBothEndian(out BothInt8 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
         }
 
         [Fact]
@@ -1775,6 +1797,17 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void TryReadInt16BothEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadInt16BothEndian(out BothInt16 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
+        }
+
+        [Fact]
         public void TryReadUInt16Test()
         {
             var stream = new MemoryStream([]);
@@ -1805,6 +1838,17 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void TryReadUInt16BothEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadUInt16BothEndian(out BothUInt16 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
+        }
+
+        [Fact]
         public void TryReadWORDTest()
         {
             var stream = new MemoryStream([]);
@@ -1832,6 +1876,17 @@ namespace SabreTools.IO.Test.Extensions
             bool actual = br.TryReadWORDLittleEndian(out ushort read);
             Assert.False(actual);
             Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadWORDBothEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadWORDBothEndian(out BothUInt16 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
         }
 
         [Fact]
@@ -1947,6 +2002,17 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void TryReadInt32BothEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadInt32BothEndian(out BothInt32 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
+        }
+
+        [Fact]
         public void TryReadUInt32Test()
         {
             var stream = new MemoryStream([]);
@@ -1977,6 +2043,17 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void TryReadUInt32BothEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadUInt32BothEndian(out BothUInt32 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
+        }
+
+        [Fact]
         public void TryReadDWORDTest()
         {
             var stream = new MemoryStream([]);
@@ -2004,6 +2081,17 @@ namespace SabreTools.IO.Test.Extensions
             bool actual = br.TryReadDWORDLittleEndian(out uint read);
             Assert.False(actual);
             Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDWORDBothEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadDWORDBothEndian(out BothUInt32 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
         }
 
         [Fact]
@@ -2119,6 +2207,17 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void TryReadInt64BothEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadInt64BothEndian(out BothInt64 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
+        }
+
+        [Fact]
         public void TryReadUInt64Test()
         {
             var stream = new MemoryStream([]);
@@ -2149,6 +2248,17 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void TryReadUInt64BothEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadUInt64BothEndian(out BothUInt64 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
+        }
+
+        [Fact]
         public void TryReadQWORDTest()
         {
             var stream = new MemoryStream([]);
@@ -2176,6 +2286,17 @@ namespace SabreTools.IO.Test.Extensions
             bool actual = br.TryReadQWORDLittleEndian(out ulong read);
             Assert.False(actual);
             Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadQWORDBothEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            var br = new BinaryReader(stream);
+            bool actual = br.TryReadQWORDBothEndian(out BothUInt64 read);
+            Assert.False(actual);
+            Assert.Equal(default, read.LittleEndian);
+            Assert.Equal(default, read.BigEndian);
         }
 
         [Fact]

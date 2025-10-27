@@ -1946,6 +1946,22 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Read a UInt8 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static bool TryReadByteBothEndian(this byte[] content, ref int offset, out BothUInt8 value)
+        {
+            if (offset > content.Length - 2)
+            {
+                value = default(byte);
+                return false;
+            }
+
+            value = content.ReadByteBothEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
         /// Read a UInt8[] and increment the pointer to an array
         /// </summary>
         public static bool TryReadBytes(this byte[] content, ref int offset, int count, out byte[] value)
@@ -1972,6 +1988,22 @@ namespace SabreTools.IO.Extensions
             }
 
             value = content.ReadSByte(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Int8 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static bool TryReadSByteBothEndian(this byte[] content, ref int offset, out BothInt8 value)
+        {
+            if (offset > content.Length - 2)
+            {
+                value = default(sbyte);
+                return false;
+            }
+
+            value = content.ReadSByteBothEndian(ref offset);
             return true;
         }
 
@@ -2035,6 +2067,22 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Read a Int16 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static bool TryReadInt16BothEndian(this byte[] content, ref int offset, out BothInt16 value)
+        {
+            if (offset > content.Length - 4)
+            {
+                value = default(short);
+                return false;
+            }
+
+            value = content.ReadInt16BothEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
         /// Read a UInt16 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -2079,6 +2127,22 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Read a UInt16 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static bool TryReadUInt16BothEndian(this byte[] content, ref int offset, out BothUInt16 value)
+        {
+            if (offset > content.Length - 4)
+            {
+                value = default(ushort);
+                return false;
+            }
+
+            value = content.ReadUInt16BothEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
         /// Read a WORD (2-byte) and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -2098,6 +2162,13 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in little-endian format</remarks>
         public static bool TryReadWORDLittleEndian(this byte[] content, ref int offset, out ushort value)
             => content.TryReadUInt16LittleEndian(ref offset, out value);
+
+        /// <summary>
+        /// Read a WORD (2-byte) and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static bool TryReadWORDBothEndian(this byte[] content, ref int offset, out BothUInt16 value)
+            => content.TryReadUInt16BothEndian(ref offset, out value);
 
         // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
 #if NET6_0_OR_GREATER
@@ -2267,6 +2338,22 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Read a Int32 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static bool TryReadInt32BothEndian(this byte[] content, ref int offset, out BothInt32 value)
+        {
+            if (offset > content.Length - 8)
+            {
+                value = default(int);
+                return false;
+            }
+
+            value = content.ReadInt32BothEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
         /// Read a UInt32 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -2311,6 +2398,22 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Read a UInt32 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static bool TryReadUInt32BothEndian(this byte[] content, ref int offset, out BothUInt32 value)
+        {
+            if (offset > content.Length - 8)
+            {
+                value = default(uint);
+                return false;
+            }
+
+            value = content.ReadUInt32BothEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
         /// Read a DWORD (4-byte) and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -2330,6 +2433,13 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in little-endian format</remarks>
         public static bool TryReadDWORDLittleEndian(this byte[] content, ref int offset, out uint value)
             => content.TryReadUInt32LittleEndian(ref offset, out value);
+
+        /// <summary>
+        /// Read a DWORD (4-byte) and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static bool TryReadDWORDBothEndian(this byte[] content, ref int offset, out BothUInt32 value)
+            => content.TryReadUInt32BothEndian(ref offset, out value);
 
         /// <summary>
         /// Read a Single and increment the pointer to an array
@@ -2496,6 +2606,22 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Read a Int64 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static bool TryReadInt64BothEndian(this byte[] content, ref int offset, out BothInt64 value)
+        {
+            if (offset > content.Length - 16)
+            {
+                value = default(long);
+                return false;
+            }
+
+            value = content.ReadInt64BothEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
         /// Read a UInt64 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -2540,6 +2666,22 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Read a UInt64 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static bool TryReadUInt64BothEndian(this byte[] content, ref int offset, out BothUInt64 value)
+        {
+            if (offset > content.Length - 16)
+            {
+                value = default(ulong);
+                return false;
+            }
+
+            value = content.ReadUInt64BothEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
         /// Read a QWORD (8-byte) and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -2559,6 +2701,13 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in little-endian format</remarks>
         public static bool TryReadQWORDLittleEndian(this byte[] content, ref int offset, out ulong value)
             => content.TryReadUInt64LittleEndian(ref offset, out value);
+
+        /// <summary>
+        /// Read a QWORD (8-byte) and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static bool TryReadQWORDBothEndian(this byte[] content, ref int offset, out BothUInt64 value)
+            => content.TryReadUInt64BothEndian(ref offset, out value);
 
         /// <summary>
         /// Read a Double and increment the pointer to an array
