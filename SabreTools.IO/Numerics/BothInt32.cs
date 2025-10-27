@@ -5,7 +5,60 @@ namespace SabreTools.Numerics
     /// </summary>
     public sealed class BothInt32(int le, int be) : BothEndian<int>(le, be)
     {
-        #region Operators
+        #region Arithmetic Unary Operators
+
+        public static BothInt32 operator ++(BothInt32 a)
+        {
+            int le = (int)(a.LittleEndian + 1);
+            int be = (int)(a.BigEndian + 1);
+            return new BothInt32(le, be);
+        }
+
+        public static BothInt32 operator --(BothInt32 a)
+        {
+            int le = (int)(a.LittleEndian - 1);
+            int be = (int)(a.BigEndian - 1);
+            return new BothInt32(le, be);
+        }
+
+        public static BothInt32 operator +(BothInt32 a)
+        {
+            int le = (int)(+a.LittleEndian);
+            int be = (int)(+a.BigEndian);
+            return new BothInt32(le, be);
+        }
+
+        public static BothInt32 operator -(BothInt32 a)
+        {
+            int le = (int)(-a.LittleEndian);
+            int be = (int)(-a.BigEndian);
+            return new BothInt32(le, be);
+        }
+
+        #endregion
+
+        #region Arithmetic Binary Operators
+
+        public static BothInt32 operator *(BothInt32 a, BothInt32 b)
+        {
+            int le = (int)(a.LittleEndian * b.LittleEndian);
+            int be = (int)(a.BigEndian * b.BigEndian);
+            return new BothInt32(le, be);
+        }
+
+        public static BothInt32 operator /(BothInt32 a, BothInt32 b)
+        {
+            int le = (int)(a.LittleEndian / b.LittleEndian);
+            int be = (int)(a.BigEndian / b.BigEndian);
+            return new BothInt32(le, be);
+        }
+
+        public static BothInt32 operator %(BothInt32 a, BothInt32 b)
+        {
+            int le = (int)(a.LittleEndian % b.LittleEndian);
+            int be = (int)(a.BigEndian % b.BigEndian);
+            return new BothInt32(le, be);
+        }
 
         public static BothInt32 operator +(BothInt32 a, BothInt32 b)
         {
@@ -21,19 +74,9 @@ namespace SabreTools.Numerics
             return new BothInt32(le, be);
         }
 
-        public static BothInt32 operator *(BothInt32 a, BothInt32 b)
-        {
-            int le = (int)(a.LittleEndian * b.LittleEndian);
-            int be = (int)(a.BigEndian * b.BigEndian);
-            return new BothInt32(le, be);
-        }
+        #endregion
 
-        public static BothInt32 operator /(BothInt32 a, BothInt32 b)
-        {
-            int le = (int)(a.LittleEndian / b.LittleEndian);
-            int be = (int)(a.BigEndian / b.BigEndian);
-            return new BothInt32(le, be);
-        }
+        #region Bitwise and Shift Operators
 
         public static BothInt32 operator ^(BothInt32 a, BothInt32 b)
         {

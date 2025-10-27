@@ -5,7 +5,46 @@ namespace SabreTools.Numerics
     /// </summary>
     public sealed class BothUInt16(ushort le, ushort be) : BothEndian<ushort>(le, be)
     {
-        #region Operators
+        #region Arithmetic Unary Operators
+
+        public static BothUInt16 operator ++(BothUInt16 a)
+        {
+            ushort le = (ushort)(a.LittleEndian + 1);
+            ushort be = (ushort)(a.BigEndian + 1);
+            return new BothUInt16(le, be);
+        }
+
+        public static BothUInt16 operator --(BothUInt16 a)
+        {
+            ushort le = (ushort)(a.LittleEndian - 1);
+            ushort be = (ushort)(a.BigEndian - 1);
+            return new BothUInt16(le, be);
+        }
+
+        #endregion
+
+        #region Arithmetic Binary Operators
+
+        public static BothUInt16 operator *(BothUInt16 a, BothUInt16 b)
+        {
+            ushort le = (ushort)(a.LittleEndian * b.LittleEndian);
+            ushort be = (ushort)(a.BigEndian * b.BigEndian);
+            return new BothUInt16(le, be);
+        }
+
+        public static BothUInt16 operator /(BothUInt16 a, BothUInt16 b)
+        {
+            ushort le = (ushort)(a.LittleEndian / b.LittleEndian);
+            ushort be = (ushort)(a.BigEndian / b.BigEndian);
+            return new BothUInt16(le, be);
+        }
+
+        public static BothUInt16 operator %(BothUInt16 a, BothUInt16 b)
+        {
+            ushort le = (ushort)(a.LittleEndian % b.LittleEndian);
+            ushort be = (ushort)(a.BigEndian % b.BigEndian);
+            return new BothUInt16(le, be);
+        }
 
         public static BothUInt16 operator +(BothUInt16 a, BothUInt16 b)
         {
@@ -21,19 +60,9 @@ namespace SabreTools.Numerics
             return new BothUInt16(le, be);
         }
 
-        public static BothUInt16 operator *(BothUInt16 a, BothUInt16 b)
-        {
-            ushort le = (ushort)(a.LittleEndian * b.LittleEndian);
-            ushort be = (ushort)(a.BigEndian * b.BigEndian);
-            return new BothUInt16(le, be);
-        }
+        #endregion
 
-        public static BothUInt16 operator /(BothUInt16 a, BothUInt16 b)
-        {
-            ushort le = (ushort)(a.LittleEndian / b.LittleEndian);
-            ushort be = (ushort)(a.BigEndian / b.BigEndian);
-            return new BothUInt16(le, be);
-        }
+        #region Bitwise and Shift Operators
 
         public static BothUInt16 operator ^(BothUInt16 a, BothUInt16 b)
         {
