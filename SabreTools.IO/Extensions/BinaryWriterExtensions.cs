@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using SabreTools.IO.Numerics;
 
 namespace SabreTools.IO.Extensions
 {
@@ -15,6 +16,24 @@ namespace SabreTools.IO.Extensions
     /// TODO: Handle proper negative values for Int24 and Int48
     public static class BinaryWriterExtensions
     {
+        /// <inheritdoc cref="BinaryWriter.Write(byte)"/>
+        /// <remarks>Writes in both-endian format</remarks>
+        public static bool WriteBothEndian(this BinaryWriter writer, BothUInt8 value)
+        {
+            writer.Write(value.LittleEndian);
+            writer.Write(value.BigEndian);
+            return true;
+        }
+
+        /// <inheritdoc cref="BinaryWriter.Write(sbyte)"/>
+        /// <remarks>Writes in both-endian format</remarks>
+        public static bool WriteBothEndian(this BinaryWriter writer, BothInt8 value)
+        {
+            writer.Write(value.LittleEndian);
+            writer.Write(value.BigEndian);
+            return true;
+        }
+
         /// <inheritdoc cref="BinaryWriter.Write(byte[])"/>
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, byte[] value)
@@ -39,6 +58,15 @@ namespace SabreTools.IO.Extensions
             return WriteFromBuffer(writer, buffer);
         }
 
+        /// <inheritdoc cref="BinaryWriter.Write(short)"/>
+        /// <remarks>Writes in both-endian format</remarks>
+        public static bool WriteBothEndian(this BinaryWriter writer, BothInt16 value)
+        {
+            writer.Write(value.LittleEndian);
+            writer.WriteBigEndian(value.BigEndian);
+            return true;
+        }
+
         /// <inheritdoc cref="BinaryWriter.Write(ushort)"/>
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, ushort value)
@@ -46,6 +74,15 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
             return WriteFromBuffer(writer, buffer);
+        }
+
+        /// <inheritdoc cref="BinaryWriter.Write(ushort)"/>
+        /// <remarks>Writes in both-endian format</remarks>
+        public static bool WriteBothEndian(this BinaryWriter writer, BothUInt16 value)
+        {
+            writer.Write(value.LittleEndian);
+            writer.WriteBigEndian(value.BigEndian);
+            return true;
         }
 
         // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
@@ -125,6 +162,15 @@ namespace SabreTools.IO.Extensions
             return WriteFromBuffer(writer, buffer);
         }
 
+        /// <inheritdoc cref="BinaryWriter.Write(int)"/>
+        /// <remarks>Writes in both-endian format</remarks>
+        public static bool WriteBothEndian(this BinaryWriter writer, BothInt32 value)
+        {
+            writer.Write(value.LittleEndian);
+            writer.WriteBigEndian(value.BigEndian);
+            return true;
+        }
+
         /// <inheritdoc cref="BinaryWriter.Write(uint)"/>
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, uint value)
@@ -132,6 +178,15 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
             return WriteFromBuffer(writer, buffer);
+        }
+
+        /// <inheritdoc cref="BinaryWriter.Write(uint)"/>
+        /// <remarks>Writes in both-endian format</remarks>
+        public static bool WriteBothEndian(this BinaryWriter writer, BothUInt32 value)
+        {
+            writer.Write(value.LittleEndian);
+            writer.WriteBigEndian(value.BigEndian);
+            return true;
         }
 
         /// <inheritdoc cref="BinaryWriter.Write(float)"/>
@@ -208,6 +263,15 @@ namespace SabreTools.IO.Extensions
             return WriteFromBuffer(writer, buffer);
         }
 
+        /// <inheritdoc cref="BinaryWriter.Write(long)"/>
+        /// <remarks>Writes in both-endian format</remarks>
+        public static bool WriteBothEndian(this BinaryWriter writer, BothInt64 value)
+        {
+            writer.Write(value.LittleEndian);
+            writer.WriteBigEndian(value.BigEndian);
+            return true;
+        }
+
         /// <inheritdoc cref="BinaryWriter.Write(ulong)"/>
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, ulong value)
@@ -215,6 +279,15 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
             return WriteFromBuffer(writer, buffer);
+        }
+
+        /// <inheritdoc cref="BinaryWriter.Write(ulong)"/>
+        /// <remarks>Writes in both-endian format</remarks>
+        public static bool WriteBothEndian(this BinaryWriter writer, BothUInt64 value)
+        {
+            writer.Write(value.LittleEndian);
+            writer.WriteBigEndian(value.BigEndian);
+            return true;
         }
 
         /// <inheritdoc cref="BinaryWriter.Write(double)"/>
@@ -437,7 +510,7 @@ namespace SabreTools.IO.Extensions
             {
                 writer.Write((Half)value);
                 return true;
-            }    
+            }
 #endif
 #if NET7_0_OR_GREATER
             else if (type == typeof(Int128))

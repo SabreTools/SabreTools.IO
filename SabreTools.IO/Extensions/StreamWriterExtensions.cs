@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using SabreTools.IO.Numerics;
 
 namespace SabreTools.IO.Extensions
 {
@@ -20,6 +21,17 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         public static bool Write(this Stream stream, byte value)
             => WriteFromBuffer(stream, [value]);
+
+        /// <summary>
+        /// Write a UInt8
+        /// </summary>
+        /// <remarks>Writes in both-endian format</remarks>
+        public static bool WriteBothEndian(this Stream stream, BothUInt8 value)
+        {
+            bool actual = stream.Write(value.LittleEndian);
+            actual &= stream.Write(value.BigEndian);
+            return actual;
+        }
 
         /// <summary>
         /// Write a UInt8[]
@@ -42,6 +54,17 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         public static bool Write(this Stream stream, sbyte value)
             => WriteFromBuffer(stream, [(byte)value]);
+
+        /// <summary>
+        /// Write a Int8
+        /// </summary>
+        /// <remarks>Writes in both-endian format</remarks>
+        public static bool WriteBothEndian(this Stream stream, BothInt8 value)
+        {
+            bool actual = stream.Write(value.LittleEndian);
+            actual &= stream.Write(value.BigEndian);
+            return actual;
+        }
 
         /// <summary>
         /// Write a Char
@@ -82,6 +105,17 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Write a Int16
+        /// </summary>
+        /// <remarks>Writes in both-endian format</remarks>
+        public static bool WriteBothEndian(this Stream stream, BothInt16 value)
+        {
+            bool actual = stream.Write(value.LittleEndian);
+            actual &= stream.WriteBigEndian(value.BigEndian);
+            return actual;
+        }
+
+        /// <summary>
         /// Write a UInt16
         /// </summary>
         public static bool Write(this Stream stream, ushort value)
@@ -99,6 +133,17 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
             return WriteFromBuffer(stream, buffer);
+        }
+
+        /// <summary>
+        /// Write a UInt16
+        /// </summary>
+        /// <remarks>Writes in both-endian format</remarks>
+        public static bool WriteBothEndian(this Stream stream, BothUInt16 value)
+        {
+            bool actual = stream.Write(value.LittleEndian);
+            actual &= stream.WriteBigEndian(value.BigEndian);
+            return actual;
         }
 
         // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
@@ -201,6 +246,17 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Write a Int32
+        /// </summary>
+        /// <remarks>Writes in both-endian format</remarks>
+        public static bool WriteBothEndian(this Stream stream, BothInt32 value)
+        {
+            bool actual = stream.Write(value.LittleEndian);
+            actual &= stream.WriteBigEndian(value.BigEndian);
+            return actual;
+        }
+
+        /// <summary>
         /// Write a UInt32
         /// </summary>
         public static bool Write(this Stream stream, uint value)
@@ -218,6 +274,17 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
             return WriteFromBuffer(stream, buffer);
+        }
+
+        /// <summary>
+        /// Write a UInt32
+        /// </summary>
+        /// <remarks>Writes in both-endian format</remarks>
+        public static bool WriteBothEndian(this Stream stream, BothUInt32 value)
+        {
+            bool actual = stream.Write(value.LittleEndian);
+            actual &= stream.WriteBigEndian(value.BigEndian);
+            return actual;
         }
 
         /// <summary>
@@ -317,6 +384,17 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Write a Int64
+        /// </summary>
+        /// <remarks>Writes in both-endian format</remarks>
+        public static bool WriteBothEndian(this Stream stream, BothInt64 value)
+        {
+            bool actual = stream.Write(value.LittleEndian);
+            actual &= stream.WriteBigEndian(value.BigEndian);
+            return actual;
+        }
+
+        /// <summary>
         /// Write a UInt64
         /// </summary>
         public static bool Write(this Stream stream, ulong value)
@@ -334,6 +412,17 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = BitConverter.GetBytes(value);
             Array.Reverse(buffer);
             return WriteFromBuffer(stream, buffer);
+        }
+
+        /// <summary>
+        /// Write a UInt64
+        /// </summary>
+        /// <remarks>Writes in both-endian format</remarks>
+        public static bool WriteBothEndian(this Stream stream, BothUInt64 value)
+        {
+            bool actual = stream.Write(value.LittleEndian);
+            actual &= stream.WriteBigEndian(value.BigEndian);
+            return actual;
         }
 
         /// <summary>

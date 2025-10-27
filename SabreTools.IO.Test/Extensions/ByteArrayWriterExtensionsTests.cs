@@ -39,6 +39,18 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteByteBothEndianTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(2).ToArray();
+
+            int readOffset = 0;
+            buffer.WriteBothEndian(ref offset, _bytes.ReadByteBothEndian(ref readOffset));
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
         public void WriteBytesTest()
         {
             byte[] buffer = new byte[16];
@@ -68,6 +80,18 @@ namespace SabreTools.IO.Test.Extensions
             byte[] expected = _bytes.Take(1).ToArray();
             bool write = buffer.Write(ref offset, (sbyte)0x00);
             Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteSByteBothEndianTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(2).ToArray();
+
+            int readOffset = 0;
+            buffer.WriteBothEndian(ref offset, _bytes.ReadSByteBothEndian(ref readOffset));
             ValidateBytes(expected, buffer);
         }
 
@@ -116,6 +140,18 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteInt16BothEndianTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(4).ToArray();
+
+            int readOffset = 0;
+            buffer.WriteBothEndian(ref offset, _bytes.ReadInt16BothEndian(ref readOffset));
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
         public void WriteUInt16Test()
         {
             byte[] buffer = new byte[16];
@@ -134,6 +170,18 @@ namespace SabreTools.IO.Test.Extensions
             byte[] expected = _bytes.Take(2).ToArray();
             bool write = buffer.WriteBigEndian(ref offset, (ushort)0x0001);
             Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteUInt16BothEndianTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(4).ToArray();
+
+            int readOffset = 0;
+            buffer.WriteBothEndian(ref offset, _bytes.ReadUInt16BothEndian(ref readOffset));
             ValidateBytes(expected, buffer);
         }
 
@@ -226,6 +274,18 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteInt32BothEndianTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(8).ToArray();
+
+            int readOffset = 0;
+            buffer.WriteBothEndian(ref offset, _bytes.ReadInt32BothEndian(ref readOffset));
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
         public void WriteUInt32Test()
         {
             byte[] buffer = new byte[16];
@@ -244,6 +304,18 @@ namespace SabreTools.IO.Test.Extensions
             byte[] expected = _bytes.Take(4).ToArray();
             bool write = buffer.WriteBigEndian(ref offset, (uint)0x00010203);
             Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteUInt32BothEndianTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(8).ToArray();
+
+            int readOffset = 0;
+            buffer.WriteBothEndian(ref offset, _bytes.ReadUInt32BothEndian(ref readOffset));
             ValidateBytes(expected, buffer);
         }
 
@@ -336,6 +408,18 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteInt64BothEndianTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(16).ToArray();
+
+            int readOffset = 0;
+            buffer.WriteBothEndian(ref offset, _bytes.ReadInt64BothEndian(ref readOffset));
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
         public void WriteUInt64Test()
         {
             byte[] buffer = new byte[16];
@@ -354,6 +438,18 @@ namespace SabreTools.IO.Test.Extensions
             byte[] expected = _bytes.Take(8).ToArray();
             bool write = buffer.WriteBigEndian(ref offset, (ulong)0x0001020304050607);
             Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteUInt64BothEndianTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = _bytes.Take(16).ToArray();
+
+            int readOffset = 0;
+            buffer.WriteBothEndian(ref offset, _bytes.ReadUInt64BothEndian(ref readOffset));
             ValidateBytes(expected, buffer);
         }
 

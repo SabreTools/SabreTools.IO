@@ -39,6 +39,17 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteByteBothEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            byte[] expected = _bytes.Take(2).ToArray();
+
+            int offset = 0;
+            stream.WriteBothEndian(_bytes.ReadByteBothEndian(ref offset));
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
         public void WriteBytesTest()
         {
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
@@ -64,6 +75,17 @@ namespace SabreTools.IO.Test.Extensions
             byte[] expected = _bytes.Take(1).ToArray();
             bool write = stream.Write((sbyte)0x00);
             Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteSByteBothEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            byte[] expected = _bytes.Take(2).ToArray();
+
+            int offset = 0;
+            stream.WriteBothEndian(_bytes.ReadSByteBothEndian(ref offset));
             ValidateBytes(expected, stream.GetBuffer());
         }
 
@@ -107,6 +129,17 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteInt16BothEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            byte[] expected = _bytes.Take(4).ToArray();
+
+            int offset = 0;
+            stream.WriteBothEndian(_bytes.ReadInt16BothEndian(ref offset));
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
         public void WriteUInt16Test()
         {
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
@@ -123,6 +156,17 @@ namespace SabreTools.IO.Test.Extensions
             byte[] expected = _bytes.Take(2).ToArray();
             bool write = stream.WriteBigEndian((ushort)0x0001);
             Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteUInt16BothEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            byte[] expected = _bytes.Take(4).ToArray();
+
+            int offset = 0;
+            stream.WriteBothEndian(_bytes.ReadUInt16BothEndian(ref offset));
             ValidateBytes(expected, stream.GetBuffer());
         }
 
@@ -207,6 +251,17 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteInt32BothEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            byte[] expected = _bytes.Take(8).ToArray();
+
+            int offset = 0;
+            stream.WriteBothEndian(_bytes.ReadInt32BothEndian(ref offset));
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
         public void WriteUInt32Test()
         {
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
@@ -223,6 +278,17 @@ namespace SabreTools.IO.Test.Extensions
             byte[] expected = _bytes.Take(4).ToArray();
             bool write = stream.WriteBigEndian((uint)0x00010203);
             Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteUInt32BothEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            byte[] expected = _bytes.Take(8).ToArray();
+
+            int offset = 0;
+            stream.WriteBothEndian(_bytes.ReadUInt32BothEndian(ref offset));
             ValidateBytes(expected, stream.GetBuffer());
         }
 
@@ -307,6 +373,17 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteInt64BothEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            byte[] expected = _bytes.Take(16).ToArray();
+
+            int offset = 0;
+            stream.WriteBothEndian(_bytes.ReadInt64BothEndian(ref offset));
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
         public void WriteUInt64Test()
         {
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
@@ -323,6 +400,17 @@ namespace SabreTools.IO.Test.Extensions
             byte[] expected = _bytes.Take(8).ToArray();
             bool write = stream.WriteBigEndian((ulong)0x0001020304050607);
             Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteUInt64BothEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            byte[] expected = _bytes.Take(16).ToArray();
+
+            int offset = 0;
+            stream.WriteBothEndian(_bytes.ReadUInt64BothEndian(ref offset));
             ValidateBytes(expected, stream.GetBuffer());
         }
 
