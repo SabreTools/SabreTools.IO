@@ -3,7 +3,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using SabreTools.IO.Extensions;
-using SabreTools.IO.Numerics;
+using SabreTools.Numerics;
 using Xunit;
 
 namespace SabreTools.IO.Test.Extensions

@@ -1,6 +1,6 @@
 using System;
 
-namespace SabreTools.IO.Numerics
+namespace SabreTools.Numerics
 {
     /// <summary>
     /// Both-endian numeric value

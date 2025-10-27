@@ -6,7 +6,7 @@ using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using SabreTools.IO.Numerics;
+using SabreTools.Numerics;
 
 namespace SabreTools.IO.Extensions
 {

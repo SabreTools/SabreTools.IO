@@ -73,25 +73,6 @@ Logic for a logging system, including writing to console and textfile outputs. T
 
 Classes designed to make matching contents and paths easier. These classes allow for both grouped and single matching as well as post-processing of matched information.
 
-### `SabreTools.IO.Numerics`
-
-Custom numeric types and related functionality.
-
-#### Supported Numeric Types
-
-| Type Name | Description |
-| --- | --- |
-| `BothInt8` | Both-endian `Int8` value |
-| `BothUInt8` | Both-endian `UInt8` value |
-| `BothInt16` | Both-endian `Int16` value |
-| `BothUInt16` | Both-endian `UInt16` value |
-| `BothInt32` | Both-endian `Int32` value |
-| `BothUInt32` | Both-endian `UInt32` value |
-| `BothInt64` | Both-endian `Int64` value |
-| `BothUInt64` | Both-endian `UInt64` value |
-
-**Both-endian** or **bi-endian** numbers are represented by a little-endian value followed by a big-endian value, where both values are the same number.
-
 ### `SabreTools.IO.Readers` and `SabreTools.IO.Writers`
 
 Reading and writing support for the following file types:
@@ -118,6 +99,25 @@ File and stream implementations of common data transformations:
 - Combine using either ordered concatenation or interleaving
 - Split by even/odd chunks or based on block size
 - Convert data either by bit-swapping, byte-swapping, word-swapping, or word/byte-swapping
+
+### `SabreTools.Numerics`
+
+Custom numeric types and related functionality.
+
+#### Supported Numeric Types
+
+| Type Name | Description |
+| --- | --- |
+| `BothInt8` | Both-endian `Int8` value |
+| `BothUInt8` | Both-endian `UInt8` value |
+| `BothInt16` | Both-endian `Int16` value |
+| `BothUInt16` | Both-endian `UInt16` value |
+| `BothInt32` | Both-endian `Int32` value |
+| `BothUInt32` | Both-endian `UInt32` value |
+| `BothInt64` | Both-endian `Int64` value |
+| `BothUInt64` | Both-endian `UInt64` value |
+
+**Both-endian** or **bi-endian** numbers are represented by a little-endian value followed by a big-endian value, where both values are the same number.
 
 ### `SabreTools.Text.Compare`
 

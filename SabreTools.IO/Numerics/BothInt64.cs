@@ -1,4 +1,4 @@
-namespace SabreTools.IO.Numerics
+namespace SabreTools.Numerics
 {
     /// <summary>
     /// Both-endian 64-bit signed value
