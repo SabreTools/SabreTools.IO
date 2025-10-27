@@ -14,10 +14,24 @@ namespace SabreTools.IO.Numerics
             return new BothInt16(le, be);
         }
 
+        public static BothInt16 operator +(BothInt16 a, short b)
+        {
+            short le = (short)(a.LittleEndian + b);
+            short be = (short)(a.BigEndian + b);
+            return new BothInt16(le, be);
+        }
+
         public static BothInt16 operator -(BothInt16 a, BothInt16 b)
         {
             short le = (short)(a.LittleEndian - b.LittleEndian);
             short be = (short)(a.BigEndian - b.BigEndian);
+            return new BothInt16(le, be);
+        }
+
+        public static BothInt16 operator -(BothInt16 a, short b)
+        {
+            short le = (short)(a.LittleEndian - b);
+            short be = (short)(a.BigEndian - b);
             return new BothInt16(le, be);
         }
 
@@ -28,6 +42,13 @@ namespace SabreTools.IO.Numerics
             return new BothInt16(le, be);
         }
 
+        public static BothInt16 operator *(BothInt16 a, short b)
+        {
+            short le = (short)(a.LittleEndian * b);
+            short be = (short)(a.BigEndian * b);
+            return new BothInt16(le, be);
+        }
+
         public static BothInt16 operator /(BothInt16 a, BothInt16 b)
         {
             short le = (short)(a.LittleEndian / b.LittleEndian);
@@ -35,10 +56,24 @@ namespace SabreTools.IO.Numerics
             return new BothInt16(le, be);
         }
 
+        public static BothInt16 operator /(BothInt16 a, short b)
+        {
+            short le = (short)(a.LittleEndian / b);
+            short be = (short)(a.BigEndian / b);
+            return new BothInt16(le, be);
+        }
+
         public static BothInt16 operator ^(BothInt16 a, BothInt16 b)
         {
             short le = (short)(a.LittleEndian ^ b.LittleEndian);
             short be = (short)(a.BigEndian ^ b.BigEndian);
+            return new BothInt16(le, be);
+        }
+
+        public static BothInt16 operator ^(BothInt16 a, short b)
+        {
+            short le = (short)(a.LittleEndian ^ b);
+            short be = (short)(a.BigEndian ^ b);
             return new BothInt16(le, be);
         }
 

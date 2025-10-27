@@ -14,10 +14,24 @@ namespace SabreTools.IO.Numerics
             return new BothInt64(le, be);
         }
 
+        public static BothInt64 operator +(BothInt64 a, long b)
+        {
+            long le = (long)(a.LittleEndian + b);
+            long be = (long)(a.BigEndian + b);
+            return new BothInt64(le, be);
+        }
+
         public static BothInt64 operator -(BothInt64 a, BothInt64 b)
         {
             long le = (long)(a.LittleEndian - b.LittleEndian);
             long be = (long)(a.BigEndian - b.BigEndian);
+            return new BothInt64(le, be);
+        }
+
+        public static BothInt64 operator -(BothInt64 a, long b)
+        {
+            long le = (long)(a.LittleEndian - b);
+            long be = (long)(a.BigEndian - b);
             return new BothInt64(le, be);
         }
 
@@ -28,6 +42,13 @@ namespace SabreTools.IO.Numerics
             return new BothInt64(le, be);
         }
 
+        public static BothInt64 operator *(BothInt64 a, long b)
+        {
+            long le = (long)(a.LittleEndian * b);
+            long be = (long)(a.BigEndian * b);
+            return new BothInt64(le, be);
+        }
+
         public static BothInt64 operator /(BothInt64 a, BothInt64 b)
         {
             long le = (long)(a.LittleEndian / b.LittleEndian);
@@ -35,10 +56,24 @@ namespace SabreTools.IO.Numerics
             return new BothInt64(le, be);
         }
 
+        public static BothInt64 operator /(BothInt64 a, long b)
+        {
+            long le = (long)(a.LittleEndian / b);
+            long be = (long)(a.BigEndian / b);
+            return new BothInt64(le, be);
+        }
+
         public static BothInt64 operator ^(BothInt64 a, BothInt64 b)
         {
             long le = (long)(a.LittleEndian ^ b.LittleEndian);
             long be = (long)(a.BigEndian ^ b.BigEndian);
+            return new BothInt64(le, be);
+        }
+
+        public static BothInt64 operator ^(BothInt64 a, long b)
+        {
+            long le = (long)(a.LittleEndian ^ b);
+            long be = (long)(a.BigEndian ^ b);
             return new BothInt64(le, be);
         }
 
