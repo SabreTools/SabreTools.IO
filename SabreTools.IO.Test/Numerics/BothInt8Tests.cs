@@ -225,43 +225,23 @@ namespace SabreTools.IO.Test.Numerics
         }
 
         [Fact]
-        public void OperatorsTest()
+        public void BitwiseBinaryOperatorsTest()
         {
-            var valA = new BothInt8(2, 2);
-            var valB = new BothInt8(1, 1);
+            var valA = new BothInt8(3, 3);
+            var valB = new BothInt8(2, 2);
 
-            sbyte expected = (sbyte)2 + (sbyte)1;
-            BothInt8 actual = valA + valB;
+            sbyte expected = 3 & 2;
+            BothInt8 actual = valA & valB;
             Assert.Equal(expected, actual.LittleEndian);
             Assert.Equal(expected, actual.BigEndian);
 
-            expected = (sbyte)2 - (sbyte)1;
-            actual = valA - valB;
-            Assert.Equal(expected, actual.LittleEndian);
-            Assert.Equal(expected, actual.BigEndian);
-
-            expected = (sbyte)2 * (sbyte)1;
-            actual = valA * valB;
-            Assert.Equal(expected, actual.LittleEndian);
-            Assert.Equal(expected, actual.BigEndian);
-
-            expected = (sbyte)2 / (sbyte)1;
-            actual = valA / valB;
-            Assert.Equal(expected, actual.LittleEndian);
-            Assert.Equal(expected, actual.BigEndian);
-
-            expected = (sbyte)2 ^ (sbyte)1;
-            actual = valA ^ valB;
-            Assert.Equal(expected, actual.LittleEndian);
-            Assert.Equal(expected, actual.BigEndian);
-
-            expected = (sbyte)2 & (sbyte)1;
-            actual = valA & valB;
-            Assert.Equal(expected, actual.LittleEndian);
-            Assert.Equal(expected, actual.BigEndian);
-
-            expected = (sbyte)2 | (sbyte)1;
+            expected = 3 | 2;
             actual = valA | valB;
+            Assert.Equal(expected, actual.LittleEndian);
+            Assert.Equal(expected, actual.BigEndian);
+
+            expected = 3 ^ 2;
+            actual = valA ^ valB;
             Assert.Equal(expected, actual.LittleEndian);
             Assert.Equal(expected, actual.BigEndian);
         }

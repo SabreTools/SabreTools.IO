@@ -214,43 +214,23 @@ namespace SabreTools.IO.Test.Numerics
         }
 
         [Fact]
-        public void OperatorsTest()
+        public void BitwiseBinaryOperatorsTest()
         {
-            var valA = new BothUInt16(2, 2);
-            var valB = new BothUInt16(1, 1);
+            var valA = new BothUInt16(3, 3);
+            var valB = new BothUInt16(2, 2);
 
-            ushort expected = (ushort)2 + (ushort)1;
-            BothUInt16 actual = valA + valB;
+            ushort expected = 3 & 2;
+            BothUInt16 actual = valA & valB;
             Assert.Equal(expected, actual.LittleEndian);
             Assert.Equal(expected, actual.BigEndian);
 
-            expected = (ushort)2 - (ushort)1;
-            actual = valA - valB;
-            Assert.Equal(expected, actual.LittleEndian);
-            Assert.Equal(expected, actual.BigEndian);
-
-            expected = (ushort)2 * (ushort)1;
-            actual = valA * valB;
-            Assert.Equal(expected, actual.LittleEndian);
-            Assert.Equal(expected, actual.BigEndian);
-
-            expected = (ushort)2 / (ushort)1;
-            actual = valA / valB;
-            Assert.Equal(expected, actual.LittleEndian);
-            Assert.Equal(expected, actual.BigEndian);
-
-            expected = (ushort)2 ^ (ushort)1;
-            actual = valA ^ valB;
-            Assert.Equal(expected, actual.LittleEndian);
-            Assert.Equal(expected, actual.BigEndian);
-
-            expected = (ushort)2 & (ushort)1;
-            actual = valA & valB;
-            Assert.Equal(expected, actual.LittleEndian);
-            Assert.Equal(expected, actual.BigEndian);
-
-            expected = (ushort)2 | (ushort)1;
+            expected = 3 | 2;
             actual = valA | valB;
+            Assert.Equal(expected, actual.LittleEndian);
+            Assert.Equal(expected, actual.BigEndian);
+
+            expected = 3 ^ 2;
+            actual = valA ^ valB;
             Assert.Equal(expected, actual.LittleEndian);
             Assert.Equal(expected, actual.BigEndian);
         }

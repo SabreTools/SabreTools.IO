@@ -225,43 +225,23 @@ namespace SabreTools.IO.Test.Numerics
         }
 
         [Fact]
-        public void OperatorsTest()
+        public void BitwiseBinaryOperatorsTest()
         {
-            var valA = new BothInt16(2, 2);
-            var valB = new BothInt16(1, 1);
+            var valA = new BothInt16(3, 3);
+            var valB = new BothInt16(2, 2);
 
-            short expected = (short)2 + (short)1;
-            BothInt16 actual = valA + valB;
+            short expected = 3 & 2;
+            BothInt16 actual = valA & valB;
             Assert.Equal(expected, actual.LittleEndian);
             Assert.Equal(expected, actual.BigEndian);
 
-            expected = (short)2 - (short)1;
-            actual = valA - valB;
-            Assert.Equal(expected, actual.LittleEndian);
-            Assert.Equal(expected, actual.BigEndian);
-
-            expected = (short)2 * (short)1;
-            actual = valA * valB;
-            Assert.Equal(expected, actual.LittleEndian);
-            Assert.Equal(expected, actual.BigEndian);
-
-            expected = (short)2 / (short)1;
-            actual = valA / valB;
-            Assert.Equal(expected, actual.LittleEndian);
-            Assert.Equal(expected, actual.BigEndian);
-
-            expected = (short)2 ^ (short)1;
-            actual = valA ^ valB;
-            Assert.Equal(expected, actual.LittleEndian);
-            Assert.Equal(expected, actual.BigEndian);
-
-            expected = (short)2 & (short)1;
-            actual = valA & valB;
-            Assert.Equal(expected, actual.LittleEndian);
-            Assert.Equal(expected, actual.BigEndian);
-
-            expected = (short)2 | (short)1;
+            expected = 3 | 2;
             actual = valA | valB;
+            Assert.Equal(expected, actual.LittleEndian);
+            Assert.Equal(expected, actual.BigEndian);
+
+            expected = 3 ^ 2;
+            actual = valA ^ valB;
             Assert.Equal(expected, actual.LittleEndian);
             Assert.Equal(expected, actual.BigEndian);
         }
