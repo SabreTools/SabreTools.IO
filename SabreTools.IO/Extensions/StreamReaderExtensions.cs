@@ -7,6 +7,7 @@ using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using SabreTools.IO.Numerics;
 
 namespace SabreTools.IO.Extensions
 {
@@ -27,6 +28,17 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Read a UInt8 from the stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt8 ReadByteBothEndian(this Stream stream)
+        {
+            byte le = stream.ReadByteValue();
+            byte be = stream.ReadByteValue();
+            return new BothUInt8(le, be);
+        }
+
+        /// <summary>
         /// Read a UInt8[] from the stream
         /// </summary>
         public static byte[] ReadBytes(this Stream stream, int count)
@@ -39,6 +51,17 @@ namespace SabreTools.IO.Extensions
         {
             byte[] buffer = ReadExactlyToBuffer(stream, 1);
             return (sbyte)buffer[0];
+        }
+
+        /// <summary>
+        /// Read a UInt8 from the stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothInt8 ReadSByteBothEndian(this Stream stream)
+        {
+            sbyte le = stream.ReadSByte();
+            sbyte be = stream.ReadSByte();
+            return new BothInt8(le, be);
         }
 
         /// <summary>
@@ -85,6 +108,17 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Read a Int16 from the stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothInt16 ReadInt16BothEndian(this Stream stream)
+        {
+            short le = stream.ReadInt16LittleEndian();
+            short be = stream.ReadInt16BigEndian();
+            return new BothInt16(le, be);
+        }
+
+        /// <summary>
         /// Read a UInt16 from the stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -119,6 +153,17 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Read a UInt16 from the stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt16 ReadUInt16BothEndian(this Stream stream)
+        {
+            ushort le = stream.ReadUInt16LittleEndian();
+            ushort be = stream.ReadUInt16BigEndian();
+            return new BothUInt16(le, be);
+        }
+
+        /// <summary>
         /// Read a WORD (2-byte) from the stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -138,6 +183,13 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in little-endian format</remarks>
         public static ushort ReadWORDLittleEndian(this Stream stream)
             => stream.ReadUInt16LittleEndian();
+
+        /// <summary>
+        /// Read a WORD (2-byte) from the stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt16 ReadWORDBothEndian(this Stream stream)
+            => stream.ReadUInt16BothEndian();
 
         // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
 #if NET6_0_OR_GREATER
@@ -274,6 +326,17 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Read a Int32 from the stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothInt32 ReadInt32BothEndian(this Stream stream)
+        {
+            int le = stream.ReadInt32LittleEndian();
+            int be = stream.ReadInt32BigEndian();
+            return new BothInt32(le, be);
+        }
+
+        /// <summary>
         /// Read a UInt32 from the stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -312,6 +375,17 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Read a UInt32 from the stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt32 ReadUInt32BothEndian(this Stream stream)
+        {
+            uint le = stream.ReadUInt32LittleEndian();
+            uint be = stream.ReadUInt32BigEndian();
+            return new BothUInt32(le, be);
+        }
+
+        /// <summary>
         /// Read a DWORD (4-byte) from the stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -331,6 +405,13 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in little-endian format</remarks>
         public static uint ReadDWORDLittleEndian(this Stream stream)
             => stream.ReadUInt32LittleEndian();
+
+        /// <summary>
+        /// Read a DWORD (4-byte) from the stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt32 ReadDWORDBothEndian(this Stream stream)
+            => stream.ReadUInt32BothEndian();
 
         /// <summary>
         /// Read a Single from the stream
@@ -484,6 +565,17 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Read a Int64 from the stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothInt64 ReadInt64BothEndian(this Stream stream)
+        {
+            long le = stream.ReadInt64LittleEndian();
+            long be = stream.ReadInt64BigEndian();
+            return new BothInt64(le, be);
+        }
+
+        /// <summary>
         /// Read a UInt64 from the stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -530,6 +622,17 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Read a UInt64 from the stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt64 ReadUInt64BothEndian(this Stream stream)
+        {
+            ulong le = stream.ReadUInt64LittleEndian();
+            ulong be = stream.ReadUInt64BigEndian();
+            return new BothUInt64(le, be);
+        }
+
+        /// <summary>
         /// Read a QWORD (8-byte) from the stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
@@ -549,6 +652,13 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in little-endian format</remarks>
         public static ulong ReadQWORDLittleEndian(this Stream stream)
             => stream.ReadUInt64LittleEndian();
+
+        /// <summary>
+        /// Read a QWORD (8-byte) from the stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt64 ReadQWORDBothEndian(this Stream stream)
+            => stream.ReadUInt64BothEndian();
 
         /// <summary>
         /// Read a Double from the stream

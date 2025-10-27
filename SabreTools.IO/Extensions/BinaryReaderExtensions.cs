@@ -7,6 +7,7 @@ using System.Numerics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using SabreTools.IO.Numerics;
 
 namespace SabreTools.IO.Extensions
 {
@@ -16,6 +17,24 @@ namespace SabreTools.IO.Extensions
     public static class BinaryReaderExtensions
     {
         #region Exact Read
+
+        /// <inheritdoc cref="BinaryReader.ReadByte"/>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt8 ReadByteBothEndian(this BinaryReader reader)
+        {
+            byte le = reader.ReadByte();
+            byte be = reader.ReadByte();
+            return new BothUInt8(le, be);
+        }
+
+        /// <inheritdoc cref="BinaryReader.ReadSByte"/>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothInt8 ReadSByteBothEndian(this BinaryReader reader)
+        {
+            sbyte le = reader.ReadSByte();
+            sbyte be = reader.ReadSByte();
+            return new BothInt8(le, be);
+        }
 
         /// <inheritdoc cref="BinaryReader.ReadInt16"/>
         /// <remarks>Reads in big-endian format</remarks>
@@ -35,6 +54,15 @@ namespace SabreTools.IO.Extensions
                         | (buffer[1] << 8));
         }
 
+        /// <inheritdoc cref="BinaryReader.ReadInt16"/>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothInt16 ReadInt16BothEndian(this BinaryReader reader)
+        {
+            short le = reader.ReadInt16();
+            short be = reader.ReadInt16BigEndian();
+            return new BothInt16(le, be);
+        }
+
         /// <inheritdoc cref="BinaryReader.ReadUInt16"/>
         /// <remarks>Reads in big-endian format</remarks>
         public static ushort ReadUInt16BigEndian(this BinaryReader reader)
@@ -51,6 +79,15 @@ namespace SabreTools.IO.Extensions
             byte[] buffer = reader.ReadBytes(2);
             return (ushort)(buffer[0]
                          | (buffer[1] << 8));
+        }
+
+        /// <inheritdoc cref="BinaryReader.ReadUInt16"/>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt16 ReadUInt16BothEndian(this BinaryReader reader)
+        {
+            ushort le = reader.ReadUInt16();
+            ushort be = reader.ReadUInt16BigEndian();
+            return new BothUInt16(le, be);
         }
 
         /// <summary>
@@ -72,6 +109,13 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in little-endian format</remarks>
         public static ushort ReadWORDLittleEndian(this BinaryReader reader)
             => reader.ReadUInt16LittleEndian();
+
+        /// <summary>
+        /// Read a WORD (2-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt16 ReadWORDBothEndian(this BinaryReader reader)
+            => reader.ReadUInt16BothEndian();
 
         // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
 #if NET6_0_OR_GREATER
@@ -179,6 +223,15 @@ namespace SabreTools.IO.Extensions
                       | (buffer[3] << 24));
         }
 
+        /// <inheritdoc cref="BinaryReader.ReadInt32"/>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothInt32 ReadInt32BothEndian(this BinaryReader reader)
+        {
+            int le = reader.ReadInt32();
+            int be = reader.ReadInt32BigEndian();
+            return new BothInt32(le, be);
+        }
+
         /// <inheritdoc cref="BinaryReader.ReadUInt32"/>
         /// <remarks>Reads in big-endian format</remarks>
         public static uint ReadUInt32BigEndian(this BinaryReader reader)
@@ -201,6 +254,15 @@ namespace SabreTools.IO.Extensions
                        | (buffer[3] << 24));
         }
 
+        /// <inheritdoc cref="BinaryReader.ReadUInt32"/>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt32 ReadUInt32BothEndian(this BinaryReader reader)
+        {
+            uint le = reader.ReadUInt32();
+            uint be = reader.ReadUInt32BigEndian();
+            return new BothUInt32(le, be);
+        }
+
         /// <summary>
         /// Read a DWORD (4-byte) from the base stream
         /// </summary>
@@ -220,6 +282,13 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in little-endian format</remarks>
         public static uint ReadDWORDLittleEndian(this BinaryReader reader)
             => reader.ReadUInt32LittleEndian();
+
+        /// <summary>
+        /// Read a DWORD (4-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt32 ReadDWORDBothEndian(this BinaryReader reader)
+            => reader.ReadUInt32BothEndian();
 
         /// <inheritdoc cref="BinaryReader.ReadSingle"/>
         /// <remarks>Reads in big-endian format</remarks>
@@ -344,6 +413,15 @@ namespace SabreTools.IO.Extensions
                  | ((long)buffer[7] << 56);
         }
 
+        /// <inheritdoc cref="BinaryReader.ReadInt64"/>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothInt64 ReadInt64BothEndian(this BinaryReader reader)
+        {
+            long le = reader.ReadInt64();
+            long be = reader.ReadInt64BigEndian();
+            return new BothInt64(le, be);
+        }
+
         /// <inheritdoc cref="BinaryReader.ReadUInt64"/>
         /// <remarks>Reads in big-endian format</remarks>
         public static ulong ReadUInt64BigEndian(this BinaryReader reader)
@@ -374,6 +452,15 @@ namespace SabreTools.IO.Extensions
                  | ((ulong)buffer[7] << 56);
         }
 
+        /// <inheritdoc cref="BinaryReader.ReadUInt64"/>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt64 ReadUInt64BothEndian(this BinaryReader reader)
+        {
+            ulong le = reader.ReadUInt64();
+            ulong be = reader.ReadUInt64BigEndian();
+            return new BothUInt64(le, be);
+        }
+
         /// <summary>
         /// Read a QWORD (8-byte) from the base stream
         /// </summary>
@@ -394,6 +481,13 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in little-endian format</remarks>
         public static ulong ReadQWORDLittleEndian(this BinaryReader reader)
             => reader.ReadUInt64LittleEndian();
+
+        /// <summary>
+        /// Read a QWORD (8-byte) from the base stream
+        /// </summary>
+        /// <remarks>Reads in both-endian format</remarks>
+        public static BothUInt64 ReadQWORDBothEndian(this BinaryReader reader)
+            => reader.ReadUInt64BothEndian();
 
         /// <inheritdoc cref="BinaryReader.ReadDouble"/>
         /// <remarks>Reads in big-endian format</remarks>
