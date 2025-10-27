@@ -5,6 +5,9 @@ namespace SabreTools.Numerics
     /// </summary>
     public sealed class BothInt32(int le, int be) : BothEndian<int>(le, be)
     {
+        public static implicit operator BothInt32(int val)
+            => new(val, val);
+
         #region Arithmetic Unary Operators
 
         public static BothInt32 operator ++(BothInt32 a)
@@ -76,12 +79,48 @@ namespace SabreTools.Numerics
 
         #endregion
 
-        #region Bitwise and Shift Operators
+        #region Bitwise Unary Operators
 
-        public static BothInt32 operator ^(BothInt32 a, BothInt32 b)
+        public static BothInt32 operator ~(BothInt32 a)
         {
-            int le = (int)(a.LittleEndian ^ b.LittleEndian);
-            int be = (int)(a.BigEndian ^ b.BigEndian);
+            int le = (int)(~a.LittleEndian);
+            int be = (int)(~a.BigEndian);
+            return new BothInt32(le, be);
+        }
+
+        #endregion
+
+        #region Shift Binary Operators
+
+        public static BothInt32 operator <<(BothInt32 a, BothInt32 b)
+        {
+            int le = (int)(a.LittleEndian << b.LittleEndian);
+            int be = (int)(a.BigEndian << b.BigEndian);
+            return new BothInt32(le, be);
+        }
+
+        public static BothInt32 operator >>(BothInt32 a, BothInt32 b)
+        {
+            int le = (int)(a.LittleEndian >> b.LittleEndian);
+            int be = (int)(a.BigEndian >> b.BigEndian);
+            return new BothInt32(le, be);
+        }
+
+        public static BothInt32 operator >>>(BothInt32 a, BothInt32 b)
+        {
+            int le = (int)(a.LittleEndian >>> b.LittleEndian);
+            int be = (int)(a.BigEndian >>> b.BigEndian);
+            return new BothInt32(le, be);
+        }
+
+        #endregion
+
+        #region Bitwise Binary Operators
+
+        public static BothInt32 operator &(BothInt32 a, BothInt32 b)
+        {
+            int le = (int)(a.LittleEndian & b.LittleEndian);
+            int be = (int)(a.BigEndian & b.BigEndian);
             return new BothInt32(le, be);
         }
 
@@ -92,15 +131,12 @@ namespace SabreTools.Numerics
             return new BothInt32(le, be);
         }
 
-        public static BothInt32 operator &(BothInt32 a, BothInt32 b)
+        public static BothInt32 operator ^(BothInt32 a, BothInt32 b)
         {
-            int le = (int)(a.LittleEndian & b.LittleEndian);
-            int be = (int)(a.BigEndian & b.BigEndian);
+            int le = (int)(a.LittleEndian ^ b.LittleEndian);
+            int be = (int)(a.BigEndian ^ b.BigEndian);
             return new BothInt32(le, be);
         }
-
-        public static implicit operator BothInt32(int val)
-            => new(val, val);
 
         #endregion
     }

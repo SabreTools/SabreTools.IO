@@ -5,6 +5,9 @@ namespace SabreTools.Numerics
     /// </summary>
     public sealed class BothInt16(short le, short be) : BothEndian<short>(le, be)
     {
+        public static implicit operator BothInt16(short val)
+            => new(val, val);
+
         #region Arithmetic Unary Operators
 
         public static BothInt16 operator ++(BothInt16 a)
@@ -76,12 +79,48 @@ namespace SabreTools.Numerics
 
         #endregion
 
-        #region Bitwise and Shift Operators
+        #region Bitwise Unary Operators
 
-        public static BothInt16 operator ^(BothInt16 a, BothInt16 b)
+        public static BothInt16 operator ~(BothInt16 a)
         {
-            short le = (short)(a.LittleEndian ^ b.LittleEndian);
-            short be = (short)(a.BigEndian ^ b.BigEndian);
+            short le = (short)(~a.LittleEndian);
+            short be = (short)(~a.BigEndian);
+            return new BothInt16(le, be);
+        }
+
+        #endregion
+
+        #region Shift Binary Operators
+
+        public static BothInt16 operator <<(BothInt16 a, BothInt16 b)
+        {
+            short le = (short)(a.LittleEndian << b.LittleEndian);
+            short be = (short)(a.BigEndian << b.BigEndian);
+            return new BothInt16(le, be);
+        }
+
+        public static BothInt16 operator >>(BothInt16 a, BothInt16 b)
+        {
+            short le = (short)(a.LittleEndian >> b.LittleEndian);
+            short be = (short)(a.BigEndian >> b.BigEndian);
+            return new BothInt16(le, be);
+        }
+
+        public static BothInt16 operator >>>(BothInt16 a, BothInt16 b)
+        {
+            short le = (short)(a.LittleEndian >>> b.LittleEndian);
+            short be = (short)(a.BigEndian >>> b.BigEndian);
+            return new BothInt16(le, be);
+        }
+
+        #endregion
+
+        #region Bitwise Binary Operators
+
+        public static BothInt16 operator &(BothInt16 a, BothInt16 b)
+        {
+            short le = (short)(a.LittleEndian & b.LittleEndian);
+            short be = (short)(a.BigEndian & b.BigEndian);
             return new BothInt16(le, be);
         }
 
@@ -92,15 +131,12 @@ namespace SabreTools.Numerics
             return new BothInt16(le, be);
         }
 
-        public static BothInt16 operator &(BothInt16 a, BothInt16 b)
+        public static BothInt16 operator ^(BothInt16 a, BothInt16 b)
         {
-            short le = (short)(a.LittleEndian & b.LittleEndian);
-            short be = (short)(a.BigEndian & b.BigEndian);
+            short le = (short)(a.LittleEndian ^ b.LittleEndian);
+            short be = (short)(a.BigEndian ^ b.BigEndian);
             return new BothInt16(le, be);
         }
-
-        public static implicit operator BothInt16(short val)
-            => new(val, val);
 
         #endregion
     }

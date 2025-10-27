@@ -5,6 +5,9 @@ namespace SabreTools.Numerics
     /// </summary>
     public sealed class BothInt8(sbyte le, sbyte be) : BothEndian<sbyte>(le, be)
     {
+        public static implicit operator BothInt8(sbyte val)
+            => new(val, val);
+
         #region Arithmetic Unary Operators
 
         public static BothInt8 operator ++(BothInt8 a)
@@ -76,12 +79,48 @@ namespace SabreTools.Numerics
 
         #endregion
 
-        #region Bitwise and Shift Operators
+        #region Bitwise Unary Operators
 
-        public static BothInt8 operator ^(BothInt8 a, BothInt8 b)
+        public static BothInt8 operator ~(BothInt8 a)
         {
-            sbyte le = (sbyte)(a.LittleEndian ^ b.LittleEndian);
-            sbyte be = (sbyte)(a.BigEndian ^ b.BigEndian);
+            sbyte le = (sbyte)(~a.LittleEndian);
+            sbyte be = (sbyte)(~a.BigEndian);
+            return new BothInt8(le, be);
+        }
+
+        #endregion
+
+        #region Shift Binary Operators
+
+        public static BothInt8 operator <<(BothInt8 a, BothInt8 b)
+        {
+            sbyte le = (sbyte)(a.LittleEndian << b.LittleEndian);
+            sbyte be = (sbyte)(a.BigEndian << b.BigEndian);
+            return new BothInt8(le, be);
+        }
+
+        public static BothInt8 operator >>(BothInt8 a, BothInt8 b)
+        {
+            sbyte le = (sbyte)(a.LittleEndian >> b.LittleEndian);
+            sbyte be = (sbyte)(a.BigEndian >> b.BigEndian);
+            return new BothInt8(le, be);
+        }
+
+        public static BothInt8 operator >>>(BothInt8 a, BothInt8 b)
+        {
+            sbyte le = (sbyte)(a.LittleEndian >>> b.LittleEndian);
+            sbyte be = (sbyte)(a.BigEndian >>> b.BigEndian);
+            return new BothInt8(le, be);
+        }
+
+        #endregion
+
+        #region Bitwise Binary Operators
+
+        public static BothInt8 operator &(BothInt8 a, BothInt8 b)
+        {
+            sbyte le = (sbyte)(a.LittleEndian & b.LittleEndian);
+            sbyte be = (sbyte)(a.BigEndian & b.BigEndian);
             return new BothInt8(le, be);
         }
 
@@ -92,15 +131,12 @@ namespace SabreTools.Numerics
             return new BothInt8(le, be);
         }
 
-        public static BothInt8 operator &(BothInt8 a, BothInt8 b)
+        public static BothInt8 operator ^(BothInt8 a, BothInt8 b)
         {
-            sbyte le = (sbyte)(a.LittleEndian & b.LittleEndian);
-            sbyte be = (sbyte)(a.BigEndian & b.BigEndian);
+            sbyte le = (sbyte)(a.LittleEndian ^ b.LittleEndian);
+            sbyte be = (sbyte)(a.BigEndian ^ b.BigEndian);
             return new BothInt8(le, be);
         }
-
-        public static implicit operator BothInt8(sbyte val)
-            => new(val, val);
 
         #endregion
     }
