@@ -85,6 +85,14 @@ namespace SabreTools.IO.Encryption
             0xF0, 0xF1, 0xF2, 0xF3, 0xF4, 0xF5, 0xF6, 0xF7, 0xF8, 0xF9, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF
         };
 
+        private const uint MPQ_HASH_TABLE_INDEX = 0x000;
+
+        private const uint MPQ_HASH_NAME_A = 0x100;
+
+        private const uint MPQ_HASH_NAME_B = 0x200;
+
+        private const uint MPQ_HASH_FILE_KEY = 0x300;
+
         private const uint MPQ_HASH_KEY2_MIX = 0x400;
 
         private const uint STORM_BUFFER_SIZE = 0x500;
