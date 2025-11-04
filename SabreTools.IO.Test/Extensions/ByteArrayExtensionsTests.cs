@@ -36,6 +36,42 @@ namespace SabreTools.IO.Test.Extensions
 
         #endregion
 
+        #region IsNumericArray
+
+        [Fact]
+        public void IsNumericArray_Empty_False()
+        {
+            byte[] arr = [];
+            bool actual = arr.IsNumericArray();
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void IsNumericArray_NonNumeric_False()
+        {
+            byte[] arr = Encoding.ASCII.GetBytes("ABCDEF");
+            bool actual = arr.IsNumericArray();
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void IsNumericArray_MixedNumeric_False()
+        {
+            byte[] arr = Encoding.ASCII.GetBytes("ABC123");
+            bool actual = arr.IsNumericArray();
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void IsNumericArray_Numeric_True()
+        {
+            byte[] arr = Encoding.ASCII.GetBytes("0123456789");
+            bool actual = arr.IsNumericArray();
+            Assert.True(actual);
+        }
+
+        #endregion
+
         #region FindAllPositions
 
         [Fact]

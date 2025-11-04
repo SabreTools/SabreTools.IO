@@ -16,6 +16,19 @@ namespace SabreTools.IO.Extensions
             return array == null || array.Length == 0;
         }
 
+        /// <summary>
+        /// Indicates if an array contains all ASCII numeric digits
+        /// </summary>
+        public static bool IsNumericArray(this byte[] arr)
+        {
+            // Empty arrays cannot be numeric
+            if (arr.Length == 0)
+                return false;
+
+            // '0' to '9'
+            return Array.TrueForAll(arr, b => b >= 0x30 && b <= 0x39);
+        }
+
         #region Matching
 
         /// <summary>
