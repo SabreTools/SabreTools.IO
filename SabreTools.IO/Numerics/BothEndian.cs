@@ -5,8 +5,8 @@ namespace SabreTools.Numerics
     /// <summary>
     /// Both-endian numeric value
     /// </summary>
-    public abstract class BothEndian<T>(T le, T be) : IComparable, IConvertible, IEquatable<BothEndian<T>>, IEquatable<T>
-        where T : notnull, IComparable, IConvertible, IEquatable<T>
+    public abstract class BothEndian<TNumeric>(TNumeric le, TNumeric be) : IComparable, IConvertible, IEquatable<BothEndian<TNumeric>>, IEquatable<TNumeric>
+        where TNumeric : notnull, IComparable, IConvertible, IEquatable<TNumeric>
     {
         #region Properties
 
@@ -14,13 +14,13 @@ namespace SabreTools.Numerics
         /// Little-endian representation of the number
         /// </summary>
         /// <remarks>Value should match <see cref="BigEndian"/></remarks>
-        public readonly T LittleEndian = le;
+        public readonly TNumeric LittleEndian = le;
 
         /// <summary>
         /// Big-endian representation of the number
         /// </summary>
         /// <remarks>Value should match <see cref="LittleEndian"/></remarks>
-        public readonly T BigEndian = be;
+        public readonly TNumeric BigEndian = be;
 
         /// <summary>
         /// Indicates if the value is valid
@@ -40,12 +40,12 @@ namespace SabreTools.Numerics
         /// Returns either <see cref="LittleEndian"/> or <see cref="BigEndian"/>
         /// depending on the system endianness.
         /// </remarks>
-        public static implicit operator T(BothEndian<T> val)
+        public static implicit operator TNumeric(BothEndian<TNumeric> val)
             => BitConverter.IsLittleEndian ? val.LittleEndian : val.BigEndian;
 
-        public static bool operator ==(BothEndian<T> a, BothEndian<T> b) => a.Equals(b);
+        public static bool operator ==(BothEndian<TNumeric> a, BothEndian<TNumeric> b) => a.Equals(b);
 
-        public static bool operator !=(BothEndian<T> a, BothEndian<T> b) => !a.Equals(b);
+        public static bool operator !=(BothEndian<TNumeric> a, BothEndian<TNumeric> b) => !a.Equals(b);
 
         #endregion
 
@@ -55,10 +55,10 @@ namespace SabreTools.Numerics
         /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
-            if (obj is BothEndian<T> be)
+            if (obj is BothEndian<TNumeric> be)
                 return Equals(be);
 
-            if (obj is T t)
+            if (obj is TNumeric t)
                 return Equals(t);
 
             return base.Equals(obj);
@@ -67,10 +67,10 @@ namespace SabreTools.Numerics
         /// <inheritdoc/>
         public override bool Equals(object obj)
         {
-            if (obj is BothEndian<T> be)
+            if (obj is BothEndian<TNumeric> be)
                 return Equals(be);
 
-            if (obj is T t)
+            if (obj is TNumeric t)
                 return Equals(t);
 
             return base.Equals(obj);
@@ -78,14 +78,14 @@ namespace SabreTools.Numerics
 #endif
 
         /// <inheritdoc/>
-        public override int GetHashCode() => ((T)this).GetHashCode();
+        public override int GetHashCode() => ((TNumeric)this).GetHashCode();
 
 #if NETCOREAPP
         /// <inheritdoc/>
-        public override string? ToString() => ((T)this).ToString();
+        public override string? ToString() => ((TNumeric)this).ToString();
 #else
         /// <inheritdoc/>
-        public override string ToString() => ((T)this).ToString();
+        public override string ToString() => ((TNumeric)this).ToString();
 #endif
 
 #endregion
@@ -94,9 +94,9 @@ namespace SabreTools.Numerics
 
         /// <inheritdoc/>
 #if NETCOREAPP
-        public int CompareTo(object? obj) => ((T)this).CompareTo(obj);
+        public int CompareTo(object? obj) => ((TNumeric)this).CompareTo(obj);
 #else
-        public int CompareTo(object obj) => ((T)this).CompareTo(obj);
+        public int CompareTo(object obj) => ((TNumeric)this).CompareTo(obj);
 #endif
 
         #endregion
@@ -104,104 +104,104 @@ namespace SabreTools.Numerics
         #region IConvertible
 
         /// <inheritdoc/>
-        public TypeCode GetTypeCode() => ((T)this).GetTypeCode();
+        public TypeCode GetTypeCode() => ((TNumeric)this).GetTypeCode();
 
 #if NETCOREAPP
         /// <inheritdoc/>
-        public bool ToBoolean(IFormatProvider? provider) => ((T)this).ToBoolean(provider);
+        public bool ToBoolean(IFormatProvider? provider) => ((TNumeric)this).ToBoolean(provider);
 
         /// <inheritdoc/>
-        public char ToChar(IFormatProvider? provider) => ((T)this).ToChar(provider);
+        public char ToChar(IFormatProvider? provider) => ((TNumeric)this).ToChar(provider);
 
         /// <inheritdoc/>
-        public sbyte ToSByte(IFormatProvider? provider) => ((T)this).ToSByte(provider);
+        public sbyte ToSByte(IFormatProvider? provider) => ((TNumeric)this).ToSByte(provider);
 
         /// <inheritdoc/>
-        public byte ToByte(IFormatProvider? provider) => ((T)this).ToByte(provider);
+        public byte ToByte(IFormatProvider? provider) => ((TNumeric)this).ToByte(provider);
 
         /// <inheritdoc/>
-        public short ToInt16(IFormatProvider? provider) => ((T)this).ToInt16(provider);
+        public short ToInt16(IFormatProvider? provider) => ((TNumeric)this).ToInt16(provider);
 
         /// <inheritdoc/>
-        public ushort ToUInt16(IFormatProvider? provider) => ((T)this).ToUInt16(provider);
+        public ushort ToUInt16(IFormatProvider? provider) => ((TNumeric)this).ToUInt16(provider);
 
         /// <inheritdoc/>
-        public int ToInt32(IFormatProvider? provider) => ((T)this).ToInt32(provider);
+        public int ToInt32(IFormatProvider? provider) => ((TNumeric)this).ToInt32(provider);
 
         /// <inheritdoc/>
-        public uint ToUInt32(IFormatProvider? provider) => ((T)this).ToUInt32(provider);
+        public uint ToUInt32(IFormatProvider? provider) => ((TNumeric)this).ToUInt32(provider);
 
         /// <inheritdoc/>
-        public long ToInt64(IFormatProvider? provider) => ((T)this).ToInt64(provider);
+        public long ToInt64(IFormatProvider? provider) => ((TNumeric)this).ToInt64(provider);
 
         /// <inheritdoc/>
-        public ulong ToUInt64(IFormatProvider? provider) => ((T)this).ToUInt64(provider);
+        public ulong ToUInt64(IFormatProvider? provider) => ((TNumeric)this).ToUInt64(provider);
 
         /// <inheritdoc/>
-        public float ToSingle(IFormatProvider? provider) => ((T)this).ToSingle(provider);
+        public float ToSingle(IFormatProvider? provider) => ((TNumeric)this).ToSingle(provider);
 
         /// <inheritdoc/>
-        public double ToDouble(IFormatProvider? provider) => ((T)this).ToDouble(provider);
+        public double ToDouble(IFormatProvider? provider) => ((TNumeric)this).ToDouble(provider);
 
         /// <inheritdoc/>
-        public decimal ToDecimal(IFormatProvider? provider) => ((T)this).ToDecimal(provider);
+        public decimal ToDecimal(IFormatProvider? provider) => ((TNumeric)this).ToDecimal(provider);
 
         /// <inheritdoc/>
-        public DateTime ToDateTime(IFormatProvider? provider) => ((T)this).ToDateTime(provider);
+        public DateTime ToDateTime(IFormatProvider? provider) => ((TNumeric)this).ToDateTime(provider);
 
         /// <inheritdoc/>
-        public string ToString(IFormatProvider? provider) => ((T)this).ToString(provider);
+        public string ToString(IFormatProvider? provider) => ((TNumeric)this).ToString(provider);
 
         /// <inheritdoc/>
-        public object ToType(Type conversionType, IFormatProvider? provider) => ((T)this).ToType(conversionType, provider);
+        public object ToType(Type conversionType, IFormatProvider? provider) => ((TNumeric)this).ToType(conversionType, provider);
 #else
         /// <inheritdoc/>
-        public bool ToBoolean(IFormatProvider provider) => ((T)this).ToBoolean(provider);
+        public bool ToBoolean(IFormatProvider provider) => ((TNumeric)this).ToBoolean(provider);
 
         /// <inheritdoc/>
-        public char ToChar(IFormatProvider provider) => ((T)this).ToChar(provider);
+        public char ToChar(IFormatProvider provider) => ((TNumeric)this).ToChar(provider);
 
         /// <inheritdoc/>
-        public sbyte ToSByte(IFormatProvider provider) => ((T)this).ToSByte(provider);
+        public sbyte ToSByte(IFormatProvider provider) => ((TNumeric)this).ToSByte(provider);
 
         /// <inheritdoc/>
-        public byte ToByte(IFormatProvider provider) => ((T)this).ToByte(provider);
+        public byte ToByte(IFormatProvider provider) => ((TNumeric)this).ToByte(provider);
 
         /// <inheritdoc/>
-        public short ToInt16(IFormatProvider provider) => ((T)this).ToInt16(provider);
+        public short ToInt16(IFormatProvider provider) => ((TNumeric)this).ToInt16(provider);
 
         /// <inheritdoc/>
-        public ushort ToUInt16(IFormatProvider provider) => ((T)this).ToUInt16(provider);
+        public ushort ToUInt16(IFormatProvider provider) => ((TNumeric)this).ToUInt16(provider);
 
         /// <inheritdoc/>
-        public int ToInt32(IFormatProvider provider) => ((T)this).ToInt32(provider);
+        public int ToInt32(IFormatProvider provider) => ((TNumeric)this).ToInt32(provider);
 
         /// <inheritdoc/>
-        public uint ToUInt32(IFormatProvider provider) => ((T)this).ToUInt32(provider);
+        public uint ToUInt32(IFormatProvider provider) => ((TNumeric)this).ToUInt32(provider);
 
         /// <inheritdoc/>
-        public long ToInt64(IFormatProvider provider) => ((T)this).ToInt64(provider);
+        public long ToInt64(IFormatProvider provider) => ((TNumeric)this).ToInt64(provider);
 
         /// <inheritdoc/>
-        public ulong ToUInt64(IFormatProvider provider) => ((T)this).ToUInt64(provider);
+        public ulong ToUInt64(IFormatProvider provider) => ((TNumeric)this).ToUInt64(provider);
 
         /// <inheritdoc/>
-        public float ToSingle(IFormatProvider provider) => ((T)this).ToSingle(provider);
+        public float ToSingle(IFormatProvider provider) => ((TNumeric)this).ToSingle(provider);
 
         /// <inheritdoc/>
-        public double ToDouble(IFormatProvider provider) => ((T)this).ToDouble(provider);
+        public double ToDouble(IFormatProvider provider) => ((TNumeric)this).ToDouble(provider);
 
         /// <inheritdoc/>
-        public decimal ToDecimal(IFormatProvider provider) => ((T)this).ToDecimal(provider);
+        public decimal ToDecimal(IFormatProvider provider) => ((TNumeric)this).ToDecimal(provider);
 
         /// <inheritdoc/>
-        public DateTime ToDateTime(IFormatProvider provider) => ((T)this).ToDateTime(provider);
+        public DateTime ToDateTime(IFormatProvider provider) => ((TNumeric)this).ToDateTime(provider);
 
         /// <inheritdoc/>
-        public string ToString(IFormatProvider provider) => ((T)this).ToString(provider);
+        public string ToString(IFormatProvider provider) => ((TNumeric)this).ToString(provider);
 
         /// <inheritdoc/>
-        public object ToType(Type conversionType, IFormatProvider provider) => ((T)this).ToType(conversionType, provider);
+        public object ToType(Type conversionType, IFormatProvider provider) => ((TNumeric)this).ToType(conversionType, provider);
 #endif
 
         #endregion
@@ -210,7 +210,7 @@ namespace SabreTools.Numerics
 
 #if NETCOREAPP
         /// <inheritdoc/>
-        public bool Equals(BothEndian<T>? other)
+        public bool Equals(BothEndian<TNumeric>? other)
         {
             if (other is null)
                 return false;
@@ -219,14 +219,14 @@ namespace SabreTools.Numerics
         }
 
         /// <inheritdoc/>
-        public bool Equals(T? other) => ((T)this).Equals(other);
+        public bool Equals(TNumeric? other) => ((TNumeric)this).Equals(other);
 #else
         /// <inheritdoc/>
-        public bool Equals(BothEndian<T> other)
+        public bool Equals(BothEndian<TNumeric> other)
             => LittleEndian.Equals(other.LittleEndian) && BigEndian.Equals(other.BigEndian);
 
         /// <inheritdoc/>
-        public bool Equals(T other) => ((T)this).Equals(other);
+        public bool Equals(TNumeric other) => ((TNumeric)this).Equals(other);
 #endif
 
         #endregion

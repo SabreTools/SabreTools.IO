@@ -14,37 +14,37 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Get an attribute of the requested type
         /// </summary>
-        public static T? GetAttribute<T>(FieldInfo? fi) where T : Attribute
+        public static TAttribute? GetAttribute<TAttribute>(FieldInfo? fi) where TAttribute : Attribute
         {
             // If the field info is invalid
             if (fi == null)
                 return null;
 
             // Get all matching attributes
-            var attributes = fi.GetCustomAttributes(typeof(T), true);
+            var attributes = fi.GetCustomAttributes(typeof(TAttribute), true);
             if (attributes == null || attributes.Length == 0)
                 return null;
 
             // Get the first attribute that matches
-            return attributes[0] as T;
+            return attributes[0] as TAttribute;
         }
 
         /// <summary>
         /// Get an attribute of the requested type
         /// </summary>
-        public static T? GetAttribute<T>(Type? type) where T : Attribute
+        public static TAttribute? GetAttribute<TAttribute>(Type? type) where TAttribute : Attribute
         {
             // If the field info is invalid
             if (type == null)
                 return null;
 
             // Get all matching attributes
-            var attributes = type.GetCustomAttributes(typeof(T), true);
+            var attributes = type.GetCustomAttributes(typeof(TAttribute), true);
             if (attributes == null || attributes.Length == 0)
                 return null;
 
             // Get the first attribute that matches
-            return attributes[0] as T;
+            return attributes[0] as TAttribute;
         }
 
         /// <summary>
