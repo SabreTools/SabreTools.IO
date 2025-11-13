@@ -93,14 +93,14 @@ namespace SabreTools.IO.Compression.BZip2
 {
     internal class BZip2Compressor
     {
-        private int blockSize100k;  // 0...9
+        private readonly int blockSize100k;  // 0...9
         private int currentByte = -1;
         private int runLength = 0;
         private int last;  // index into the block of the last char processed
-        private int outBlockFillThreshold;
-        private CompressionState cstate;
-        private readonly CRC32 crc = new CRC32(true);
-        BitWriter bw;
+        private readonly int outBlockFillThreshold;
+        private readonly CompressionState cstate;
+        private readonly CRC32 crc = new(true);
+        readonly BitWriter bw;
         int runs;
 
         /*
@@ -132,9 +132,9 @@ namespace SabreTools.IO.Compression.BZip2
          * Possibly because the number of elems to sort is usually small, typically
          * &lt;= 20.
          */
-        private static readonly int[] increments = { 1, 4, 13, 40, 121, 364, 1093, 3280,
+        private static readonly int[] increments = [ 1, 4, 13, 40, 121, 364, 1093, 3280,
                                                      9841, 29524, 88573, 265720, 797161,
-                                                     2391484 };
+                                                     2391484 ];
 
         /// <summary>
         ///   BZip2Compressor writes its compressed data out via a BitWriter. This
@@ -1175,9 +1175,13 @@ namespace SabreTools.IO.Compression.BZip2
                 while (ll_i != tmp)
                 {
                     j++;
+#if NETCOREAPP || NETSTANDARD2_1_OR_GREATER
+                    (yy[j], tmp) = (tmp, yy[j]);
+#else
                     byte tmp2 = tmp;
                     tmp = yy[j];
                     yy[j] = tmp2;
+#endif
                 }
                 yy[0] = tmp;
 
@@ -1690,9 +1694,13 @@ namespace SabreTools.IO.Compression.BZip2
                 while (ll_i != tmp)
                 {
                     j++;
+#if NETCOREAPP || NETSTANDARD2_1_OR_GREATER
+                    (pos[j], tmp) = (tmp, pos[j]);
+#else
                     byte tmp2 = tmp;
                     tmp = pos[j];
                     pos[j] = tmp2;
+#endif
                 }
 
                 pos[0] = tmp;

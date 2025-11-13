@@ -71,12 +71,12 @@ namespace SabreTools.IO.Matching
         /// <summary>
         /// Allow conversion from byte array to ContentMatch
         /// </summary>
-        public static implicit operator ContentMatch(byte[] needle) => new ContentMatch(needle);
+        public static implicit operator ContentMatch(byte[] needle) => new(needle);
 
         /// <summary>
         /// Allow conversion from nullable byte array to ContentMatch
         /// </summary>
-        public static implicit operator ContentMatch(byte?[] needle) => new ContentMatch(needle);
+        public static implicit operator ContentMatch(byte?[] needle) => new(needle);
 
         #endregion
 

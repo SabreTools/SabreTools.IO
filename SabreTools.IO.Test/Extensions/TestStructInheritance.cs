@@ -18,7 +18,7 @@ namespace SabreTools.IO.Test.Extensions
 
         public uint FieldB;
     }
-    
+
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     internal class TestStructInheritanceChild2 : TestStructInheritanceParent
     {

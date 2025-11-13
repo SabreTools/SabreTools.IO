@@ -116,7 +116,7 @@ namespace SabreTools.IO.Compression.Deflate
 
             static Config()
             {
-                Table = new Config[] {
+                Table = [
                     new Config(0, 0, 0, 0, DeflateFlavor.Store),
                     new Config(4, 4, 8, 4, DeflateFlavor.Fast),
                     new Config(4, 5, 16, 8, DeflateFlavor.Fast),
@@ -128,7 +128,7 @@ namespace SabreTools.IO.Compression.Deflate
                     new Config(8, 32, 128, 256, DeflateFlavor.Slow),
                     new Config(32, 128, 258, 1024, DeflateFlavor.Slow),
                     new Config(32, 258, 258, 4096, DeflateFlavor.Slow),
-                };
+                ];
             }
 
             private static readonly Config[] Table;
@@ -137,8 +137,8 @@ namespace SabreTools.IO.Compression.Deflate
 
         private CompressFunc DeflateFunction;
 
-        private static readonly System.String[] _ErrorMessage = new System.String[]
-        {
+        private static readonly System.String[] _ErrorMessage =
+        [
             "need dictionary",
             "stream end",
             "",
@@ -149,7 +149,7 @@ namespace SabreTools.IO.Compression.Deflate
             "buffer error",
             "incompatible version",
             ""
-        };
+        ];
 
         // preset dictionary flag in zlib header
         private static readonly int PRESET_DICT = 0x20;
@@ -256,9 +256,9 @@ namespace SabreTools.IO.Compression.Deflate
         internal short[] dyn_dtree;         // distance tree
         internal short[] bl_tree;           // Huffman tree for bit lengths
 
-        internal Tree treeLiterals = new Tree();  // desc for literal tree
-        internal Tree treeDistances = new Tree();  // desc for distance tree
-        internal Tree treeBitLengths = new Tree(); // desc for bit length tree
+        internal Tree treeLiterals = new();  // desc for literal tree
+        internal Tree treeDistances = new();  // desc for distance tree
+        internal Tree treeBitLengths = new(); // desc for bit length tree
 
         // number of codes at each bit length for an optimal tree
         internal short[] bl_count = new short[InternalConstants.MAX_BITS + 1];

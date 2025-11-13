@@ -80,7 +80,7 @@ namespace SabreTools.IO.Test.Extensions
         #endregion
 
         /// <summary>
-        /// Fake enumerable that uses <see cref="ErrorEnumerator"/> 
+        /// Fake enumerable that uses <see cref="ErrorEnumerator"/>
         /// </summary>
         private class ErrorEnumerable : IEnumerable<string>
         {

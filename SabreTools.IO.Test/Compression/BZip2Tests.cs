@@ -29,7 +29,7 @@ namespace SabreTools.IO.Test.Compression
         {
             string path = Path.Combine(Environment.CurrentDirectory, "TestData", "file-to-compress.bin");
             byte[] input = File.ReadAllBytes(path);
-            MemoryStream output = new MemoryStream();
+            var output = new MemoryStream();
 
             var bzip = new BZip2OutputStream(output, leaveOpen: true);
             bzip.Write(input, 0, input.Length);

@@ -6,7 +6,7 @@ using static SabreTools.IO.Compression.Quantum.Constants;
 
 namespace SabreTools.IO.Compression.Quantum
 {
-    /// <see href="www.russotto.net/quantumcomp.html"/> 
+    /// <see href="www.russotto.net/quantumcomp.html"/>
     public class Decompressor
     {
         /// <summary>
@@ -362,9 +362,13 @@ namespace SabreTools.IO.Compression.Quantum
                     {
                         if (model.Symbols![i]!.CumulativeFrequency < model.Symbols![j]!.CumulativeFrequency)
                         {
+#if NETCOREAPP || NETSTANDARD2_1_OR_GREATER
+                            (model.Symbols[j], model.Symbols[i]) = (model.Symbols[i], model.Symbols[j]);
+#else
                             var temp = model.Symbols[i];
                             model.Symbols[i] = model.Symbols[j];
                             model.Symbols[j] = temp;
+#endif
                         }
                     }
                 }

@@ -88,7 +88,7 @@ namespace SabreTools.Numerics
         public override string ToString() => ((TNumeric)this).ToString();
 #endif
 
-#endregion
+        #endregion
 
         #region IComparable
 

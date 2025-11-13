@@ -96,7 +96,7 @@ namespace SabreTools.IO.Compression.SZDD
         /// </summary>
         public static Decompressor CreateSZDD(Stream source)
         {
-            // Create the decompressor
+            // Create the decompressors
             var decompressor = new Decompressor(source);
 
             // Set the format and return

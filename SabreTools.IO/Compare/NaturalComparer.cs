@@ -1,12 +1,12 @@
 ﻿/*
- * 
+ *
  * Links for info and original source code:
- * 
+ *
  * https://blog.codinghorror.com/sorting-for-humans-natural-sort-order/
  * http://www.codeproject.com/Articles/22517/Natural-Sort-Comparer
  *
  * Exact code implementation used with permission, originally by motoschifo
- * 
+ *
  */
 
 using System;

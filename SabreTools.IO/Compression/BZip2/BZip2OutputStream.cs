@@ -92,14 +92,14 @@ namespace SabreTools.IO.Compression.BZip2
     public class BZip2OutputStream : System.IO.Stream
     {
         int totalBytesWrittenIn;
-        bool leaveOpen;
+        readonly bool leaveOpen;
         BZip2Compressor compressor;
         uint combinedCRC;
         Stream output;
         BitWriter bw;
-        int blockSize100k;  // 0...9
+        readonly int blockSize100k;  // 0...9
 
-        private TraceBits desiredTrace = TraceBits.Crc | TraceBits.Write;
+        private readonly TraceBits desiredTrace = TraceBits.Crc | TraceBits.Write;
 
         /// <summary>
         ///   Constructs a new <c>BZip2OutputStream</c>, that sends its

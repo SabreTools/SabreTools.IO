@@ -653,13 +653,11 @@ namespace SabreTools.IO.Compression.Deflate
         /// <returns>The string in compressed form</returns>
         public static byte[] CompressString(String s)
         {
-            using (var ms = new System.IO.MemoryStream())
-            {
-                System.IO.Stream compressor =
-                    new DeflateStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
-                ZlibBaseStream.CompressString(s, compressor);
-                return ms.ToArray();
-            }
+            using var ms = new System.IO.MemoryStream();
+            System.IO.Stream compressor =
+                new DeflateStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
+            ZlibBaseStream.CompressString(s, compressor);
+            return ms.ToArray();
         }
 
 
@@ -683,14 +681,12 @@ namespace SabreTools.IO.Compression.Deflate
         /// <returns>The data in compressed form</returns>
         public static byte[] CompressBuffer(byte[] b)
         {
-            using (var ms = new System.IO.MemoryStream())
-            {
-                System.IO.Stream compressor =
-                    new DeflateStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
+            using var ms = new System.IO.MemoryStream();
+            System.IO.Stream compressor =
+                new DeflateStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
 
-                ZlibBaseStream.CompressBuffer(b, compressor);
-                return ms.ToArray();
-            }
+            ZlibBaseStream.CompressBuffer(b, compressor);
+            return ms.ToArray();
         }
 
 
@@ -710,13 +706,11 @@ namespace SabreTools.IO.Compression.Deflate
         /// <returns>The uncompressed string</returns>
         public static String UncompressString(byte[] compressed)
         {
-            using (var input = new System.IO.MemoryStream(compressed))
-            {
-                System.IO.Stream decompressor =
-                    new DeflateStream(input, CompressionMode.Decompress);
+            using var input = new System.IO.MemoryStream(compressed);
+            System.IO.Stream decompressor =
+                new DeflateStream(input, CompressionMode.Decompress);
 
-                return ZlibBaseStream.UncompressString(compressed, decompressor);
-            }
+            return ZlibBaseStream.UncompressString(compressed, decompressor);
         }
 
 
@@ -736,13 +730,11 @@ namespace SabreTools.IO.Compression.Deflate
         /// <returns>The data in uncompressed form</returns>
         public static byte[] UncompressBuffer(byte[] compressed)
         {
-            using (var input = new System.IO.MemoryStream(compressed))
-            {
-                System.IO.Stream decompressor =
-                    new DeflateStream(input, CompressionMode.Decompress);
+            using var input = new System.IO.MemoryStream(compressed);
+            System.IO.Stream decompressor =
+                new DeflateStream(input, CompressionMode.Decompress);
 
-                return ZlibBaseStream.UncompressBuffer(compressed, decompressor);
-            }
+            return ZlibBaseStream.UncompressBuffer(compressed, decompressor);
         }
 
     }

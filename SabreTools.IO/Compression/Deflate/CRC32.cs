@@ -29,7 +29,6 @@ using System;
 using Interop = System.Runtime.InteropServices;
 
 #nullable disable
-#pragma warning disable CS0618
 namespace SabreTools.IO.Compression.Deflate
 {
     /// <summary>
@@ -101,13 +100,13 @@ namespace SabreTools.IO.Compression.Deflate
 
                 _TotalBytesRead = 0;
                 int count = input.Read(buffer, 0, readSize);
-                if (output != null) output.Write(buffer, 0, count);
+                output?.Write(buffer, 0, count);
                 _TotalBytesRead += count;
                 while (count > 0)
                 {
                     SlurpBlock(buffer, 0, count);
                     count = input.Read(buffer, 0, readSize);
-                    if (output != null) output.Write(buffer, 0, count);
+                    output?.Write(buffer, 0, count);
                     _TotalBytesRead += count;
                 }
 
@@ -469,9 +468,9 @@ namespace SabreTools.IO.Compression.Deflate
         }
 
         // private member vars
-        private UInt32 dwPolynomial;
+        private readonly UInt32 dwPolynomial;
         private Int64 _TotalBytesRead;
-        private bool reverseBits;
+        private readonly bool reverseBits;
         private UInt32[] crc32Table;
         private const int BUFFER_SIZE = 8192;
         private UInt32 _register = 0xFFFFFFFFU;
@@ -502,8 +501,8 @@ namespace SabreTools.IO.Compression.Deflate
         private static readonly Int64 UnsetLengthLimit = -99;
 
         internal System.IO.Stream _innerStream;
-        private CRC32 _Crc32;
-        private Int64 _lengthLimit = -99;
+        private readonly CRC32 _Crc32;
+        private readonly Int64 _lengthLimit = -99;
         private bool _leaveOpen;
 
         /// <summary>

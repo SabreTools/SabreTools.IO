@@ -547,7 +547,8 @@ namespace SabreTools.IO.Compression.Deflate
         virtual public FlushType FlushMode
         {
             get { return (this._baseStream._flushMode); }
-            set {
+            set
+            {
                 if (_disposed) throw new ObjectDisposedException("GZipStream");
                 this._baseStream._flushMode = value;
             }
@@ -852,7 +853,7 @@ namespace SabreTools.IO.Compression.Deflate
         #endregion
 
 
-        internal static readonly System.DateTime _unixEpoch = new System.DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        internal static readonly System.DateTime _unixEpoch = new(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 #if SILVERLIGHT || NETCF
         internal static readonly System.Text.Encoding iso8859dash1 = new Ionic.Encoding.Iso8859Dash1Encoding();
 #else
@@ -944,13 +945,11 @@ namespace SabreTools.IO.Compression.Deflate
         /// <returns>The string in compressed form</returns>
         public static byte[] CompressString(String s)
         {
-            using (var ms = new MemoryStream())
-            {
-                System.IO.Stream compressor =
-                    new GZipStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
-                ZlibBaseStream.CompressString(s, compressor);
-                return ms.ToArray();
-            }
+            using var ms = new MemoryStream();
+            System.IO.Stream compressor =
+                new GZipStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
+            ZlibBaseStream.CompressString(s, compressor);
+            return ms.ToArray();
         }
 
 
@@ -972,14 +971,12 @@ namespace SabreTools.IO.Compression.Deflate
         /// <returns>The data in compressed form</returns>
         public static byte[] CompressBuffer(byte[] b)
         {
-            using (var ms = new MemoryStream())
-            {
-                System.IO.Stream compressor =
-                    new GZipStream( ms, CompressionMode.Compress, CompressionLevel.BestCompression );
+            using var ms = new MemoryStream();
+            System.IO.Stream compressor =
+                new GZipStream(ms, CompressionMode.Compress, CompressionLevel.BestCompression);
 
-                ZlibBaseStream.CompressBuffer(b, compressor);
-                return ms.ToArray();
-            }
+            ZlibBaseStream.CompressBuffer(b, compressor);
+            return ms.ToArray();
         }
 
 
@@ -997,11 +994,9 @@ namespace SabreTools.IO.Compression.Deflate
         /// <returns>The uncompressed string</returns>
         public static String UncompressString(byte[] compressed)
         {
-            using (var input = new MemoryStream(compressed))
-            {
-                Stream decompressor = new GZipStream(input, CompressionMode.Decompress);
-                return ZlibBaseStream.UncompressString(compressed, decompressor);
-            }
+            using var input = new MemoryStream(compressed);
+            Stream decompressor = new GZipStream(input, CompressionMode.Decompress);
+            return ZlibBaseStream.UncompressString(compressed, decompressor);
         }
 
 
@@ -1019,13 +1014,11 @@ namespace SabreTools.IO.Compression.Deflate
         /// <returns>The data in uncompressed form</returns>
         public static byte[] UncompressBuffer(byte[] compressed)
         {
-            using (var input = new System.IO.MemoryStream(compressed))
-            {
-                System.IO.Stream decompressor =
-                    new GZipStream( input, CompressionMode.Decompress );
+            using var input = new System.IO.MemoryStream(compressed);
+            System.IO.Stream decompressor =
+                new GZipStream(input, CompressionMode.Decompress);
 
-                return ZlibBaseStream.UncompressBuffer(compressed, decompressor);
-            }
+            return ZlibBaseStream.UncompressBuffer(compressed, decompressor);
         }
 
 

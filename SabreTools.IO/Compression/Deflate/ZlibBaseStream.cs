@@ -28,7 +28,6 @@ using System;
 using System.IO;
 
 #nullable disable
-#pragma warning disable CA2022
 namespace SabreTools.IO.Compression.Deflate
 {
     internal class ZlibBaseStream : System.IO.Stream
@@ -49,7 +48,7 @@ namespace SabreTools.IO.Compression.Deflate
         protected internal CompressionStrategy Strategy = CompressionStrategy.Default;
 
         // workitem 7159
-        CRC32 crc;
+        readonly CRC32 crc;
         protected internal string _GzipFileName;
         protected internal string _GzipComment;
         protected internal DateTime _GzipMtime;
@@ -115,8 +114,7 @@ namespace SabreTools.IO.Compression.Deflate
         {
             get
             {
-                if (_workingBuffer == null)
-                    _workingBuffer = new byte[_bufferSize];
+                _workingBuffer ??= new byte[_bufferSize];
                 return _workingBuffer;
             }
         }
@@ -127,8 +125,7 @@ namespace SabreTools.IO.Compression.Deflate
         {
             // workitem 7159
             // calculate the CRC on the unccompressed data  (before writing)
-            if (crc != null)
-                crc.SlurpBlock(buffer, offset, count);
+            crc?.SlurpBlock(buffer, offset, count);
 
             if (_streamMode == StreamMode.Undefined)
                 _streamMode = StreamMode.Writer;
@@ -142,7 +139,7 @@ namespace SabreTools.IO.Compression.Deflate
             z.InputBuffer = buffer;
             _z.NextIn = offset;
             _z.AvailableBytesIn = count;
-            bool done = false;
+            bool done;
             do
             {
                 _z.OutputBuffer = workingBuffer;
@@ -175,7 +172,7 @@ namespace SabreTools.IO.Compression.Deflate
 
             if (_streamMode == StreamMode.Writer)
             {
-                bool done = false;
+                bool done;
                 do
                 {
                     _z.OutputBuffer = workingBuffer;
@@ -363,7 +360,7 @@ namespace SabreTools.IO.Compression.Deflate
                         list.Add(_buf1[0]);
                 }
             } while (!done);
-            byte[] a = list.ToArray();
+            byte[] a = [.. list];
             return GZipStream.iso8859dash1.GetString(a, 0, a.Length);
         }
 
@@ -406,7 +403,7 @@ namespace SabreTools.IO.Compression.Deflate
             if ((header[3] & 0x10) == 0x010)
                 _GzipComment = ReadZeroTerminatedString();
             if ((header[3] & 0x02) == 0x02)
-                Read(_buf1, 0, 1); // CRC16, ignore
+                _ = Read(_buf1, 0, 1); // CRC16, ignore
 
             return totalBytesRead;
         }
@@ -448,7 +445,7 @@ namespace SabreTools.IO.Compression.Deflate
             if (offset < buffer.GetLowerBound(0)) throw new ArgumentOutOfRangeException("offset");
             if ((offset + count) > buffer.GetLength(0)) throw new ArgumentOutOfRangeException("count");
 
-            int rc = 0;
+            int rc;
 
             // set up the output of the deflate/inflate codec:
             _z.OutputBuffer = buffer;
@@ -519,8 +516,7 @@ namespace SabreTools.IO.Compression.Deflate
             rc = (count - _z.AvailableBytesOut);
 
             // calculate CRC after reading
-            if (crc != null)
-                crc.SlurpBlock(buffer, offset, rc);
+            crc?.SlurpBlock(buffer, offset, rc);
 
             return rc;
         }
@@ -584,40 +580,36 @@ namespace SabreTools.IO.Compression.Deflate
             // workitem 8460
             byte[] working = new byte[1024];
             var encoding = System.Text.Encoding.UTF8;
-            using (var output = new MemoryStream())
+            using var output = new MemoryStream();
+            using (decompressor)
             {
-                using (decompressor)
+                int n;
+                while ((n = decompressor.Read(working, 0, working.Length)) != 0)
                 {
-                    int n;
-                    while ((n = decompressor.Read(working, 0, working.Length)) != 0)
-                    {
-                        output.Write(working, 0, n);
-                    }
+                    output.Write(working, 0, n);
                 }
-
-                // reset to allow read from start
-                output.Seek(0, SeekOrigin.Begin);
-                var sr = new StreamReader(output, encoding);
-                return sr.ReadToEnd();
             }
+
+            // reset to allow read from start
+            output.Seek(0, SeekOrigin.Begin);
+            var sr = new StreamReader(output, encoding);
+            return sr.ReadToEnd();
         }
 
         public static byte[] UncompressBuffer(byte[] compressed, Stream decompressor)
         {
             // workitem 8460
             byte[] working = new byte[1024];
-            using (var output = new MemoryStream())
+            using var output = new MemoryStream();
+            using (decompressor)
             {
-                using (decompressor)
+                int n;
+                while ((n = decompressor.Read(working, 0, working.Length)) != 0)
                 {
-                    int n;
-                    while ((n = decompressor.Read(working, 0, working.Length)) != 0)
-                    {
-                        output.Write(working, 0, n);
-                    }
+                    output.Write(working, 0, n);
                 }
-                return output.ToArray();
             }
+            return output.ToArray();
         }
 
         /// <summary>

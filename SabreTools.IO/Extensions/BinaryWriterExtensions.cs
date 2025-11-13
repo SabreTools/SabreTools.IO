@@ -683,8 +683,7 @@ namespace SabreTools.IO.Extensions
                 return false;
 
             // Get the array
-            Array? arr = fi.GetValue(instance) as Array;
-            if (arr == null)
+            if (fi.GetValue(instance) is not Array arr)
                 return false;
 
             // Get the number of elements expected
@@ -712,8 +711,7 @@ namespace SabreTools.IO.Extensions
         private static bool WriteStringType(BinaryWriter writer, Encoding encoding, object instance, FieldInfo fi)
         {
             var marshalAsAttr = MarshalHelpers.GetAttribute<MarshalAsAttribute>(fi);
-            string? fieldValue = fi.GetValue(instance) as string;
-            if (fieldValue == null)
+            if (fi.GetValue(instance) is not string fieldValue)
                 return true;
 
             switch (marshalAsAttr?.Value)

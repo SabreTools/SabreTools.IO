@@ -138,7 +138,7 @@ namespace SabreTools.IO.Compression.Blast
         /// bits are pulled from the compressed data one at a time and used to
         /// build the code value reversed from what is in the stream in order to
         /// permit simple integer comparisons for decoding.
-        /// 
+        ///
         /// The first code for the shortest length is all ones.  Subsequent codes of
         /// the same length are simply integer decrements of the previous code.  When
         /// moving up a length, a one bit is appended to the code.  For a complete

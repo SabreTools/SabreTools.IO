@@ -5,7 +5,7 @@ namespace SabreTools.IO.Streams
     /// <summary>
     /// Buffered stream that reads in blocks
     /// </summary>
-    /// <remarks>Not a true <see cref="Stream"/> implementation yet</remarks> 
+    /// <remarks>Not a true <see cref="Stream"/> implementation yet</remarks>
     public class BufferedStream
     {
         /// <summary>

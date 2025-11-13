@@ -5,7 +5,7 @@ using Xunit;
 namespace SabreTools.IO.Test.Matching
 {
     /// <remarks>
-    /// All other test cases are covered by <see cref="PathMatchTests"/> 
+    /// All other test cases are covered by <see cref="PathMatchTests"/>
     /// </remarks>
     public class FilePathMatchTests
     {

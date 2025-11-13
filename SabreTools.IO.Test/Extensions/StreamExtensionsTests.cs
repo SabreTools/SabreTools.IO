@@ -323,7 +323,7 @@ namespace SabreTools.IO.Test.Extensions
             long actual = stream.SeekIfPossible(0, origin);
             Assert.Equal(8, actual);
         }
-        
+
         [Theory]
         [InlineData(SeekOrigin.Begin)]
         [InlineData(SeekOrigin.Current)]
@@ -334,7 +334,7 @@ namespace SabreTools.IO.Test.Extensions
             long actual = stream.SeekIfPossible(0, origin);
             Assert.Equal(-1, actual);
         }
-        
+
         [Theory]
         [InlineData(SeekOrigin.Begin)]
         [InlineData(SeekOrigin.Current)]
@@ -345,7 +345,7 @@ namespace SabreTools.IO.Test.Extensions
             long actual = stream.SeekIfPossible(0, origin);
             Assert.Equal(-1, actual);
         }
-        
+
         [Theory]
         [InlineData(SeekOrigin.Begin, 5, 5)]
         [InlineData(SeekOrigin.Current, 5, 7)]

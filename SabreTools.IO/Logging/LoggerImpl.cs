@@ -88,7 +88,7 @@ namespace SabreTools.IO.Logging
             // Set the log directory
             LogDirectory = Path.GetDirectoryName(fullPath);
 
-            // Set the 
+            // Set the
             if (addDate)
                 Filename = $"{Path.GetFileNameWithoutExtension(fullPath)} ({DateTime.Now:yyyy-MM-dd HH-mm-ss}).{fullPath.GetNormalizedExtension()}";
             else

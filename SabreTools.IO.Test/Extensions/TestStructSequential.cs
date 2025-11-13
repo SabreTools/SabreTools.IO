@@ -10,7 +10,7 @@ namespace SabreTools.IO.Test.Extensions
         public int SecondValue;
 
         public ushort ThirdValue;
-        
+
         public short FourthValue;
 
         [MarshalAs(UnmanagedType.LPStr)]

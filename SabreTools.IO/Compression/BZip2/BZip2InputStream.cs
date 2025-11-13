@@ -64,7 +64,7 @@ namespace SabreTools.IO.Compression.BZip2
     public class BZip2InputStream : System.IO.Stream
     {
         bool _disposed;
-        bool _leaveOpen;
+        readonly bool _leaveOpen;
         Int64 totalBytesRead;
         private int last;
 
@@ -79,7 +79,7 @@ namespace SabreTools.IO.Compression.BZip2
         private bool blockRandomised;
         private int bsBuff;
         private int bsLive;
-        private readonly CRC32 crc = new CRC32(true);
+        private readonly CRC32 crc = new(true);
         private int nInUse;
         private Stream input;
         private int currentChar = -1;
@@ -491,8 +491,7 @@ namespace SabreTools.IO.Compression.BZip2
                 this.blockRandomised = (GetBits(1) == 1);
 
                 // Lazily allocate data
-                if (this.data == null)
-                    this.data = new DecompressionState(this.blockSize100k);
+                this.data ??= new DecompressionState(this.blockSize100k);
 
                 // currBlockNo++;
                 getAndMoveToFrontDecode();

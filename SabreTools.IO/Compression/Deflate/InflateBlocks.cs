@@ -71,8 +71,7 @@ namespace SabreTools.IO.Compression.Deflate
         private const int MANY = 1440;
 
         // Table for deflate from PKZIP's appnote.txt.
-        internal static readonly int[] border = new int[]
-        { 16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15 };
+        internal static readonly int[] border = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15];
 
         private enum InflateBlockMode
         {
@@ -98,7 +97,7 @@ namespace SabreTools.IO.Compression.Deflate
         internal int[] bb = new int[1];                   // bit length tree depth
         internal int[] tb = new int[1];                   // bit length decoding tree
 
-        internal InflateCodes codes = new InflateCodes(); // if CODES, current state
+        internal InflateCodes codes = new(); // if CODES, current state
 
         internal int last;                                // true if this block is the last block
 
@@ -115,7 +114,7 @@ namespace SabreTools.IO.Compression.Deflate
         internal System.Object checkfn;                   // check function
         internal uint check;                              // check on output
 
-        internal InfTree inftree = new InfTree();
+        internal InfTree inftree = new();
 
         internal InflateBlocks(ZlibCodec codec, System.Object checkfn, int w)
         {
@@ -545,8 +544,8 @@ namespace SabreTools.IO.Compression.Deflate
 
                         tb[0] = -1;
                         {
-                            int[] bl = new int[] { 9 };  // must be <= 9 for lookahead assumptions
-                            int[] bd = new int[] { 6 }; // must be <= 9 for lookahead assumptions
+                            int[] bl = [9];  // must be <= 9 for lookahead assumptions
+                            int[] bd = [6]; // must be <= 9 for lookahead assumptions
                             int[] tl = new int[1];
                             int[] td = new int[1];
 

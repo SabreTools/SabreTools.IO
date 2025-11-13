@@ -3070,7 +3070,7 @@ namespace SabreTools.IO.Compression.zlib
         public static int deflateSetDictionary(z_stream_s strm, byte* dictionary, uint dictLength)
         {
             internal_state? s;
-            uint str = 0; uint  n  =  0 ; 
+            uint str = 0; uint  n  =  0 ;
             int wrap = 0;
             uint avail = 0;
             byte* next;
@@ -3270,7 +3270,7 @@ namespace SabreTools.IO.Compression.zlib
         public static uint deflateBound(z_stream_s strm, uint sourceLen)
         {
             internal_state? s;
-            uint complen = 0; uint  wraplen  =  0 ; 
+            uint complen = 0; uint  wraplen  =  0 ;
             complen = (uint)(sourceLen + ((sourceLen + 7) >> 3) + ((sourceLen + 63) >> 6) + 5);
             if ((deflateStateCheck(strm)) != 0)
                 return (uint)(complen + 6);
@@ -4452,7 +4452,7 @@ namespace SabreTools.IO.Compression.zlib
 
         public static uint multmodp(uint a, uint b)
         {
-            uint m = 0; uint  p  =  0 ; 
+            uint m = 0; uint  p  =  0 ;
             m = (uint)((uint)(1) << 31);
             p = (uint)(0);
             for (;;)
@@ -4559,7 +4559,7 @@ namespace SabreTools.IO.Compression.zlib
 
         public static void _tr_flush_block(internal_state s, sbyte* buf, uint stored_len, int last)
         {
-            uint opt_lenb = 0; uint  static_lenb  =  0 ; 
+            uint opt_lenb = 0; uint  static_lenb  =  0 ;
             int max_blindex = (int)(0);
             if ((s.level) > (0))
             {
@@ -4819,7 +4819,7 @@ namespace SabreTools.IO.Compression.zlib
             int _base_ = (int)(desc.stat_desc.extra_base);
             int max_length = (int)(desc.stat_desc.max_length);
             int h = 0;
-            int n = 0; int  m  =  0 ; 
+            int n = 0; int  m  =  0 ;
             int bits = 0;
             int xbits = 0;
             ushort f = 0;
@@ -4836,7 +4836,7 @@ namespace SabreTools.IO.Compression.zlib
                 bits = (int)(tree[tree[n].dl.dad].dl.len + 1);
                 if ((bits) > (max_length))
                 {
-                    bits = (int)(max_length); //Nanook , 
+                    bits = (int)(max_length); //Nanook ,
                     overflow++;
                 }
                 tree[n].dl.len = ((ushort)(bits));
@@ -4913,11 +4913,11 @@ namespace SabreTools.IO.Compression.zlib
             ct_data_s[] tree = desc.dyn_tree!;
             ct_data_s[] stree = desc.stat_desc.static_tree;
             int elems = (int)(desc.stat_desc.elems);
-            int n = 0; int  m  =  0 ; 
+            int n = 0; int  m  =  0 ;
             int max_code = (int)(-1);
             int node = 0;
             s.heap_len = (int)(0); //Nanook ,
-            s.heap_max  =  (int)(2 * (256 + 1 + 29) + 1); 
+            s.heap_max  =  (int)(2 * (256 + 1 + 29) + 1);
             for (n = (int)(0); (n) < (elems); n++)
             {
                 if (tree[n].fc.freq != 0)
@@ -4984,7 +4984,7 @@ namespace SabreTools.IO.Compression.zlib
             if ((nextlen) == (0))
             {
                 max_count = (int)(138); //Nanook ,
-                min_count  =  ( int ) ( 3 ) ; 
+                min_count  =  ( int ) ( 3 ) ;
             }
             tree[max_code + 1].dl.len = ((ushort)(0xffff));
             for (n = (int)(0); (n) <= (max_code); n++)
@@ -5018,17 +5018,17 @@ namespace SabreTools.IO.Compression.zlib
                 prevlen = (int)(curlen);
                 if ((nextlen) == (0))
                 {
-                    max_count = (int)(138); //Nanook , 
+                    max_count = (int)(138); //Nanook ,
                     min_count = (int)(3);
                 }
                 else if ((curlen) == (nextlen))
                 {
-                    max_count = (int)(6); //Nanook , 
+                    max_count = (int)(6); //Nanook ,
                     min_count = (int)(3);
                 }
                 else
                 {
-                    max_count = (int)(7); //Nanook , 
+                    max_count = (int)(7); //Nanook ,
                     min_count = (int)(4);
                 }
             }
@@ -5045,7 +5045,7 @@ namespace SabreTools.IO.Compression.zlib
             int min_count = (int)(4);
             if ((nextlen) == (0))
             {
-                max_count = (int)(138); //Nanook ,  
+                max_count = (int)(138); //Nanook ,
                 min_count = (int)(3);
             }
             for (n = (int)(0); (n) <= (max_code); n++)
@@ -5286,17 +5286,17 @@ namespace SabreTools.IO.Compression.zlib
                 prevlen = (int)(curlen);
                 if ((nextlen) == (0))
                 {
-                    max_count = (int)(138); //Nanook , 
+                    max_count = (int)(138); //Nanook ,
                     min_count = (int)(3);
                 }
                 else if ((curlen) == (nextlen))
                 {
-                    max_count = (int)(6); //Nanook , 
+                    max_count = (int)(6); //Nanook ,
                     min_count = (int)(3);
                 }
                 else
                 {
-                    max_count = (int)(7); //Nanook , 
+                    max_count = (int)(7); //Nanook ,
                     min_count = (int)(4);
                 }
             }
@@ -5648,7 +5648,7 @@ namespace SabreTools.IO.Compression.zlib
             do
             {
                 res |= (uint)(code & 1);
-                code >>= 1; //Nanook , 
+                code >>= 1; //Nanook ,
                 res <<= 1;
             }
             while ((--len) > (0));
@@ -5721,7 +5721,7 @@ namespace SabreTools.IO.Compression.zlib
 
         public static void slide_hash(internal_state s)
         {
-            uint n = 0; uint  m  =  0 ; 
+            uint n = 0; uint  m  =  0 ;
             ushort* p;
             uint wsize = (uint)(s.w_size);
             n = (uint)(s.hash_size);
@@ -5823,7 +5823,7 @@ namespace SabreTools.IO.Compression.zlib
         public static block_state deflate_stored(internal_state s, int flush)
         {
             uint min_block = (uint)((s.pending_buf_size - 5) > (s.w_size) ? (s.w_size) : (s.pending_buf_size - 5));
-            uint len = 0; uint  left  =  0 ;  uint  have  =  0 ;  uint  last  =  ( uint ) ( 0 ) ; 
+            uint len = 0; uint  left  =  0 ;  uint  have  =  0 ;  uint  last  =  ( uint ) ( 0 ) ;
             uint used = (uint)(s.strm!.avail_in);
             do
             {
@@ -6096,7 +6096,7 @@ namespace SabreTools.IO.Compression.zlib
                     s.head[s.ins_h] = ((ushort)(s.strstart));
                 }
 
-                s.prev_length = (uint)(s.match_length); //Nanook , 
+                s.prev_length = (uint)(s.match_length); //Nanook ,
                 s.prev_match = (uint)(s.match_start);
                 s.match_length = (uint)(3 - 1);
                 if (((hash_head != 0) && ((s.prev_length) < (s.max_lazy_match))) && ((s.strstart - hash_head) <= ((s).w_size - (258 + 3 + 1))))
@@ -6233,7 +6233,7 @@ namespace SabreTools.IO.Compression.zlib
         {
             int bflush = 0;
             uint prev = 0;
-            byte* scan; byte  * strend ; 
+            byte* scan; byte  * strend ;
             for (;;)
             {
                 if ((s.lookahead) <= (258))
@@ -6521,7 +6521,7 @@ namespace SabreTools.IO.Compression.zlib
                 match = s.window + cur_match;
                 if ((((match[best_len] != scan_end) || (match[best_len - 1] != scan_end1)) || (*match != *scan)) || (*++match != scan[1]))
                     continue;
-                scan += 2; //Nanook , 
+                scan += 2; //Nanook ,
                 match++;
                 do
                 {

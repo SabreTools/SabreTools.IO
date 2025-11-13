@@ -16,8 +16,8 @@ namespace SabreTools.IO.Test.Compression
             // CFDATA blocks.
             string path = Path.Combine(Environment.CurrentDirectory, "TestData", "test-archive.msz");
             byte[] inputBytes = File.ReadAllBytes(path);
-            MemoryStream input = new MemoryStream(inputBytes);
-            MemoryStream output = new MemoryStream();
+            var input = new MemoryStream(inputBytes);
+            var output = new MemoryStream();
 
             var decompressor = Decompressor.Create();
             input.SeekIfPossible(0x0000);

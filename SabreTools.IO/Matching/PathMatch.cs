@@ -46,7 +46,7 @@ namespace SabreTools.IO.Matching
         /// <summary>
         /// Allow conversion from string to PathMatch
         /// </summary>
-        public static implicit operator PathMatch(string needle) => new PathMatch(needle);
+        public static implicit operator PathMatch(string needle) => new(needle);
 
         #endregion
 

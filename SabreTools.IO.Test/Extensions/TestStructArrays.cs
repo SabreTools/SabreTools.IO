@@ -30,7 +30,7 @@ namespace SabreTools.IO.Test.Extensions
         public TestStructPoint[]? StructArray;
 
         /// <summary>
-        /// Length of <see cref="LPByteArray"/> 
+        /// Length of <see cref="LPByteArray"/>
         /// </summary>
         public ushort LPByteArrayLength;
 
@@ -39,7 +39,7 @@ namespace SabreTools.IO.Test.Extensions
         /// </summary>
         [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 4)]
         public byte[]? LPByteArray;
-        
+
         // /// <summary>
         // /// 4 entry nested byte array
         // /// </summary>

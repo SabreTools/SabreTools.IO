@@ -550,7 +550,7 @@ namespace SabreTools.IO.Test.Extensions
         {
             int offset = 0;
             decimal expected = 0.0123456789M;
-            decimal read = _decimalBytes.Reverse().ToArray().ReadDecimalBigEndian(ref offset);
+            decimal read = Enumerable.Reverse(_decimalBytes).ToArray().ReadDecimalBigEndian(ref offset);
             Assert.Equal(expected, read);
         }
 
@@ -567,7 +567,7 @@ namespace SabreTools.IO.Test.Extensions
         public void ReadGuidBigEndianTest()
         {
             int offset = 0;
-            var expected = new Guid(_bytes.Reverse().ToArray());
+            var expected = new Guid([.. Enumerable.Reverse(_bytes)]);
             Guid read = _bytes.ReadGuidBigEndian(ref offset);
             Assert.Equal(expected, read);
         }
@@ -585,7 +585,7 @@ namespace SabreTools.IO.Test.Extensions
         public void ReadInt128BigEndianTest()
         {
             int offset = 0;
-            var reversed = _bytes.Reverse().ToArray();
+            var reversed = Enumerable.Reverse(_bytes).ToArray();
             var expected = (Int128)new BigInteger(reversed);
             Int128 read = _bytes.ReadInt128BigEndian(ref offset);
             Assert.Equal(expected, read);
@@ -604,7 +604,7 @@ namespace SabreTools.IO.Test.Extensions
         public void ReadUInt128BigEndianTest()
         {
             int offset = 0;
-            var reversed = _bytes.Reverse().ToArray();
+            var reversed = Enumerable.Reverse(_bytes).ToArray();
             var expected = (UInt128)new BigInteger(reversed);
             UInt128 read = _bytes.ReadUInt128BigEndian(ref offset);
             Assert.Equal(expected, read);
@@ -675,13 +675,13 @@ namespace SabreTools.IO.Test.Extensions
             offset = 0;
             Int128 expectedInt128 = (Int128)new BigInteger(_bytes);
             Int128 actualInt128 = _bytes.ReadType<Int128>(ref offset);
-            Assert.Equal(expectedHalf, actualHalf);
+            Assert.Equal(expectedInt128, actualInt128);
 
             // UInt128
             offset = 0;
             UInt128 expectedUInt128 = (UInt128)new BigInteger(_bytes);
             UInt128 actualUInt128 = _bytes.ReadType<UInt128>(ref offset);
-            Assert.Equal(expectedHalf, actualHalf);
+            Assert.Equal(expectedUInt128, actualUInt128);
 
             // Enum
             offset = 0;
@@ -1473,7 +1473,7 @@ namespace SabreTools.IO.Test.Extensions
         {
             int offset = 0;
             decimal expected = 0.0123456789M;
-            decimal read = _decimalBytes.Reverse().ToArray().PeekDecimalBigEndian(ref offset);
+            decimal read = Enumerable.Reverse(_decimalBytes).ToArray().PeekDecimalBigEndian(ref offset);
             Assert.Equal(expected, read);
             Assert.Equal(0, offset);
         }
@@ -1492,7 +1492,7 @@ namespace SabreTools.IO.Test.Extensions
         public void PeekGuidBigEndianTest()
         {
             int offset = 0;
-            var expected = new Guid(_bytes.Reverse().ToArray());
+            var expected = new Guid([.. Enumerable.Reverse(_bytes)]);
             Guid read = _bytes.PeekGuidBigEndian(ref offset);
             Assert.Equal(expected, read);
             Assert.Equal(0, offset);
@@ -1512,7 +1512,7 @@ namespace SabreTools.IO.Test.Extensions
         public void PeekInt128BigEndianTest()
         {
             int offset = 0;
-            var reversed = _bytes.Reverse().ToArray();
+            var reversed = Enumerable.Reverse(_bytes).ToArray();
             var expected = (Int128)new BigInteger(reversed);
             Int128 read = _bytes.PeekInt128BigEndian(ref offset);
             Assert.Equal(expected, read);
@@ -1533,7 +1533,7 @@ namespace SabreTools.IO.Test.Extensions
         public void PeekUInt128BigEndianTest()
         {
             int offset = 0;
-            var reversed = _bytes.Reverse().ToArray();
+            var reversed = Enumerable.Reverse(_bytes).ToArray();
             var expected = (UInt128)new BigInteger(reversed);
             UInt128 read = _bytes.PeekUInt128BigEndian(ref offset);
             Assert.Equal(expected, read);
@@ -1724,7 +1724,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadHalfTest()
         {
             int offset = 0;
-            Half expected = BitConverter.Int16BitsToHalf(0x0100);
             bool actual = Array.Empty<byte>().TryReadHalf(ref offset, out Half read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -1734,7 +1733,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadHalfBigEndianTest()
         {
             int offset = 0;
-            Half expected = BitConverter.Int16BitsToHalf(0x0001);
             bool actual = Array.Empty<byte>().TryReadHalfBigEndian(ref offset, out Half read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -1909,7 +1907,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadSingleTest()
         {
             int offset = 0;
-            float expected = BitConverter.Int32BitsToSingle(0x03020100);
             bool actual = Array.Empty<byte>().TryReadSingle(ref offset, out float read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -1919,7 +1916,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadSingleBigEndianTest()
         {
             int offset = 0;
-            float expected = BitConverter.Int32BitsToSingle(0x00010203);
             bool actual = Array.Empty<byte>().TryReadSingleBigEndian(ref offset, out float read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -2094,7 +2090,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadDoubleTest()
         {
             int offset = 0;
-            double expected = BitConverter.Int64BitsToDouble(0x0706050403020100);
             bool actual = Array.Empty<byte>().TryReadDouble(ref offset, out double read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -2104,7 +2099,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadDoubleBigEndianTest()
         {
             int offset = 0;
-            double expected = BitConverter.Int64BitsToDouble(0x0001020304050607);
             bool actual = Array.Empty<byte>().TryReadDoubleBigEndian(ref offset, out double read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -2132,7 +2126,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadGuidTest()
         {
             int offset = 0;
-            var expected = new Guid(_bytes);
             bool actual = Array.Empty<byte>().TryReadGuid(ref offset, out Guid read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -2142,7 +2135,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadGuidBigEndianTest()
         {
             int offset = 0;
-            var expected = new Guid(_bytes.Reverse().ToArray());
             bool actual = Array.Empty<byte>().TryReadGuidBigEndian(ref offset, out Guid read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -2152,7 +2144,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadInt128Test()
         {
             int offset = 0;
-            var expected = (Int128)new BigInteger(_bytes);
             bool actual = Array.Empty<byte>().TryReadInt128(ref offset, out Int128 read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -2162,8 +2153,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadInt128BigEndianTest()
         {
             int offset = 0;
-            var reversed = _bytes.Reverse().ToArray();
-            var expected = (Int128)new BigInteger(reversed);
             bool actual = Array.Empty<byte>().TryReadInt128BigEndian(ref offset, out Int128 read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -2173,7 +2162,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadUInt128Test()
         {
             int offset = 0;
-            var expected = (UInt128)new BigInteger(_bytes);
             bool actual = Array.Empty<byte>().TryReadUInt128(ref offset, out UInt128 read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -2183,8 +2171,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadUInt128BigEndianTest()
         {
             int offset = 0;
-            var reversed = _bytes.Reverse().ToArray();
-            var expected = (UInt128)new BigInteger(reversed);
             bool actual = Array.Empty<byte>().TryReadUInt128BigEndian(ref offset, out UInt128 read);
             Assert.False(actual);
             Assert.Equal(default, read);

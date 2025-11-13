@@ -28,8 +28,8 @@ namespace SabreTools.IO.Compression.BZip2
 {
     internal static class Rand
     {
-        private static int[] RNUMS =
-        {
+        private static readonly int[] RNUMS =
+        [
             619, 720, 127, 481, 931, 816, 813, 233, 566, 247,
             985, 724, 205, 454, 863, 491, 741, 242, 949, 214,
             733, 859, 335, 708, 621, 574,  73, 654, 730, 472,
@@ -82,7 +82,7 @@ namespace SabreTools.IO.Compression.BZip2
             920, 176, 193, 713, 857, 265, 203,  50, 668, 108,
             645, 990, 626, 197, 510, 357, 358, 850, 858, 364,
             936, 638
-        };
+        ];
 
 
         /// <summary>

@@ -79,7 +79,6 @@
 // by multiple distinct threads, for different blocks of data.
 //
 
-using System;
 using System.IO;
 
 namespace SabreTools.IO.Compression.BZip2
@@ -88,7 +87,7 @@ namespace SabreTools.IO.Compression.BZip2
     {
         uint accumulator;
         int nAccumulatedBits;
-        Stream output;
+        readonly Stream output;
         int totalBytesWrittenOut;
 
         public BitWriter(Stream s)

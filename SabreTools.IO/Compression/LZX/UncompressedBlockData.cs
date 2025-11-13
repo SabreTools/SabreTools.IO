@@ -6,10 +6,10 @@ namespace SabreTools.IO.Compression.LZX
     /// begins. Following the zero padding, new 32-bit values for R0, R1, and R2 are output in little-endian
     /// form, followed by the uncompressed data bytes themselves. Finally, if the uncompressed data length
     /// is odd, one extra byte of zero padding is encoded to realign the following bitstream.
-    /// 
+    ///
     /// Then the bitstream of byte-swapped 16-bit integers resumes for the next Block Type field (if there
     /// are subsequent blocks).
-    /// 
+    ///
     /// The decoded R0, R1, and R2 values are used as initial repeated offset values to decode the
     /// subsequent compressed block if present.
     /// </summary>

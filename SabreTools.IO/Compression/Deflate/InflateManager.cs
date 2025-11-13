@@ -135,8 +135,7 @@ namespace SabreTools.IO.Compression.Deflate
 
         internal int End()
         {
-            if (blocks != null)
-                blocks.Free();
+            blocks?.Free();
             blocks = null;
             return ZlibConstants.Z_OK;
         }
@@ -392,7 +391,7 @@ namespace SabreTools.IO.Compression.Deflate
         }
 
 
-        private static readonly byte[] mark = new byte[] { 0, 0, 0xff, 0xff };
+        private static readonly byte[] mark = [0, 0, 0xff, 0xff];
 
         internal int Sync()
         {

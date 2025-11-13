@@ -552,7 +552,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void ReadDecimalBigEndianTest()
         {
-            var stream = new MemoryStream(_decimalBytes.Reverse().ToArray());
+            var stream = new MemoryStream([.. Enumerable.Reverse(_decimalBytes)]);
             decimal expected = 0.0123456789M;
             decimal read = stream.ReadDecimalBigEndian();
             Assert.Equal(expected, read);
@@ -571,7 +571,7 @@ namespace SabreTools.IO.Test.Extensions
         public void ReadGuidBigEndianTest()
         {
             var stream = new MemoryStream(_bytes);
-            var expected = new Guid(_bytes.Reverse().ToArray());
+            var expected = new Guid([.. Enumerable.Reverse(_bytes)]);
             Guid read = stream.ReadGuidBigEndian();
             Assert.Equal(expected, read);
         }
@@ -589,7 +589,7 @@ namespace SabreTools.IO.Test.Extensions
         public void ReadInt128BigEndianTest()
         {
             var stream = new MemoryStream(_bytes);
-            var reversed = _bytes.Reverse().ToArray();
+            var reversed = Enumerable.Reverse(_bytes).ToArray();
             var expected = (Int128)new BigInteger(reversed);
             Int128 read = stream.ReadInt128BigEndian();
             Assert.Equal(expected, read);
@@ -608,7 +608,7 @@ namespace SabreTools.IO.Test.Extensions
         public void ReadUInt128BigEndianTest()
         {
             var stream = new MemoryStream(_bytes);
-            var reversed = _bytes.Reverse().ToArray();
+            var reversed = Enumerable.Reverse(_bytes).ToArray();
             var expected = (UInt128)new BigInteger(reversed);
             UInt128 read = stream.ReadUInt128BigEndian();
             Assert.Equal(expected, read);
@@ -679,13 +679,13 @@ namespace SabreTools.IO.Test.Extensions
             stream = new MemoryStream(_bytes);
             Int128 expectedInt128 = (Int128)new BigInteger(_bytes);
             Int128 actualInt128 = stream.ReadType<Int128>();
-            Assert.Equal(expectedHalf, actualHalf);
+            Assert.Equal(expectedInt128, actualInt128);
 
             // UInt128
             stream = new MemoryStream(_bytes);
             UInt128 expectedUInt128 = (UInt128)new BigInteger(_bytes);
             UInt128 actualUInt128 = stream.ReadType<UInt128>();
-            Assert.Equal(expectedHalf, actualHalf);
+            Assert.Equal(expectedUInt128, actualUInt128);
 
             // Enum
             stream = new MemoryStream(_bytes);
@@ -1467,7 +1467,7 @@ namespace SabreTools.IO.Test.Extensions
         [Fact]
         public void PeekDecimalBigEndianTest()
         {
-            var stream = new MemoryStream(_decimalBytes.Reverse().ToArray());
+            var stream = new MemoryStream([.. Enumerable.Reverse(_decimalBytes)]);
             decimal expected = 0.0123456789M;
             decimal read = stream.PeekDecimalBigEndian();
             Assert.Equal(expected, read);
@@ -1488,7 +1488,7 @@ namespace SabreTools.IO.Test.Extensions
         public void PeekGuidBigEndianTest()
         {
             var stream = new MemoryStream(_bytes);
-            var expected = new Guid(_bytes.Reverse().ToArray());
+            var expected = new Guid([.. Enumerable.Reverse(_bytes)]);
             Guid read = stream.PeekGuidBigEndian();
             Assert.Equal(expected, read);
             Assert.Equal(0, stream.Position);
@@ -1508,7 +1508,7 @@ namespace SabreTools.IO.Test.Extensions
         public void PeekInt128BigEndianTest()
         {
             var stream = new MemoryStream(_bytes);
-            var reversed = _bytes.Reverse().ToArray();
+            var reversed = Enumerable.Reverse(_bytes).ToArray();
             var expected = (Int128)new BigInteger(reversed);
             Int128 read = stream.PeekInt128BigEndian();
             Assert.Equal(expected, read);
@@ -1529,7 +1529,7 @@ namespace SabreTools.IO.Test.Extensions
         public void PeekUInt128BigEndianTest()
         {
             var stream = new MemoryStream(_bytes);
-            var reversed = _bytes.Reverse().ToArray();
+            var reversed = Enumerable.Reverse(_bytes).ToArray();
             var expected = (UInt128)new BigInteger(reversed);
             UInt128 read = stream.PeekUInt128BigEndian();
             Assert.Equal(expected, read);
@@ -1712,7 +1712,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadHalfTest()
         {
             var stream = new MemoryStream([]);
-            Half expected = BitConverter.Int16BitsToHalf(0x0100);
             bool actual = stream.TryReadHalf(out Half read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -1722,7 +1721,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadHalfBigEndianTest()
         {
             var stream = new MemoryStream([]);
-            Half expected = BitConverter.Int16BitsToHalf(0x0001);
             bool actual = stream.TryReadHalfBigEndian(out Half read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -1897,7 +1895,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadSingleTest()
         {
             var stream = new MemoryStream([]);
-            float expected = BitConverter.Int32BitsToSingle(0x03020100);
             bool actual = stream.TryReadSingle(out float read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -1907,7 +1904,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadSingleBigEndianTest()
         {
             var stream = new MemoryStream([]);
-            float expected = BitConverter.Int32BitsToSingle(0x00010203);
             bool actual = stream.TryReadSingleBigEndian(out float read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -2082,7 +2078,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadDoubleTest()
         {
             var stream = new MemoryStream([]);
-            double expected = BitConverter.Int64BitsToDouble(0x0706050403020100);
             bool actual = stream.TryReadDouble(out double read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -2092,7 +2087,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadDoubleBigEndianTest()
         {
             var stream = new MemoryStream([]);
-            double expected = BitConverter.Int64BitsToDouble(0x0001020304050607);
             bool actual = stream.TryReadDoubleBigEndian(out double read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -2120,7 +2114,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadGuidTest()
         {
             var stream = new MemoryStream([]);
-            var expected = new Guid(_bytes);
             bool actual = stream.TryReadGuid(out Guid read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -2130,7 +2123,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadGuidBigEndianTest()
         {
             var stream = new MemoryStream([]);
-            var expected = new Guid(_bytes.Reverse().ToArray());
             bool actual = stream.TryReadGuidBigEndian(out Guid read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -2140,7 +2132,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadInt128Test()
         {
             var stream = new MemoryStream([]);
-            var expected = (Int128)new BigInteger(_bytes);
             bool actual = stream.TryReadInt128(out Int128 read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -2150,8 +2141,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadInt128BigEndianTest()
         {
             var stream = new MemoryStream([]);
-            var reversed = _bytes.Reverse().ToArray();
-            var expected = (Int128)new BigInteger(reversed);
             bool actual = stream.TryReadInt128BigEndian(out Int128 read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -2161,7 +2150,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadUInt128Test()
         {
             var stream = new MemoryStream([]);
-            var expected = (UInt128)new BigInteger(_bytes);
             bool actual = stream.TryReadUInt128(out UInt128 read);
             Assert.False(actual);
             Assert.Equal(default, read);
@@ -2171,8 +2159,6 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadUInt128BigEndianTest()
         {
             var stream = new MemoryStream([]);
-            var reversed = _bytes.Reverse().ToArray();
-            var expected = (UInt128)new BigInteger(reversed);
             bool actual = stream.TryReadUInt128BigEndian(out UInt128 read);
             Assert.False(actual);
             Assert.Equal(default, read);

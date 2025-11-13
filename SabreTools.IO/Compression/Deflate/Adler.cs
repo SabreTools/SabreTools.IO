@@ -106,10 +106,6 @@ namespace SabreTools.IO.Compression.Deflate
         // NMAX is the largest n such that 255n(n+1)/2 + (n+1)(BASE-1) <= 2^32-1
         private static readonly int NMAX = 5552;
 
-
-#pragma warning disable 3001
-#pragma warning disable 3002
-
         /// <summary>
         ///   Calculates the Adler32 checksum.
         /// </summary>
@@ -172,8 +168,6 @@ namespace SabreTools.IO.Compression.Deflate
             }
             return (uint)((s2 << 16) | s1);
         }
-#pragma warning restore 3001
-#pragma warning restore 3002
 
     }
 
