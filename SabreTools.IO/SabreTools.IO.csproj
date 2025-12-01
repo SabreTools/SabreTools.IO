@@ -37,6 +37,7 @@
         <PackageReference Include="BouncyCastle.NetCore" Version="1.9.0" Condition="$(TargetFramework.StartsWith(`net2`)) OR $(TargetFramework.StartsWith(`net3`)) OR $(TargetFramework.StartsWith(`net40`))" />
         <PackageReference Include="BouncyCastle.NetCore" Version="2.2.1" Condition="!$(TargetFramework.StartsWith(`net2`)) AND !$(TargetFramework.StartsWith(`net3`)) AND !$(TargetFramework.StartsWith(`net40`))" />
         <PackageReference Include="SabreTools.Hashing" Version="[1.6.0]" />
+        <PackageReference Include="GrindCore" Version="0.6.4" Condition="!$(TargetFramework.StartsWith(`net2`))" />
     </ItemGroup>
 
 </Project>
