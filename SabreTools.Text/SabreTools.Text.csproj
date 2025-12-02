@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <!-- Assembly Properties -->
@@ -15,34 +15,22 @@
 
         <!-- Package Properties -->
         <Authors>Matt Nadareski</Authors>
-        <Description>Common IO utilities by other SabreTools projects</Description>
+        <Description>Common text utilities by other SabreTools projects</Description>
         <Copyright>Copyright (c) Matt Nadareski 2019-2025</Copyright>
         <PackageProjectUrl>https://github.com/SabreTools/</PackageProjectUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <RepositoryUrl>https://github.com/SabreTools/SabreTools.IO</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <PackageTags>io reading writing ini csv ssv tsv</PackageTags>
+        <PackageTags>text-comparison comparison text </PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="../README.md" Pack="true" PackagePath="" />
+        <None Include="README.md" Pack="true" PackagePath="" />
     </ItemGroup>
 
     <ItemGroup>
         <InternalsVisibleTo Include="SabreTools.IO.Test" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\SabreTools.Numerics\SabreTools.Numerics.csproj" />
-      <ProjectReference Include="..\SabreTools.Text\SabreTools.Text.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="BouncyCastle.NetCore" Version="1.9.0" Condition="$(TargetFramework.StartsWith(`net2`)) OR $(TargetFramework.StartsWith(`net3`)) OR $(TargetFramework.StartsWith(`net40`))" />
-        <PackageReference Include="BouncyCastle.NetCore" Version="2.2.1" Condition="!$(TargetFramework.StartsWith(`net2`)) AND !$(TargetFramework.StartsWith(`net3`)) AND !$(TargetFramework.StartsWith(`net40`))" />
-        <PackageReference Include="SabreTools.Hashing" Version="[1.6.0]" />
-        <PackageReference Include="GrindCore" Version="0.6.4" Condition="!$(TargetFramework.StartsWith(`net2`))" />
     </ItemGroup>
 
 </Project>
