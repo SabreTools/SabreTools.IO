@@ -3,19 +3,19 @@ using System.Linq;
 using SabreTools.Text.Compare;
 using Xunit;
 
-namespace SabreTools.IO.Test.Compare
+namespace SabreTools.Text.Test.Compare
 {
-    public class NaturalReversedComparerTests
+    public class NaturalComparerTests
     {
         [Fact]
         public void ListSort_Numeric()
         {
             // Setup arrays
             string[] sortable = ["0", "100", "5", "2", "1000"];
-            string[] expected = ["1000", "100", "5", "2", "0"];
+            string[] expected = ["0", "2", "5", "100", "1000"];
 
             // Run sorting on array
-            Array.Sort(sortable, new NaturalReversedComparer());
+            Array.Sort(sortable, new NaturalComparer());
 
             // Check the output
             Assert.True(sortable.SequenceEqual(expected));
@@ -26,10 +26,10 @@ namespace SabreTools.IO.Test.Compare
         {
             // Setup arrays
             string[] sortable = ["b3b", "c", "b", "a", "a1"];
-            string[] expected = ["c", "b3b", "b", "a1", "a"];
+            string[] expected = ["a", "a1", "b", "b3b", "c"];
 
             // Run sorting on array
-            Array.Sort(sortable, new NaturalReversedComparer());
+            Array.Sort(sortable, new NaturalComparer());
 
             // Check the output
             Assert.True(sortable.SequenceEqual(expected));

@@ -30,7 +30,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="SabreTools.IO.Test" />
+        <InternalsVisibleTo Include="SabreTools.Text.Test" />
     </ItemGroup>
 
 </Project>

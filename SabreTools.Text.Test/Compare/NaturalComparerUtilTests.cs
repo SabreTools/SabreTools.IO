@@ -1,7 +1,7 @@
 using SabreTools.Text.Compare;
 using Xunit;
 
-namespace SabreTools.IO.Test.Compare
+namespace SabreTools.Text.Test.Compare
 {
     public class NaturalComparerUtilTests
     {
