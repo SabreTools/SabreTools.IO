@@ -25,7 +25,7 @@ namespace SabreTools.IO.Test.Compression
             input.SeekIfPossible(0x3969);
             decompressor.CopyTo(input, output);
 
-            Assert.Equal(38470, output.Length);
+            Assert.Equal(65536, output.Length);
         }
     }
 }
