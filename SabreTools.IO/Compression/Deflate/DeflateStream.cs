@@ -28,6 +28,14 @@ using System;
 
 namespace SabreTools.IO.Compression.Deflate
 {
+#pragma warning disable IDE0001
+#pragma warning disable IDE0002
+#pragma warning disable IDE0036
+#pragma warning disable IDE0040
+#pragma warning disable IDE0047
+#pragma warning disable IDE0049
+#pragma warning disable IDE2000
+#pragma warning disable IDE2002
     /// <summary>
     /// A class for compressing and decompressing streams using the Deflate algorithm.
     /// </summary>
@@ -352,7 +360,7 @@ namespace SabreTools.IO.Compression.Deflate
             set
             {
                 if (_disposed) throw new ObjectDisposedException("DeflateStream");
-                if (this._baseStream._workingBuffer != null)
+                if (this._baseStream._workingBuffer is not null)
                     throw new ZlibException("The working buffer is already set.");
                 if (value < ZlibConstants.WorkingBufferSizeMin)
                     throw new ZlibException(String.Format("Don't be silly. {0} bytes?? Use a bigger buffer, at least {1}.", value, ZlibConstants.WorkingBufferSizeMin));
@@ -432,7 +440,7 @@ namespace SabreTools.IO.Compression.Deflate
             {
                 if (!_disposed)
                 {
-                    if (disposing && (this._baseStream != null))
+                    if (disposing && (this._baseStream is not null))
                         this._baseStream.Close();
                     _disposed = true;
                 }

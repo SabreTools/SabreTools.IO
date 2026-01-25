@@ -31,6 +31,15 @@ using Interop = System.Runtime.InteropServices;
 #nullable disable
 namespace SabreTools.IO.Compression.Deflate
 {
+#pragma warning disable IDE0001
+#pragma warning disable IDE0002
+#pragma warning disable IDE0047
+#pragma warning disable IDE0048
+#pragma warning disable IDE0049
+#pragma warning disable IDE2000
+#pragma warning disable IDE2002
+#pragma warning disable IDE2003
+#pragma warning disable IDE2004
     /// <summary>
     ///   Computes a CRC-32. The CRC-32 algorithm is parameterized - you
     ///   can set the polynomial and enable or disable bit
@@ -90,7 +99,7 @@ namespace SabreTools.IO.Compression.Deflate
         /// <returns>the CRC32 calculation</returns>
         public Int32 GetCrc32AndCopy(System.IO.Stream input, System.IO.Stream output)
         {
-            if (input == null)
+            if (input is null)
                 throw new Exception("The input stream must not be null.");
 
             unchecked
@@ -142,7 +151,7 @@ namespace SabreTools.IO.Compression.Deflate
         /// <param name="count">how many bytes within the block to slurp</param>
         public void SlurpBlock(byte[] block, int offset, int count)
         {
-            if (block == null)
+            if (block is null)
                 throw new Exception("The data buffer must not be null.");
 
             // bzip algorithm
@@ -278,7 +287,7 @@ namespace SabreTools.IO.Compression.Deflate
                         crc32Table[i] = dwCrc;
                     }
                     i++;
-                } while (i!=0);
+                } while (i != 0);
             }
 
 #if VERBOSE
@@ -302,10 +311,10 @@ namespace SabreTools.IO.Compression.Deflate
         private uint gf2_matrix_times(uint[] matrix, uint vec)
         {
             uint sum = 0;
-            int i=0;
+            int i = 0;
             while (vec != 0)
             {
-                if ((vec & 0x01)== 0x01)
+                if ((vec & 0x01) == 0x01)
                     sum ^= matrix[i];
                 vec >>= 1;
                 i++;
@@ -340,8 +349,8 @@ namespace SabreTools.IO.Compression.Deflate
             if (length == 0)
                 return;
 
-            uint crc1= ~_register;
-            uint crc2= (uint) crc;
+            uint crc1 = ~_register;
+            uint crc2 = (uint)crc;
 
             // put operator for one zero bit in odd
             odd[0] = this.dwPolynomial;  // the CRC-32 polynomial
@@ -358,15 +367,16 @@ namespace SabreTools.IO.Compression.Deflate
             // put operator for four zero bits in odd
             gf2_matrix_square(odd, even);
 
-            uint len2 = (uint) length;
+            uint len2 = (uint)length;
 
             // apply len2 zeros to crc1 (first square will put the operator for one
             // zero byte, eight zero bits, in even)
-            do {
+            do
+            {
                 // apply zeros operator for this bit of len2
                 gf2_matrix_square(even, odd);
 
-                if ((len2 & 1)== 1)
+                if ((len2 & 1) == 1)
                     crc1 = gf2_matrix_times(even, crc1);
                 len2 >>= 1;
 
@@ -375,7 +385,7 @@ namespace SabreTools.IO.Compression.Deflate
 
                 // another iteration of the loop with odd and even swapped
                 gf2_matrix_square(odd, even);
-                if ((len2 & 1)==1)
+                if ((len2 & 1) == 1)
                     crc1 = gf2_matrix_times(odd, crc1);
                 len2 >>= 1;
 
@@ -384,7 +394,7 @@ namespace SabreTools.IO.Compression.Deflate
 
             crc1 ^= crc2;
 
-            _register= ~crc1;
+            _register = ~crc1;
 
             //return (int) crc1;
             return;
@@ -416,7 +426,7 @@ namespace SabreTools.IO.Compression.Deflate
         ///   </para>
         /// </remarks>
         public CRC32(bool reverseBits) :
-            this( unchecked((int)0xEDB88320), reverseBits)
+            this(unchecked((int)0xEDB88320), reverseBits)
         {
         }
 
@@ -449,7 +459,7 @@ namespace SabreTools.IO.Compression.Deflate
         public CRC32(int polynomial, bool reverseBits)
         {
             this.reverseBits = reverseBits;
-            this.dwPolynomial = (uint) polynomial;
+            this.dwPolynomial = (uint)polynomial;
             this.GenerateLookupTable();
         }
 

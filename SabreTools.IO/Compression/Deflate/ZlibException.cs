@@ -86,12 +86,13 @@
 //
 // -----------------------------------------------------------------------
 
-
-
 using Interop = System.Runtime.InteropServices;
 
 namespace SabreTools.IO.Compression.Deflate
 {
+#pragma warning disable IDE0001
+#pragma warning disable IDE0049
+#pragma warning disable IDE2002
     /// <summary>
     /// A general purpose exception class for exceptions in the Zlib library.
     /// </summary>

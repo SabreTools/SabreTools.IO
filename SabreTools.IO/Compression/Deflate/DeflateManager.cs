@@ -71,6 +71,15 @@ using System;
 #nullable disable
 namespace SabreTools.IO.Compression.Deflate
 {
+#pragma warning disable IDE0004
+#pragma warning disable IDE0010
+#pragma warning disable IDE0040
+#pragma warning disable IDE0047
+#pragma warning disable IDE0048
+#pragma warning disable IDE0049
+#pragma warning disable IDE2000
+#pragma warning disable IDE2002
+#pragma warning disable IDE2003
     internal sealed class DeflateManager
     {
         private static readonly int MEM_LEVEL_MAX = 9;
@@ -1002,7 +1011,7 @@ namespace SabreTools.IO.Compression.Deflate
             if (stored_len + 4 <= opt_lenb && buf != -1)
             {
                 // 4: two words for the lengths
-                // The test buf != NULL is only necessary if LIT_BUFSIZE > WSIZE.
+                // The test buf is not null is only necessary if LIT_BUFSIZE > WSIZE.
                 // Otherwise we can't have processed more than WSIZE input bytes since
                 // the last block flush, because compression would have been
                 // successful. If LIT_BUFSIZE <= WSIZE, it is never too late to
@@ -1656,12 +1665,12 @@ namespace SabreTools.IO.Compression.Deflate
 
             if (check)
             {
-                if (dictionary == null || status != INIT_STATE)
+                if (dictionary is null || status != INIT_STATE)
                     throw new ZlibException("Stream error.");
             }
             else
             {
-                if (dictionary == null)
+                if (dictionary is null)
                     throw new ZlibException("Stream error.");
             }
 
@@ -1700,8 +1709,8 @@ namespace SabreTools.IO.Compression.Deflate
         {
             int old_flush;
 
-            if (_codec.OutputBuffer == null ||
-                (_codec.InputBuffer == null && _codec.AvailableBytesIn != 0) ||
+            if (_codec.OutputBuffer is null ||
+                (_codec.InputBuffer is null && _codec.AvailableBytesIn != 0) ||
                 (status == FINISH_STATE && flush != FlushType.Finish))
             {
                 _codec.Message = _ErrorMessage[ZlibConstants.Z_NEED_DICT - (ZlibConstants.Z_STREAM_ERROR)];

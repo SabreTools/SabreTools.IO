@@ -60,11 +60,9 @@
 //
 // -----------------------------------------------------------------------
 
-
-using System;
-
 namespace SabreTools.IO.Compression.Deflate
 {
+#pragma warning disable IDE2002
     /// <summary>
     /// A bunch of constants used in the Zlib interface.
     /// </summary>

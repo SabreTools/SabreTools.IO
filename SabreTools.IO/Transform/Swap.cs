@@ -24,7 +24,7 @@ namespace SabreTools.IO.Transform
 
             // Create the output directory if it doesn't already
             string? outputDirectory = Path.GetDirectoryName(Path.GetFullPath(output));
-            if (outputDirectory != null && !Directory.Exists(outputDirectory))
+            if (outputDirectory is not null && !Directory.Exists(outputDirectory))
                 Directory.CreateDirectory(outputDirectory);
 
             try
@@ -34,7 +34,7 @@ namespace SabreTools.IO.Transform
 
                 // Transform the stream
                 var transformed = Process(inputStream, operation);
-                if (transformed == null)
+                if (transformed is null)
                     return false;
 
                 // Open the output file

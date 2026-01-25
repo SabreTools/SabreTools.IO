@@ -8,6 +8,6 @@
         /// <summary>
         /// Nullable typed data to be matched
         /// </summary>
-        T? Needle { get; }
+        public T? Needle { get; }
     }
 }

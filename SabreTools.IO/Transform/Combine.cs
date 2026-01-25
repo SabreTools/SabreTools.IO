@@ -86,7 +86,7 @@ namespace SabreTools.IO.Transform
 
                 // Interleave the streams
                 using var interleaved = Interleave(evenStream, oddStream, type);
-                if (interleaved == null)
+                if (interleaved is null)
                     return false;
 
                 // Open the output file

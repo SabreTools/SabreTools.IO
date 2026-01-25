@@ -26,15 +26,15 @@ namespace SabreTools.Numerics
 
         public static BothInt8 operator +(BothInt8 a)
         {
-            sbyte le = (sbyte)(+a.LittleEndian);
-            sbyte be = (sbyte)(+a.BigEndian);
+            sbyte le = (sbyte)+a.LittleEndian;
+            sbyte be = (sbyte)+a.BigEndian;
             return new BothInt8(le, be);
         }
 
         public static BothInt8 operator -(BothInt8 a)
         {
-            sbyte le = (sbyte)(-a.LittleEndian);
-            sbyte be = (sbyte)(-a.BigEndian);
+            sbyte le = (sbyte)-a.LittleEndian;
+            sbyte be = (sbyte)-a.BigEndian;
             return new BothInt8(le, be);
         }
 
@@ -83,8 +83,8 @@ namespace SabreTools.Numerics
 
         public static BothInt8 operator ~(BothInt8 a)
         {
-            sbyte le = (sbyte)(~a.LittleEndian);
-            sbyte be = (sbyte)(~a.BigEndian);
+            sbyte le = (sbyte)~a.LittleEndian;
+            sbyte be = (sbyte)~a.BigEndian;
             return new BothInt8(le, be);
         }
 

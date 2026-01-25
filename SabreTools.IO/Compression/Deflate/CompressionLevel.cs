@@ -164,5 +164,4 @@ namespace SabreTools.IO.Compression.Deflate
         /// </summary>
         Level9 = 9,
     }
-
 }

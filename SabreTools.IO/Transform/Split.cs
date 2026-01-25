@@ -29,7 +29,7 @@ namespace SabreTools.IO.Transform
                 // Split the stream
                 if (!BlockSplit(inputStream, type, out Stream? evenStream, out Stream? oddStream))
                     return false;
-                else if (evenStream == null || oddStream == null)
+                else if (evenStream is null || oddStream is null)
                     return false;
 
                 // Get the base filename for output files
@@ -39,7 +39,7 @@ namespace SabreTools.IO.Transform
                     baseFilename = Path.Combine(outputDir, baseFilename);
 
                 // Create the output directory, if possible
-                if (outputDir != null && !Directory.Exists(outputDir))
+                if (outputDir is not null && !Directory.Exists(outputDir))
                     Directory.CreateDirectory(outputDir);
 
                 // Open the output files
@@ -148,7 +148,7 @@ namespace SabreTools.IO.Transform
                     baseFilename = Path.Combine(outputDir, baseFilename);
 
                 // Create the output directory, if possible
-                if (outputDir != null && !Directory.Exists(outputDir))
+                if (outputDir is not null && !Directory.Exists(outputDir))
                     Directory.CreateDirectory(outputDir);
 
                 // Loop while there is data left

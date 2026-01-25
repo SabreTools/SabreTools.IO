@@ -12,29 +12,29 @@ namespace SabreTools.Numerics
 
         public static BothInt64 operator ++(BothInt64 a)
         {
-            long le = (long)(a.LittleEndian + 1);
-            long be = (long)(a.BigEndian + 1);
+            long le = a.LittleEndian + 1;
+            long be = a.BigEndian + 1;
             return new BothInt64(le, be);
         }
 
         public static BothInt64 operator --(BothInt64 a)
         {
-            long le = (long)(a.LittleEndian - 1);
-            long be = (long)(a.BigEndian - 1);
+            long le = a.LittleEndian - 1;
+            long be = a.BigEndian - 1;
             return new BothInt64(le, be);
         }
 
         public static BothInt64 operator +(BothInt64 a)
         {
-            long le = (long)(+a.LittleEndian);
-            long be = (long)(+a.BigEndian);
+            long le = +a.LittleEndian;
+            long be = +a.BigEndian;
             return new BothInt64(le, be);
         }
 
         public static BothInt64 operator -(BothInt64 a)
         {
-            long le = (long)(-a.LittleEndian);
-            long be = (long)(-a.BigEndian);
+            long le = -a.LittleEndian;
+            long be = -a.BigEndian;
             return new BothInt64(le, be);
         }
 
@@ -44,36 +44,36 @@ namespace SabreTools.Numerics
 
         public static BothInt64 operator *(BothInt64 a, BothInt64 b)
         {
-            long le = (long)(a.LittleEndian * b.LittleEndian);
-            long be = (long)(a.BigEndian * b.BigEndian);
+            long le = a.LittleEndian * b.LittleEndian;
+            long be = a.BigEndian * b.BigEndian;
             return new BothInt64(le, be);
         }
 
         public static BothInt64 operator /(BothInt64 a, BothInt64 b)
         {
-            long le = (long)(a.LittleEndian / b.LittleEndian);
-            long be = (long)(a.BigEndian / b.BigEndian);
+            long le = a.LittleEndian / b.LittleEndian;
+            long be = a.BigEndian / b.BigEndian;
             return new BothInt64(le, be);
         }
 
         public static BothInt64 operator %(BothInt64 a, BothInt64 b)
         {
-            long le = (long)(a.LittleEndian % b.LittleEndian);
-            long be = (long)(a.BigEndian % b.BigEndian);
+            long le = a.LittleEndian % b.LittleEndian;
+            long be = a.BigEndian % b.BigEndian;
             return new BothInt64(le, be);
         }
 
         public static BothInt64 operator +(BothInt64 a, BothInt64 b)
         {
-            long le = (long)(a.LittleEndian + b.LittleEndian);
-            long be = (long)(a.BigEndian + b.BigEndian);
+            long le = a.LittleEndian + b.LittleEndian;
+            long be = a.BigEndian + b.BigEndian;
             return new BothInt64(le, be);
         }
 
         public static BothInt64 operator -(BothInt64 a, BothInt64 b)
         {
-            long le = (long)(a.LittleEndian - b.LittleEndian);
-            long be = (long)(a.BigEndian - b.BigEndian);
+            long le = a.LittleEndian - b.LittleEndian;
+            long be = a.BigEndian - b.BigEndian;
             return new BothInt64(le, be);
         }
 
@@ -83,8 +83,8 @@ namespace SabreTools.Numerics
 
         public static BothInt64 operator ~(BothInt64 a)
         {
-            long le = (long)(~a.LittleEndian);
-            long be = (long)(~a.BigEndian);
+            long le = ~a.LittleEndian;
+            long be = ~a.BigEndian;
             return new BothInt64(le, be);
         }
 
@@ -94,22 +94,22 @@ namespace SabreTools.Numerics
 
         public static BothInt64 operator <<(BothInt64 a, BothInt32 b)
         {
-            long le = (long)(a.LittleEndian << b.LittleEndian);
-            long be = (long)(a.BigEndian << b.BigEndian);
+            long le = a.LittleEndian << b.LittleEndian;
+            long be = a.BigEndian << b.BigEndian;
             return new BothInt64(le, be);
         }
 
         public static BothInt64 operator >>(BothInt64 a, BothInt32 b)
         {
-            long le = (long)(a.LittleEndian >> b.LittleEndian);
-            long be = (long)(a.BigEndian >> b.BigEndian);
+            long le = a.LittleEndian >> b.LittleEndian;
+            long be = a.BigEndian >> b.BigEndian;
             return new BothInt64(le, be);
         }
 
         public static BothInt64 operator >>>(BothInt64 a, BothInt32 b)
         {
-            long le = (long)(a.LittleEndian >>> b.LittleEndian);
-            long be = (long)(a.BigEndian >>> b.BigEndian);
+            long le = a.LittleEndian >>> b.LittleEndian;
+            long be = a.BigEndian >>> b.BigEndian;
             return new BothInt64(le, be);
         }
 
@@ -119,22 +119,22 @@ namespace SabreTools.Numerics
 
         public static BothInt64 operator &(BothInt64 a, BothInt64 b)
         {
-            long le = (long)(a.LittleEndian & b.LittleEndian);
-            long be = (long)(a.BigEndian & b.BigEndian);
+            long le = a.LittleEndian & b.LittleEndian;
+            long be = a.BigEndian & b.BigEndian;
             return new BothInt64(le, be);
         }
 
         public static BothInt64 operator |(BothInt64 a, BothInt64 b)
         {
-            long le = (long)(a.LittleEndian | b.LittleEndian);
-            long be = (long)(a.BigEndian | b.BigEndian);
+            long le = a.LittleEndian | b.LittleEndian;
+            long be = a.BigEndian | b.BigEndian;
             return new BothInt64(le, be);
         }
 
         public static BothInt64 operator ^(BothInt64 a, BothInt64 b)
         {
-            long le = (long)(a.LittleEndian ^ b.LittleEndian);
-            long be = (long)(a.BigEndian ^ b.BigEndian);
+            long le = a.LittleEndian ^ b.LittleEndian;
+            long be = a.BigEndian ^ b.BigEndian;
             return new BothInt64(le, be);
         }
 

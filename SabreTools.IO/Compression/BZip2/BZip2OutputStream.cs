@@ -47,7 +47,6 @@
  * under the License.
  */
 
-
 // Design Notes:
 //
 // This class follows the classic Decorator pattern: it is a Stream that
@@ -85,6 +84,14 @@ using System.IO;
 #nullable disable
 namespace SabreTools.IO.Compression.BZip2
 {
+#pragma warning disable IDE0001
+#pragma warning disable IDE0004
+#pragma warning disable IDE0040
+#pragma warning disable IDE0048
+#pragma warning disable IDE0049
+#pragma warning disable IDE2000
+#pragma warning disable IDE2002
+#pragma warning disable IDE2003
     /// <summary>
     ///   A write-only decorator stream that compresses data as it is
     ///   written using the BZip2 algorithm.
@@ -218,7 +225,7 @@ namespace SabreTools.IO.Compression.BZip2
         /// </remarks>
         public override void Close()
         {
-            if (output != null)
+            if (output is not null)
             {
                 Stream o = this.output;
                 Finish();
@@ -233,7 +240,7 @@ namespace SabreTools.IO.Compression.BZip2
         /// </summary>
         public override void Flush()
         {
-            if (this.output != null)
+            if (this.output is not null)
             {
                 this.bw.Flush();
                 this.output.Flush();
@@ -348,7 +355,7 @@ namespace SabreTools.IO.Compression.BZip2
             if (offset + count > buffer.Length)
                 throw new IndexOutOfRangeException(String.Format("offset({0}) count({1}) bLength({2})",
                                                                  offset, count, buffer.Length));
-            if (this.output == null)
+            if (this.output is null)
                 throw new IOException("the stream is not open");
 
             if (count == 0) return;  // nothing to do
@@ -429,7 +436,7 @@ namespace SabreTools.IO.Compression.BZip2
         {
             get
             {
-                if (this.output == null) throw new ObjectDisposedException("BZip2Stream");
+                if (this.output is null) throw new ObjectDisposedException("BZip2Stream");
                 return this.output.CanWrite;
             }
         }

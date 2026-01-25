@@ -8,13 +8,13 @@
         public static int ComparePaths(string? left, string? right)
         {
             // If both strings are null, return
-            if (left == null && right == null)
+            if (left is null && right is null)
                 return 0;
 
             // If one is null, then say that's less than
-            if (left == null)
+            if (left is null)
                 return -1;
-            if (right == null)
+            if (right is null)
                 return 1;
 
             // Normalize the path seperators

@@ -93,7 +93,7 @@ namespace SabreTools.IO.Compression.Deflate
                 out var foundFilename);
 
             // If the extracted data is invalid
-            if (status != ExtractionStatus.GOOD || destination == null)
+            if (status != ExtractionStatus.GOOD || destination is null)
                 return status;
 
             // Ensure directory separators are consistent
@@ -106,7 +106,7 @@ namespace SabreTools.IO.Compression.Deflate
             // Ensure the full output directory exists
             filename = Path.Combine(outputDirectory, filename);
             var directoryName = Path.GetDirectoryName(filename);
-            if (directoryName != null && !Directory.Exists(directoryName))
+            if (directoryName is not null && !Directory.Exists(directoryName))
                 Directory.CreateDirectory(directoryName);
 
             // Write the output file
@@ -182,11 +182,11 @@ namespace SabreTools.IO.Compression.Deflate
             long zipHeaderBytes = source.Position - current;
 
             // Always trust the PKZIP CRC-32 value over what is supplied
-            if (zipHeader != null)
+            if (zipHeader is not null)
                 expected.Crc32 = zipHeader.CRC32;
 
             // If the filename is [NULL], replace with the zip filename
-            if (zipHeader?.FileName != null)
+            if (zipHeader?.FileName is not null)
             {
                 filename = zipHeader.FileName;
                 if (includeDebug) Console.WriteLine($"Filename from PKZIP header: {filename}");
@@ -197,7 +197,7 @@ namespace SabreTools.IO.Compression.Deflate
 
             // Extract the file
             var actual = Inflate(source, destination);
-            if (actual == null)
+            if (actual is null)
             {
                 if (includeDebug) Console.Error.WriteLine($"Could not extract {filename}");
                 return ExtractionStatus.FAIL;
@@ -244,7 +244,7 @@ namespace SabreTools.IO.Compression.Deflate
 
             // Extract the file
             var actual = Inflate(source, destination);
-            if (actual == null)
+            if (actual is null)
             {
                 if (includeDebug) Console.Error.WriteLine($"Could not extract");
                 return ExtractionStatus.FAIL;

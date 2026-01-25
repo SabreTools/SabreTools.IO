@@ -160,5 +160,4 @@ namespace SabreTools.IO.Compression.Deflate
             BitLengths = new StaticTree(null, Tree.extra_blbits, 0, InternalConstants.BL_CODES, InternalConstants.MAX_BL_BITS);
         }
     }
-
 }

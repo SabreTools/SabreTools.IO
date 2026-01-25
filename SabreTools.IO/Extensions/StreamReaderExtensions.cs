@@ -234,9 +234,9 @@ namespace SabreTools.IO.Extensions
         public static int ReadInt24BigEndian(this Stream stream)
         {
             byte[] buffer = ReadExactlyToBuffer(stream, 3);
-            return (int)(buffer[2]
-                      | (buffer[1] << 8)
-                      | (buffer[0] << 16));
+            return buffer[2]
+                | (buffer[1] << 8)
+                | (buffer[0] << 16);
         }
 
         /// <summary>
@@ -246,9 +246,9 @@ namespace SabreTools.IO.Extensions
         public static int ReadInt24LittleEndian(this Stream stream)
         {
             byte[] buffer = ReadExactlyToBuffer(stream, 3);
-            return (int)(buffer[0]
-                      | (buffer[1] << 8)
-                      | (buffer[2] << 16));
+            return buffer[0]
+                | (buffer[1] << 8)
+                | (buffer[2] << 16);
         }
 
         /// <summary>
@@ -306,10 +306,10 @@ namespace SabreTools.IO.Extensions
         public static int ReadInt32BigEndian(this Stream stream)
         {
             byte[] buffer = ReadExactlyToBuffer(stream, 4);
-            return (int)(buffer[3]
-                      | (buffer[2] << 8)
-                      | (buffer[1] << 16)
-                      | (buffer[0] << 24));
+            return buffer[3]
+                | (buffer[2] << 8)
+                | (buffer[1] << 16)
+                | (buffer[0] << 24);
         }
 
         /// <summary>
@@ -319,10 +319,10 @@ namespace SabreTools.IO.Extensions
         public static int ReadInt32LittleEndian(this Stream stream)
         {
             byte[] buffer = ReadExactlyToBuffer(stream, 4);
-            return (int)(buffer[0]
-                      | (buffer[1] << 8)
-                      | (buffer[2] << 16)
-                      | (buffer[3] << 24));
+            return buffer[0]
+                | (buffer[1] << 8)
+                | (buffer[2] << 16)
+                | (buffer[3] << 24);
         }
 
         /// <summary>
@@ -1036,7 +1036,7 @@ namespace SabreTools.IO.Extensions
             {
                 // Try to create an instance of the type
                 var instance = Activator.CreateInstance(type);
-                if (instance == null)
+                if (instance is null)
                     return null;
 
                 // Get the layout information
@@ -1057,7 +1057,7 @@ namespace SabreTools.IO.Extensions
                     if (layoutKind == LayoutKind.Explicit)
                     {
                         var fieldOffset = MarshalHelpers.GetAttribute<FieldOffsetAttribute>(fi);
-                        stream.Seek(currentOffset + fieldOffset?.Value ?? 0, SeekOrigin.Begin);
+                        stream.Seek(currentOffset + (fieldOffset?.Value ?? 0), SeekOrigin.Begin);
                     }
 
                     SetField(stream, encoding, fields, instance, fi);
@@ -1102,7 +1102,7 @@ namespace SabreTools.IO.Extensions
         private static Array ReadArrayType(Stream stream, FieldInfo[] fields, object instance, FieldInfo fi)
         {
             var marshalAsAttr = MarshalHelpers.GetAttribute<MarshalAsAttribute>(fi);
-            if (marshalAsAttr == null)
+            if (marshalAsAttr is null)
                 return new object[0];
 
             // Get the number of elements expected
@@ -1118,7 +1118,7 @@ namespace SabreTools.IO.Extensions
             for (int i = 0; i < elementCount; i++)
             {
                 var value = ReadType(stream, elementType);
-                if (value != null && elementType.IsEnum)
+                if (value is not null && elementType.IsEnum)
                     arr.SetValue(Enum.ToObject(elementType, value), i);
                 else
                     arr.SetValue(value, i);
@@ -1135,6 +1135,7 @@ namespace SabreTools.IO.Extensions
         {
             var marshalAsAttr = MarshalHelpers.GetAttribute<MarshalAsAttribute>(fi);
 
+#pragma warning disable IDE0010
             switch (marshalAsAttr?.Value)
             {
                 case UnmanagedType.AnsiBStr:
@@ -1166,6 +1167,7 @@ namespace SabreTools.IO.Extensions
                 default:
                     return null;
             }
+#pragma warning restore IDE0010
         }
 
         /// <summary>

@@ -63,6 +63,12 @@
 #nullable disable
 namespace SabreTools.IO.Compression.Deflate
 {
+#pragma warning disable IDE0004
+#pragma warning disable IDE0040
+#pragma warning disable IDE0047
+#pragma warning disable IDE0048
+#pragma warning disable IDE2000
+#pragma warning disable IDE2003
     sealed class Tree
     {
         private static readonly int HEAP_SIZE = (2 * InternalConstants.L_CODES + 1);
@@ -233,7 +239,7 @@ namespace SabreTools.IO.Compression.Deflate
                     xbits = extra[n - base_Renamed];
                 f = tree[n * 2];
                 s.opt_len += f * (bits + xbits);
-                if (stree != null)
+                if (stree is not null)
                     s.static_len += f * (stree[n * 2 + 1] + xbits);
             }
             if (overflow == 0)
@@ -317,7 +323,7 @@ namespace SabreTools.IO.Compression.Deflate
                 tree[node * 2] = 1;
                 s.depth[node] = 0;
                 s.opt_len--;
-                if (stree != null)
+                if (stree is not null)
                     s.static_len -= stree[node * 2 + 1];
                 // node is 0 or 1 so it does not have extra bits
             }

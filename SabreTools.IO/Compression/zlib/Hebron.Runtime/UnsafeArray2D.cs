@@ -2,6 +2,7 @@
 
 namespace SabreTools.IO.Compression.zlib
 {
+#pragma warning disable IDE0044
     public unsafe class UnsafeArray2D<T> where T : struct
     {
         private readonly UnsafeArray1D<T>[] _data;

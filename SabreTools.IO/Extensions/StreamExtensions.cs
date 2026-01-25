@@ -14,7 +14,7 @@ namespace SabreTools.IO.Extensions
         public static bool AlignToBoundary(this Stream? input, int alignment)
         {
             // If the stream is invalid
-            if (input == null || input.Length == 0 || !input.CanRead)
+            if (input is null || input.Length == 0 || !input.CanRead)
                 return false;
 
             // If already at the end of the stream
@@ -46,7 +46,7 @@ namespace SabreTools.IO.Extensions
         /// </remarks>
         public static byte[]? ReadFrom(this Stream? input, long offset, int length, bool retainPosition)
         {
-            if (input == null || !input.CanRead || !input.CanSeek)
+            if (input is null || !input.CanRead || !input.CanSeek)
                 return null;
             if (offset < 0 || offset >= input.Length)
                 return null;
@@ -88,7 +88,7 @@ namespace SabreTools.IO.Extensions
         {
             // Read the data as a byte array first
             byte[]? data = input.ReadFrom(position, length, retainPosition: true);
-            if (data == null)
+            if (data is null)
                 return null;
 
             return data.ReadStringsFrom(charLimit);
@@ -141,7 +141,7 @@ namespace SabreTools.IO.Extensions
         /// <returns>True if segment could be read fully, false otherwise</returns>
         public static bool SegmentValid(this Stream? input, long offset, long count)
         {
-            if (input == null)
+            if (input is null)
                 return false;
             if (offset < 0 || offset > input.Length)
                 return false;

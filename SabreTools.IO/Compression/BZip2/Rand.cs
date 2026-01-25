@@ -23,7 +23,6 @@
 //
 // ------------------------------------------------------------------
 
-
 namespace SabreTools.IO.Compression.BZip2
 {
     internal static class Rand
@@ -84,7 +83,6 @@ namespace SabreTools.IO.Compression.BZip2
             936, 638
         ];
 
-
         /// <summary>
         ///   Returns the "random" number at a specific index.
         /// </summary>
@@ -95,5 +93,4 @@ namespace SabreTools.IO.Compression.BZip2
             return RNUMS[i];
         }
     }
-
 }

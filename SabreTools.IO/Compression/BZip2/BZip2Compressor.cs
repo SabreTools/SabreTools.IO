@@ -27,7 +27,6 @@
 //
 // ------------------------------------------------------------------
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -52,7 +51,6 @@
  * <keiron@aftexsw.com> to whom the Ant project is very grateful for his
  * great code.
  */
-
 
 //
 // Design notes:
@@ -85,12 +83,18 @@
 //
 
 using System;
-using System.IO;
 
 // flymake: csc.exe /t:module BZip2InputStream.cs BZip2OutputStream.cs Rand.cs BCRC32.cs @@FILE@@
 
 namespace SabreTools.IO.Compression.BZip2
 {
+#pragma warning disable IDE0040
+#pragma warning disable IDE0047
+#pragma warning disable IDE0049
+#pragma warning disable IDE0052
+#pragma warning disable IDE2000
+#pragma warning disable IDE2002
+#pragma warning disable IDE2003
     internal class BZip2Compressor
     {
         private readonly int blockSize100k;  // 0...9

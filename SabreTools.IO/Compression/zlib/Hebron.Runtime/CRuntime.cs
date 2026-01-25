@@ -23,7 +23,7 @@ namespace SabreTools.IO.Compression.zlib
 
         public static void free(void* a)
         {
-            if (a == null)
+            if (a is null)
                 return;
 
             var ptr = new IntPtr(a);
@@ -57,7 +57,7 @@ namespace SabreTools.IO.Compression.zlib
 
             finally
             {
-                if (temp != null)
+                if (temp is not null)
                     free(temp);
             }
         }
@@ -117,7 +117,7 @@ namespace SabreTools.IO.Compression.zlib
 
         public static void* realloc(void* a, long newSize)
         {
-            if (a == null)
+            if (a is null)
                 return malloc(newSize);
 
             var ptr = new IntPtr(a);
@@ -207,7 +207,7 @@ namespace SabreTools.IO.Compression.zlib
                 --length;
             }
 
-            if (end != null)
+            if (end is not null)
             {
                 *end = ptr;
             }

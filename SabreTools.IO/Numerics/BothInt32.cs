@@ -12,29 +12,29 @@ namespace SabreTools.Numerics
 
         public static BothInt32 operator ++(BothInt32 a)
         {
-            int le = (int)(a.LittleEndian + 1);
-            int be = (int)(a.BigEndian + 1);
+            int le = a.LittleEndian + 1;
+            int be = a.BigEndian + 1;
             return new BothInt32(le, be);
         }
 
         public static BothInt32 operator --(BothInt32 a)
         {
-            int le = (int)(a.LittleEndian - 1);
-            int be = (int)(a.BigEndian - 1);
+            int le = a.LittleEndian - 1;
+            int be = a.BigEndian - 1;
             return new BothInt32(le, be);
         }
 
         public static BothInt32 operator +(BothInt32 a)
         {
-            int le = (int)(+a.LittleEndian);
-            int be = (int)(+a.BigEndian);
+            int le = +a.LittleEndian;
+            int be = +a.BigEndian;
             return new BothInt32(le, be);
         }
 
         public static BothInt32 operator -(BothInt32 a)
         {
-            int le = (int)(-a.LittleEndian);
-            int be = (int)(-a.BigEndian);
+            int le = -a.LittleEndian;
+            int be = -a.BigEndian;
             return new BothInt32(le, be);
         }
 
@@ -44,36 +44,36 @@ namespace SabreTools.Numerics
 
         public static BothInt32 operator *(BothInt32 a, BothInt32 b)
         {
-            int le = (int)(a.LittleEndian * b.LittleEndian);
-            int be = (int)(a.BigEndian * b.BigEndian);
+            int le = a.LittleEndian * b.LittleEndian;
+            int be = a.BigEndian * b.BigEndian;
             return new BothInt32(le, be);
         }
 
         public static BothInt32 operator /(BothInt32 a, BothInt32 b)
         {
-            int le = (int)(a.LittleEndian / b.LittleEndian);
-            int be = (int)(a.BigEndian / b.BigEndian);
+            int le = a.LittleEndian / b.LittleEndian;
+            int be = a.BigEndian / b.BigEndian;
             return new BothInt32(le, be);
         }
 
         public static BothInt32 operator %(BothInt32 a, BothInt32 b)
         {
-            int le = (int)(a.LittleEndian % b.LittleEndian);
-            int be = (int)(a.BigEndian % b.BigEndian);
+            int le = a.LittleEndian % b.LittleEndian;
+            int be = a.BigEndian % b.BigEndian;
             return new BothInt32(le, be);
         }
 
         public static BothInt32 operator +(BothInt32 a, BothInt32 b)
         {
-            int le = (int)(a.LittleEndian + b.LittleEndian);
-            int be = (int)(a.BigEndian + b.BigEndian);
+            int le = a.LittleEndian + b.LittleEndian;
+            int be = a.BigEndian + b.BigEndian;
             return new BothInt32(le, be);
         }
 
         public static BothInt32 operator -(BothInt32 a, BothInt32 b)
         {
-            int le = (int)(a.LittleEndian - b.LittleEndian);
-            int be = (int)(a.BigEndian - b.BigEndian);
+            int le = a.LittleEndian - b.LittleEndian;
+            int be = a.BigEndian - b.BigEndian;
             return new BothInt32(le, be);
         }
 
@@ -83,8 +83,8 @@ namespace SabreTools.Numerics
 
         public static BothInt32 operator ~(BothInt32 a)
         {
-            int le = (int)(~a.LittleEndian);
-            int be = (int)(~a.BigEndian);
+            int le = ~a.LittleEndian;
+            int be = ~a.BigEndian;
             return new BothInt32(le, be);
         }
 
@@ -94,22 +94,22 @@ namespace SabreTools.Numerics
 
         public static BothInt32 operator <<(BothInt32 a, BothInt32 b)
         {
-            int le = (int)(a.LittleEndian << b.LittleEndian);
-            int be = (int)(a.BigEndian << b.BigEndian);
+            int le = a.LittleEndian << b.LittleEndian;
+            int be = a.BigEndian << b.BigEndian;
             return new BothInt32(le, be);
         }
 
         public static BothInt32 operator >>(BothInt32 a, BothInt32 b)
         {
-            int le = (int)(a.LittleEndian >> b.LittleEndian);
-            int be = (int)(a.BigEndian >> b.BigEndian);
+            int le = a.LittleEndian >> b.LittleEndian;
+            int be = a.BigEndian >> b.BigEndian;
             return new BothInt32(le, be);
         }
 
         public static BothInt32 operator >>>(BothInt32 a, BothInt32 b)
         {
-            int le = (int)(a.LittleEndian >>> b.LittleEndian);
-            int be = (int)(a.BigEndian >>> b.BigEndian);
+            int le = a.LittleEndian >>> b.LittleEndian;
+            int be = a.BigEndian >>> b.BigEndian;
             return new BothInt32(le, be);
         }
 
@@ -119,22 +119,22 @@ namespace SabreTools.Numerics
 
         public static BothInt32 operator &(BothInt32 a, BothInt32 b)
         {
-            int le = (int)(a.LittleEndian & b.LittleEndian);
-            int be = (int)(a.BigEndian & b.BigEndian);
+            int le = a.LittleEndian & b.LittleEndian;
+            int be = a.BigEndian & b.BigEndian;
             return new BothInt32(le, be);
         }
 
         public static BothInt32 operator |(BothInt32 a, BothInt32 b)
         {
-            int le = (int)(a.LittleEndian | b.LittleEndian);
-            int be = (int)(a.BigEndian | b.BigEndian);
+            int le = a.LittleEndian | b.LittleEndian;
+            int be = a.BigEndian | b.BigEndian;
             return new BothInt32(le, be);
         }
 
         public static BothInt32 operator ^(BothInt32 a, BothInt32 b)
         {
-            int le = (int)(a.LittleEndian ^ b.LittleEndian);
-            int be = (int)(a.BigEndian ^ b.BigEndian);
+            int le = a.LittleEndian ^ b.LittleEndian;
+            int be = a.BigEndian ^ b.BigEndian;
             return new BothInt32(le, be);
         }
 

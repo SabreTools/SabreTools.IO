@@ -102,9 +102,9 @@ namespace SabreTools.IO
         private static bool PathsEqual(string? path1, string? path2, bool caseSenstive = false)
         {
             // Handle null path cases
-            if (path1 == null && path2 == null)
+            if (path1 is null && path2 is null)
                 return true;
-            else if (path1 == null ^ path2 == null)
+            else if (path1 is null ^ path2 is null)
                 return false;
 
             // Normalize the paths before comparing
@@ -123,7 +123,7 @@ namespace SabreTools.IO
         private static string? NormalizeDirectorySeparators(string? input)
         {
             // Null inputs are skipped
-            if (input == null)
+            if (input is null)
                 return null;
 
             // Replace '\' with '/'

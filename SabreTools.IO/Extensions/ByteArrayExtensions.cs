@@ -13,7 +13,7 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         public static bool IsNullOrEmpty(this Array? array)
         {
-            return array == null || array.Length == 0;
+            return array is null || array.Length == 0;
         }
 
         /// <summary>
@@ -358,7 +358,7 @@ namespace SabreTools.IO.Extensions
                 byte bitMask = (byte)(8 - numBits), carry, wrap = 0;
                 for (int i = 0; i < output.Length; i++)
                 {
-                    carry = (byte)((255 << bitMask & output[i]) >> bitMask);
+                    carry = (byte)(((255 << bitMask) & output[i]) >> bitMask);
 
                     // Make sure the first byte carries to the end
                     if (i == 0)
@@ -428,7 +428,7 @@ namespace SabreTools.IO.Extensions
         public static string? ToHexString(this byte[]? bytes)
         {
             // If we get null in, we send null out
-            if (bytes == null)
+            if (bytes is null)
                 return null;
 
             string hex = BitConverter.ToString(bytes);
@@ -474,7 +474,7 @@ namespace SabreTools.IO.Extensions
         public static List<string>? ReadStringsFrom(this byte[]? input, int charLimit = 5)
         {
             // Validate the data
-            if (input == null || input.Length == 0)
+            if (input is null || input.Length == 0)
                 return null;
 
 #if NET5_0_OR_GREATER
@@ -511,7 +511,7 @@ namespace SabreTools.IO.Extensions
         public static HashSet<string> ReadStringsWithEncoding(this byte[]? bytes, int charLimit, Encoding encoding)
 #endif
         {
-            if (bytes == null || bytes.Length == 0)
+            if (bytes is null || bytes.Length == 0)
                 return [];
             if (charLimit <= 0 || charLimit > bytes.Length)
                 return [];

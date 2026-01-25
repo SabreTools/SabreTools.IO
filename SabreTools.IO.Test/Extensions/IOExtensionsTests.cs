@@ -20,7 +20,7 @@ namespace SabreTools.IO.Test.Extensions
         {
             // Handle test setup
             expected ??= PathTool.GetRuntimeDirectory();
-            if (expected != null)
+            if (expected is not null)
                 expected = Path.GetFullPath(expected);
 
             string actual = dir.Ensure(create: false);

@@ -148,9 +148,9 @@ namespace SabreTools.IO.Extensions
         public static int ReadInt24BigEndian(this BinaryReader reader)
         {
             byte[] buffer = reader.ReadBytes(3);
-            return (int)(buffer[2]
-                       | (buffer[1] << 8)
-                       | (buffer[0] << 16));
+            return buffer[2]
+                | (buffer[1] << 8)
+                | (buffer[0] << 16);
         }
 
         /// <summary>
@@ -160,9 +160,9 @@ namespace SabreTools.IO.Extensions
         public static int ReadInt24LittleEndian(this BinaryReader reader)
         {
             byte[] buffer = reader.ReadBytes(3);
-            return (int)(buffer[0]
-                      | (buffer[1] << 8)
-                      | (buffer[2] << 16));
+            return buffer[0]
+                | (buffer[1] << 8)
+                | (buffer[2] << 16);
         }
 
         /// <summary>
@@ -206,10 +206,10 @@ namespace SabreTools.IO.Extensions
         public static int ReadInt32BigEndian(this BinaryReader reader)
         {
             byte[] buffer = reader.ReadBytes(4);
-            return (int)(buffer[3]
-                      | (buffer[2] << 8)
-                      | (buffer[1] << 16)
-                      | (buffer[0] << 24));
+            return buffer[3]
+                | (buffer[2] << 8)
+                | (buffer[1] << 16)
+                | (buffer[0] << 24);
         }
 
         /// <inheritdoc cref="BinaryReader.ReadInt32"/>
@@ -217,10 +217,10 @@ namespace SabreTools.IO.Extensions
         public static int ReadInt32LittleEndian(this BinaryReader reader)
         {
             byte[] buffer = reader.ReadBytes(4);
-            return (int)(buffer[0]
-                      | (buffer[1] << 8)
-                      | (buffer[2] << 16)
-                      | (buffer[3] << 24));
+            return buffer[0]
+                | (buffer[1] << 8)
+                | (buffer[2] << 16)
+                | (buffer[3] << 24);
         }
 
         /// <inheritdoc cref="BinaryReader.ReadInt32"/>
@@ -815,7 +815,7 @@ namespace SabreTools.IO.Extensions
             {
                 // Try to create an instance of the type
                 var instance = Activator.CreateInstance(type);
-                if (instance == null)
+                if (instance is null)
                     return null;
 
                 // Get the layout information
@@ -836,7 +836,7 @@ namespace SabreTools.IO.Extensions
                     if (layoutKind == LayoutKind.Explicit)
                     {
                         var fieldOffset = MarshalHelpers.GetAttribute<FieldOffsetAttribute>(fi);
-                        reader.BaseStream.Seek(currentOffset + fieldOffset?.Value ?? 0, SeekOrigin.Begin);
+                        reader.BaseStream.Seek(currentOffset + (fieldOffset?.Value ?? 0), SeekOrigin.Begin);
                     }
 
                     SetField(reader, encoding, fields, instance, fi);
@@ -881,7 +881,7 @@ namespace SabreTools.IO.Extensions
         private static Array ReadArrayType(BinaryReader reader, FieldInfo[] fields, object instance, FieldInfo fi)
         {
             var marshalAsAttr = MarshalHelpers.GetAttribute<MarshalAsAttribute>(fi);
-            if (marshalAsAttr == null)
+            if (marshalAsAttr is null)
                 return new object[0];
 
             // Get the number of elements expected
@@ -897,7 +897,7 @@ namespace SabreTools.IO.Extensions
             for (int i = 0; i < elementCount; i++)
             {
                 var value = ReadType(reader, elementType);
-                if (value != null && elementType.IsEnum)
+                if (value is not null && elementType.IsEnum)
                     arr.SetValue(Enum.ToObject(elementType, value), i);
                 else
                     arr.SetValue(value, i);
@@ -913,7 +913,7 @@ namespace SabreTools.IO.Extensions
         private static string? ReadStringType(BinaryReader reader, Encoding encoding, FieldInfo? fi)
         {
             // If the FieldInfo is null
-            if (fi == null)
+            if (fi is null)
                 return null;
 
             // Get all MarshalAs attributes for the field, if possible
@@ -923,6 +923,7 @@ namespace SabreTools.IO.Extensions
 
             // Use the first found attribute
             var marshalAsAttr = attributes[0] as MarshalAsAttribute;
+#pragma warning disable IDE0010
             switch (marshalAsAttr?.Value)
             {
                 case UnmanagedType.AnsiBStr:
@@ -954,6 +955,7 @@ namespace SabreTools.IO.Extensions
                 default:
                     return null;
             }
+#pragma warning restore IDE0010
         }
 
         /// <summary>

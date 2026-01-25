@@ -129,5 +129,4 @@ namespace SabreTools.IO.Compression.Deflate
         /// <summary>Signals the end of the compression/decompression stream.</summary>
         Finish,
     }
-
 }

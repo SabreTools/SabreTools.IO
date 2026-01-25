@@ -81,6 +81,10 @@
 
 using System.IO;
 
+#pragma warning disable IDE0040
+#pragma warning disable IDE0048
+#pragma warning disable IDE2000
+#pragma warning disable IDE2002
 namespace SabreTools.IO.Compression.BZip2
 {
     internal class BitWriter

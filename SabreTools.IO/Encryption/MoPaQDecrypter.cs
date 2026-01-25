@@ -4,6 +4,7 @@ using System.Text;
 using SabreTools.Hashing;
 using SabreTools.IO.Extensions;
 
+#pragma warning disable IDE0051
 namespace SabreTools.IO.Encryption
 {
     /// <summary>
@@ -123,13 +124,13 @@ namespace SabreTools.IO.Encryption
             {
                 for (uint index2 = index1, i = 0; i < 5; i++, index2 += 0x100)
                 {
-                    seed = (seed * 125 + 3) % 0x2AAAAB;
+                    seed = ((seed * 125) + 3) % 0x2AAAAB;
                     uint temp1 = (seed & 0xFFFF) << 0x10;
 
-                    seed = (seed * 125 + 3) % 0x2AAAAB;
-                    uint temp2 = (seed & 0xFFFF);
+                    seed = ((seed * 125) + 3) % 0x2AAAAB;
+                    uint temp2 = seed & 0xFFFF;
 
-                    _stormBuffer[index2] = (temp1 | temp2);
+                    _stormBuffer[index2] = temp1 | temp2;
                 }
             }
         }
@@ -199,7 +200,7 @@ namespace SabreTools.IO.Encryption
 
             // Verify the MD5 of the table, if present
             byte[]? actualHash = HashTool.GetByteArrayHashArray(readBytes, HashType.MD5);
-            if (expectedHash != null && actualHash != null && !actualHash.EqualsExactly(expectedHash))
+            if (expectedHash is not null && actualHash is not null && !actualHash.EqualsExactly(expectedHash))
             {
                 Console.WriteLine("Table is corrupt!");
                 return null;
@@ -232,7 +233,7 @@ namespace SabreTools.IO.Encryption
         /// <summary>
         /// Decrypt a single block of data
         /// </summary>
-        public unsafe byte[] DecryptBlock(byte[] block, long length, uint key)
+        public byte[] DecryptBlock(byte[] block, long length, uint key)
         {
             uint seed = 0xEEEEEEEE;
 

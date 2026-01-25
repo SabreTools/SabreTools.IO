@@ -58,7 +58,7 @@ namespace SabreTools.IO.Matching
         /// <param name="stack">Array of strings to search for the given content</param>
         /// <returns>Matched item on success, null on error</returns>
         public string? Match(string[]? stack)
-            => Match(stack == null ? null : new List<string>(stack));
+            => Match(stack is null ? null : new List<string>(stack));
 
         /// <summary>
         /// Get if this match can be found in a stack
@@ -68,7 +68,7 @@ namespace SabreTools.IO.Matching
         public string? Match(List<string>? stack)
         {
             // If either set is null or empty
-            if (stack == null || stack.Count == 0 || Needle.Length == 0)
+            if (stack is null || stack.Count == 0 || Needle.Length == 0)
                 return null;
 
             // Preprocess the needle, if necessary

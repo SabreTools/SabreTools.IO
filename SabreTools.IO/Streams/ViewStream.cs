@@ -217,7 +217,6 @@ namespace SabreTools.IO.Streams
                 {
                     return _source.Read(buffer, offset, count);
                 }
-
             }
             catch
             {

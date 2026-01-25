@@ -140,7 +140,7 @@ namespace SabreTools.IO.Matching
         public List<int> MatchesAll(byte[]? stack)
         {
             // If either set is null or empty
-            if (stack == null || stack.Length == 0 || Matchers.Count == 0)
+            if (stack is null || stack.Length == 0 || Matchers.Count == 0)
                 return [];
 
             // Initialize the position list
@@ -167,7 +167,7 @@ namespace SabreTools.IO.Matching
         public int MatchesAny(byte[]? stack)
         {
             // If either set is null or empty
-            if (stack == null || stack.Length == 0 || Matchers.Count == 0)
+            if (stack is null || stack.Length == 0 || Matchers.Count == 0)
                 return -1;
 
             // Loop through all content matches and make sure all pass
@@ -193,7 +193,7 @@ namespace SabreTools.IO.Matching
         public List<int> MatchesAll(Stream? stack)
         {
             // If either set is null or empty
-            if (stack == null || stack.Length == 0 || Matchers.Count == 0)
+            if (stack is null || stack.Length == 0 || Matchers.Count == 0)
                 return [];
 
             // Initialize the position list
@@ -220,7 +220,7 @@ namespace SabreTools.IO.Matching
         public int MatchesAny(Stream? stack)
         {
             // If either set is null or empty
-            if (stack == null || stack.Length == 0 || Matchers.Count == 0)
+            if (stack is null || stack.Length == 0 || Matchers.Count == 0)
                 return -1;
 
             // Loop through all content matches and make sure all pass

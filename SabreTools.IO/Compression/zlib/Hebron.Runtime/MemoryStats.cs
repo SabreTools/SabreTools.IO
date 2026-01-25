@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 
 namespace SabreTools.IO.Compression.zlib
 {
+#pragma warning disable IDE0036
+#pragma warning disable IDE0380
     public unsafe static class MemoryStats
     {
         private static int _allocations;

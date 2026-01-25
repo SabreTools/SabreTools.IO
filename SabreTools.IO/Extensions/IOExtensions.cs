@@ -50,7 +50,7 @@ namespace SabreTools.IO.Extensions
             try
             {
                 var file = File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                if (file == null)
+                if (file is null)
                     return Encoding.Default;
 
                 // Read the BOM
@@ -59,7 +59,9 @@ namespace SabreTools.IO.Extensions
                 file.Dispose();
 
                 // Disable warning about UTF7 usage
+#if NET5_0_OR_GREATER
 #pragma warning disable SYSLIB0001
+#endif
 
                 // Analyze the BOM
                 if (bom[0] == 0x2b && bom[1] == 0x2f && bom[2] == 0x76) return Encoding.UTF7;
@@ -69,7 +71,10 @@ namespace SabreTools.IO.Extensions
                 if (bom[0] == 0 && bom[1] == 0 && bom[2] == 0xfe && bom[3] == 0xff) return Encoding.UTF32;
                 return Encoding.Default;
 
+                // Restore warning about UTF7 usage
+#if NET5_0_OR_GREATER
 #pragma warning restore SYSLIB0001
+#endif
             }
             catch
             {
@@ -109,7 +114,7 @@ namespace SabreTools.IO.Extensions
         public static List<string>? ListEmpty(this string? root)
         {
             // Check null or empty first
-            if (root == null)
+            if (root is null)
                 return null;
 
             // Then, check if the root exists

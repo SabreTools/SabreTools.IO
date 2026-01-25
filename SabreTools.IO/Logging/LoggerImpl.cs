@@ -212,11 +212,11 @@ namespace SabreTools.IO.Logging
         public static void HandleLogEvent(object? sender, LogEventArgs args)
         {
             // Null args means we can't handle it
-            if (args == null)
+            if (args is null)
                 return;
 
             // If we have an exception and we're throwing on that
-            if (ThrowOnError && args.Exception != null)
+            if (ThrowOnError && args.Exception is not null)
                 throw args.Exception;
 
             // If we have a warning or error, set the flags accordingly
@@ -227,14 +227,14 @@ namespace SabreTools.IO.Logging
 
             // Setup the statement based on the inputs
             string logLine;
-            if (args.Exception != null)
+            if (args.Exception is not null)
             {
-                logLine = $"{(args.Statement != null ? args.Statement + ": " : string.Empty)}{args.Exception}";
+                logLine = $"{(args.Statement is not null ? args.Statement + ": " : string.Empty)}{args.Exception}";
             }
-            else if (args.TotalCount != null && args.CurrentCount != null)
+            else if (args.TotalCount is not null && args.CurrentCount is not null)
             {
-                double percentage = ((double)args.CurrentCount.Value / args.TotalCount.Value) * 100;
-                logLine = $"{percentage:N2}%{(args.Statement != null ? ": " + args.Statement : string.Empty)}";
+                double percentage = (double)args.CurrentCount.Value / args.TotalCount.Value * 100;
+                logLine = $"{percentage:N2}%{(args.Statement is not null ? ": " + args.Statement : string.Empty)}";
             }
             else
             {

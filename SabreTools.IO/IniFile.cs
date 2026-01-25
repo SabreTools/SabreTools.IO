@@ -161,7 +161,7 @@ namespace SabreTools.IO
         private bool Parse(Stream? stream)
         {
             // If the stream is invalid or unreadable, we can't process it
-            if (stream == null || !stream.CanRead || stream.Position >= stream.Length - 1)
+            if (stream is null || !stream.CanRead || stream.Position >= stream.Length - 1)
                 return false;
 
             // Keys are case-insensitive by default
@@ -195,6 +195,9 @@ namespace SabreTools.IO
                             this[key] = reader.KeyValuePair?.Value;
                             break;
 
+                        case IniRowType.None:
+                        case IniRowType.Comment:
+                        case IniRowType.Invalid:
                         default:
                             // No-op
                             break;

@@ -26,15 +26,15 @@ namespace SabreTools.Numerics
 
         public static BothInt16 operator +(BothInt16 a)
         {
-            short le = (short)(+a.LittleEndian);
-            short be = (short)(+a.BigEndian);
+            short le = (short)+a.LittleEndian;
+            short be = (short)+a.BigEndian;
             return new BothInt16(le, be);
         }
 
         public static BothInt16 operator -(BothInt16 a)
         {
-            short le = (short)(-a.LittleEndian);
-            short be = (short)(-a.BigEndian);
+            short le = (short)-a.LittleEndian;
+            short be = (short)-a.BigEndian;
             return new BothInt16(le, be);
         }
 
@@ -83,8 +83,8 @@ namespace SabreTools.Numerics
 
         public static BothInt16 operator ~(BothInt16 a)
         {
-            short le = (short)(~a.LittleEndian);
-            short be = (short)(~a.BigEndian);
+            short le = (short)~a.LittleEndian;
+            short be = (short)~a.BigEndian;
             return new BothInt16(le, be);
         }
 

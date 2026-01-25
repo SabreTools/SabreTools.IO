@@ -92,7 +92,7 @@ namespace SabreTools.IO.Matching
         /// <param name="stack">List of strings to search for the given content</param>
         /// <returns>Matched item on success, null on error</returns>
         public List<string> MatchesAll(string[]? stack)
-            => MatchesAll(stack == null ? null : new List<string>(stack));
+            => MatchesAll(stack is null ? null : new List<string>(stack));
 
         /// <summary>
         /// Determine whether all path matches pass
@@ -102,7 +102,7 @@ namespace SabreTools.IO.Matching
         public List<string> MatchesAll(List<string>? stack)
         {
             // If either set is null or empty, we can't do anything
-            if (stack == null || stack.Count == 0 || Matchers.Count == 0)
+            if (stack is null || stack.Count == 0 || Matchers.Count == 0)
                 return [];
 
             // Initialize the value list
@@ -112,7 +112,7 @@ namespace SabreTools.IO.Matching
             foreach (var pathMatch in Matchers)
             {
                 string? value = pathMatch.Match(stack);
-                if (value == null)
+                if (value is null)
                     return [];
                 else
                     values.Add(value);
@@ -127,7 +127,7 @@ namespace SabreTools.IO.Matching
         /// <param name="stack">List of strings to search for the given content</param>
         /// <returns>Matched item on success, null on error</returns>
         public string? MatchesAny(string[]? stack)
-            => MatchesAny(stack == null ? null : new List<string>(stack));
+            => MatchesAny(stack is null ? null : new List<string>(stack));
 
         /// <summary>
         /// Determine whether any path matches pass
@@ -137,14 +137,14 @@ namespace SabreTools.IO.Matching
         public string? MatchesAny(List<string>? stack)
         {
             // If either set is null or empty, we can't do anything
-            if (stack == null || stack.Count == 0 || Matchers.Count == 0)
+            if (stack is null || stack.Count == 0 || Matchers.Count == 0)
                 return null;
 
             // Loop through all path matches and make sure all pass
             foreach (var pathMatch in Matchers)
             {
                 string? value = pathMatch.Match(stack);
-                if (value != null)
+                if (value is not null)
                     return value;
             }
 

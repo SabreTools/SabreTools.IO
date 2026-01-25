@@ -88,6 +88,9 @@
 
 namespace SabreTools.IO.Compression.Deflate
 {
+#pragma warning disable IDE0004
+#pragma warning disable IDE2002
+#pragma warning disable IDE2003
     /// <summary>
     /// Computes an Adler-32 checksum.
     /// </summary>
@@ -123,7 +126,7 @@ namespace SabreTools.IO.Compression.Deflate
         /// </example>
         public static uint Adler32(uint adler, byte[] buf, int index, int len)
         {
-            if (buf == null)
+            if (buf is null)
                 return 1;
 
             uint s1 = (uint)(adler & 0xffff);

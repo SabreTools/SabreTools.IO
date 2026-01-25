@@ -28,6 +28,10 @@
 #pragma warning disable CS0649
 namespace SabreTools.IO.Compression.Deflate
 {
+#pragma warning disable IDE0001
+#pragma warning disable IDE0048
+#pragma warning disable IDE2000
+#pragma warning disable IDE2002
     internal class WorkItem
     {
         public byte[] buffer;

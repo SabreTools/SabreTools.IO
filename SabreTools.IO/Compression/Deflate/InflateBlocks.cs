@@ -66,6 +66,14 @@ using System;
 #nullable disable
 namespace SabreTools.IO.Compression.Deflate
 {
+#pragma warning disable IDE0004
+#pragma warning disable IDE0010
+#pragma warning disable IDE0040
+#pragma warning disable IDE0047
+#pragma warning disable IDE0048
+#pragma warning disable IDE0049
+#pragma warning disable IDE2000
+#pragma warning disable IDE2003
     sealed class InflateBlocks
     {
         private const int MANY = 1440;
@@ -135,7 +143,7 @@ namespace SabreTools.IO.Compression.Deflate
             bitb = 0;
             readAt = writeAt = 0;
 
-            if (checkfn != null)
+            if (checkfn is not null)
                 _codec._Adler32 = check = Adler.Adler32(0, null, 0, 0);
             return oldCheck;
         }
@@ -362,7 +370,7 @@ namespace SabreTools.IO.Compression.Deflate
                             return Flush(r);
                         }
                         t = 258 + (t & 0x1f) + ((t >> 5) & 0x1f);
-                        if (blens == null || blens.Length < t)
+                        if (blens is null || blens.Length < t)
                         {
                             blens = new int[t];
                         }
@@ -710,7 +718,7 @@ namespace SabreTools.IO.Compression.Deflate
                 _codec.TotalBytesOut += nBytes;
 
                 // update check information
-                if (checkfn != null)
+                if (checkfn is not null)
                     _codec._Adler32 = check = Adler.Adler32(check, window, readAt, nBytes);
 
                 // copy as far as end of window

@@ -31,6 +31,15 @@ using Interop = System.Runtime.InteropServices;
 #nullable disable
 namespace SabreTools.IO.Compression.BZip2
 {
+#pragma warning disable IDE0001
+#pragma warning disable IDE0002
+#pragma warning disable IDE0047
+#pragma warning disable IDE0048
+#pragma warning disable IDE0049
+#pragma warning disable IDE2000
+#pragma warning disable IDE2002
+#pragma warning disable IDE2003
+#pragma warning disable IDE2004
     /// <summary>
     ///   Computes a CRC-32. The CRC-32 algorithm is parameterized - you
     ///   can set the polynomial and enable or disable bit
@@ -90,7 +99,7 @@ namespace SabreTools.IO.Compression.BZip2
         /// <returns>the CRC32 calculation</returns>
         public Int32 GetCrc32AndCopy(System.IO.Stream input, System.IO.Stream output)
         {
-            if (input == null)
+            if (input is null)
                 throw new Exception("The input stream must not be null.");
 
             unchecked
@@ -142,7 +151,7 @@ namespace SabreTools.IO.Compression.BZip2
         /// <param name="count">how many bytes within the block to slurp</param>
         public void SlurpBlock(byte[] block, int offset, int count)
         {
-            if (block == null)
+            if (block is null)
                 throw new Exception("The data buffer must not be null.");
 
             // bzip algorithm

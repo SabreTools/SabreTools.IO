@@ -400,7 +400,7 @@ namespace SabreTools.IO.Extensions
         public static bool WriteNullTerminatedString(this BinaryWriter writer, string? value, Encoding encoding)
         {
             // If the value is null
-            if (value == null)
+            if (value is null)
                 return false;
 
             // Add the null terminator and write
@@ -453,7 +453,7 @@ namespace SabreTools.IO.Extensions
         public static bool WritePrefixedAnsiString(this BinaryWriter writer, string? value)
         {
             // If the value is null
-            if (value == null)
+            if (value is null)
                 return false;
 
             // Get the buffer
@@ -473,7 +473,7 @@ namespace SabreTools.IO.Extensions
         public static bool WritePrefixedLatin1String(this BinaryWriter writer, string? value)
         {
             // If the value is null
-            if (value == null)
+            if (value is null)
                 return false;
 
             // Get the buffer
@@ -493,7 +493,7 @@ namespace SabreTools.IO.Extensions
         public static bool WritePrefixedUnicodeString(this BinaryWriter writer, string? value)
         {
             // If the value is null
-            if (value == null)
+            if (value is null)
                 return false;
 
             // Get the buffer
@@ -512,7 +512,7 @@ namespace SabreTools.IO.Extensions
         public static bool WritePrefixedBigEndianUnicodeString(this BinaryWriter writer, string? value)
         {
             // If the value is null
-            if (value == null)
+            if (value is null)
                 return false;
 
             // Get the buffer
@@ -553,7 +553,7 @@ namespace SabreTools.IO.Extensions
         public static bool WriteType(this BinaryWriter writer, object? value, Type type)
         {
             // Null values cannot be written
-            if (value == null)
+            if (value is null)
                 return true;
 
             // Handle special struct cases
@@ -589,7 +589,7 @@ namespace SabreTools.IO.Extensions
             try
             {
                 // Null values cannot be written
-                if (value == null)
+                if (value is null)
                     return true;
 
                 int typeSize = Marshal.SizeOf(type);
@@ -617,7 +617,7 @@ namespace SabreTools.IO.Extensions
             try
             {
                 // Null values cannot be written
-                if (value == null)
+                if (value is null)
                     return true;
 
                 // Get the layout information
@@ -638,7 +638,7 @@ namespace SabreTools.IO.Extensions
                     if (layoutKind == LayoutKind.Explicit)
                     {
                         var fieldOffset = MarshalHelpers.GetAttribute<FieldOffsetAttribute>(fi);
-                        writer.BaseStream.Seek(currentOffset + fieldOffset?.Value ?? 0, SeekOrigin.Begin);
+                        writer.BaseStream.Seek(currentOffset + (fieldOffset?.Value ?? 0), SeekOrigin.Begin);
                     }
 
                     if (!GetField(writer, encoding, fields, value, fi))
@@ -679,7 +679,7 @@ namespace SabreTools.IO.Extensions
         private static bool WriteArrayType(BinaryWriter writer, FieldInfo[] fields, object instance, FieldInfo fi)
         {
             var marshalAsAttr = MarshalHelpers.GetAttribute<MarshalAsAttribute>(fi);
-            if (marshalAsAttr == null)
+            if (marshalAsAttr is null)
                 return false;
 
             // Get the array
@@ -714,6 +714,7 @@ namespace SabreTools.IO.Extensions
             if (fi.GetValue(instance) is not string fieldValue)
                 return true;
 
+#pragma warning disable IDE0010
             switch (marshalAsAttr?.Value)
             {
                 case UnmanagedType.AnsiBStr:
@@ -748,6 +749,7 @@ namespace SabreTools.IO.Extensions
                 default:
                     return false;
             }
+#pragma warning restore IDE0010
         }
 
         /// <summary>

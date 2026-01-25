@@ -58,7 +58,7 @@ namespace SabreTools.IO.Compression.MSZIP
 
             byte[] buffer = new byte[_bufferSize];
             var blockStream = new Deflate.DeflateStream(source, Deflate.CompressionMode.Decompress, leaveOpen: true);
-            if (_history != null)
+            if (_history is not null)
                 blockStream.SetDictionary(_history, check: false);
 
             int read = blockStream.Read(buffer, 0, _bufferSize);

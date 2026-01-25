@@ -54,6 +54,10 @@
 
 namespace SabreTools.IO.Compression.BZip2
 {
+#pragma warning disable IDE0047
+#pragma warning disable IDE2000
+#pragma warning disable IDE2002
+#pragma warning disable IDE2003
     // /**
     //  * Checks if the signature matches what is expected for a bzip2 file.
     //  *

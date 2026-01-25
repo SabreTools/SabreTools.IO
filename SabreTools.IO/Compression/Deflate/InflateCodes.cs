@@ -66,6 +66,12 @@ using System;
 #nullable disable
 namespace SabreTools.IO.Compression.Deflate
 {
+#pragma warning disable IDE0004
+#pragma warning disable IDE0040
+#pragma warning disable IDE0047
+#pragma warning disable IDE0048
+#pragma warning disable IDE2000
+#pragma warning disable IDE2003
     sealed class InflateCodes
     {
         // waiting for "i:"=input,

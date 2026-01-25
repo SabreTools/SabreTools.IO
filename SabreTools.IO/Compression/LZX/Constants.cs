@@ -26,7 +26,7 @@ namespace SabreTools.IO.Compression.LZX
         /* LZX huffman defines: tweak tablebits as desired */
         public const int LZX_PRETREE_MAXSYMBOLS = LZX_PRETREE_NUM_ELEMENTS;
         public const int LZX_PRETREE_TABLEBITS = 6;
-        public const int LZX_MAINTREE_MAXSYMBOLS = LZX_NUM_CHARS + 50 * 8;
+        public const int LZX_MAINTREE_MAXSYMBOLS = (LZX_NUM_CHARS + 50) * 8;
         public const int LZX_MAINTREE_TABLEBITS = 12;
         public const int LZX_LENGTH_MAXSYMBOLS = LZX_NUM_SECONDARY_LENGTHS + 1;
         public const int LZX_LENGTH_TABLEBITS = 12;

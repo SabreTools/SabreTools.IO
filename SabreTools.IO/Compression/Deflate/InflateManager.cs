@@ -61,12 +61,15 @@
 //
 // -----------------------------------------------------------------------
 
-
 using System;
 
 #nullable disable
 namespace SabreTools.IO.Compression.Deflate
 {
+#pragma warning disable IDE0047
+#pragma warning disable IDE0049
+#pragma warning disable IDE2000
+#pragma warning disable IDE2003
     internal sealed class InflateManager
     {
         // preset dictionary flag in zlib header
@@ -178,7 +181,7 @@ namespace SabreTools.IO.Compression.Deflate
         {
             int b;
 
-            if (_codec.InputBuffer == null)
+            if (_codec.InputBuffer is null)
                 throw new ZlibException("InputBuffer is null. ");
 
             //             int f = (flush == FlushType.Finish)

@@ -58,6 +58,17 @@ using System.IO;
 #nullable disable
 namespace SabreTools.IO.Compression.BZip2
 {
+#pragma warning disable IDE0001
+#pragma warning disable IDE0002
+#pragma warning disable IDE0004
+#pragma warning disable IDE0036
+#pragma warning disable IDE0040
+#pragma warning disable IDE0047
+#pragma warning disable IDE0048
+#pragma warning disable IDE0049
+#pragma warning disable IDE2000
+#pragma warning disable IDE2002
+#pragma warning disable IDE2003
     /// <summary>
     ///   A read-only decorator stream that performs BZip2 decompression on Read.
     /// </summary>
@@ -208,7 +219,7 @@ namespace SabreTools.IO.Compression.BZip2
                 throw new IndexOutOfRangeException(String.Format("offset({0}) count({1}) bLength({2})",
                                                                  offset, count, buffer.Length));
 
-            if (this.input == null)
+            if (this.input is null)
                 throw new IOException("the stream is not open");
 
 
@@ -408,7 +419,7 @@ namespace SabreTools.IO.Compression.BZip2
             {
                 if (!_disposed)
                 {
-                    if (disposing && (this.input != null))
+                    if (disposing && (this.input is not null))
                         this.input.Close();
                     _disposed = true;
                 }
@@ -551,7 +562,7 @@ namespace SabreTools.IO.Compression.BZip2
         public override void Close()
         {
             Stream inShadow = this.input;
-            if (inShadow != null)
+            if (inShadow is not null)
             {
                 try
                 {
@@ -1093,7 +1104,7 @@ namespace SabreTools.IO.Compression.BZip2
 
         private void SetupBlock()
         {
-            if (this.data == null)
+            if (this.data is null)
                 return;
 
             int i;
@@ -1371,7 +1382,7 @@ namespace SabreTools.IO.Compression.BZip2
                 // it can happen, if the compressor mixed small and large
                 // blocks. Normally only the last block will be smaller
                 // than others.
-                if ((ttShadow == null) || (ttShadow.Length < length))
+                if ((ttShadow is null) || (ttShadow.Length < length))
                 {
                     this.tt = ttShadow = new int[length];
                 }

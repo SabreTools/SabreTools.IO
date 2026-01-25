@@ -31,11 +31,11 @@ namespace SabreTools.Text.Compare
 
         public override int Compare(string? x, string? y)
         {
-            if (x == null || y == null)
+            if (x is null || y is null)
             {
-                if (x == null && y != null)
+                if (x is null && y is not null)
                     return -1;
-                else if (x != null && y == null)
+                else if (x is not null && y is null)
                     return 1;
                 else
                     return 0;

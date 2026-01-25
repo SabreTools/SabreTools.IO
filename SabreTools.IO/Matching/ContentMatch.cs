@@ -91,7 +91,7 @@ namespace SabreTools.IO.Matching
         public int Match(byte[]? stack, bool reverse = false)
         {
             // If either set is null or empty
-            if (stack == null || stack.Length == 0 || Needle.Length == 0)
+            if (stack is null || stack.Length == 0 || Needle.Length == 0)
                 return -1;
 
             // Get the adjusted end value for comparison
@@ -186,7 +186,7 @@ namespace SabreTools.IO.Matching
             for (int i = 0; i < Needle.Length; i++)
             {
                 // A null value is a wildcard
-                if (Needle[i] == null)
+                if (Needle[i] is null)
                     continue;
                 else if (stack[i + index] != Needle[i])
                     return false;
@@ -208,7 +208,7 @@ namespace SabreTools.IO.Matching
         public int Match(Stream? stack, bool reverse = false)
         {
             // If either set is null or empty
-            if (stack == null || stack.Length == 0 || Needle.Length == 0)
+            if (stack is null || stack.Length == 0 || Needle.Length == 0)
                 return -1;
 
             // Get the adjusted end value for comparison
@@ -312,7 +312,7 @@ namespace SabreTools.IO.Matching
                 byte stackValue = (byte)stack.ReadByte();
 
                 // A null value is a wildcard
-                if (Needle[i] == null)
+                if (Needle[i] is null)
                 {
                     continue;
                 }

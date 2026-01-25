@@ -69,8 +69,8 @@ namespace SabreTools.Numerics
 
         public static BothUInt16 operator ~(BothUInt16 a)
         {
-            ushort le = (ushort)(~a.LittleEndian);
-            ushort be = (ushort)(~a.BigEndian);
+            ushort le = (ushort)~a.LittleEndian;
+            ushort be = (ushort)~a.BigEndian;
             return new BothUInt16(le, be);
         }
 

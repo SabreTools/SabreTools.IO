@@ -44,7 +44,7 @@ namespace SabreTools.IO
             bool includeDebug = false)
         {
             var contentMatches = FindAllMatches(file, stack, matchSets, any, includeDebug, true);
-            if (contentMatches == null || contentMatches.Count == 0)
+            if (contentMatches is null || contentMatches.Count == 0)
                 return null;
 
             return contentMatches[0];
@@ -68,7 +68,7 @@ namespace SabreTools.IO
             bool stopAfterFirst)
         {
             // If either set is null or empty
-            if (stack == null || stack.Length == 0 || matchSets.Count == 0)
+            if (stack is null || stack.Length == 0 || matchSets.Count == 0)
                 return [];
 
             // Initialize the list of matches
@@ -91,11 +91,11 @@ namespace SabreTools.IO
                 matchString.Append(matcher.SetName);
 
                 // Invoke the version delegate, if it exists
-                if (matcher.GetArrayVersion != null)
+                if (matcher.GetArrayVersion is not null)
                 {
                     // A null version returned means the check didn't pass at the version step
                     var version = matcher.GetArrayVersion(file, stack, positions);
-                    if (version == null)
+                    if (version is null)
                         continue;
 
                     // Trim and add the version
@@ -158,7 +158,7 @@ namespace SabreTools.IO
             bool includeDebug = false)
         {
             var contentMatches = FindAllMatches(file, stack, matchSets, any, includeDebug, true);
-            if (contentMatches == null || contentMatches.Count == 0)
+            if (contentMatches is null || contentMatches.Count == 0)
                 return null;
 
             return contentMatches[0];
@@ -182,7 +182,7 @@ namespace SabreTools.IO
             bool stopAfterFirst)
         {
             // If either set is null or empty
-            if (stack == null || stack.Length == 0 || matchSets.Count == 0)
+            if (stack is null || stack.Length == 0 || matchSets.Count == 0)
                 return [];
 
             // Initialize the list of matches
@@ -205,11 +205,11 @@ namespace SabreTools.IO
                 matchString.Append(matcher.SetName);
 
                 // Invoke the version delegate, if it exists
-                if (matcher.GetStreamVersion != null)
+                if (matcher.GetStreamVersion is not null)
                 {
                     // A null version returned means the check didn't pass at the version step
                     var version = matcher.GetStreamVersion(file, stack, positions);
-                    if (version == null)
+                    if (version is null)
                         continue;
 
                     // Trim and add the version
@@ -270,7 +270,7 @@ namespace SabreTools.IO
         public static string? GetFirstMatch(string stack, List<PathMatchSet> matchSets, bool any = false)
         {
             var contentMatches = FindAllMatches([stack], matchSets, any, true);
-            if (contentMatches == null || contentMatches.Count == 0)
+            if (contentMatches is null || contentMatches.Count == 0)
                 return null;
 
             return contentMatches[0];
@@ -286,7 +286,7 @@ namespace SabreTools.IO
         public static string? GetFirstMatch(List<string> stack, List<PathMatchSet> matchSets, bool any = false)
         {
             var contentMatches = FindAllMatches(stack, matchSets, any, true);
-            if (contentMatches == null || contentMatches.Count == 0)
+            if (contentMatches is null || contentMatches.Count == 0)
                 return null;
 
             return contentMatches[0];
@@ -303,7 +303,7 @@ namespace SabreTools.IO
         private static List<string> FindAllMatches(List<string>? stack, List<PathMatchSet> matchSets, bool any, bool stopAfterFirst)
         {
             // If either set is null or empty
-            if (stack == null || stack.Count == 0 || matchSets.Count == 0)
+            if (stack is null || stack.Count == 0 || matchSets.Count == 0)
                 return [];
 
             // Initialize the list of matches
@@ -317,7 +317,7 @@ namespace SabreTools.IO
                 if (any)
                 {
                     string? anyMatch = matcher.MatchesAny(stack);
-                    if (anyMatch != null)
+                    if (anyMatch is not null)
                         matches = [anyMatch];
                 }
                 else
@@ -334,11 +334,11 @@ namespace SabreTools.IO
                 matchString.Append(matcher.SetName);
 
                 // Invoke the version delegate, if it exists
-                if (matcher.GetVersion != null)
+                if (matcher.GetVersion is not null)
                 {
                     // A null version returned means the check didn't pass at the version step
                     var version = matcher.GetVersion(matches[0], stack);
-                    if (version == null)
+                    if (version is null)
                         continue;
 
                     // Trim and add the version

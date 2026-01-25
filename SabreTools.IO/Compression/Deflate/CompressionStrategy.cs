@@ -115,5 +115,4 @@ namespace SabreTools.IO.Compression.Deflate
         /// </summary>
         HuffmanOnly = 2,
     }
-
 }

@@ -88,7 +88,7 @@ namespace SabreTools.IO.Readers
         /// </summary>
         public bool ReadNextLine()
         {
-            if (_reader.BaseStream == null)
+            if (_reader.BaseStream is null)
                 return false;
 
             if (!_reader.BaseStream.CanRead || _reader.EndOfStream)
@@ -105,7 +105,7 @@ namespace SabreTools.IO.Readers
         /// </summary>
         private void ProcessLine()
         {
-            if (CurrentLine == null)
+            if (CurrentLine is null)
                 return;
 
             // Comment

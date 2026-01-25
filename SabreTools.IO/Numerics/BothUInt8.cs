@@ -69,8 +69,8 @@ namespace SabreTools.Numerics
 
         public static BothUInt8 operator ~(BothUInt8 a)
         {
-            byte le = (byte)(~a.LittleEndian);
-            byte be = (byte)(~a.BigEndian);
+            byte le = (byte)~a.LittleEndian;
+            byte be = (byte)~a.BigEndian;
             return new BothUInt8(le, be);
         }
 

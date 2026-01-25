@@ -102,5 +102,4 @@ namespace SabreTools.IO.Compression.Deflate
         /// </summary>
         Decompress = 1,
     }
-
 }

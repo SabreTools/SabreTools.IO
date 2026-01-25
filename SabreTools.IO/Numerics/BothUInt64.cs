@@ -12,15 +12,15 @@ namespace SabreTools.Numerics
 
         public static BothUInt64 operator ++(BothUInt64 a)
         {
-            ulong le = (ulong)(a.LittleEndian + 1);
-            ulong be = (ulong)(a.BigEndian + 1);
+            ulong le = a.LittleEndian + 1;
+            ulong be = a.BigEndian + 1;
             return new BothUInt64(le, be);
         }
 
         public static BothUInt64 operator --(BothUInt64 a)
         {
-            ulong le = (ulong)(a.LittleEndian - 1);
-            ulong be = (ulong)(a.BigEndian - 1);
+            ulong le = a.LittleEndian - 1;
+            ulong be = a.BigEndian - 1;
             return new BothUInt64(le, be);
         }
 
@@ -30,36 +30,36 @@ namespace SabreTools.Numerics
 
         public static BothUInt64 operator *(BothUInt64 a, BothUInt64 b)
         {
-            ulong le = (ulong)(a.LittleEndian * b.LittleEndian);
-            ulong be = (ulong)(a.BigEndian * b.BigEndian);
+            ulong le = a.LittleEndian * b.LittleEndian;
+            ulong be = a.BigEndian * b.BigEndian;
             return new BothUInt64(le, be);
         }
 
         public static BothUInt64 operator /(BothUInt64 a, BothUInt64 b)
         {
-            ulong le = (ulong)(a.LittleEndian / b.LittleEndian);
-            ulong be = (ulong)(a.BigEndian / b.BigEndian);
+            ulong le = a.LittleEndian / b.LittleEndian;
+            ulong be = a.BigEndian / b.BigEndian;
             return new BothUInt64(le, be);
         }
 
         public static BothUInt64 operator %(BothUInt64 a, BothUInt64 b)
         {
-            ulong le = (ulong)(a.LittleEndian % b.LittleEndian);
-            ulong be = (ulong)(a.BigEndian % b.BigEndian);
+            ulong le = a.LittleEndian % b.LittleEndian;
+            ulong be = a.BigEndian % b.BigEndian;
             return new BothUInt64(le, be);
         }
 
         public static BothUInt64 operator +(BothUInt64 a, BothUInt64 b)
         {
-            ulong le = (ulong)(a.LittleEndian + b.LittleEndian);
-            ulong be = (ulong)(a.BigEndian + b.BigEndian);
+            ulong le = a.LittleEndian + b.LittleEndian;
+            ulong be = a.BigEndian + b.BigEndian;
             return new BothUInt64(le, be);
         }
 
         public static BothUInt64 operator -(BothUInt64 a, BothUInt64 b)
         {
-            ulong le = (ulong)(a.LittleEndian - b.LittleEndian);
-            ulong be = (ulong)(a.BigEndian - b.BigEndian);
+            ulong le = a.LittleEndian - b.LittleEndian;
+            ulong be = a.BigEndian - b.BigEndian;
             return new BothUInt64(le, be);
         }
 
@@ -69,8 +69,8 @@ namespace SabreTools.Numerics
 
         public static BothUInt64 operator ~(BothUInt64 a)
         {
-            ulong le = (ulong)(~a.LittleEndian);
-            ulong be = (ulong)(~a.BigEndian);
+            ulong le = ~a.LittleEndian;
+            ulong be = ~a.BigEndian;
             return new BothUInt64(le, be);
         }
 
@@ -80,22 +80,22 @@ namespace SabreTools.Numerics
 
         public static BothUInt64 operator <<(BothUInt64 a, BothInt32 b)
         {
-            ulong le = (ulong)(a.LittleEndian << b.LittleEndian);
-            ulong be = (ulong)(a.BigEndian << b.BigEndian);
+            ulong le = a.LittleEndian << b.LittleEndian;
+            ulong be = a.BigEndian << b.BigEndian;
             return new BothUInt64(le, be);
         }
 
         public static BothUInt64 operator >>(BothUInt64 a, BothInt32 b)
         {
-            ulong le = (ulong)(a.LittleEndian >> b.LittleEndian);
-            ulong be = (ulong)(a.BigEndian >> b.BigEndian);
+            ulong le = a.LittleEndian >> b.LittleEndian;
+            ulong be = a.BigEndian >> b.BigEndian;
             return new BothUInt64(le, be);
         }
 
         public static BothUInt64 operator >>>(BothUInt64 a, BothInt32 b)
         {
-            ulong le = (ulong)(a.LittleEndian >>> b.LittleEndian);
-            ulong be = (ulong)(a.BigEndian >>> b.BigEndian);
+            ulong le = a.LittleEndian >>> b.LittleEndian;
+            ulong be = a.BigEndian >>> b.BigEndian;
             return new BothUInt64(le, be);
         }
 
@@ -105,22 +105,22 @@ namespace SabreTools.Numerics
 
         public static BothUInt64 operator &(BothUInt64 a, BothUInt64 b)
         {
-            ulong le = (ulong)(a.LittleEndian & b.LittleEndian);
-            ulong be = (ulong)(a.BigEndian & b.BigEndian);
+            ulong le = a.LittleEndian & b.LittleEndian;
+            ulong be = a.BigEndian & b.BigEndian;
             return new BothUInt64(le, be);
         }
 
         public static BothUInt64 operator |(BothUInt64 a, BothUInt64 b)
         {
-            ulong le = (ulong)(a.LittleEndian | b.LittleEndian);
-            ulong be = (ulong)(a.BigEndian | b.BigEndian);
+            ulong le = a.LittleEndian | b.LittleEndian;
+            ulong be = a.BigEndian | b.BigEndian;
             return new BothUInt64(le, be);
         }
 
         public static BothUInt64 operator ^(BothUInt64 a, BothUInt64 b)
         {
-            ulong le = (ulong)(a.LittleEndian ^ b.LittleEndian);
-            ulong be = (ulong)(a.BigEndian ^ b.BigEndian);
+            ulong le = a.LittleEndian ^ b.LittleEndian;
+            ulong be = a.BigEndian ^ b.BigEndian;
             return new BothUInt64(le, be);
         }
 

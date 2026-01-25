@@ -64,6 +64,11 @@ using System;
 #nullable disable
 namespace SabreTools.IO.Compression.Deflate
 {
+#pragma warning disable IDE0004
+#pragma warning disable IDE0040
+#pragma warning disable IDE0047
+#pragma warning disable IDE0051
+#pragma warning disable IDE2003
     sealed class InfTree
     {
 
@@ -405,7 +410,7 @@ namespace SabreTools.IO.Compression.Deflate
 
         private void initWorkArea(int vsize)
         {
-            if (hn == null)
+            if (hn is null)
             {
                 hn = new int[1];
                 v = new int[vsize];

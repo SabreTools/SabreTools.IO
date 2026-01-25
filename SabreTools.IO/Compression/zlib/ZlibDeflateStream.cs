@@ -3,6 +3,10 @@ using System.IO;
 
 namespace SabreTools.IO.Compression.zlib
 {
+#pragma warning disable IDE0036
+#pragma warning disable IDE0380
+#pragma warning disable IDE2002
+#pragma warning disable IDE2003
     public class ZlibDeflateStream : Stream
     {
         private readonly bool _leaveOpen;
@@ -70,14 +74,14 @@ namespace SabreTools.IO.Compression.zlib
 
         unsafe public override void Write(byte[] buffer, int offset, int count)
         {
-            if (buffer == null) throw new ArgumentNullException();
+            if (buffer is null) throw new ArgumentNullException();
             if (offset < 0 || count < 0) throw new ArgumentOutOfRangeException();
             if ((offset + count) > buffer.Length) throw new ArgumentException();
 
             int err = 0;
             int hdr = 0;
 
-            if (_s == null)
+            if (_s is null)
             {
                 _s = new ZLib.z_stream_s();
                 ZLib.deflateInit_(_s, this.Level, this.Version, 0); //0 = sizeof(z_stream_s) not used
@@ -131,7 +135,7 @@ namespace SabreTools.IO.Compression.zlib
         unsafe public long BlockFlush()
         {
             //finish previous stream
-            if (_s != null)
+            if (_s is not null)
             {
                 int err = 0;
                 fixed (byte* o = _b)

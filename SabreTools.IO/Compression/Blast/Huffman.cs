@@ -90,7 +90,7 @@ namespace SabreTools.IO.Compression.Blast
             // Assumes lengths are within bounds
             for (symbol = 0; symbol < n; symbol++)
             {
-                (Count[length[symbol]])++;
+                Count[length[symbol]]++;
             }
 
             // No codes! Complete, but decode() will fail
@@ -182,7 +182,7 @@ namespace SabreTools.IO.Compression.Blast
                     len++;
                 }
 
-                left = (MAXBITS + 1) - len;
+                left = MAXBITS + 1 - len;
                 if (left == 0)
                     break;
 

@@ -30,6 +30,14 @@ using System.IO;
 #nullable disable
 namespace SabreTools.IO.Compression.Deflate
 {
+#pragma warning disable IDE0001
+#pragma warning disable IDE0040
+#pragma warning disable IDE0047
+#pragma warning disable IDE0048
+#pragma warning disable IDE0049
+#pragma warning disable IDE2000
+#pragma warning disable IDE2002
+#pragma warning disable IDE2003
     internal class ZlibBaseStream : System.IO.Stream
     {
         protected internal ZlibCodec _z = null; // deferred init... new ZlibCodec();
@@ -54,7 +62,7 @@ namespace SabreTools.IO.Compression.Deflate
         protected internal DateTime _GzipMtime;
         protected internal int _gzipHeaderByteCount;
 
-        internal int Crc32 { get { if (crc == null) return 0; return crc.Crc32Result; } }
+        internal int Crc32 { get { if (crc is null) return 0; return crc.Crc32Result; } }
 
         public ZlibBaseStream(System.IO.Stream stream,
                               CompressionMode compressionMode,
@@ -90,7 +98,7 @@ namespace SabreTools.IO.Compression.Deflate
         {
             get
             {
-                if (_z == null)
+                if (_z is null)
                 {
                     bool wantRfc1950Header = (this._flavor == ZlibStreamFlavor.ZLIB);
                     _z = new ZlibCodec();
@@ -168,7 +176,7 @@ namespace SabreTools.IO.Compression.Deflate
 
         private void finish()
         {
-            if (_z == null) return;
+            if (_z is null) return;
 
             if (_streamMode == StreamMode.Writer)
             {
@@ -185,7 +193,7 @@ namespace SabreTools.IO.Compression.Deflate
                     if (rc != ZlibConstants.Z_STREAM_END && rc != ZlibConstants.Z_OK)
                     {
                         string verb = (_wantCompress ? "de" : "in") + "flating";
-                        if (_z.Message == null)
+                        if (_z.Message is null)
                             throw new ZlibException(String.Format("{0}: (rc = {1})", verb, rc));
                         else
                             throw new ZlibException(verb + ": " + _z.Message);
@@ -281,7 +289,7 @@ namespace SabreTools.IO.Compression.Deflate
 
         private void end()
         {
-            if (z == null)
+            if (z is null)
                 return;
             if (_wantCompress)
             {
@@ -297,7 +305,7 @@ namespace SabreTools.IO.Compression.Deflate
 
         public override void Close()
         {
-            if (_stream == null) return;
+            if (_stream is null) return;
             try
             {
                 finish();
@@ -440,7 +448,7 @@ namespace SabreTools.IO.Compression.Deflate
 
             if (count == 0) return 0;
             if (nomoreinput && _wantCompress) return 0;  // workitem 8557
-            if (buffer == null) throw new ArgumentNullException("buffer");
+            if (buffer is null) throw new ArgumentNullException("buffer");
             if (count < 0) throw new ArgumentOutOfRangeException("count");
             if (offset < buffer.GetLowerBound(0)) throw new ArgumentOutOfRangeException("offset");
             if ((offset + count) > buffer.GetLength(0)) throw new ArgumentOutOfRangeException("count");

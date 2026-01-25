@@ -63,13 +63,18 @@
 //
 // -----------------------------------------------------------------------
 
-
 using System;
 using Interop=System.Runtime.InteropServices;
 
 #nullable disable
 namespace SabreTools.IO.Compression.Deflate
 {
+#pragma warning disable IDE0001
+#pragma warning disable IDE0036
+#pragma warning disable IDE0049
+#pragma warning disable IDE2000
+#pragma warning disable IDE2002
+#pragma warning disable IDE2003
     /// <summary>
     /// Encoder and Decoder for ZLIB and DEFLATE (IETF RFC1950 and RFC1951).
     /// </summary>
@@ -284,7 +289,7 @@ namespace SabreTools.IO.Compression.Deflate
         public int InitializeInflate(int windowBits, bool expectRfc1950Header)
         {
             this.WindowBits = windowBits;
-            if (dstate != null) throw new ZlibException("You may not call InitializeInflate() after calling InitializeDeflate().");
+            if (dstate is not null) throw new ZlibException("You may not call InitializeInflate() after calling InitializeDeflate().");
             istate = new InflateManager(expectRfc1950Header);
             return istate.Initialize(this, windowBits);
         }
@@ -354,7 +359,7 @@ namespace SabreTools.IO.Compression.Deflate
         /// <returns>Z_OK if everything goes well.</returns>
         public int Inflate(FlushType flush)
         {
-            if (istate == null)
+            if (istate is null)
                 throw new ZlibException("No Inflate State!");
             return istate.Inflate(flush);
         }
@@ -371,7 +376,7 @@ namespace SabreTools.IO.Compression.Deflate
         /// <returns>Z_OK if everything goes well.</returns>
         public int EndInflate()
         {
-            if (istate == null)
+            if (istate is null)
                 throw new ZlibException("No Inflate State!");
             int ret = istate.End();
             istate = null;
@@ -384,7 +389,7 @@ namespace SabreTools.IO.Compression.Deflate
         /// <returns>Z_OK if everything goes well.</returns>
         public int SyncInflate()
         {
-            if (istate == null)
+            if (istate is null)
                 throw new ZlibException("No Inflate State!");
             return istate.Sync();
         }
@@ -507,7 +512,7 @@ namespace SabreTools.IO.Compression.Deflate
 
         private int _InternalInitializeDeflate(bool wantRfc1950Header)
         {
-            if (istate != null) throw new ZlibException("You may not call InitializeDeflate() after calling InitializeInflate().");
+            if (istate is not null) throw new ZlibException("You may not call InitializeDeflate() after calling InitializeInflate().");
             dstate = new DeflateManager
             {
                 WantRfc1950HeaderBytes = wantRfc1950Header
@@ -586,7 +591,7 @@ namespace SabreTools.IO.Compression.Deflate
         /// <returns>Z_OK if all goes well.</returns>
         public int Deflate(FlushType flush)
         {
-            if (dstate == null)
+            if (dstate is null)
                 throw new ZlibException("No Deflate State!");
             return dstate.Deflate(flush);
         }
@@ -600,7 +605,7 @@ namespace SabreTools.IO.Compression.Deflate
         /// <returns>Z_OK if all goes well.</returns>
         public int EndDeflate()
         {
-            if (dstate == null)
+            if (dstate is null)
                 throw new ZlibException("No Deflate State!");
             // TODO: dinoch Tue, 03 Nov 2009  15:39 (test this)
             //int ret = dstate.End();
@@ -619,7 +624,7 @@ namespace SabreTools.IO.Compression.Deflate
         /// <returns>Z_OK if all goes well.</returns>
         public void ResetDeflate()
         {
-            if (dstate == null)
+            if (dstate is null)
                 throw new ZlibException("No Deflate State!");
             dstate.Reset();
         }
@@ -633,7 +638,7 @@ namespace SabreTools.IO.Compression.Deflate
         /// <returns>Z_OK if all goes well.</returns>
         public int SetDeflateParams(CompressionLevel level, CompressionStrategy strategy)
         {
-            if (dstate == null)
+            if (dstate is null)
                 throw new ZlibException("No Deflate State!");
             return dstate.SetParams(level, strategy);
         }
@@ -647,10 +652,10 @@ namespace SabreTools.IO.Compression.Deflate
         /// <returns>Z_OK if all goes well.</returns>
         public int SetDictionary(byte[] dictionary, bool check = true)
         {
-            if (istate != null)
+            if (istate is not null)
                 return istate.SetDictionary(dictionary, check);
 
-            if (dstate != null)
+            if (dstate is not null)
                 return dstate.SetDictionary(dictionary, check);
 
             throw new ZlibException("No Inflate or Deflate state!");

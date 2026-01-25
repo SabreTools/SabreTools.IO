@@ -64,11 +64,11 @@ namespace SabreTools.IO.Streams
                 return null;
 
             // If we don't have a value cached
-            if (_bitBuffer == null)
+            if (_bitBuffer is null)
             {
                 // Read the next byte, if possible
                 _bitBuffer = ReadSourceByte();
-                if (_bitBuffer == null)
+                if (_bitBuffer is null)
                     return null;
 
                 // Reset the bit index
@@ -99,7 +99,7 @@ namespace SabreTools.IO.Streams
             {
                 // Read the next bit
                 byte? bitValue = ReadBit();
-                if (bitValue == null)
+                if (bitValue is null)
                     return null;
 
                 // Append the bit shifted by the current index
@@ -121,7 +121,7 @@ namespace SabreTools.IO.Streams
             {
                 // Read the next bit
                 byte? bitValue = ReadBit();
-                if (bitValue == null)
+                if (bitValue is null)
                     return null;
 
                 // Append the bit shifted by the current index

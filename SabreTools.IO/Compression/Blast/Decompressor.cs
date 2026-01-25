@@ -46,7 +46,7 @@ namespace SabreTools.IO.Compression.Blast
     /// compressed data is not corrupted when read or written.  For example:
     /// fopen(..., "rb") and fopen(..., "wb").
     /// </summary>
-    public unsafe class Decompressor
+    public class Decompressor
     {
         #region Huffman Encoding
 

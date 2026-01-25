@@ -18,7 +18,7 @@ namespace SabreTools.IO.Extensions
         public static void WriteRequiredAttributeString(this XmlTextWriter writer, string localName, string? value, bool throwOnError = false)
         {
             // Throw an exception if we are configured to
-            if (value == null && throwOnError)
+            if (value is null && throwOnError)
                 throw new ArgumentNullException(nameof(value));
 
             writer.WriteAttributeString(localName, value ?? string.Empty);
@@ -34,11 +34,11 @@ namespace SabreTools.IO.Extensions
         public static void WriteRequiredElementString(this XmlTextWriter writer, string localName, string? value, bool throwOnError = false)
         {
             // Throw an exception if we are configured to
-            if (value == null && throwOnError)
+            if (value is null && throwOnError)
                 throw new ArgumentNullException(nameof(value));
 
             writer.WriteStartElement(localName);
-            if (value == null)
+            if (value is null)
                 writer.WriteRaw(string.Empty);
             else
                 writer.WriteString(value);

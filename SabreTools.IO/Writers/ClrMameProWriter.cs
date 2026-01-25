@@ -214,13 +214,13 @@ namespace SabreTools.IO.Writers
             try
             {
                 // If we're writing quotes, don't write out quote characters internally
-                if ((quoteOverride == null && Quotes) || (quoteOverride == true))
+                if ((quoteOverride is null && Quotes) || (quoteOverride == true))
                     name = name.Replace("\"", "''");
 
                 AutoComplete(Token.StartAttribute);
                 _writer.Write(name);
                 _writer.Write(" ");
-                if ((quoteOverride == null && Quotes) || (quoteOverride == true))
+                if ((quoteOverride is null && Quotes) || (quoteOverride == true))
                     _writer.Write("\"");
             }
             catch
@@ -269,7 +269,7 @@ namespace SabreTools.IO.Writers
         public void WriteRequiredAttributeString(string name, string? value, bool? quoteOverride = null, bool throwOnError = false)
         {
             // Throw an exception if we are configured to
-            if (value == null && throwOnError)
+            if (value is null && throwOnError)
                 throw new ArgumentNullException(nameof(value));
 
             WriteAttributeString(name, value ?? string.Empty, quoteOverride);
@@ -301,7 +301,7 @@ namespace SabreTools.IO.Writers
                     throw new ArgumentException("Name cannot be null or empty", nameof(name));
 
                 // If we're writing quotes, don't write out quote characters internally
-                if ((quoteOverride == null && Quotes)
+                if ((quoteOverride is null && Quotes)
                     || (quoteOverride == true))
                 {
                     name = name.Replace("\"", "''");
@@ -311,13 +311,14 @@ namespace SabreTools.IO.Writers
                 AutoComplete(Token.Standalone);
                 _writer.Write(name);
                 _writer.Write(" ");
-                if ((quoteOverride == null && Quotes)
+                if ((quoteOverride is null && Quotes)
                     || (quoteOverride == true))
                 {
                     _writer.Write("\"");
                 }
+
                 _writer.Write(value);
-                if ((quoteOverride == null && Quotes)
+                if ((quoteOverride is null && Quotes)
                     || (quoteOverride == true))
                 {
                     _writer.Write("\"");
@@ -340,7 +341,7 @@ namespace SabreTools.IO.Writers
         public void WriteRequiredStandalone(string name, string? value, bool? quoteOverride = null, bool throwOnError = false)
         {
             // Throw an exception if we are configured to
-            if (value == null && throwOnError)
+            if (value is null && throwOnError)
                 throw new ArgumentNullException(nameof(value));
 
             WriteStandalone(name, value ?? string.Empty, quoteOverride);
@@ -422,7 +423,7 @@ namespace SabreTools.IO.Writers
             else if (_currentState == State.Error)
                 throw new InvalidOperationException();
 
-            State newState = StateTable[(int)token * 7 + (int)_currentState];
+            State newState = StateTable[((int)token * 7) + (int)_currentState];
             if (newState == State.Error)
                 throw new InvalidOperationException();
 
@@ -484,6 +485,7 @@ namespace SabreTools.IO.Writers
 
                     break;
 
+                case Token.None:
                 default:
                     throw new InvalidOperationException();
             }
@@ -543,7 +545,7 @@ namespace SabreTools.IO.Writers
         /// </summary>
         private void WriteEndAttributeQuote(bool? quoteOverride = null)
         {
-            if ((quoteOverride == null && Quotes) || (quoteOverride == true))
+            if ((quoteOverride is null && Quotes) || (quoteOverride == true))
                 _writer.Write("\"");
         }
 

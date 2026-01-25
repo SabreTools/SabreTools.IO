@@ -11,7 +11,7 @@ namespace SabreTools.IO.Extensions
         /// <inheritdoc cref="string.Contains(string, StringComparison)"/>
         public static bool OptionalContains(this string? self, string value, StringComparison comparisonType)
         {
-            if (self == null)
+            if (self is null)
                 return false;
 
 #if NETFRAMEWORK || NETSTANDARD2_0
@@ -28,7 +28,7 @@ namespace SabreTools.IO.Extensions
         /// <inheritdoc cref="string.EndsWith(string, StringComparison)"/>
         public static bool OptionalEndsWith(this string? self, string value, StringComparison comparisonType)
         {
-            if (self == null)
+            if (self is null)
                 return false;
 
             return self.EndsWith(value, comparisonType);
@@ -41,7 +41,7 @@ namespace SabreTools.IO.Extensions
         /// <inheritdoc cref="string.Equals(string, StringComparison)"/>
         public static bool OptionalEquals(this string? self, string value, StringComparison comparisonType)
         {
-            if (self == null)
+            if (self is null)
                 return false;
 
             return self.Equals(value, comparisonType);
@@ -54,7 +54,7 @@ namespace SabreTools.IO.Extensions
         /// <inheritdoc cref="string.StartsWith(string, StringComparison)"/>
         public static bool OptionalStartsWith(this string? self, string value, StringComparison comparisonType)
         {
-            if (self == null)
+            if (self is null)
                 return false;
 
             return self.StartsWith(value, comparisonType);

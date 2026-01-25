@@ -88,6 +88,8 @@
 
 namespace SabreTools.IO.Compression.Deflate
 {
+#pragma warning disable IDE0047
+#pragma warning disable IDE2002
     internal static class InternalConstants
     {
         internal static readonly int MAX_BITS = 15;

@@ -32,6 +32,15 @@ using System.IO;
 #nullable disable
 namespace SabreTools.IO.Compression.Deflate
 {
+#pragma warning disable IDE0001
+#pragma warning disable IDE0002
+#pragma warning disable IDE0036
+#pragma warning disable IDE0040
+#pragma warning disable IDE0047
+#pragma warning disable IDE0049
+#pragma warning disable IDE2000
+#pragma warning disable IDE2002
+#pragma warning disable IDE2003
     /// <summary>
     ///   A class for compressing and decompressing GZIP streams.
     /// </summary>
@@ -184,7 +193,7 @@ namespace SabreTools.IO.Compression.Deflate
             {
                 if (_disposed) throw new ObjectDisposedException("GZipStream");
                 _FileName = value;
-                if (_FileName == null) return;
+                if (_FileName is null) return;
                 if (_FileName.IndexOf("/") != -1)
                 {
                     _FileName = _FileName.Replace("/", "\\");
@@ -580,7 +589,7 @@ namespace SabreTools.IO.Compression.Deflate
             set
             {
                 if (_disposed) throw new ObjectDisposedException("GZipStream");
-                if (this._baseStream._workingBuffer != null)
+                if (this._baseStream._workingBuffer is not null)
                     throw new ZlibException("The working buffer is already set.");
                 if (value < ZlibConstants.WorkingBufferSizeMin)
                     throw new ZlibException(String.Format("Don't be silly. {0} bytes?? Use a bigger buffer, at least {1}.", value, ZlibConstants.WorkingBufferSizeMin));
@@ -640,7 +649,7 @@ namespace SabreTools.IO.Compression.Deflate
             {
                 if (!_disposed)
                 {
-                    if (disposing && (this._baseStream != null))
+                    if (disposing && (this._baseStream is not null))
                     {
                         this._baseStream.Close();
                         this._Crc32 = _baseStream.Crc32;
@@ -863,11 +872,11 @@ namespace SabreTools.IO.Compression.Deflate
 
         private int EmitHeader()
         {
-            byte[] commentBytes = (Comment == null) ? null : iso8859dash1.GetBytes(Comment);
-            byte[] filenameBytes = (FileName == null) ? null : iso8859dash1.GetBytes(FileName);
+            byte[] commentBytes = (Comment is null) ? null : iso8859dash1.GetBytes(Comment);
+            byte[] filenameBytes = (FileName is null) ? null : iso8859dash1.GetBytes(FileName);
 
-            int cbLength = (Comment == null) ? 0 : commentBytes.Length + 1;
-            int fnLength = (FileName == null) ? 0 : filenameBytes.Length + 1;
+            int cbLength = (Comment is null) ? 0 : commentBytes.Length + 1;
+            int fnLength = (FileName is null) ? 0 : filenameBytes.Length + 1;
 
             int bufferLength = 10 + cbLength + fnLength;
             byte[] header = new byte[bufferLength];
@@ -879,9 +888,9 @@ namespace SabreTools.IO.Compression.Deflate
             // compression method
             header[i++] = 8;
             byte flag = 0;
-            if (Comment != null)
+            if (Comment is not null)
                 flag ^= 0x10;
-            if (FileName != null)
+            if (FileName is not null)
                 flag ^= 0x8;
 
             // flag

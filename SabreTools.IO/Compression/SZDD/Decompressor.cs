@@ -143,7 +143,7 @@ namespace SabreTools.IO.Compression.SZDD
             {
                 // Get the control byte
                 byte? control = _source.ReadNextByte();
-                if (control == null)
+                if (control is null)
                     break;
 
                 for (int cbit = 0x01; (cbit & 0xFF) != 0; cbit <<= 1)
@@ -153,7 +153,7 @@ namespace SabreTools.IO.Compression.SZDD
                     {
                         // Read the literal byte
                         byte? literal = _source.ReadNextByte();
-                        if (literal == null)
+                        if (literal is null)
                             break;
 
                         // Store the data in the window and write
@@ -168,12 +168,12 @@ namespace SabreTools.IO.Compression.SZDD
 
                     // Read the match position
                     int? matchpos = _source.ReadNextByte();
-                    if (matchpos == null)
+                    if (matchpos is null)
                         break;
 
                     // Read the match length
                     int? matchlen = _source.ReadNextByte();
-                    if (matchlen == null)
+                    if (matchlen is null)
                         break;
 
                     // Adjust the position and length
@@ -213,7 +213,7 @@ namespace SabreTools.IO.Compression.SZDD
             {
                 // Read the next byte
                 byte? next = _source.ReadNextByte();
-                if (next == null)
+                if (next is null)
                     break;
 
                 // XOR with 0xFF if required

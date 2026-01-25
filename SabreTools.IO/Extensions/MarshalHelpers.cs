@@ -17,12 +17,12 @@ namespace SabreTools.IO.Extensions
         public static TAttribute? GetAttribute<TAttribute>(FieldInfo? fi) where TAttribute : Attribute
         {
             // If the field info is invalid
-            if (fi == null)
+            if (fi is null)
                 return null;
 
             // Get all matching attributes
             var attributes = fi.GetCustomAttributes(typeof(TAttribute), true);
-            if (attributes == null || attributes.Length == 0)
+            if (attributes is null || attributes.Length == 0)
                 return null;
 
             // Get the first attribute that matches
@@ -35,12 +35,12 @@ namespace SabreTools.IO.Extensions
         public static TAttribute? GetAttribute<TAttribute>(Type? type) where TAttribute : Attribute
         {
             // If the field info is invalid
-            if (type == null)
+            if (type is null)
                 return null;
 
             // Get all matching attributes
             var attributes = type.GetCustomAttributes(typeof(TAttribute), true);
-            if (attributes == null || attributes.Length == 0)
+            if (attributes is null || attributes.Length == 0)
                 return null;
 
             // Get the first attribute that matches
@@ -54,7 +54,7 @@ namespace SabreTools.IO.Extensions
         {
             LayoutKind layoutKind = LayoutKind.Auto;
 
-            if (layoutAttr != null)
+            if (layoutAttr is not null)
                 layoutKind = layoutAttr.Value;
             else if (type.IsAutoLayout)
                 layoutKind = LayoutKind.Auto;
@@ -156,7 +156,7 @@ namespace SabreTools.IO.Extensions
 
             // Get the size field
             var sizeField = fields[marshalAsAttr.SizeParamIndex];
-            if (sizeField == null)
+            if (sizeField is null)
                 return -1;
 
             // Cast based on the field type

@@ -1,5 +1,6 @@
 namespace SabreTools.IO.Compression.zlib
 {
+#pragma warning disable IDE0047
     public static class zlibConst
     {
         public const int Z_NO_FLUSH = 0;

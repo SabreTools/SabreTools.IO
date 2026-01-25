@@ -88,6 +88,10 @@
 
 namespace SabreTools.IO.Compression.Deflate
 {
+#pragma warning disable IDE0002
+#pragma warning disable IDE0049
+#pragma warning disable IDE2000
+#pragma warning disable IDE2002
     internal class SharedUtils
     {
         /// <summary>

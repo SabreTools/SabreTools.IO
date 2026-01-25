@@ -107,7 +107,7 @@ namespace SabreTools.IO.Readers
             if (!Header)
                 throw new InvalidOperationException("No header line expected");
 
-            if (HeaderValues != null)
+            if (HeaderValues is not null)
                 throw new InvalidOperationException("No more than 1 header row in a file allowed");
 
             return ReadNextLine();
@@ -118,7 +118,7 @@ namespace SabreTools.IO.Readers
         /// </summary>
         public bool ReadNextLine()
         {
-            if (_reader.BaseStream == null)
+            if (_reader.BaseStream is null)
                 return false;
 
             if (!_reader.BaseStream.CanRead || _reader.EndOfStream)
@@ -128,7 +128,7 @@ namespace SabreTools.IO.Readers
             CurrentLine = fullLine;
             LineNumber++;
 
-            if (fullLine == null)
+            if (fullLine is null)
                 return false;
 
             // If we have quotes, we need to split specially
@@ -140,7 +140,7 @@ namespace SabreTools.IO.Readers
                 foreach (Match? match in lineSplitRegex.Matches(fullLine))
                 {
                     string? curr = match?.Value;
-                    if (curr == null)
+                    if (curr is null)
                         continue;
                     if (curr.Length == 0)
                         temp.Add("");
@@ -162,7 +162,7 @@ namespace SabreTools.IO.Readers
             }
 
             // If we don't have a header yet and are expecting one, read this as the header
-            if (Header && HeaderValues == null)
+            if (Header && HeaderValues is null)
             {
                 HeaderValues = Line;
                 _fieldCount = HeaderValues.Count;
@@ -185,13 +185,13 @@ namespace SabreTools.IO.Readers
                 throw new ArgumentException("No header expected so no keys can be used");
 
             // If we don't have the key, return null
-            if (HeaderValues == null)
+            if (HeaderValues is null)
                 throw new ArgumentException($"Current line doesn't have key {key}");
             if (!HeaderValues.Contains(key))
                 return null;
 
             int index = HeaderValues.IndexOf(key);
-            if (Line == null)
+            if (Line is null)
                 throw new ArgumentException($"Current line doesn't have index {index}");
             if (Line.Count < index)
                 throw new ArgumentException($"Current line doesn't have index {index}");
@@ -204,7 +204,7 @@ namespace SabreTools.IO.Readers
         /// </summary>
         public string GetValue(int index)
         {
-            if (Line == null)
+            if (Line is null)
                 throw new ArgumentException($"Current line doesn't have index {index}");
             if (Line.Count < index)
                 throw new ArgumentException($"Current line doesn't have index {index}");

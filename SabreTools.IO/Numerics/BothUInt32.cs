@@ -12,15 +12,15 @@ namespace SabreTools.Numerics
 
         public static BothUInt32 operator ++(BothUInt32 a)
         {
-            uint le = (uint)(a.LittleEndian + 1);
-            uint be = (uint)(a.BigEndian + 1);
+            uint le = a.LittleEndian + 1;
+            uint be = a.BigEndian + 1;
             return new BothUInt32(le, be);
         }
 
         public static BothUInt32 operator --(BothUInt32 a)
         {
-            uint le = (uint)(a.LittleEndian - 1);
-            uint be = (uint)(a.BigEndian - 1);
+            uint le = a.LittleEndian - 1;
+            uint be = a.BigEndian - 1;
             return new BothUInt32(le, be);
         }
 
@@ -30,36 +30,36 @@ namespace SabreTools.Numerics
 
         public static BothUInt32 operator *(BothUInt32 a, BothUInt32 b)
         {
-            uint le = (uint)(a.LittleEndian * b.LittleEndian);
-            uint be = (uint)(a.BigEndian * b.BigEndian);
+            uint le = a.LittleEndian * b.LittleEndian;
+            uint be = a.BigEndian * b.BigEndian;
             return new BothUInt32(le, be);
         }
 
         public static BothUInt32 operator /(BothUInt32 a, BothUInt32 b)
         {
-            uint le = (uint)(a.LittleEndian / b.LittleEndian);
-            uint be = (uint)(a.BigEndian / b.BigEndian);
+            uint le = a.LittleEndian / b.LittleEndian;
+            uint be = a.BigEndian / b.BigEndian;
             return new BothUInt32(le, be);
         }
 
         public static BothUInt32 operator %(BothUInt32 a, BothUInt32 b)
         {
-            uint le = (uint)(a.LittleEndian % b.LittleEndian);
-            uint be = (uint)(a.BigEndian % b.BigEndian);
+            uint le = a.LittleEndian % b.LittleEndian;
+            uint be = a.BigEndian % b.BigEndian;
             return new BothUInt32(le, be);
         }
 
         public static BothUInt32 operator +(BothUInt32 a, BothUInt32 b)
         {
-            uint le = (uint)(a.LittleEndian + b.LittleEndian);
-            uint be = (uint)(a.BigEndian + b.BigEndian);
+            uint le = a.LittleEndian + b.LittleEndian;
+            uint be = a.BigEndian + b.BigEndian;
             return new BothUInt32(le, be);
         }
 
         public static BothUInt32 operator -(BothUInt32 a, BothUInt32 b)
         {
-            uint le = (uint)(a.LittleEndian - b.LittleEndian);
-            uint be = (uint)(a.BigEndian - b.BigEndian);
+            uint le = a.LittleEndian - b.LittleEndian;
+            uint be = a.BigEndian - b.BigEndian;
             return new BothUInt32(le, be);
         }
 
@@ -69,8 +69,8 @@ namespace SabreTools.Numerics
 
         public static BothUInt32 operator ~(BothUInt32 a)
         {
-            uint le = (uint)(~a.LittleEndian);
-            uint be = (uint)(~a.BigEndian);
+            uint le = ~a.LittleEndian;
+            uint be = ~a.BigEndian;
             return new BothUInt32(le, be);
         }
 
@@ -80,22 +80,22 @@ namespace SabreTools.Numerics
 
         public static BothUInt32 operator <<(BothUInt32 a, BothInt32 b)
         {
-            uint le = (uint)(a.LittleEndian << b.LittleEndian);
-            uint be = (uint)(a.BigEndian << b.BigEndian);
+            uint le = a.LittleEndian << b.LittleEndian;
+            uint be = a.BigEndian << b.BigEndian;
             return new BothUInt32(le, be);
         }
 
         public static BothUInt32 operator >>(BothUInt32 a, BothInt32 b)
         {
-            uint le = (uint)(a.LittleEndian >> b.LittleEndian);
-            uint be = (uint)(a.BigEndian >> b.BigEndian);
+            uint le = a.LittleEndian >> b.LittleEndian;
+            uint be = a.BigEndian >> b.BigEndian;
             return new BothUInt32(le, be);
         }
 
         public static BothUInt32 operator >>>(BothUInt32 a, BothInt32 b)
         {
-            uint le = (uint)(a.LittleEndian >>> b.LittleEndian);
-            uint be = (uint)(a.BigEndian >>> b.BigEndian);
+            uint le = a.LittleEndian >>> b.LittleEndian;
+            uint be = a.BigEndian >>> b.BigEndian;
             return new BothUInt32(le, be);
         }
 
@@ -105,22 +105,22 @@ namespace SabreTools.Numerics
 
         public static BothUInt32 operator &(BothUInt32 a, BothUInt32 b)
         {
-            uint le = (uint)(a.LittleEndian & b.LittleEndian);
-            uint be = (uint)(a.BigEndian & b.BigEndian);
+            uint le = a.LittleEndian & b.LittleEndian;
+            uint be = a.BigEndian & b.BigEndian;
             return new BothUInt32(le, be);
         }
 
         public static BothUInt32 operator |(BothUInt32 a, BothUInt32 b)
         {
-            uint le = (uint)(a.LittleEndian | b.LittleEndian);
-            uint be = (uint)(a.BigEndian | b.BigEndian);
+            uint le = a.LittleEndian | b.LittleEndian;
+            uint be = a.BigEndian | b.BigEndian;
             return new BothUInt32(le, be);
         }
 
         public static BothUInt32 operator ^(BothUInt32 a, BothUInt32 b)
         {
-            uint le = (uint)(a.LittleEndian ^ b.LittleEndian);
-            uint be = (uint)(a.BigEndian ^ b.BigEndian);
+            uint le = a.LittleEndian ^ b.LittleEndian;
+            uint be = a.BigEndian ^ b.BigEndian;
             return new BothUInt32(le, be);
         }
 
