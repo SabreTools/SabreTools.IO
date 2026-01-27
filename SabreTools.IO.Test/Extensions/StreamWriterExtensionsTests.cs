@@ -585,31 +585,31 @@ namespace SabreTools.IO.Test.Extensions
         {
             // Guid
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
-            bool actual = stream.WriteType<Guid>(new Guid(_bytes));
+            bool actual = stream.WriteType(new Guid(_bytes));
             Assert.True(actual);
             ValidateBytes(_bytes, stream.GetBuffer());
 
             // Half
             stream = new MemoryStream(new byte[2], 0, 2, true, true);
-            actual = stream.WriteType<Half>(BitConverter.Int16BitsToHalf(0x0100));
+            actual = stream.WriteType(BitConverter.Int16BitsToHalf(0x0100));
             Assert.True(actual);
             ValidateBytes([.. _bytes.Take(2)], stream.GetBuffer());
 
             // Int128
             stream = new MemoryStream(new byte[16], 0, 16, true, true);
-            actual = stream.WriteType<Int128>((Int128)new BigInteger(_bytes));
+            actual = stream.WriteType((Int128)new BigInteger(_bytes));
             Assert.True(actual);
             ValidateBytes(_bytes, stream.GetBuffer());
 
             // UInt128
             stream = new MemoryStream(new byte[16], 0, 16, true, true);
-            actual = stream.WriteType<UInt128>((UInt128)new BigInteger(_bytes));
+            actual = stream.WriteType((UInt128)new BigInteger(_bytes));
             Assert.True(actual);
             ValidateBytes(_bytes, stream.GetBuffer());
 
             // Enum
             stream = new MemoryStream(new byte[4], 0, 4, true, true);
-            actual = stream.WriteType<TestEnum>((TestEnum)0x03020100);
+            actual = stream.WriteType((TestEnum)0x03020100);
             Assert.True(actual);
             ValidateBytes([.. _bytes.Take(4)], stream.GetBuffer());
         }

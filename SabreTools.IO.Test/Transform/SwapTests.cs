@@ -4,6 +4,7 @@ using SabreTools.IO.Extensions;
 using SabreTools.IO.Transform;
 using Xunit;
 
+#pragma warning disable IDE0230 // Use UTF-8 string literal
 namespace SabreTools.IO.Test.Transform
 {
     public class SwapTests

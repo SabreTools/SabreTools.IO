@@ -48,7 +48,7 @@ namespace SabreTools.IO.Test.Numerics
         [Fact]
         public void GetTypeCodeTest()
         {
-            TypeCode expected = ((int)1).GetTypeCode();
+            TypeCode expected = 1.GetTypeCode();
 
             var val = new BothInt32(1, 1);
             Assert.Equal(expected, val.GetTypeCode());
@@ -59,51 +59,51 @@ namespace SabreTools.IO.Test.Numerics
         {
             var val = new BothInt32(1, 1);
 
-            bool expectedBool = Convert.ToBoolean((int)1);
+            bool expectedBool = Convert.ToBoolean(1);
             Assert.Equal(expectedBool, val.ToBoolean(null));
 
-            char expectedChar = Convert.ToChar((int)1);
+            char expectedChar = Convert.ToChar(1);
             Assert.Equal(expectedChar, val.ToChar(null));
 
-            sbyte expectedSByte = Convert.ToSByte((int)1);
+            sbyte expectedSByte = Convert.ToSByte(1);
             Assert.Equal(expectedSByte, val.ToSByte(null));
 
-            byte expectedByte = Convert.ToByte((int)1);
+            byte expectedByte = Convert.ToByte(1);
             Assert.Equal(expectedByte, val.ToByte(null));
 
-            short expectedInt16 = Convert.ToInt16((int)1);
+            short expectedInt16 = Convert.ToInt16(1);
             Assert.Equal(expectedInt16, val.ToInt16(null));
 
-            ushort expectedUInt16 = Convert.ToUInt16((int)1);
+            ushort expectedUInt16 = Convert.ToUInt16(1);
             Assert.Equal(expectedUInt16, val.ToUInt16(null));
 
-            int expectedInt32 = Convert.ToInt32((int)1);
+            int expectedInt32 = Convert.ToInt32(1);
             Assert.Equal(expectedInt32, val.ToInt32(null));
 
-            uint expectedUInt32 = Convert.ToUInt32((int)1);
+            uint expectedUInt32 = Convert.ToUInt32(1);
             Assert.Equal(expectedUInt32, val.ToUInt32(null));
 
-            long expectedInt64 = Convert.ToInt64((int)1);
+            long expectedInt64 = Convert.ToInt64(1);
             Assert.Equal(expectedInt64, val.ToInt64(null));
 
-            ulong expectedUInt64 = Convert.ToUInt64((int)1);
+            ulong expectedUInt64 = Convert.ToUInt64(1);
             Assert.Equal(expectedUInt64, val.ToUInt64(null));
 
-            float expectedSingle = Convert.ToSingle((int)1);
+            float expectedSingle = Convert.ToSingle(1);
             Assert.Equal(expectedSingle, val.ToSingle(null));
 
-            double expectedDouble = Convert.ToDouble((int)1);
+            double expectedDouble = Convert.ToDouble(1);
             Assert.Equal(expectedDouble, val.ToDouble(null));
 
-            decimal expectedDecimal = Convert.ToDecimal((int)1);
+            decimal expectedDecimal = Convert.ToDecimal(1);
             Assert.Equal(expectedDecimal, val.ToDecimal(null));
 
             Assert.Throws<InvalidCastException>(() => val.ToDateTime(null));
 
-            string expectedString = Convert.ToString((int)1);
+            string expectedString = Convert.ToString(1);
             Assert.Equal(expectedString, val.ToString(null));
 
-            ulong expectedObject = Convert.ToUInt64((int)1);
+            ulong expectedObject = Convert.ToUInt64(1);
             Assert.Equal(expectedObject, val.ToType(typeof(ulong), null));
         }
 

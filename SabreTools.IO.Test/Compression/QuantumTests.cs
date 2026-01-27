@@ -3,6 +3,7 @@ using System.IO;
 using SabreTools.IO.Compression.Quantum;
 using Xunit;
 
+#pragma warning disable CA1822 // Mark members as static
 namespace SabreTools.IO.Test.Compression
 {
     public class QuantumTests

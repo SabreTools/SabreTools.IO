@@ -185,7 +185,7 @@ namespace SabreTools.IO.Test.Numerics
         public void BitwiseUnaryOperatorsTest()
         {
             var valA = new BothUInt64(2, 2);
-            ulong expected = ~((ulong)2);
+            ulong expected = ~(ulong)2;
             BothUInt64 actual = ~valA;
             Assert.Equal(expected, actual.LittleEndian);
             Assert.Equal(expected, actual.BigEndian);

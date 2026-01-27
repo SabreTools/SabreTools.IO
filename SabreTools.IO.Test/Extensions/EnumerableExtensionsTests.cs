@@ -6,6 +6,8 @@ using System.Threading;
 using SabreTools.IO.Extensions;
 using Xunit;
 
+#pragma warning disable IDE0060 // Remove unused parameter
+#pragma warning disable IDE0290 // Use primary constructor
 namespace SabreTools.IO.Test.Extensions
 {
     public class EnumerableExtensionsTests

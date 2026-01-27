@@ -4,6 +4,7 @@ using System.Text;
 using SabreTools.IO.Extensions;
 using Xunit;
 
+#pragma warning disable IDE0017 // Object initialization can be simplified
 namespace SabreTools.IO.Test.Extensions
 {
     public class StreamExtensionsTests

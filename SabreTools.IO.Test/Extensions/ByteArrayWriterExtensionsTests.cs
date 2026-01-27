@@ -641,35 +641,35 @@ namespace SabreTools.IO.Test.Extensions
             // Guid
             int offset = 0;
             byte[] buffer = new byte[16];
-            bool actual = buffer.WriteType<Guid>(ref offset, new Guid(_bytes));
+            bool actual = buffer.WriteType(ref offset, new Guid(_bytes));
             Assert.True(actual);
             ValidateBytes(_bytes, buffer);
 
             // Half
             offset = 0;
             buffer = new byte[2];
-            actual = buffer.WriteType<Half>(ref offset, BitConverter.Int16BitsToHalf(0x0100));
+            actual = buffer.WriteType(ref offset, BitConverter.Int16BitsToHalf(0x0100));
             Assert.True(actual);
             ValidateBytes([.. _bytes.Take(2)], buffer);
 
             // Int128
             offset = 0;
             buffer = new byte[16];
-            actual = buffer.WriteType<Int128>(ref offset, (Int128)new BigInteger(_bytes));
+            actual = buffer.WriteType(ref offset, (Int128)new BigInteger(_bytes));
             Assert.True(actual);
             ValidateBytes(_bytes, buffer);
 
             // UInt128
             offset = 0;
             buffer = new byte[16];
-            actual = buffer.WriteType<UInt128>(ref offset, (UInt128)new BigInteger(_bytes));
+            actual = buffer.WriteType(ref offset, (UInt128)new BigInteger(_bytes));
             Assert.True(actual);
             ValidateBytes(_bytes, buffer);
 
             // Enum
             offset = 0;
             buffer = new byte[4];
-            actual = buffer.WriteType<TestEnum>(ref offset, (TestEnum)0x03020100);
+            actual = buffer.WriteType(ref offset, (TestEnum)0x03020100);
             Assert.True(actual);
             ValidateBytes([.. _bytes.Take(4)], buffer);
         }

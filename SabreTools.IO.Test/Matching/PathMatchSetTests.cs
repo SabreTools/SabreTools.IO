@@ -4,6 +4,7 @@ using System.IO;
 using SabreTools.IO.Matching;
 using Xunit;
 
+#pragma warning disable CA1861 // Prefer 'static readonly' fields
 namespace SabreTools.IO.Test.Matching
 {
     public class PathMatchSetTests
