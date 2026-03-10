@@ -182,10 +182,10 @@ namespace SabreTools.IO.Writers
                 _writer.Write(name);
                 _writer.Write(" (");
             }
-            catch (Exception ex)
+            catch
             {
                 _currentState = State.Error;
-                throw ex;
+                throw;
             }
         }
 
@@ -223,10 +223,10 @@ namespace SabreTools.IO.Writers
                 if ((quoteOverride is null && Quotes) || (quoteOverride == true))
                     _writer.Write("\"");
             }
-            catch (Exception ex)
+            catch
             {
                 _currentState = State.Error;
-                throw ex;
+                throw;
             }
         }
 
@@ -239,10 +239,10 @@ namespace SabreTools.IO.Writers
             {
                 AutoComplete(Token.EndAttribute, quoteOverride);
             }
-            catch (Exception ex)
+            catch
             {
                 _currentState = State.Error;
-                throw ex;
+                throw;
             }
         }
 
@@ -331,10 +331,10 @@ namespace SabreTools.IO.Writers
                     _writer.Write("\"");
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 _currentState = State.Error;
-                throw ex;
+                throw;
             }
         }
 
@@ -388,10 +388,10 @@ namespace SabreTools.IO.Writers
                     _writer.Write(value);
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 _currentState = State.Error;
-                throw ex;
+                throw;
             }
         }
 
@@ -541,10 +541,10 @@ namespace SabreTools.IO.Writers
 
                 _topPtr--;
             }
-            catch (Exception ex)
+            catch
             {
                 _currentState = State.Error;
-                throw ex;
+                throw;
             }
         }
 
