@@ -50,13 +50,17 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// Write a section tag
         /// </summary>
+        /// <param name="value">Value to use as the section tag</param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="value"/> is null or empty.
+        /// </exception>
         public void WriteSection(string? value)
         {
             if (_writer.BaseStream is null)
                 return;
 
             if (string.IsNullOrEmpty(value))
-                throw new ArgumentException("Section tag cannot be null or empty", nameof(value));
+                throw new ArgumentNullException("Section tag cannot be null or empty", nameof(value));
 
             _writer.WriteLine($"[{value!.TrimStart('[').TrimEnd(']')}]");
         }
@@ -64,13 +68,16 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// Write a key value pair
         /// </summary>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="key"/> is null or empty.
+        /// </exception>
         public void WriteKeyValuePair(string key, string? value)
         {
             if (_writer.BaseStream is null)
                 return;
 
             if (string.IsNullOrEmpty(key))
-                throw new ArgumentException("Key cannot be null or empty", nameof(key));
+                throw new ArgumentNullException("Key cannot be null or empty", nameof(key));
 
             value ??= string.Empty;
             _writer.WriteLine($"{key}={value}");

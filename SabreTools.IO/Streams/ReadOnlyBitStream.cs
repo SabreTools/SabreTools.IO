@@ -1,4 +1,4 @@
-using System;
+using System.Data;
 using System.IO;
 using SabreTools.IO.Extensions;
 
@@ -33,6 +33,11 @@ namespace SabreTools.IO.Streams
         /// <summary>
         /// Create a new BitStream from a source Stream
         /// </summary>
+        /// <param name="source">Source stream</param>
+        /// <exception cref="DataException">
+        /// Thrown if <paramref name="source"/> is either marked
+        /// as unreadable or non-seekable.
+        /// </exception>
         public ReadOnlyBitStream(Stream source)
         {
             _source = source;
@@ -41,7 +46,7 @@ namespace SabreTools.IO.Streams
 
             // Verify the stream
             if (!source.CanRead || !source.CanSeek)
-                throw new ArgumentException($"{nameof(source)} needs to be readable and seekable");
+                throw new DataException($"{nameof(source)} needs to be readable and seekable");
         }
 
         /// <summary>

@@ -30,6 +30,13 @@ namespace SabreTools.IO.Matching
         /// <param name="needle">Byte array representing the search</param>
         /// <param name="start">Optional starting position in the stack, defaults to 0</param>
         /// <param name="end">Optional ending position in the stack, defaults to -1 (length of stack)</param>
+        /// <exception cref="InvalidDataException">
+        /// Thrown if <paramref name="needle"/> has a length of 0.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if either <paramref name="start"/> or <paramref name="end"/>
+        /// are invalid.
+        /// </exception>
         public ContentMatch(byte[] needle, int start = 0, int end = -1)
         {
             // Validate the inputs
@@ -51,6 +58,13 @@ namespace SabreTools.IO.Matching
         /// <param name="needle">Nullable byte array representing the search</param>
         /// <param name="start">Optional starting position in the stack, defaults to 0</param>
         /// <param name="end">Optional ending position in the stack, defaults to -1 (length of stack)</param>
+        /// <exception cref="InvalidDataException">
+        /// Thrown if <paramref name="needle"/> has a length of 0.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if either <paramref name="start"/> or <paramref name="end"/>
+        /// are invalid.
+        /// </exception>
         public ContentMatch(byte?[] needle, int start = 0, int end = -1)
         {
             // Validate the inputs

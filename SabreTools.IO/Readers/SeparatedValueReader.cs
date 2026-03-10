@@ -102,6 +102,12 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Read the header line
         /// </summary>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown if either:
+        /// - A header line is requested when <see cref="Header"/> is false.
+        /// - A header line has already been read when <see cref="Header"/> is true.
+        /// </exception>
         public bool ReadHeader()
         {
             if (!Header)
@@ -116,6 +122,10 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Read the next line in the separated value file
         /// </summary>
+        /// <exception cref="InvalidDataException">
+        /// Thrown if an malformed line is encountered during processing
+        /// and <see cref="VerifyFieldCount"/> is true.
+        /// </exception>
         public bool ReadNextLine()
         {
             if (_reader.BaseStream is null)
@@ -178,36 +188,44 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Get the value for the current line for the current key
         /// </summary>
+        /// <param name="key">Case-sensitive key based on header values</param>
+        /// <returns>Value associated with the key, null if the key doesn't exist</returns>
+        /// <exception cref="InvalidDataException">
+        /// Thrown if any required properties are missing.
+        /// </exception>
         public string? GetValue(string key)
         {
             // No header means no key-based indexing
             if (!Header)
-                throw new ArgumentException("No header expected so no keys can be used");
+                throw new InvalidDataException("No header expected so no keys can be used");
 
             // If we don't have the key, return null
             if (HeaderValues is null)
-                throw new ArgumentException($"Current line doesn't have key {key}");
+                throw new InvalidDataException($"Current line doesn't have key {key}");
             if (!HeaderValues.Contains(key))
                 return null;
 
             int index = HeaderValues.IndexOf(key);
-            if (Line is null)
-                throw new ArgumentException($"Current line doesn't have index {index}");
-            if (Line.Count < index)
-                throw new ArgumentException($"Current line doesn't have index {index}");
-
-            return Line[index];
+            return GetValue(index);
         }
 
         /// <summary>
         /// Get the value for the current line for the current index
         /// </summary>
+        /// <param name="index">Index into the current line</param>
+        /// <returns>Value associated with the index</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if <paramref name="index"/> is greater than the line count.
+        /// </exception>
+        /// <exception cref="InvalidDataException">
+        /// Thrown if any required properties are missing.
+        /// </exception>
         public string GetValue(int index)
         {
             if (Line is null)
-                throw new ArgumentException($"Current line doesn't have index {index}");
+                throw new InvalidDataException($"Current line doesn't have index {index}");
             if (Line.Count < index)
-                throw new ArgumentException($"Current line doesn't have index {index}");
+                throw new ArgumentOutOfRangeException($"Current line doesn't have index {index}");
 
             return Line[index];
         }

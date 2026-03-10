@@ -54,6 +54,9 @@ namespace SabreTools.IO.Matching
         /// </summary>
         /// <param name="needles">List of ContentMatch objects representing the comparisons</param>
         /// <param name="setName">Unique name for the set</param>
+        /// <exception cref="InvalidDataException">
+        /// Thrown if <paramref name="needles"/> is empty.
+        /// </exception>
         public ContentMatchSet(List<ContentMatch> needles, string setName)
         {
             // Validate the inputs
@@ -85,6 +88,9 @@ namespace SabreTools.IO.Matching
         /// <param name="needles">List of ContentMatch objects representing the comparisons</param>
         /// <param name="getVersion">Delegate for deriving a version on match of an array</param>
         /// <param name="setName">Unique name for the set</param>
+        /// <exception cref="InvalidDataException">
+        /// Thrown if <paramref name="needles"/> is empty.
+        /// </exception>
         public ContentMatchSet(List<ContentMatch> needles, GetArrayVersion getVersion, string setName)
         {
             // Validate the inputs
@@ -116,6 +122,9 @@ namespace SabreTools.IO.Matching
         /// <param name="needles">List of ContentMatch objects representing the comparisons</param>
         /// <param name="getVersion">Delegate for deriving a version on match of a Stream</param>
         /// <param name="setName">Unique name for the set</param>
+        /// <exception cref="InvalidDataException">
+        /// Thrown if <paramref name="needles"/> is empty.
+        /// </exception>
         public ContentMatchSet(List<ContentMatch> needles, GetStreamVersion getVersion, string setName)
         {
             // Validate the inputs

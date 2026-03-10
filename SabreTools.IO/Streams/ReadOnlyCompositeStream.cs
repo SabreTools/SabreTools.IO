@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 
 namespace SabreTools.IO.Streams
@@ -42,7 +43,7 @@ namespace SabreTools.IO.Streams
         #region Instance Variables
 
         /// <summary>
-        /// Internal collection of streams to read from
+        /// Internal set of streams to read from
         /// </summary>
         private readonly List<Stream> _streams;
 
@@ -73,7 +74,11 @@ namespace SabreTools.IO.Streams
         /// <summary>
         /// Create a new ReadOnlyCompositeStream from a single Stream
         /// </summary>
-        /// <param name="stream"></param>
+        /// <param name="source">Source stream</param>
+        /// <exception cref="DataException">
+        /// Thrown if <paramref name="source"/> is either marked
+        /// as unreadable or non-seekable.
+        /// </exception>
         public ReadOnlyCompositeStream(Stream stream)
         {
             _streams = [stream];
@@ -82,14 +87,19 @@ namespace SabreTools.IO.Streams
 
             // Verify the stream and add to the length
             if (!stream.CanRead || !stream.CanSeek)
-                throw new ArgumentException($"{nameof(stream)} needs to be readable and seekable");
+                throw new DataException($"{nameof(stream)} needs to be readable and seekable");
 
             _length += stream.Length;
         }
 
         /// <summary>
-        /// Create a new ReadOnlyCompositeStream from an existing collection of Streams
+        /// Create a new ReadOnlyCompositeStream from an existing set of Streams
         /// </summary>
+        /// <param name="streams">Set of streams</param>
+        /// <exception cref="DataException">
+        /// Thrown if any stream in <paramref name="streams"/> is
+        /// either marked as unreadable or non-seekable.
+        /// </exception>
         public ReadOnlyCompositeStream(Stream[] streams)
         {
             _streams = [.. streams];
@@ -100,15 +110,20 @@ namespace SabreTools.IO.Streams
             foreach (var stream in streams)
             {
                 if (!stream.CanRead || !stream.CanSeek)
-                    throw new ArgumentException($"All members of {nameof(streams)} need to be readable and seekable");
+                    throw new DataException($"All members of {nameof(streams)} need to be readable and seekable");
 
                 _length += stream.Length;
             }
         }
 
         /// <summary>
-        /// Create a new ReadOnlyCompositeStream from an existing collection of Streams
+        /// Create a new ReadOnlyCompositeStream from an existing set of Streams
         /// </summary>
+        /// <param name="streams">Set of streams</param>
+        /// <exception cref="DataException">
+        /// Thrown if any stream in <paramref name="streams"/> is
+        /// either marked as unreadable or non-seekable.
+        /// </exception>
         public ReadOnlyCompositeStream(IEnumerable<Stream> streams)
         {
             _streams = [.. streams];
@@ -130,7 +145,7 @@ namespace SabreTools.IO.Streams
         #region Data
 
         /// <summary>
-        /// Add a new stream to the collection
+        /// Add a new stream to the set
         /// </summary>
         public bool AddStream(Stream stream)
         {
@@ -262,6 +277,14 @@ namespace SabreTools.IO.Streams
         /// <summary>
         /// Determines if a stream contains a particular segment
         /// </summary>
+        /// <param name="streamIndex">Index into the backing streams set</param>
+        /// <param name="offset">Offset in the stream to check</param>
+        /// <param name="length">Length of data requested at the offset</param>
+        /// <returns>True if the offset and length are valid, false otherwise</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if <paramref name="streamIndex"/>, <paramref name="offset"/>,
+        /// or <paramref name="length"/> are invalid.
+        /// </exception>
         private bool StreamContains(int streamIndex, long offset, int length)
         {
             // Ensure the arguments are valid

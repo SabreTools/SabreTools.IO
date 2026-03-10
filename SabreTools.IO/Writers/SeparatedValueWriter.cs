@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.IO;
 using System.Text;
 
@@ -96,11 +97,19 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// Write a value row
         /// </summary>
+        /// <param name="values">Array representing the values</param>
+        /// <param name="newline">True to append a newline, false otherwise</param>
+        /// <exception cref="ArgumentException">
+        /// Thrown if <see cref="Separator"/> is an invalid character.
+        /// </exception>
+        /// <exception cref="DataException">
+        /// Thrown if the underlying stream is not marked as writable.
+        /// </exception>
         public void WriteValues(object?[] values, bool newline = true)
         {
             // If the writer can't be used, we error
             if (!_writer.BaseStream.CanWrite)
-                throw new ArgumentException(nameof(_writer));
+                throw new DataException(nameof(_writer));
 
             // If the separator character is invalid, we error
             if (Separator == default(char))

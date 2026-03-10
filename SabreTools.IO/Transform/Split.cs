@@ -69,6 +69,9 @@ namespace SabreTools.IO.Transform
         /// <param name="even">Even block output stream on success, null otherwise</param>
         /// <param name="odd">Odd block output stream on success, null otherwise</param>
         /// <returns>True if the stream could be split, false otherwise</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if <paramref name="type"/> is not a recognized value.
+        /// </exception>
         public static bool BlockSplit(Stream input, BlockSize type, out Stream? even, out Stream? odd)
         {
             // Set default values for the outputs

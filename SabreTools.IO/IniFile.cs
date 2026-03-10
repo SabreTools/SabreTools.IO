@@ -42,6 +42,9 @@ namespace SabreTools.IO
         /// <summary>
         /// Populate an INI file from path
         /// </summary>
+        /// <exception cref="FileNotFoundException">
+        /// Thrown if <paramref name="path"/> is not a valid file.
+        /// </exception>
         public IniFile(string path)
         {
             // If we don't have a file, we can't read it

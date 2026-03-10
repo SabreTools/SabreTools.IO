@@ -102,16 +102,24 @@ namespace SabreTools.IO.Streams
         /// <summary>
         /// Construct a new ViewStream from a Stream
         /// </summary>
-        public ViewStream(Stream data, long offset)
+        /// <param name="source">Source stream</param>
+        /// <param name="offset">Offset in the source to use as the starting index</param>
+        /// <exception cref="ArgumentException">
+        /// Thrown if <paramref name="source"/> is not marked as readable.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if <paramref name="offset"/> is invalid.
+        /// </exception>
+        public ViewStream(Stream source, long offset)
         {
-            if (!data.CanRead)
-                throw new ArgumentException(nameof(data));
-            if (offset < 0 || offset > data.Length)
+            if (!source.CanRead)
+                throw new ArgumentException(nameof(source));
+            if (offset < 0 || offset > source.Length)
                 throw new ArgumentOutOfRangeException(nameof(offset));
 
-            _source = data;
+            _source = source;
             _initialPosition = offset;
-            _length = data.Length - offset;
+            _length = source.Length - offset;
 
             _source.Seek(_initialPosition, SeekOrigin.Begin);
         }
@@ -119,16 +127,25 @@ namespace SabreTools.IO.Streams
         /// <summary>
         /// Construct a new ViewStream from a Stream
         /// </summary>
-        public ViewStream(Stream data, long offset, long length)
+        /// <param name="source">Source stream</param>
+        /// <param name="offset">Offset in the source to use as the starting index</param>
+        /// <param name="length">Length of the window</param>
+        /// <exception cref="ArgumentException">
+        /// Thrown if <paramref name="source"/> is not marked as readable.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if <paramref name="offset"/> or <paramref name="length"/> are invalid.
+        /// </exception>
+        public ViewStream(Stream source, long offset, long length)
         {
-            if (!data.CanRead)
-                throw new ArgumentException(nameof(data));
-            if (offset < 0 || offset > data.Length)
+            if (!source.CanRead)
+                throw new ArgumentException(nameof(source));
+            if (offset < 0 || offset > source.Length)
                 throw new ArgumentOutOfRangeException(nameof(offset));
-            if (length < 0 || offset + length > data.Length)
+            if (length < 0 || offset + length > source.Length)
                 throw new ArgumentOutOfRangeException(nameof(length));
 
-            _source = data;
+            _source = source;
             _initialPosition = offset;
             _length = length;
 
@@ -138,13 +155,18 @@ namespace SabreTools.IO.Streams
         /// <summary>
         /// Construct a new ViewStream from a byte array
         /// </summary>
-        public ViewStream(byte[] data, long offset)
+        /// <param name="source">Source array</param>
+        /// <param name="offset">Offset in the source to use as the starting index</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if <paramref name="offset"/> is invalid.
+        /// </exception>
+        public ViewStream(byte[] source, long offset)
         {
-            if (offset < 0 || offset > data.Length)
+            if (offset < 0 || offset > source.Length)
                 throw new ArgumentOutOfRangeException(nameof(offset));
 
-            long length = data.Length - offset;
-            _source = new MemoryStream(data, (int)offset, (int)length);
+            long length = source.Length - offset;
+            _source = new MemoryStream(source, (int)offset, (int)length);
             _initialPosition = 0;
             _length = length;
 
@@ -154,14 +176,20 @@ namespace SabreTools.IO.Streams
         /// <summary>
         /// Construct a new ViewStream from a byte array
         /// </summary>
-        public ViewStream(byte[] data, long offset, long length)
+        /// <param name="source">Source array</param>
+        /// <param name="offset">Offset in the source to use as the starting index</param>
+        /// <param name="length">Length of the window</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if <paramref name="offset"/> or <paramref name="length"/> are invalid.
+        /// </exception>
+        public ViewStream(byte[] source, long offset, long length)
         {
-            if (offset < 0 || offset > data.Length)
+            if (offset < 0 || offset > source.Length)
                 throw new ArgumentOutOfRangeException(nameof(offset));
-            if (length < 0 || offset + length > data.Length)
+            if (length < 0 || offset + length > source.Length)
                 throw new ArgumentOutOfRangeException(nameof(length));
 
-            _source = new MemoryStream(data, (int)offset, (int)length);
+            _source = new MemoryStream(source, (int)offset, (int)length);
             _initialPosition = 0;
             _length = length;
 

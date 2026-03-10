@@ -1232,6 +1232,15 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a number of bytes from the byte array to a buffer
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if <paramref name="offset"/> or <paramref name="length"/>
+        /// is an invalid value.
+        /// </exception>
+        /// <exception cref="System.IO.EndOfStreamException">
+        /// Thrown if the requested <paramref name="offset"/> and
+        /// <paramref name="length"/> is greater than <paramref name="content"/>
+        /// length.
+        /// </exception>
         private static byte[] ReadExactlyToBuffer(byte[] content, ref int offset, int length)
         {
             // If we have an invalid offset

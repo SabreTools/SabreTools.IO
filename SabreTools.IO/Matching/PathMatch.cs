@@ -30,6 +30,9 @@ namespace SabreTools.IO.Matching
         /// <param name="needle">String representing the search</param>
         /// <param name="matchCase">True to match exact casing, false otherwise</param>
         /// <param name="useEndsWith">True to match the end only, false for contains</param>
+        /// <exception cref="InvalidDataException">
+        /// Thrown if <paramref name="needle"/> has a length of 0.
+        /// </exception>
         public PathMatch(string needle, bool matchCase = false, bool useEndsWith = false)
         {
             // Validate the inputs

@@ -15,6 +15,10 @@ namespace SabreTools.IO.Extensions
         /// <param name="localName">Name of the element</param>
         /// <param name="value">Value to write in the element</param>
         /// <param name="throwOnError">Indicates if an error should be thrown on a missing required value</param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="throwOnError"/> is true and
+        /// <paramref name="value"/> is null.
+        /// </exception>
         public static void WriteRequiredAttributeString(this XmlTextWriter writer, string localName, string? value, bool throwOnError = false)
         {
             // Throw an exception if we are configured to
@@ -31,6 +35,10 @@ namespace SabreTools.IO.Extensions
         /// <param name="localName">Name of the element</param>
         /// <param name="value">Value to write in the element</param>
         /// <param name="throwOnError">Indicates if an error should be thrown on a missing required value</param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="throwOnError"/> is true and
+        /// <paramref name="value"/> is null.
+        /// </exception>
         public static void WriteRequiredElementString(this XmlTextWriter writer, string localName, string? value, bool throwOnError = false)
         {
             // Throw an exception if we are configured to

@@ -164,7 +164,9 @@ namespace SabreTools.IO.Compression.Blast
         /// <summary>
         /// Ensure there are bytes available, if possible
         /// </summary>
-        /// <exception cref="IndexOutOfRangeException"></exception>
+        /// <exception cref="IndexOutOfRangeException">
+        /// Thrown if there are no bytes available from <see cref="_input">.
+        /// </exception>
         private void EnsureAvailable()
         {
             // If there are bytes

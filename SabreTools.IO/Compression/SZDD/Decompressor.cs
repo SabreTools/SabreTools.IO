@@ -26,6 +26,13 @@ namespace SabreTools.IO.Compression.SZDD
         /// <summary>
         /// Create a SZDD decompressor
         /// </summary>
+        /// <param name="source">Source data stream</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if <paramref name="source"/> has a length of 0.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown if <paramref name="source"/> is not marked as readable.
+        /// </exception>
         private Decompressor(Stream source)
         {
             // Validate the inputs
@@ -48,6 +55,12 @@ namespace SabreTools.IO.Compression.SZDD
         /// <summary>
         /// Create a KWAJ decompressor
         /// </summary>
+        /// <param name="source">Source data stream</param>
+        /// <param name="compressionType">Compression type value</param>
+        /// <returns>Decompressor representing the compression type</returns>
+        /// <exception cref="IndexOutOfRangeException">
+        /// Thrown if <paramref name="compressionType"/> is not between 0x0000 and 0x0004.
+        /// </exception>
         public static Decompressor CreateKWAJ(Stream source, ushort compressionType)
         {
             // Create the decompressor

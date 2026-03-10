@@ -113,6 +113,9 @@ namespace SabreTools.IO.Transform
         /// <param name="output">Path to the output file</param>
         /// <param name="type"><see cref="BlockSize"> representing how to process the inputs</param>
         /// <returns>A filled stream on success, null otherwise</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if <paramref name="type"/> is not a recognized value.
+        /// </exception>
         public static Stream? Interleave(Stream even, Stream odd, BlockSize type)
         {
             // If either stream is unreadable

@@ -1227,6 +1227,14 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Read a number of bytes from the stream to a buffer
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if <paramref name="length"/> is an invalid value.
+        /// </exception>
+        /// <exception cref="EndOfStreamException">
+        /// Thrown if the requested <paramref name="length"/> is greater
+        /// than the read bytes from <paramref name="content"/>.
+        /// length.
+        /// </exception>
         private static byte[] ReadExactlyToBuffer(Stream stream, int length)
         {
             // If we have an invalid length

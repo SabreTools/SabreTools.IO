@@ -41,6 +41,9 @@ namespace SabreTools.IO.Matching
         /// </summary>
         /// <param name="needles">List of PathMatch objects representing the comparisons</param>
         /// <param name="setName">Unique name for the set</param>
+        /// <exception cref="InvalidDataException">
+        /// Thrown if <paramref name="needles"/> is empty.
+        /// </exception>
         public PathMatchSet(List<PathMatch> needles, string setName)
         {
             // Validate the inputs
@@ -71,6 +74,9 @@ namespace SabreTools.IO.Matching
         /// <param name="needles">List of PathMatch objects representing the comparisons</param>
         /// <param name="getVersion">Delegate for deriving a version on match</param>
         /// <param name="setName">Unique name for the set</param>
+        /// <exception cref="InvalidDataException">
+        /// Thrown if <paramref name="needles"/> is empty.
+        /// </exception>
         public PathMatchSet(List<PathMatch> needles, GetPathVersion getVersion, string setName)
         {
             // Validate the inputs

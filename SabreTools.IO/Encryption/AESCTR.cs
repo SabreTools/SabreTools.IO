@@ -15,6 +15,9 @@ namespace SabreTools.IO.Encryption
         /// <param name="key">Byte array representation of 128-bit encryption key</param>
         /// <param name="iv">AES initial value for counter</param>
         /// <returns>Initialized AES cipher</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if <paramref name="key"/> does not have a length of 16.
+        /// </exception>
         public static IBufferedCipher CreateDecryptionCipher(byte[] key, byte[] iv)
         {
             if (key.Length != 16)
@@ -32,6 +35,9 @@ namespace SabreTools.IO.Encryption
         /// <param name="key">Byte array representation of 128-bit encryption key</param>
         /// <param name="iv">AES initial value for counter</param>
         /// <returns>Initialized AES cipher</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if <paramref name="key"/> does not have a length of 16.
+        /// </exception>
         public static IBufferedCipher CreateEncryptionCipher(byte[] key, byte[] iv)
         {
             if (key.Length != 16)

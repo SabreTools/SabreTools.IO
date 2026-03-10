@@ -40,6 +40,9 @@ namespace SabreTools.IO.Compression.MSZIP
         /// <summary>
         /// Decompress source data to an output stream
         /// </summary>
+        /// <exception cref="InvalidDataException">
+        /// Thrown if the signature does not match 0x4B43.
+        /// </exception>
         public bool CopyTo(Stream source, Stream dest)
         {
             // Ignore unwritable streams

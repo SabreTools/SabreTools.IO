@@ -103,6 +103,10 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Process the current line and extract out values
         /// </summary>
+        /// <exception cref="InvalidDataException">
+        /// Thrown if an invalid line is encountered during processing
+        /// and <see cref="ValidateRows"/> is true.
+        /// </exception>
         private void ProcessLine()
         {
             if (CurrentLine is null)

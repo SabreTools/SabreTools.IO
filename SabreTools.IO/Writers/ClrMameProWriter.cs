@@ -182,10 +182,10 @@ namespace SabreTools.IO.Writers
                 _writer.Write(name);
                 _writer.Write(" (");
             }
-            catch
+            catch (Exception ex)
             {
                 _currentState = State.Error;
-                throw;
+                throw ex;
             }
         }
 
@@ -223,10 +223,10 @@ namespace SabreTools.IO.Writers
                 if ((quoteOverride is null && Quotes) || (quoteOverride == true))
                     _writer.Write("\"");
             }
-            catch
+            catch (Exception ex)
             {
                 _currentState = State.Error;
-                throw;
+                throw ex;
             }
         }
 
@@ -239,10 +239,10 @@ namespace SabreTools.IO.Writers
             {
                 AutoComplete(Token.EndAttribute, quoteOverride);
             }
-            catch
+            catch (Exception ex)
             {
                 _currentState = State.Error;
-                throw;
+                throw ex;
             }
         }
 
@@ -266,6 +266,10 @@ namespace SabreTools.IO.Writers
         /// <param name="value">Value to write in the attribute</param>
         /// <param name="quoteOverride">Non-null to overwrite the writer setting, null otherwise</param>
         /// <param name="throwOnError">Indicates if an error should be thrown on a missing required value</param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="throwOnError"/> is true and
+        /// <paramref name="value"/> is null.
+        /// </exception>
         public void WriteRequiredAttributeString(string name, string? value, bool? quoteOverride = null, bool throwOnError = false)
         {
             // Throw an exception if we are configured to
@@ -293,6 +297,9 @@ namespace SabreTools.IO.Writers
         /// <param name="name">Name of the attribute</param>
         /// <param name="value">Value to write in the attribute</param>
         /// <param name="quoteOverride">Non-null to overwrite the writer setting, null otherwise</param>
+        /// <exception cref="ArgumentException">
+        /// Thrown if <paramref name="name"/> is null or empty.
+        /// </exception>
         public void WriteStandalone(string name, string? value, bool? quoteOverride = null)
         {
             try
@@ -324,10 +331,10 @@ namespace SabreTools.IO.Writers
                     _writer.Write("\"");
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 _currentState = State.Error;
-                throw;
+                throw ex;
             }
         }
 
@@ -338,6 +345,10 @@ namespace SabreTools.IO.Writers
         /// <param name="value">Value to write in the attribute</param>
         /// <param name="quoteOverride">Non-null to overwrite the writer setting, null otherwise</param>
         /// <param name="throwOnError">Indicates if an error should be thrown on a missing required value</param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if <paramref name="throwOnError"/> is true and
+        /// <paramref name="value"/> is null.
+        /// </exception>
         public void WriteRequiredStandalone(string name, string? value, bool? quoteOverride = null, bool throwOnError = false)
         {
             // Throw an exception if we are configured to
@@ -377,10 +388,10 @@ namespace SabreTools.IO.Writers
                     _writer.Write(value);
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 _currentState = State.Error;
-                throw;
+                throw ex;
             }
         }
 
@@ -415,6 +426,11 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// Prepare for the next token to be written
         /// </summary>
+        /// <param name="token">Last token to have been processed</param>
+        /// <param name="quoteOverride">Non-null to overwrite the writer setting, null otherwise</param>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown if the state of the writer is invalid.
+        /// </exception>
         private void AutoComplete(Token token, bool? quoteOverride = null)
         {
             // Handle the error cases
@@ -508,6 +524,7 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// Internal helper to write the end of an element
         /// </summary>
+        /// <param name="longFormat">Determine if a full or truncated end element is written</param>
         private void InternalWriteEndElement(bool longFormat)
         {
             try
@@ -516,7 +533,7 @@ namespace SabreTools.IO.Writers
                     throw new InvalidOperationException();
 
                 AutoComplete(longFormat ? Token.LongEndElement : Token.EndElement);
-                if (this._lastToken == Token.LongEndElement)
+                if (_lastToken == Token.LongEndElement)
                 {
                     Indent(true);
                     _writer.Write(')');
@@ -524,10 +541,10 @@ namespace SabreTools.IO.Writers
 
                 _topPtr--;
             }
-            catch
+            catch (Exception ex)
             {
                 _currentState = State.Error;
-                throw;
+                throw ex;
             }
         }
 

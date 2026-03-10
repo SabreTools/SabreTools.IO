@@ -923,6 +923,10 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write an array of bytes to the byte array
         /// </summary>
+        /// <exception cref="System.IO.EndOfStreamException">
+        /// Thrown if <paramref name="offset"/> into <paramref name="content"/>
+        /// would not accomodate <paramref name="value"/>.
+        /// </exception>
         private static bool WriteFromBuffer(byte[] content, ref int offset, byte[] value)
         {
             // Handle the 0-byte case

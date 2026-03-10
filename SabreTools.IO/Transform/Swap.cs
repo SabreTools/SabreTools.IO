@@ -59,6 +59,9 @@ namespace SabreTools.IO.Transform
         /// <param name="input">Input stream</param>
         /// <param name="operation">Transform operation to carry out</param>
         /// <returns>True if the file was transformed properly, false otherwise</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if <paramref name="type"/> is not a recognized value.
+        /// </exception>
         public static Stream? Process(Stream input, Operation operation)
         {
             // If the stream is unreadable
