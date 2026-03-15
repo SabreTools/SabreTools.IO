@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-#if NET7_0_OR_GREATER
-using System.Numerics;
-#endif
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -675,8 +672,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static Int128 ReadInt128(this byte[] content, ref int offset)
         {
-            byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
-            return (Int128)new BigInteger(buffer);
+            if (BitConverter.IsLittleEndian)
+                return content.ReadInt128LittleEndian(ref offset);
+            else
+                return content.ReadInt128BigEndian(ref offset);
         }
 
         /// <summary>
@@ -686,8 +685,17 @@ namespace SabreTools.IO.Extensions
         public static Int128 ReadInt128BigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
-            Array.Reverse(buffer);
-            return (Int128)new BigInteger(buffer);
+            return buffer.ToInt128BigEndian(0);
+        }
+
+        /// <summary>
+        /// Read an Int128 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static Int128 ReadInt128LittleEndian(this byte[] content, ref int offset)
+        {
+            byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
+            return buffer.ToInt128LittleEndian(0);
         }
 
         /// <summary>
@@ -696,8 +704,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static UInt128 ReadUInt128(this byte[] content, ref int offset)
         {
-            byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
-            return (UInt128)new BigInteger(buffer);
+            if (BitConverter.IsLittleEndian)
+                return content.ReadUInt128LittleEndian(ref offset);
+            else
+                return content.ReadUInt128BigEndian(ref offset);
         }
 
         /// <summary>
@@ -707,8 +717,17 @@ namespace SabreTools.IO.Extensions
         public static UInt128 ReadUInt128BigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
-            Array.Reverse(buffer);
-            return (UInt128)new BigInteger(buffer);
+            return buffer.ToUInt128BigEndian(0);
+        }
+
+        /// <summary>
+        /// Read a UInt128 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static UInt128 ReadUInt128LittleEndian(this byte[] content, ref int offset)
+        {
+            byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
+            return buffer.ToUInt128LittleEndian(0);
         }
 #endif
 
@@ -1877,9 +1896,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static Int128 PeekInt128(this byte[] content, ref int offset)
         {
-            Int128 value = content.ReadInt128(ref offset);
-            offset -= 16;
-            return value;
+            if (BitConverter.IsLittleEndian)
+                return content.PeekInt128LittleEndian(ref offset);
+            else
+                return content.PeekInt128BigEndian(ref offset);
         }
 
         /// <summary>
@@ -1894,14 +1914,26 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Peek an Int128 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static Int128 PeekInt128LittleEndian(this byte[] content, ref int offset)
+        {
+            Int128 value = content.ReadInt128LittleEndian(ref offset);
+            offset -= 16;
+            return value;
+        }
+
+        /// <summary>
         /// Peek a UInt128 without incrementing the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
         public static UInt128 PeekUInt128(this byte[] content, ref int offset)
         {
-            UInt128 value = content.ReadUInt128(ref offset);
-            offset -= 16;
-            return value;
+            if (BitConverter.IsLittleEndian)
+                return content.PeekUInt128LittleEndian(ref offset);
+            else
+                return content.PeekUInt128BigEndian(ref offset);
         }
 
         /// <summary>
@@ -1911,6 +1943,17 @@ namespace SabreTools.IO.Extensions
         public static UInt128 PeekUInt128BigEndian(this byte[] content, ref int offset)
         {
             UInt128 value = content.ReadUInt128BigEndian(ref offset);
+            offset -= 16;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt128 without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static UInt128 PeekUInt128LittleEndian(this byte[] content, ref int offset)
+        {
+            UInt128 value = content.ReadUInt128LittleEndian(ref offset);
             offset -= 16;
             return value;
         }
@@ -2817,14 +2860,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static bool TryReadInt128(this byte[] content, ref int offset, out Int128 value)
         {
-            if (offset > content.Length - 16)
-            {
-                value = default;
-                return false;
-            }
-
-            value = content.ReadInt128(ref offset);
-            return true;
+            if (BitConverter.IsLittleEndian)
+                return content.TryReadInt128LittleEndian(ref offset, out value);
+            else
+                return content.TryReadInt128BigEndian(ref offset, out value);
         }
 
         /// <summary>
@@ -2844,10 +2883,10 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a UInt128 and increment the pointer to an array
+        /// Read an Int128 and increment the pointer to an array
         /// </summary>
-        /// <remarks>Reads in machine native format</remarks>
-        public static bool TryReadUInt128(this byte[] content, ref int offset, out UInt128 value)
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadInt128LittleEndian(this byte[] content, ref int offset, out Int128 value)
         {
             if (offset > content.Length - 16)
             {
@@ -2855,8 +2894,20 @@ namespace SabreTools.IO.Extensions
                 return false;
             }
 
-            value = content.ReadUInt128(ref offset);
+            value = content.ReadInt128LittleEndian(ref offset);
             return true;
+        }
+
+        /// <summary>
+        /// Read a UInt128 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt128(this byte[] content, ref int offset, out UInt128 value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.TryReadUInt128LittleEndian(ref offset, out value);
+            else
+                return content.TryReadUInt128BigEndian(ref offset, out value);
         }
 
         /// <summary>
@@ -2872,6 +2923,22 @@ namespace SabreTools.IO.Extensions
             }
 
             value = content.ReadUInt128BigEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt128 and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadUInt128LittleEndian(this byte[] content, ref int offset, out UInt128 value)
+        {
+            if (offset > content.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadUInt128LittleEndian(ref offset);
             return true;
         }
 #endif

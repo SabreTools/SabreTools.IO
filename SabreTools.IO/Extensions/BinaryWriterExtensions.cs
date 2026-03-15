@@ -1,8 +1,5 @@
 using System;
 using System.IO;
-#if NET7_0_OR_GREATER
-using System.Numerics;
-#endif
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -311,13 +308,11 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write an Int128
         /// </summary>
+        /// <remarks>Writes in little-endian format</remarks>
         public static bool Write(this BinaryWriter writer, Int128 value)
         {
-            byte[] buffer = ((BigInteger)value).ToByteArray();
-
-            byte[] padded = new byte[16];
-            Array.Copy(buffer, 0, padded, 16 - buffer.Length, buffer.Length);
-            return WriteFromBuffer(writer, padded);
+            byte[] buffer = value.ToByteArrayLittleEndian();
+            return WriteFromBuffer(writer, buffer);
         }
 
         /// <summary>
@@ -326,24 +321,18 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, Int128 value)
         {
-            byte[] buffer = ((BigInteger)value).ToByteArray();
-            Array.Reverse(buffer);
-
-            byte[] padded = new byte[16];
-            Array.Copy(buffer, 0, padded, 16 - buffer.Length, buffer.Length);
-            return WriteFromBuffer(writer, padded);
+            byte[] buffer = value.ToByteArrayBigEndian();
+            return WriteFromBuffer(writer, buffer);
         }
 
         /// <summary>
         /// Write a UInt128
         /// </summary>
+        /// <remarks>Writes in little-endian format</remarks>
         public static bool Write(this BinaryWriter writer, UInt128 value)
         {
-            byte[] buffer = ((BigInteger)value).ToByteArray();
-
-            byte[] padded = new byte[16];
-            Array.Copy(buffer, 0, padded, 16 - buffer.Length, buffer.Length);
-            return WriteFromBuffer(writer, padded);
+            byte[] buffer = value.ToByteArrayLittleEndian();
+            return WriteFromBuffer(writer, buffer);
         }
 
         /// <summary>
@@ -352,12 +341,8 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, UInt128 value)
         {
-            byte[] buffer = ((BigInteger)value).ToByteArray();
-            Array.Reverse(buffer);
-
-            byte[] padded = new byte[16];
-            Array.Copy(buffer, 0, padded, 16 - buffer.Length, buffer.Length);
-            return WriteFromBuffer(writer, padded);
+            byte[] buffer = value.ToByteArrayBigEndian();
+            return WriteFromBuffer(writer, buffer);
         }
 #endif
 

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-#if NET7_0_OR_GREATER
-using System.Numerics;
-#endif
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -670,8 +667,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static Int128 ReadInt128(this Stream stream)
         {
-            byte[] buffer = ReadExactlyToBuffer(stream, 16);
-            return (Int128)new BigInteger(buffer);
+            if (BitConverter.IsLittleEndian)
+                return stream.ReadInt128LittleEndian();
+            else
+                return stream.ReadInt128BigEndian();
         }
 
         /// <summary>
@@ -681,8 +680,17 @@ namespace SabreTools.IO.Extensions
         public static Int128 ReadInt128BigEndian(this Stream stream)
         {
             byte[] buffer = ReadExactlyToBuffer(stream, 16);
-            Array.Reverse(buffer);
-            return (Int128)new BigInteger(buffer);
+            return buffer.ToInt128BigEndian(0);
+        }
+
+        /// <summary>
+        /// Read an Int128 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static Int128 ReadInt128LittleEndian(this Stream stream)
+        {
+            byte[] buffer = ReadExactlyToBuffer(stream, 16);
+            return buffer.ToInt128LittleEndian(0);
         }
 
         /// <summary>
@@ -691,8 +699,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static UInt128 ReadUInt128(this Stream stream)
         {
-            byte[] buffer = ReadExactlyToBuffer(stream, 16);
-            return (UInt128)new BigInteger(buffer);
+            if (BitConverter.IsLittleEndian)
+                return stream.ReadUInt128LittleEndian();
+            else
+                return stream.ReadUInt128BigEndian();
         }
 
         /// <summary>
@@ -702,8 +712,17 @@ namespace SabreTools.IO.Extensions
         public static UInt128 ReadUInt128BigEndian(this Stream stream)
         {
             byte[] buffer = ReadExactlyToBuffer(stream, 16);
-            Array.Reverse(buffer);
-            return (UInt128)new BigInteger(buffer);
+            return buffer.ToUInt128BigEndian(0);
+        }
+
+        /// <summary>
+        /// Read a UInt128 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static UInt128 ReadUInt128LittleEndian(this Stream stream)
+        {
+            byte[] buffer = ReadExactlyToBuffer(stream, 16);
+            return buffer.ToUInt128LittleEndian(0);
         }
 #endif
 
@@ -1930,9 +1949,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Only works properly on seekable streams</remarks>
         public static Int128 PeekInt128(this Stream stream)
         {
-            Int128 value = stream.ReadInt128();
-            stream.SeekIfPossible(-16, SeekOrigin.Current);
-            return value;
+            if (BitConverter.IsLittleEndian)
+                return stream.PeekInt128LittleEndian();
+            else
+                return stream.PeekInt128BigEndian();
         }
 
         /// <summary>
@@ -1948,15 +1968,28 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Peek an Int128 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static Int128 PeekInt128LittleEndian(this Stream stream)
+        {
+            Int128 value = stream.ReadInt128LittleEndian();
+            stream.SeekIfPossible(-16, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
         /// Peek a UInt128 from the stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
         /// <remarks>Only works properly on seekable streams</remarks>
         public static UInt128 PeekUInt128(this Stream stream)
         {
-            UInt128 value = stream.ReadUInt128();
-            stream.SeekIfPossible(-16, SeekOrigin.Current);
-            return value;
+            if (BitConverter.IsLittleEndian)
+                return stream.PeekUInt128LittleEndian();
+            else
+                return stream.PeekUInt128BigEndian();
         }
 
         /// <summary>
@@ -1967,6 +2000,18 @@ namespace SabreTools.IO.Extensions
         public static UInt128 PeekUInt128BigEndian(this Stream stream)
         {
             UInt128 value = stream.ReadUInt128BigEndian();
+            stream.SeekIfPossible(-16, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt128 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static UInt128 PeekUInt128LittleEndian(this Stream stream)
+        {
+            UInt128 value = stream.ReadUInt128LittleEndian();
             stream.SeekIfPossible(-16, SeekOrigin.Current);
             return value;
         }
@@ -2858,14 +2903,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static bool TryReadInt128(this Stream stream, out Int128 value)
         {
-            if (stream.Position > stream.Length - 16)
-            {
-                value = default;
-                return false;
-            }
-
-            value = stream.ReadInt128();
-            return true;
+            if (BitConverter.IsLittleEndian)
+                return stream.TryReadInt128LittleEndian(out value);
+            else
+                return stream.TryReadInt128BigEndian(out value);
         }
 
         /// <summary>
@@ -2885,10 +2926,10 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a UInt128 from the stream
+        /// Read an Int128 from the stream
         /// </summary>
-        /// <remarks>Reads in machine native format</remarks>
-        public static bool TryReadUInt128(this Stream stream, out UInt128 value)
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadInt128LittleEndian(this Stream stream, out Int128 value)
         {
             if (stream.Position > stream.Length - 16)
             {
@@ -2896,8 +2937,20 @@ namespace SabreTools.IO.Extensions
                 return false;
             }
 
-            value = stream.ReadUInt128();
+            value = stream.ReadInt128LittleEndian();
             return true;
+        }
+
+        /// <summary>
+        /// Read a UInt128 from the stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt128(this Stream stream, out UInt128 value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return stream.TryReadUInt128LittleEndian(out value);
+            else
+                return stream.TryReadUInt128BigEndian(out value);
         }
 
         /// <summary>
@@ -2913,6 +2966,22 @@ namespace SabreTools.IO.Extensions
             }
 
             value = stream.ReadUInt128BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt128 from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadUInt128LittleEndian(this Stream stream, out UInt128 value)
+        {
+            if (stream.Position > stream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadUInt128LittleEndian();
             return true;
         }
 #endif

@@ -592,6 +592,15 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void ReadInt128LittleEndianTest()
+        {
+            int offset = 0;
+            var expected = (Int128)new BigInteger(_bytes);
+            Int128 read = _bytes.ReadInt128LittleEndian(ref offset);
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
         public void ReadUInt128Test()
         {
             int offset = 0;
@@ -607,6 +616,15 @@ namespace SabreTools.IO.Test.Extensions
             var reversed = Enumerable.Reverse(_bytes).ToArray();
             var expected = (UInt128)new BigInteger(reversed);
             UInt128 read = _bytes.ReadUInt128BigEndian(ref offset);
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadUInt128LittleEndianTest()
+        {
+            int offset = 0;
+            var expected = (UInt128)new BigInteger(_bytes);
+            UInt128 read = _bytes.ReadUInt128LittleEndian(ref offset);
             Assert.Equal(expected, read);
         }
 
@@ -1520,6 +1538,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void PeekInt128LittleEndianTest()
+        {
+            int offset = 0;
+            var expected = (Int128)new BigInteger(_bytes);
+            Int128 read = _bytes.PeekInt128LittleEndian(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
         public void PeekUInt128Test()
         {
             int offset = 0;
@@ -1536,6 +1564,16 @@ namespace SabreTools.IO.Test.Extensions
             var reversed = Enumerable.Reverse(_bytes).ToArray();
             var expected = (UInt128)new BigInteger(reversed);
             UInt128 read = _bytes.PeekUInt128BigEndian(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekUInt128LittleEndianTest()
+        {
+            int offset = 0;
+            var expected = (UInt128)new BigInteger(_bytes);
+            UInt128 read = _bytes.PeekUInt128LittleEndian(ref offset);
             Assert.Equal(expected, read);
             Assert.Equal(0, offset);
         }
@@ -2159,6 +2197,15 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void TryReadInt128LittleEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadInt128LittleEndian(ref offset, out Int128 read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
         public void TryReadUInt128Test()
         {
             int offset = 0;
@@ -2172,6 +2219,15 @@ namespace SabreTools.IO.Test.Extensions
         {
             int offset = 0;
             bool actual = Array.Empty<byte>().TryReadUInt128BigEndian(ref offset, out UInt128 read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt128LittleEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadUInt128LittleEndian(ref offset, out UInt128 read);
             Assert.False(actual);
             Assert.Equal(default, read);
         }

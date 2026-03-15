@@ -4,7 +4,6 @@ namespace SabreTools.IO.Extensions
     /// Extensions for numeric conversion
     /// </summary>
     /// TODO: Add fractional types (Half, Single, Double, Decimal)
-    /// TODO: Add U/Int128
     /// TODO: Add GUID
     public static class NumericExtensions
     {
@@ -261,6 +260,104 @@ namespace SabreTools.IO.Extensions
                 | ((ulong)value[offset + 6] << 48)
                 | ((ulong)value[offset + 7] << 56);
         }
+
+#if NET7_0_OR_GREATER
+        /// <summary>
+        /// Convert a byte array at an offset to an Int128
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static System.Int128 ToInt128BigEndian(this byte[] value, int offset)
+        {
+            return value[offset + 15]
+                | ((System.Int128)value[offset + 14] << 8)
+                | ((System.Int128)value[offset + 13] << 16)
+                | ((System.Int128)value[offset + 12] << 24)
+                | ((System.Int128)value[offset + 11] << 32)
+                | ((System.Int128)value[offset + 10] << 40)
+                | ((System.Int128)value[offset + 9] << 48)
+                | ((System.Int128)value[offset + 8] << 56)
+                | ((System.Int128)value[offset + 7] << 64)
+                | ((System.Int128)value[offset + 6] << 72)
+                | ((System.Int128)value[offset + 5] << 80)
+                | ((System.Int128)value[offset + 4] << 88)
+                | ((System.Int128)value[offset + 3] << 96)
+                | ((System.Int128)value[offset + 2] << 104)
+                | ((System.Int128)value[offset + 1] << 112)
+                | ((System.Int128)value[offset + 0] << 120);
+        }
+
+        /// <summary>
+        /// Convert a byte array at an offset to an Int128
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static System.Int128 ToInt128LittleEndian(this byte[] value, int offset)
+        {
+            return value[offset + 0]
+                | ((System.Int128)value[offset + 1] << 8)
+                | ((System.Int128)value[offset + 2] << 16)
+                | ((System.Int128)value[offset + 3] << 24)
+                | ((System.Int128)value[offset + 4] << 32)
+                | ((System.Int128)value[offset + 5] << 40)
+                | ((System.Int128)value[offset + 6] << 48)
+                | ((System.Int128)value[offset + 7] << 56)
+                | ((System.Int128)value[offset + 8] << 64)
+                | ((System.Int128)value[offset + 9] << 72)
+                | ((System.Int128)value[offset + 10] << 80)
+                | ((System.Int128)value[offset + 11] << 88)
+                | ((System.Int128)value[offset + 12] << 96)
+                | ((System.Int128)value[offset + 13] << 104)
+                | ((System.Int128)value[offset + 14] << 112)
+                | ((System.Int128)value[offset + 15] << 120);
+        }
+
+        /// <summary>
+        /// Convert a byte array at an offset to a UInt128
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static System.UInt128 ToUInt128BigEndian(this byte[] value, int offset)
+        {
+            return value[offset + 15]
+                | ((System.UInt128)value[offset + 14] << 8)
+                | ((System.UInt128)value[offset + 13] << 16)
+                | ((System.UInt128)value[offset + 12] << 24)
+                | ((System.UInt128)value[offset + 11] << 32)
+                | ((System.UInt128)value[offset + 10] << 40)
+                | ((System.UInt128)value[offset + 9] << 48)
+                | ((System.UInt128)value[offset + 8] << 56)
+                | ((System.UInt128)value[offset + 7] << 64)
+                | ((System.UInt128)value[offset + 6] << 72)
+                | ((System.UInt128)value[offset + 5] << 80)
+                | ((System.UInt128)value[offset + 4] << 88)
+                | ((System.UInt128)value[offset + 3] << 96)
+                | ((System.UInt128)value[offset + 2] << 104)
+                | ((System.UInt128)value[offset + 1] << 112)
+                | ((System.UInt128)value[offset + 0] << 120);
+        }
+
+        /// <summary>
+        /// Convert a byte array at an offset to a UInt128
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static System.UInt128 ToUInt128LittleEndian(this byte[] value, int offset)
+        {
+            return value[offset + 0]
+                | ((System.UInt128)value[offset + 1] << 8)
+                | ((System.UInt128)value[offset + 2] << 16)
+                | ((System.UInt128)value[offset + 3] << 24)
+                | ((System.UInt128)value[offset + 4] << 32)
+                | ((System.UInt128)value[offset + 5] << 40)
+                | ((System.UInt128)value[offset + 6] << 48)
+                | ((System.UInt128)value[offset + 7] << 56)
+                | ((System.UInt128)value[offset + 8] << 64)
+                | ((System.UInt128)value[offset + 9] << 72)
+                | ((System.UInt128)value[offset + 10] << 80)
+                | ((System.UInt128)value[offset + 11] << 88)
+                | ((System.UInt128)value[offset + 12] << 96)
+                | ((System.UInt128)value[offset + 13] << 104)
+                | ((System.UInt128)value[offset + 14] << 112)
+                | ((System.UInt128)value[offset + 15] << 120);
+        }
+#endif
 
         #endregion
 
@@ -618,6 +715,124 @@ namespace SabreTools.IO.Extensions
             return output;
         }
 
-        #endregion
+#if NET7_0_OR_GREATER
+        /// <summary>
+        /// Convert an Int64 to a byte array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static byte[] ToByteArrayBigEndian(this System.Int128 value)
+        {
+            byte[] output =
+            [
+                (byte)((value >> 120) & 0xFF),
+                (byte)((value >> 112) & 0xFF),
+                (byte)((value >> 104) & 0xFF),
+                (byte)((value >> 96) & 0xFF),
+                (byte)((value >> 88) & 0xFF),
+                (byte)((value >> 80) & 0xFF),
+                (byte)((value >> 72) & 0xFF),
+                (byte)((value >> 64) & 0xFF),
+                (byte)((value >> 56) & 0xFF),
+                (byte)((value >> 48) & 0xFF),
+                (byte)((value >> 40) & 0xFF),
+                (byte)((value >> 32) & 0xFF),
+                (byte)((value >> 24) & 0xFF),
+                (byte)((value >> 16) & 0xFF),
+                (byte)((value >> 8) & 0xFF),
+                (byte)(value & 0xFF),
+            ];
+
+            return output;
+        }
+
+        /// <summary>
+        /// Convert an Int64 to a byte array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static byte[] ToByteArrayLittleEndian(this System.Int128 value)
+        {
+            byte[] output =
+            [
+                (byte)(value & 0xFF),
+                (byte)((value >> 8) & 0xFF),
+                (byte)((value >> 16) & 0xFF),
+                (byte)((value >> 24) & 0xFF),
+                (byte)((value >> 32) & 0xFF),
+                (byte)((value >> 40) & 0xFF),
+                (byte)((value >> 48) & 0xFF),
+                (byte)((value >> 56) & 0xFF),
+                (byte)((value >> 64) & 0xFF),
+                (byte)((value >> 72) & 0xFF),
+                (byte)((value >> 80) & 0xFF),
+                (byte)((value >> 88) & 0xFF),
+                (byte)((value >> 96) & 0xFF),
+                (byte)((value >> 104) & 0xFF),
+                (byte)((value >> 112) & 0xFF),
+                (byte)((value >> 120) & 0xFF),
+            ];
+
+            return output;
+        }
+
+        /// <summary>
+        /// Convert a UInt64 to a byte array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static byte[] ToByteArrayBigEndian(this System.UInt128 value)
+        {
+            byte[] output =
+            [
+                (byte)((value >> 120) & 0xFF),
+                (byte)((value >> 112) & 0xFF),
+                (byte)((value >> 104) & 0xFF),
+                (byte)((value >> 96) & 0xFF),
+                (byte)((value >> 88) & 0xFF),
+                (byte)((value >> 80) & 0xFF),
+                (byte)((value >> 72) & 0xFF),
+                (byte)((value >> 64) & 0xFF),
+                (byte)((value >> 56) & 0xFF),
+                (byte)((value >> 48) & 0xFF),
+                (byte)((value >> 40) & 0xFF),
+                (byte)((value >> 32) & 0xFF),
+                (byte)((value >> 24) & 0xFF),
+                (byte)((value >> 16) & 0xFF),
+                (byte)((value >> 8) & 0xFF),
+                (byte)(value & 0xFF),
+            ];
+
+            return output;
+        }
+
+        /// <summary>
+        /// Convert a UInt64 to a byte array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static byte[] ToByteArrayLittleEndian(this System.UInt128 value)
+        {
+            byte[] output =
+            [
+                (byte)(value & 0xFF),
+                (byte)((value >> 8) & 0xFF),
+                (byte)((value >> 16) & 0xFF),
+                (byte)((value >> 24) & 0xFF),
+                (byte)((value >> 32) & 0xFF),
+                (byte)((value >> 40) & 0xFF),
+                (byte)((value >> 48) & 0xFF),
+                (byte)((value >> 56) & 0xFF),
+                (byte)((value >> 64) & 0xFF),
+                (byte)((value >> 72) & 0xFF),
+                (byte)((value >> 80) & 0xFF),
+                (byte)((value >> 88) & 0xFF),
+                (byte)((value >> 96) & 0xFF),
+                (byte)((value >> 104) & 0xFF),
+                (byte)((value >> 112) & 0xFF),
+                (byte)((value >> 120) & 0xFF),
+            ];
+
+            return output;
+        }
+#endif
+
+#endregion
     }
 }

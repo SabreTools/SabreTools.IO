@@ -1,7 +1,4 @@
 using System;
-#if NET7_0_OR_GREATER
-using System.Numerics;
-#endif
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -490,13 +487,11 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write an Int128 and increment the pointer to an array
         /// </summary>
+        /// <remarks>Writes in little-endian format</remarks>
         public static bool Write(this byte[] content, ref int offset, Int128 value)
         {
-            byte[] buffer = ((BigInteger)value).ToByteArray();
-
-            byte[] padded = new byte[16];
-            Array.Copy(buffer, 0, padded, 16 - buffer.Length, buffer.Length);
-            return WriteFromBuffer(content, ref offset, padded);
+            byte[] buffer = value.ToByteArrayLittleEndian();
+            return WriteFromBuffer(content, ref offset, buffer);
         }
 
         /// <summary>
@@ -505,24 +500,18 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this byte[] content, ref int offset, Int128 value)
         {
-            byte[] buffer = ((BigInteger)value).ToByteArray();
-            Array.Reverse(buffer);
-
-            byte[] padded = new byte[16];
-            Array.Copy(buffer, 0, padded, 16 - buffer.Length, buffer.Length);
-            return WriteFromBuffer(content, ref offset, padded);
+            byte[] buffer = value.ToByteArrayBigEndian();
+            return WriteFromBuffer(content, ref offset, buffer);
         }
 
         /// <summary>
         /// Write a UInt128 and increment the pointer to an array
         /// </summary>
+        /// <remarks>Writes in little-endian format</remarks>
         public static bool Write(this byte[] content, ref int offset, UInt128 value)
         {
-            byte[] buffer = ((BigInteger)value).ToByteArray();
-
-            byte[] padded = new byte[16];
-            Array.Copy(buffer, 0, padded, 16 - buffer.Length, buffer.Length);
-            return WriteFromBuffer(content, ref offset, padded);
+            byte[] buffer = value.ToByteArrayLittleEndian();
+            return WriteFromBuffer(content, ref offset, buffer);
         }
 
         /// <summary>
@@ -531,12 +520,8 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this byte[] content, ref int offset, UInt128 value)
         {
-            byte[] buffer = ((BigInteger)value).ToByteArray();
-            Array.Reverse(buffer);
-
-            byte[] padded = new byte[16];
-            Array.Copy(buffer, 0, padded, 16 - buffer.Length, buffer.Length);
-            return WriteFromBuffer(content, ref offset, padded);
+            byte[] buffer = value.ToByteArrayBigEndian();
+            return WriteFromBuffer(content, ref offset, buffer);
         }
 #endif
 

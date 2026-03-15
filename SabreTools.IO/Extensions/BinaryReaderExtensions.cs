@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-#if NET7_0_OR_GREATER
-using System.Numerics;
-#endif
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -461,15 +458,17 @@ namespace SabreTools.IO.Extensions
             return new Guid(buffer);
         }
 
-        // TODO: Determine if the reverse reads are doing what are expected
 #if NET7_0_OR_GREATER
         /// <summary>
         /// Read an Int128 from the underlying stream
         /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static Int128 ReadInt128(this BinaryReader reader)
         {
-            byte[] buffer = reader.ReadBytes(16);
-            return (Int128)new BigInteger(buffer);
+            if (BitConverter.IsLittleEndian)
+                return reader.ReadInt128LittleEndian();
+            else
+                return reader.ReadInt128BigEndian();
         }
 
         /// <summary>
@@ -479,17 +478,29 @@ namespace SabreTools.IO.Extensions
         public static Int128 ReadInt128BigEndian(this BinaryReader reader)
         {
             byte[] buffer = reader.ReadBytes(16);
-            Array.Reverse(buffer);
-            return (Int128)new BigInteger(buffer);
+            return buffer.ToInt128BigEndian(0);
+        }
+
+        /// <summary>
+        /// Read an Int128 from the underlying stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static Int128 ReadInt128LittleEndian(this BinaryReader reader)
+        {
+            byte[] buffer = reader.ReadBytes(16);
+            return buffer.ToInt128LittleEndian(0);
         }
 
         /// <summary>
         /// Read a UInt128 from the underlying stream
         /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
         public static UInt128 ReadUInt128(this BinaryReader reader)
         {
-            byte[] buffer = reader.ReadBytes(16);
-            return (UInt128)new BigInteger(buffer);
+            if (BitConverter.IsLittleEndian)
+                return reader.ReadUInt128LittleEndian();
+            else
+                return reader.ReadUInt128BigEndian();
         }
 
         /// <summary>
@@ -499,8 +510,17 @@ namespace SabreTools.IO.Extensions
         public static UInt128 ReadUInt128BigEndian(this BinaryReader reader)
         {
             byte[] buffer = reader.ReadBytes(16);
-            Array.Reverse(buffer);
-            return (UInt128)new BigInteger(buffer);
+            return buffer.ToUInt128BigEndian(0);
+        }
+
+        /// <summary>
+        /// Read a UInt128 from the underlying stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static UInt128 ReadUInt128LittleEndian(this BinaryReader reader)
+        {
+            byte[] buffer = reader.ReadBytes(16);
+            return buffer.ToUInt128LittleEndian(0);
         }
 #endif
 
@@ -1677,9 +1697,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Only works properly on seekable streams</remarks>
         public static Int128 PeekInt128(this BinaryReader reader)
         {
-            Int128 value = reader.ReadInt128();
-            reader.BaseStream.SeekIfPossible(-16, SeekOrigin.Current);
-            return value;
+            if (BitConverter.IsLittleEndian)
+                return reader.PeekInt128LittleEndian();
+            else
+                return reader.PeekInt128BigEndian();
         }
 
         /// <summary>
@@ -1695,15 +1716,28 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Peek an Int128 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static Int128 PeekInt128LittleEndian(this BinaryReader reader)
+        {
+            Int128 value = reader.ReadInt128LittleEndian();
+            reader.BaseStream.SeekIfPossible(-16, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
         /// Peek a UInt128 from the base stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
         /// <remarks>Only works properly on seekable streams</remarks>
         public static UInt128 PeekUInt128(this BinaryReader reader)
         {
-            UInt128 value = reader.ReadUInt128();
-            reader.BaseStream.SeekIfPossible(-16, SeekOrigin.Current);
-            return value;
+            if (BitConverter.IsLittleEndian)
+                return reader.PeekUInt128LittleEndian();
+            else
+                return reader.PeekUInt128BigEndian();
         }
 
         /// <summary>
@@ -1714,6 +1748,18 @@ namespace SabreTools.IO.Extensions
         public static UInt128 PeekUInt128BigEndian(this BinaryReader reader)
         {
             UInt128 value = reader.ReadUInt128BigEndian();
+            reader.BaseStream.SeekIfPossible(-16, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a UInt128 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static UInt128 PeekUInt128LittleEndian(this BinaryReader reader)
+        {
+            UInt128 value = reader.ReadUInt128LittleEndian();
             reader.BaseStream.SeekIfPossible(-16, SeekOrigin.Current);
             return value;
         }
@@ -2605,14 +2651,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static bool TryReadInt128(this BinaryReader reader, out Int128 value)
         {
-            if (reader.BaseStream.Position > reader.BaseStream.Length - 16)
-            {
-                value = default;
-                return false;
-            }
-
-            value = reader.ReadInt128();
-            return true;
+            if (BitConverter.IsLittleEndian)
+                return reader.TryReadInt128LittleEndian(out value);
+            else
+                return reader.TryReadInt128BigEndian(out value);
         }
 
         /// <summary>
@@ -2632,10 +2674,10 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a UInt128 from the base stream
+        /// Read an Int128 from the base stream
         /// </summary>
-        /// <remarks>Reads in machine native format</remarks>
-        public static bool TryReadUInt128(this BinaryReader reader, out UInt128 value)
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadInt128LittleEndian(this BinaryReader reader, out Int128 value)
         {
             if (reader.BaseStream.Position > reader.BaseStream.Length - 16)
             {
@@ -2643,8 +2685,20 @@ namespace SabreTools.IO.Extensions
                 return false;
             }
 
-            value = reader.ReadUInt128();
+            value = reader.ReadInt128LittleEndian();
             return true;
+        }
+
+        /// <summary>
+        /// Read a UInt128 from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadUInt128(this BinaryReader reader, out UInt128 value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.TryReadUInt128LittleEndian(out value);
+            else
+                return reader.TryReadUInt128BigEndian(out value);
         }
 
         /// <summary>
@@ -2660,6 +2714,22 @@ namespace SabreTools.IO.Extensions
             }
 
             value = reader.ReadUInt128BigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a UInt128 from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadUInt128LittleEndian(this BinaryReader reader, out UInt128 value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadUInt128LittleEndian();
             return true;
         }
 #endif

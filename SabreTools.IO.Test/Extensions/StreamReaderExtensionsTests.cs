@@ -596,6 +596,15 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void ReadInt128LittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var expected = (Int128)new BigInteger(_bytes);
+            Int128 read = stream.ReadInt128LittleEndian();
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
         public void ReadUInt128Test()
         {
             var stream = new MemoryStream(_bytes);
@@ -611,6 +620,15 @@ namespace SabreTools.IO.Test.Extensions
             var reversed = Enumerable.Reverse(_bytes).ToArray();
             var expected = (UInt128)new BigInteger(reversed);
             UInt128 read = stream.ReadUInt128BigEndian();
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadUInt128LittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var expected = (UInt128)new BigInteger(_bytes);
+            UInt128 read = stream.ReadUInt128LittleEndian();
             Assert.Equal(expected, read);
         }
 
@@ -1516,6 +1534,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void PeekInt128LittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var expected = (Int128)new BigInteger(_bytes);
+            Int128 read = stream.PeekInt128LittleEndian();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Fact]
         public void PeekUInt128Test()
         {
             var stream = new MemoryStream(_bytes);
@@ -1532,6 +1560,16 @@ namespace SabreTools.IO.Test.Extensions
             var reversed = Enumerable.Reverse(_bytes).ToArray();
             var expected = (UInt128)new BigInteger(reversed);
             UInt128 read = stream.PeekUInt128BigEndian();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Fact]
+        public void PeekUInt128LittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var expected = (UInt128)new BigInteger(_bytes);
+            UInt128 read = stream.PeekUInt128LittleEndian();
             Assert.Equal(expected, read);
             Assert.Equal(0, stream.Position);
         }
@@ -2147,6 +2185,15 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void TryReadInt128LittleEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            bool actual = stream.TryReadInt128LittleEndian(out Int128 read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
         public void TryReadUInt128Test()
         {
             var stream = new MemoryStream([]);
@@ -2160,6 +2207,15 @@ namespace SabreTools.IO.Test.Extensions
         {
             var stream = new MemoryStream([]);
             bool actual = stream.TryReadUInt128BigEndian(out UInt128 read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadUInt128LittleEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            bool actual = stream.TryReadUInt128LittleEndian(out UInt128 read);
             Assert.False(actual);
             Assert.Equal(default, read);
         }
