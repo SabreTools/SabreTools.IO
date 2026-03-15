@@ -94,7 +94,7 @@ namespace SabreTools.IO.Extensions
         public static short ReadInt16BigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 2);
-            return buffer.ToInt16BigEndian(0);
+            return buffer.ToInt16BigEndian();
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace SabreTools.IO.Extensions
         public static short ReadInt16LittleEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 2);
-            return buffer.ToInt16LittleEndian(0);
+            return buffer.ToInt16LittleEndian();
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace SabreTools.IO.Extensions
         public static ushort ReadUInt16BigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 2);
-            return buffer.ToUInt16BigEndian(0);
+            return buffer.ToUInt16BigEndian();
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace SabreTools.IO.Extensions
         public static ushort ReadUInt16LittleEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 2);
-            return buffer.ToUInt16LittleEndian(0);
+            return buffer.ToUInt16LittleEndian();
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace SabreTools.IO.Extensions
         public static int ReadInt24BigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 3);
-            return buffer.ToInt24BigEndian(0);
+            return buffer.ToInt24BigEndian();
         }
 
         /// <summary>
@@ -242,7 +242,7 @@ namespace SabreTools.IO.Extensions
         public static int ReadInt24LittleEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 3);
-            return buffer.ToInt24LittleEndian(0);
+            return buffer.ToInt24LittleEndian();
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace SabreTools.IO.Extensions
         public static uint ReadUInt24BigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 3);
-            return buffer.ToUInt24BigEndian(0);
+            return buffer.ToUInt24BigEndian();
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace SabreTools.IO.Extensions
         public static uint ReadUInt24LittleEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 3);
-            return buffer.ToUInt24LittleEndian(0);
+            return buffer.ToUInt24LittleEndian();
         }
 
         /// <summary>
@@ -296,7 +296,7 @@ namespace SabreTools.IO.Extensions
         public static int ReadInt32BigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 4);
-            return buffer.ToInt32BigEndian(0);
+            return buffer.ToInt32BigEndian();
         }
 
         /// <summary>
@@ -306,7 +306,7 @@ namespace SabreTools.IO.Extensions
         public static int ReadInt32LittleEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 4);
-            return buffer.ToInt32LittleEndian(0);
+            return buffer.ToInt32LittleEndian();
         }
 
         /// <summary>
@@ -339,7 +339,7 @@ namespace SabreTools.IO.Extensions
         public static uint ReadUInt32BigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 4);
-            return buffer.ToUInt32BigEndian(0);
+            return buffer.ToUInt32BigEndian();
         }
 
         /// <summary>
@@ -349,7 +349,7 @@ namespace SabreTools.IO.Extensions
         public static uint ReadUInt32LittleEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 4);
-            return buffer.ToUInt32LittleEndian(0);
+            return buffer.ToUInt32LittleEndian();
         }
 
         /// <summary>
@@ -431,7 +431,7 @@ namespace SabreTools.IO.Extensions
         public static long ReadInt48BigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 6);
-            return buffer.ToInt48BigEndian(0);
+            return buffer.ToInt48BigEndian();
         }
 
         /// <summary>
@@ -441,7 +441,7 @@ namespace SabreTools.IO.Extensions
         public static long ReadInt48LittleEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 6);
-            return buffer.ToInt48LittleEndian(0);
+            return buffer.ToInt48LittleEndian();
         }
 
         /// <summary>
@@ -463,7 +463,7 @@ namespace SabreTools.IO.Extensions
         public static ulong ReadUInt48BigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 6);
-            return buffer.ToUInt48BigEndian(0);
+            return buffer.ToUInt48BigEndian();
         }
 
         /// <summary>
@@ -473,7 +473,7 @@ namespace SabreTools.IO.Extensions
         public static ulong ReadUInt48LittleEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 6);
-            return buffer.ToUInt48LittleEndian(0);
+            return buffer.ToUInt48LittleEndian();
         }
 
         /// <summary>
@@ -495,7 +495,7 @@ namespace SabreTools.IO.Extensions
         public static long ReadInt64BigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 8);
-            return buffer.ToInt64BigEndian(0);
+            return buffer.ToInt64BigEndian();
         }
 
         /// <summary>
@@ -505,7 +505,7 @@ namespace SabreTools.IO.Extensions
         public static long ReadInt64LittleEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 8);
-            return buffer.ToInt64LittleEndian(0);
+            return buffer.ToInt64LittleEndian();
         }
 
         /// <summary>
@@ -538,7 +538,7 @@ namespace SabreTools.IO.Extensions
         public static ulong ReadUInt64BigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 8);
-            return buffer.ToUInt64BigEndian(0);
+            return buffer.ToUInt64BigEndian();
         }
 
         /// <summary>
@@ -548,7 +548,7 @@ namespace SabreTools.IO.Extensions
         public static ulong ReadUInt64LittleEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 8);
-            return buffer.ToUInt64LittleEndian(0);
+            return buffer.ToUInt64LittleEndian();
         }
 
         /// <summary>
@@ -685,7 +685,7 @@ namespace SabreTools.IO.Extensions
         public static Int128 ReadInt128BigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
-            return buffer.ToInt128BigEndian(0);
+            return buffer.ToInt128BigEndian();
         }
 
         /// <summary>
@@ -695,7 +695,7 @@ namespace SabreTools.IO.Extensions
         public static Int128 ReadInt128LittleEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
-            return buffer.ToInt128LittleEndian(0);
+            return buffer.ToInt128LittleEndian();
         }
 
         /// <summary>
@@ -717,7 +717,7 @@ namespace SabreTools.IO.Extensions
         public static UInt128 ReadUInt128BigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
-            return buffer.ToUInt128BigEndian(0);
+            return buffer.ToUInt128BigEndian();
         }
 
         /// <summary>
@@ -727,7 +727,7 @@ namespace SabreTools.IO.Extensions
         public static UInt128 ReadUInt128LittleEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
-            return buffer.ToUInt128LittleEndian(0);
+            return buffer.ToUInt128LittleEndian();
         }
 #endif
 

@@ -10,6 +10,13 @@ namespace SabreTools.IO.Extensions
         #region From Byte Array
 
         /// <summary>
+        /// Convert a byte array to an Int16
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static short ToInt16BigEndian(this byte[] value)
+            => value.ToInt16BigEndian(0);
+
+        /// <summary>
         /// Convert a byte array at an offset to an Int16
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
@@ -18,6 +25,13 @@ namespace SabreTools.IO.Extensions
             return (short)(value[offset + 1]
                         | (value[offset + 0] << 8));
         }
+
+        /// <summary>
+        /// Convert a byte array to an Int16
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static short ToInt16LittleEndian(this byte[] value)
+            => value.ToInt16LittleEndian(0);
 
         /// <summary>
         /// Convert a byte array at an offset to an Int16
@@ -30,6 +44,13 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Convert a byte array to a UInt16
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static ushort ToUInt16BigEndian(this byte[] value)
+            => value.ToUInt16BigEndian(0);
+
+        /// <summary>
         /// Convert a byte array at an offset to a UInt16
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
@@ -40,6 +61,13 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Convert a byte array to a UInt16
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static ushort ToUInt16LittleEndian(this byte[] value)
+            => value.ToUInt16LittleEndian(0);
+
+        /// <summary>
         /// Convert a byte array at an offset to a UInt16
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
@@ -48,6 +76,13 @@ namespace SabreTools.IO.Extensions
             return (ushort)(value[offset + 0]
                          | (value[offset + 1] << 8));
         }
+
+        /// <summary>
+        /// Convert a byte array to an Int24 encoded as an Int32
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static int ToInt24BigEndian(this byte[] value)
+            => value.ToInt24BigEndian(0);
 
         /// <summary>
         /// Convert a byte array at an offset to an Int24 encoded as an Int32
@@ -61,6 +96,13 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Convert a byte array to an Int24 encoded as an Int32
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static int ToInt24LittleEndian(this byte[] value)
+            => value.ToInt24LittleEndian(0);
+
+        /// <summary>
         /// Convert a byte array at an offset to an Int24 encoded as an Int32
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
@@ -70,6 +112,13 @@ namespace SabreTools.IO.Extensions
                 | (value[offset + 1] << 8)
                 | (value[offset + 2] << 16);
         }
+
+        /// <summary>
+        /// Convert a byte array to a UInt24 encoded as a UInt32
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static uint ToUInt24BigEndian(this byte[] value)
+            => value.ToUInt24BigEndian(0);
 
         /// <summary>
         /// Convert a byte array at an offset to a UInt24 encoded as a UInt32
@@ -83,6 +132,13 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Convert a byte array to a UInt24 encoded as a UInt32
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static uint ToUInt24LittleEndian(this byte[] value)
+            => value.ToUInt24LittleEndian(0);
+
+        /// <summary>
         /// Convert a byte array at an offset to a UInt24 encoded as a UInt32
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
@@ -92,6 +148,13 @@ namespace SabreTools.IO.Extensions
                         | (value[offset + 1] << 8)
                         | (value[offset + 2] << 16));
         }
+
+        /// <summary>
+        /// Convert a byte array to an Int32
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static int ToInt32BigEndian(this byte[] value)
+            => value.ToInt32BigEndian(0);
 
         /// <summary>
         /// Convert a byte array at an offset to an Int32
@@ -106,6 +169,13 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Convert a byte array to an Int32
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static int ToInt32LittleEndian(this byte[] value)
+            => value.ToInt32LittleEndian(0);
+
+        /// <summary>
         /// Convert a byte array at an offset to an Int32
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
@@ -116,6 +186,13 @@ namespace SabreTools.IO.Extensions
                 | (value[offset + 2] << 16)
                 | (value[offset + 3] << 24);
         }
+
+        /// <summary>
+        /// Convert a byte array to a UInt32
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static uint ToUInt32BigEndian(this byte[] value)
+            => value.ToUInt32BigEndian(0);
 
         /// <summary>
         /// Convert a byte array at an offset to a UInt32
@@ -130,6 +207,13 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Convert a byte array to a UInt32
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static uint ToUInt32LittleEndian(this byte[] value)
+            => value.ToUInt32LittleEndian(0);
+
+        /// <summary>
         /// Convert a byte array at an offset to a UInt32
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
@@ -140,6 +224,13 @@ namespace SabreTools.IO.Extensions
                        | (value[offset + 2] << 16)
                        | (value[offset + 3] << 24));
         }
+
+        /// <summary>
+        /// Convert a byte array to an Int48 encoded as an Int64
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static long ToInt48BigEndian(this byte[] value)
+            => value.ToInt48BigEndian(0);
 
         /// <summary>
         /// Convert a byte array at an offset to an Int48 encoded as an Int64
@@ -156,6 +247,13 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Convert a byte array to an Int48 encoded as an Int64
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static long ToInt48LittleEndian(this byte[] value)
+            => value.ToInt48LittleEndian(0);
+
+        /// <summary>
         /// Convert a byte array at an offset to an Int48 encoded as an Int64
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
@@ -168,6 +266,13 @@ namespace SabreTools.IO.Extensions
                 | ((long)value[offset + 4] << 32)
                 | ((long)value[offset + 5] << 40);
         }
+
+        /// <summary>
+        /// Convert a byte array to a UInt48 encoded as a UInt64
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static ulong ToUInt48BigEndian(this byte[] value)
+            => value.ToUInt48BigEndian(0);
 
         /// <summary>
         /// Convert a byte array at an offset to a UInt48 encoded as a UInt64
@@ -184,6 +289,13 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Convert a byte array to a UInt48 encoded as a UInt64
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static ulong ToUInt48LittleEndian(this byte[] value)
+            => value.ToUInt48LittleEndian(0);
+
+        /// <summary>
         /// Convert a byte array at an offset to a UInt48 encoded as a UInt64
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
@@ -196,6 +308,13 @@ namespace SabreTools.IO.Extensions
                 | ((ulong)value[offset + 4] << 32)
                 | ((ulong)value[offset + 5] << 40);
         }
+
+        /// <summary>
+        /// Convert a byte array to an Int64
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static long ToInt64BigEndian(this byte[] value)
+            => value.ToInt64BigEndian(0);
 
         /// <summary>
         /// Convert a byte array at an offset to an Int64
@@ -214,6 +333,13 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Convert a byte array to an Int64
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static long ToInt64LittleEndian(this byte[] value)
+            => value.ToInt64LittleEndian(0);
+
+        /// <summary>
         /// Convert a byte array at an offset to an Int64
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
@@ -228,6 +354,13 @@ namespace SabreTools.IO.Extensions
                 | ((long)value[offset + 6] << 48)
                 | ((long)value[offset + 7] << 56);
         }
+
+        /// <summary>
+        /// Convert a byte array to a UInt64
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static ulong ToUInt64BigEndian(this byte[] value)
+            => value.ToUInt64BigEndian(0);
 
         /// <summary>
         /// Convert a byte array at an offset to a UInt64
@@ -246,6 +379,13 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Convert a byte array to a UInt64
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static ulong ToUInt64LittleEndian(this byte[] value)
+            => value.ToUInt64LittleEndian(0);
+
+        /// <summary>
         /// Convert a byte array at an offset to a UInt64
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
@@ -262,6 +402,13 @@ namespace SabreTools.IO.Extensions
         }
 
 #if NET7_0_OR_GREATER
+        /// <summary>
+        /// Convert a byte array to an Int128
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static System.Int128 ToInt128BigEndian(this byte[] value)
+            => value.ToInt128BigEndian(0);
+
         /// <summary>
         /// Convert a byte array at an offset to an Int128
         /// </summary>
@@ -285,6 +432,13 @@ namespace SabreTools.IO.Extensions
                 | ((System.Int128)value[offset + 1] << 112)
                 | ((System.Int128)value[offset + 0] << 120);
         }
+
+        /// <summary>
+        /// Convert a byte array to an Int128
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static System.Int128 ToInt128LittleEndian(this byte[] value)
+            => value.ToInt128LittleEndian(0);
 
         /// <summary>
         /// Convert a byte array at an offset to an Int128
@@ -311,6 +465,13 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Convert a byte array to a UInt128
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static System.UInt128 ToUInt128BigEndian(this byte[] value)
+            => value.ToUInt128BigEndian(0);
+
+        /// <summary>
         /// Convert a byte array at an offset to a UInt128
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
@@ -333,6 +494,13 @@ namespace SabreTools.IO.Extensions
                 | ((System.UInt128)value[offset + 1] << 112)
                 | ((System.UInt128)value[offset + 0] << 120);
         }
+
+        /// <summary>
+        /// Convert a byte array to a UInt128
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static System.UInt128 ToUInt128LittleEndian(this byte[] value)
+            => value.ToUInt128LittleEndian(0);
 
         /// <summary>
         /// Convert a byte array at an offset to a UInt128
@@ -833,6 +1001,6 @@ namespace SabreTools.IO.Extensions
         }
 #endif
 
-#endregion
+        #endregion
     }
 }
