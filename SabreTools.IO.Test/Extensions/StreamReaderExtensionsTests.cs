@@ -29,6 +29,15 @@ namespace SabreTools.IO.Test.Extensions
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0A, 0x00,
         ];
 
+        /// <summary>
+        /// Test pattern for big-endian GUID created from <see cref="_bytes"/>
+        /// </summary>
+        private static readonly byte[] _guidBigEndianbytes =
+        [
+            0x03, 0x02, 0x01, 0x00, 0x05, 0x04, 0x07, 0x06,
+            0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+        ];
+
         #region Exact Read
 
         [Fact]
@@ -580,8 +589,17 @@ namespace SabreTools.IO.Test.Extensions
         public void ReadGuidBigEndianTest()
         {
             var stream = new MemoryStream(_bytes);
-            var expected = new Guid([.. Enumerable.Reverse(_bytes)]);
+            var expected = new Guid(_guidBigEndianbytes);
             Guid read = stream.ReadGuidBigEndian();
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadGuidLittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var expected = new Guid(_bytes);
+            Guid read = stream.ReadGuidLittleEndian();
             Assert.Equal(expected, read);
         }
 
@@ -1552,8 +1570,18 @@ namespace SabreTools.IO.Test.Extensions
         public void PeekGuidBigEndianTest()
         {
             var stream = new MemoryStream(_bytes);
-            var expected = new Guid([.. Enumerable.Reverse(_bytes)]);
+            var expected = new Guid(_guidBigEndianbytes);
             Guid read = stream.PeekGuidBigEndian();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Fact]
+        public void PeekGuidLittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            var expected = new Guid(_bytes);
+            Guid read = stream.PeekGuidLittleEndian();
             Assert.Equal(expected, read);
             Assert.Equal(0, stream.Position);
         }
@@ -2247,6 +2275,15 @@ namespace SabreTools.IO.Test.Extensions
         {
             var stream = new MemoryStream([]);
             bool actual = stream.TryReadGuidBigEndian(out Guid read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadGuidLittleEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            bool actual = stream.TryReadGuidLittleEndian(out Guid read);
             Assert.False(actual);
             Assert.Equal(default, read);
         }

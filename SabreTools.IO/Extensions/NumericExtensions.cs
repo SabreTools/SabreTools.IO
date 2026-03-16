@@ -6,7 +6,6 @@ namespace SabreTools.IO.Extensions
     /// <summary>
     /// Extensions for numeric conversion
     /// </summary>
-    /// TODO: Add GUID
     public static class NumericExtensions
     {
         #region From Byte Array
@@ -551,6 +550,48 @@ namespace SabreTools.IO.Extensions
             *p = value[7];
 
             return output;
+        }
+
+        /// <summary>
+        /// Convert a byte array to a Guid
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static Guid ToGuidBigEndian(this byte[] value)
+            => value.ToGuidBigEndian(0);
+
+        /// <summary>
+        /// Convert a byte array to a Guid
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static Guid ToGuidBigEndian(this byte[] value, int offset)
+        {
+            int a = value.ReadInt32BigEndian(ref offset);
+            short b = value.ReadInt16BigEndian(ref offset);
+            short c = value.ReadInt16BigEndian(ref offset);
+            byte[] d = value.ReadBytes(ref offset, 8);
+
+            return new Guid(a, b, c, d);
+        }
+
+        /// <summary>
+        /// Convert a byte array to a Guid
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static Guid ToGuidLittleEndian(this byte[] value)
+            => value.ToGuidLittleEndian(0);
+
+        /// <summary>
+        /// Convert a byte array to a Guid
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static Guid ToGuidLittleEndian(this byte[] value, int offset)
+        {
+            int a = value.ReadInt32LittleEndian(ref offset);
+            short b = value.ReadInt16LittleEndian(ref offset);
+            short c = value.ReadInt16LittleEndian(ref offset);
+            byte[] d = value.ReadBytes(ref offset, 8);
+
+            return new Guid(a, b, c, d);
         }
 
 #if NET7_0_OR_GREATER
@@ -1207,6 +1248,66 @@ namespace SabreTools.IO.Extensions
                 output.Reverse();
 
             return [.. output];
+        }
+
+        /// <summary>
+        /// Convert a Guid to a byte array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static byte[] GetBytesBigEndian(this Guid value)
+        {
+            byte[] bytes = value.ToByteArray();
+            if (BitConverter.IsLittleEndian)
+            {
+                int offset = 0;
+
+                int aInt = bytes.ReadInt32LittleEndian(ref offset);
+                byte[] aBytes = aInt.GetBytesBigEndian();
+
+                short bShort = bytes.ReadInt16LittleEndian(ref offset);
+                byte[] bBytes = bShort.GetBytesBigEndian();
+
+                short cShort = bytes.ReadInt16LittleEndian(ref offset);
+                byte[] cBytes = cShort.GetBytesBigEndian();
+
+                byte[] dBytes = bytes.ReadBytes(ref offset, 8);
+
+                return [.. aBytes, .. bBytes, .. cBytes, .. dBytes];
+            }
+            else
+            {
+                return bytes;
+            }
+        }
+
+        /// <summary>
+        /// Convert a Decimal to a byte array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static byte[] GetBytesLittleEndian(this Guid value)
+        {
+            byte[] bytes = value.ToByteArray();
+            if (BitConverter.IsLittleEndian)
+            {
+                return bytes;
+            }
+            else
+            {
+                int offset = 0;
+
+                int aInt = bytes.ReadInt32BigEndian(ref offset);
+                byte[] aBytes = aInt.GetBytesLittleEndian();
+
+                short bShort = bytes.ReadInt16BigEndian(ref offset);
+                byte[] bBytes = bShort.GetBytesLittleEndian();
+
+                short cShort = bytes.ReadInt16BigEndian(ref offset);
+                byte[] cBytes = cShort.GetBytesLittleEndian();
+
+                byte[] dBytes = bytes.ReadBytes(ref offset, 8);
+
+                return [.. aBytes, .. bBytes, .. cBytes, .. dBytes];
+            }
         }
 
 #if NET7_0_OR_GREATER

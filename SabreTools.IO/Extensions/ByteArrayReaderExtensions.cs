@@ -649,8 +649,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static Guid ReadGuid(this byte[] content, ref int offset)
         {
-            byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
-            return new Guid(buffer);
+            if (BitConverter.IsLittleEndian)
+                return content.ReadGuidLittleEndian(ref offset);
+            else
+                return content.ReadGuidBigEndian(ref offset);
         }
 
         /// <summary>
@@ -660,8 +662,17 @@ namespace SabreTools.IO.Extensions
         public static Guid ReadGuidBigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
-            Array.Reverse(buffer);
-            return new Guid(buffer);
+            return buffer.ToGuidBigEndian();
+        }
+
+        /// <summary>
+        /// Read a Guid and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static Guid ReadGuidLittleEndian(this byte[] content, ref int offset)
+        {
+            byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
+            return buffer.ToGuidLittleEndian();
         }
 
 #if NET7_0_OR_GREATER
@@ -1917,9 +1928,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static Guid PeekGuid(this byte[] content, ref int offset)
         {
-            Guid value = content.ReadGuid(ref offset);
-            offset -= 16;
-            return value;
+            if (BitConverter.IsLittleEndian)
+                return content.PeekGuidLittleEndian(ref offset);
+            else
+                return content.PeekGuidBigEndian(ref offset);
         }
 
         /// <summary>
@@ -1929,6 +1941,17 @@ namespace SabreTools.IO.Extensions
         public static Guid PeekGuidBigEndian(this byte[] content, ref int offset)
         {
             Guid value = content.ReadGuidBigEndian(ref offset);
+            offset -= 16;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Guid without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static Guid PeekGuidLittleEndian(this byte[] content, ref int offset)
+        {
+            Guid value = content.ReadGuidLittleEndian(ref offset);
             offset -= 16;
             return value;
         }
@@ -2908,14 +2931,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static bool TryReadGuid(this byte[] content, ref int offset, out Guid value)
         {
-            if (offset > content.Length - 16)
-            {
-                value = default;
-                return false;
-            }
-
-            value = content.ReadGuid(ref offset);
-            return true;
+            if (BitConverter.IsLittleEndian)
+                return content.TryReadGuidLittleEndian(ref offset, out value);
+            else
+                return content.TryReadGuidBigEndian(ref offset, out value);
         }
 
         /// <summary>
@@ -2931,6 +2950,22 @@ namespace SabreTools.IO.Extensions
             }
 
             value = content.ReadGuidBigEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Guid and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadGuidLittleEndian(this byte[] content, ref int offset, out Guid value)
+        {
+            if (offset > content.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadGuidLittleEndian(ref offset);
             return true;
         }
 

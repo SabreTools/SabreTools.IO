@@ -579,10 +579,13 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a Guid
         /// </summary>
+        /// <remarks>Writes in machine native format</remarks>
         public static bool Write(this Stream stream, Guid value)
         {
-            byte[] buffer = value.ToByteArray();
-            return WriteFromBuffer(stream, buffer);
+            if (BitConverter.IsLittleEndian)
+                return stream.WriteLittleEndian(value);
+            else
+                return stream.WriteBigEndian(value);
         }
 
         /// <summary>
@@ -591,8 +594,17 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this Stream stream, Guid value)
         {
-            byte[] buffer = value.ToByteArray();
-            Array.Reverse(buffer);
+            byte[] buffer = value.GetBytesBigEndian();
+            return WriteFromBuffer(stream, buffer);
+        }
+
+        /// <summary>
+        /// Write a Guid
+        /// </summary>
+        /// <remarks>Writes in little-endian format</remarks>
+        public static bool WriteLittleEndian(this Stream stream, Guid value)
+        {
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(stream, buffer);
         }
 

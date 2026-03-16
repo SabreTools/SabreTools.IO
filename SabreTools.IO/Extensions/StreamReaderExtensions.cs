@@ -644,8 +644,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static Guid ReadGuid(this Stream stream)
         {
-            byte[] buffer = ReadExactlyToBuffer(stream, 16);
-            return new Guid(buffer);
+            if (BitConverter.IsLittleEndian)
+                return stream.ReadGuidLittleEndian();
+            else
+                return stream.ReadGuidBigEndian();
         }
 
         /// <summary>
@@ -655,8 +657,17 @@ namespace SabreTools.IO.Extensions
         public static Guid ReadGuidBigEndian(this Stream stream)
         {
             byte[] buffer = ReadExactlyToBuffer(stream, 16);
-            Array.Reverse(buffer);
-            return new Guid(buffer);
+            return buffer.ToGuidBigEndian();
+        }
+
+        /// <summary>
+        /// Read a Guid from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static Guid ReadGuidLittleEndian(this Stream stream)
+        {
+            byte[] buffer = ReadExactlyToBuffer(stream, 16);
+            return buffer.ToGuidLittleEndian();
         }
 
 #if NET7_0_OR_GREATER
@@ -1969,9 +1980,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Only works properly on seekable streams</remarks>
         public static Guid PeekGuid(this Stream stream)
         {
-            Guid value = stream.ReadGuid();
-            stream.SeekIfPossible(-16, SeekOrigin.Current);
-            return value;
+            if (BitConverter.IsLittleEndian)
+                return stream.PeekGuidLittleEndian();
+            else
+                return stream.PeekGuidBigEndian();
         }
 
         /// <summary>
@@ -1982,6 +1994,18 @@ namespace SabreTools.IO.Extensions
         public static Guid PeekGuidBigEndian(this Stream stream)
         {
             Guid value = stream.ReadGuidBigEndian();
+            stream.SeekIfPossible(-16, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Guid from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static Guid PeekGuidLittleEndian(this Stream stream)
+        {
+            Guid value = stream.ReadGuidLittleEndian();
             stream.SeekIfPossible(-16, SeekOrigin.Current);
             return value;
         }
@@ -2955,14 +2979,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static bool TryReadGuid(this Stream stream, out Guid value)
         {
-            if (stream.Position > stream.Length - 16)
-            {
-                value = default;
-                return false;
-            }
-
-            value = stream.ReadGuid();
-            return true;
+            if (BitConverter.IsLittleEndian)
+                return stream.TryReadGuidLittleEndian(out value);
+            else
+                return stream.TryReadGuidBigEndian(out value);
         }
 
         /// <summary>
@@ -2978,6 +2998,22 @@ namespace SabreTools.IO.Extensions
             }
 
             value = stream.ReadGuidBigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Guid from the stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadGuidLittleEndian(this Stream stream, out Guid value)
+        {
+            if (stream.Position > stream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = stream.ReadGuidLittleEndian();
             return true;
         }
 

@@ -28,6 +28,15 @@ namespace SabreTools.IO.Test.Extensions
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0A, 0x00,
         ];
 
+        /// <summary>
+        /// Test pattern for big-endian GUID created from <see cref="_bytes"/>
+        /// </summary>
+        private static readonly byte[] _guidBigEndianbytes =
+        [
+            0x03, 0x02, 0x01, 0x00, 0x05, 0x04, 0x07, 0x06,
+            0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+        ];
+
         [Fact]
         public void WriteByteValueTest()
         {
@@ -605,8 +614,19 @@ namespace SabreTools.IO.Test.Extensions
         {
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
             var bw = new BinaryWriter(stream);
+            byte[] expected = [.. _guidBigEndianbytes.Take(16)];
+            bool write = bw.WriteBigEndian(new Guid(_bytes));
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteGuidLittleEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
             byte[] expected = [.. _bytes.Take(16)];
-            bool write = bw.WriteBigEndian(new Guid([.. Enumerable.Reverse(_bytes)]));
+            bool write = bw.WriteLittleEndian(new Guid(_bytes));
             Assert.True(write);
             ValidateBytes(expected, stream.GetBuffer());
         }

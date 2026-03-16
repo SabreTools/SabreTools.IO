@@ -401,10 +401,13 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a Guid
         /// </summary>
+        /// <remarks>Writes in machine native format</remarks>
         public static bool Write(this BinaryWriter writer, Guid value)
         {
-            byte[] buffer = value.ToByteArray();
-            return WriteFromBuffer(writer, buffer);
+            if (BitConverter.IsLittleEndian)
+                return writer.WriteLittleEndian(value);
+            else
+                return writer.WriteBigEndian(value);
         }
 
         /// <summary>
@@ -413,8 +416,17 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, Guid value)
         {
-            byte[] buffer = value.ToByteArray();
-            Array.Reverse(buffer);
+            byte[] buffer = value.GetBytesBigEndian();
+            return WriteFromBuffer(writer, buffer);
+        }
+
+        /// <summary>
+        /// Write a Guid
+        /// </summary>
+        /// <remarks>Writes in big-endian format</remarks>
+        public static bool WriteLittleEndian(this BinaryWriter writer, Guid value)
+        {
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(writer, buffer);
         }
 

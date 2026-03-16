@@ -28,6 +28,15 @@ namespace SabreTools.IO.Test.Extensions
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0A, 0x00,
         ];
 
+        /// <summary>
+        /// Test pattern for big-endian GUID created from <see cref="_bytes"/>
+        /// </summary>
+        private static readonly byte[] _guidBigEndianbytes =
+        [
+            0x03, 0x02, 0x01, 0x00, 0x05, 0x04, 0x07, 0x06,
+            0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+        ];
+
         #region Exact Read
 
         [Fact]
@@ -576,8 +585,17 @@ namespace SabreTools.IO.Test.Extensions
         public void ReadGuidBigEndianTest()
         {
             int offset = 0;
-            var expected = new Guid([.. Enumerable.Reverse(_bytes)]);
+            var expected = new Guid(_guidBigEndianbytes);
             Guid read = _bytes.ReadGuidBigEndian(ref offset);
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadGuidLittleEndianTest()
+        {
+            int offset = 0;
+            var expected = new Guid(_bytes);
+            Guid read = _bytes.ReadGuidLittleEndian(ref offset);
             Assert.Equal(expected, read);
         }
 
@@ -1556,8 +1574,18 @@ namespace SabreTools.IO.Test.Extensions
         public void PeekGuidBigEndianTest()
         {
             int offset = 0;
-            var expected = new Guid([.. Enumerable.Reverse(_bytes)]);
+            var expected = new Guid(_guidBigEndianbytes);
             Guid read = _bytes.PeekGuidBigEndian(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekGuidLittleEndianTest()
+        {
+            int offset = 0;
+            var expected = new Guid(_bytes);
+            Guid read = _bytes.PeekGuidLittleEndian(ref offset);
             Assert.Equal(expected, read);
             Assert.Equal(0, offset);
         }
@@ -2259,6 +2287,15 @@ namespace SabreTools.IO.Test.Extensions
         {
             int offset = 0;
             bool actual = Array.Empty<byte>().TryReadGuidBigEndian(ref offset, out Guid read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadGuidLittleEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadGuidLittleEndian(ref offset, out Guid read);
             Assert.False(actual);
             Assert.Equal(default, read);
         }

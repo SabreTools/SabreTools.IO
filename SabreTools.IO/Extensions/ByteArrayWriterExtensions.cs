@@ -579,10 +579,13 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a Guid and increment the pointer to an array
         /// </summary>
+        /// <remarks>Writes in machine native format</remarks>
         public static bool Write(this byte[] content, ref int offset, Guid value)
         {
-            byte[] buffer = value.ToByteArray();
-            return WriteFromBuffer(content, ref offset, buffer);
+            if (BitConverter.IsLittleEndian)
+                return content.WriteLittleEndian(ref offset, value);
+            else
+                return content.WriteBigEndian(ref offset, value);
         }
 
         /// <summary>
@@ -591,8 +594,17 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this byte[] content, ref int offset, Guid value)
         {
-            byte[] buffer = value.ToByteArray();
-            Array.Reverse(buffer);
+            byte[] buffer = value.GetBytesBigEndian();
+            return WriteFromBuffer(content, ref offset, buffer);
+        }
+
+        /// <summary>
+        /// Write a Guid and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Writes in little-endian format</remarks>
+        public static bool WriteLittleEndian(this byte[] content, ref int offset, Guid value)
+        {
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(content, ref offset, buffer);
         }
 
