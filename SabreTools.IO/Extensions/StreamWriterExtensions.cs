@@ -11,7 +11,6 @@ namespace SabreTools.IO.Extensions
     /// Extensions for Streams
     /// </summary>
     /// TODO: Handle proper negative values for Int24 and Int48
-    /// TODO: Add machine-dependent writes; move "normal" writes to LittleEndian
     public static class StreamWriterExtensions
     {
         /// <summary>
@@ -85,11 +84,13 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write an Int16
         /// </summary>
-        /// <remarks>Writes in little-endian format</remarks>
+        /// <remarks>Writes in machine native format</remarks>
         public static bool Write(this Stream stream, short value)
         {
-            byte[] buffer = value.ToByteArrayLittleEndian();
-            return WriteFromBuffer(stream, buffer);
+            if (BitConverter.IsLittleEndian)
+                return stream.WriteLittleEndian(value);
+            else
+                return stream.WriteBigEndian(value);
         }
 
         /// <summary>
@@ -103,12 +104,22 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Write an Int16
+        /// </summary>
+        /// <remarks>Writes in little-endian format</remarks>
+        public static bool WriteLittleEndian(this Stream stream, short value)
+        {
+            byte[] buffer = value.ToByteArrayLittleEndian();
+            return WriteFromBuffer(stream, buffer);
+        }
+
+        /// <summary>
         /// Write a Int16
         /// </summary>
         /// <remarks>Writes in both-endian format</remarks>
         public static bool WriteBothEndian(this Stream stream, BothInt16 value)
         {
-            bool actual = stream.Write(value.LittleEndian);
+            bool actual = stream.WriteLittleEndian(value.LittleEndian);
             actual &= stream.WriteBigEndian(value.BigEndian);
             return actual;
         }
@@ -116,11 +127,13 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a UInt16
         /// </summary>
-        /// <remarks>Writes in little-endian format</remarks>
+        /// <remarks>Writes in machine native format</remarks>
         public static bool Write(this Stream stream, ushort value)
         {
-            byte[] buffer = value.ToByteArrayLittleEndian();
-            return WriteFromBuffer(stream, buffer);
+            if (BitConverter.IsLittleEndian)
+                return stream.WriteLittleEndian(value);
+            else
+                return stream.WriteBigEndian(value);
         }
 
         /// <summary>
@@ -136,25 +149,26 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a UInt16
         /// </summary>
+        /// <remarks>Writes in little-endian format</remarks>
+        public static bool WriteLittleEndian(this Stream stream, ushort value)
+        {
+            byte[] buffer = value.ToByteArrayLittleEndian();
+            return WriteFromBuffer(stream, buffer);
+        }
+
+        /// <summary>
+        /// Write a UInt16
+        /// </summary>
         /// <remarks>Writes in both-endian format</remarks>
         public static bool WriteBothEndian(this Stream stream, BothUInt16 value)
         {
-            bool actual = stream.Write(value.LittleEndian);
+            bool actual = stream.WriteLittleEndian(value.LittleEndian);
             actual &= stream.WriteBigEndian(value.BigEndian);
             return actual;
         }
 
         // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
 #if NET6_0_OR_GREATER
-        /// <summary>
-        /// Write a Half
-        /// </summary>
-        public static bool Write(this Stream stream, Half value)
-        {
-            byte[] buffer = BitConverter.GetBytes(value);
-            return WriteFromBuffer(stream, buffer);
-        }
-
         /// <summary>
         /// Write a Half
         /// </summary>
@@ -165,17 +179,29 @@ namespace SabreTools.IO.Extensions
             Array.Reverse(buffer);
             return WriteFromBuffer(stream, buffer);
         }
+
+        /// <summary>
+        /// Write a Half
+        /// </summary>
+        /// <remarks>Writes in little-endian format</remarks>
+        public static bool WriteLittleEndian(this Stream stream, Half value)
+        {
+            byte[] buffer = BitConverter.GetBytes(value);
+            return WriteFromBuffer(stream, buffer);
+        }
 #endif
 
         /// <summary>
         /// Write an Int32 as an Int24
         /// </summary>
-        /// <remarks>Writes in little-endian format</remarks>
+        /// <remarks>Writes in machine native format</remarks>
         /// <remarks>Throws away top byte</remarks>
         public static bool WriteAsInt24(this Stream stream, int value)
         {
-            byte[] buffer = value.ToByteArrayAsInt24LittleEndian();
-            return WriteFromBuffer(stream, buffer);
+            if (BitConverter.IsLittleEndian)
+                return stream.WriteAsInt24LittleEndian(value);
+            else
+                return stream.WriteAsInt24BigEndian(value);
         }
 
         /// <summary>
@@ -190,14 +216,27 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Write a UInt32 as a UInt24
+        /// Write an Int32 as an Int24
         /// </summary>
         /// <remarks>Writes in little-endian format</remarks>
         /// <remarks>Throws away top byte</remarks>
+        public static bool WriteAsInt24LittleEndian(this Stream stream, int value)
+        {
+            byte[] buffer = value.ToByteArrayAsInt24LittleEndian();
+            return WriteFromBuffer(stream, buffer);
+        }
+
+        /// <summary>
+        /// Write a UInt32 as a UInt24
+        /// </summary>
+        /// <remarks>Writes in machine native format</remarks>
+        /// <remarks>Throws away top byte</remarks>
         public static bool WriteAsUInt24(this Stream stream, uint value)
         {
-            byte[] buffer = value.ToByteArrayAsUInt24LittleEndian();
-            return WriteFromBuffer(stream, buffer);
+            if (BitConverter.IsLittleEndian)
+                return stream.WriteAsUInt24LittleEndian(value);
+            else
+                return stream.WriteAsUInt24BigEndian(value);
         }
 
         /// <summary>
@@ -212,13 +251,26 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Write an Int32
+        /// Write a UInt32 as a UInt24
         /// </summary>
         /// <remarks>Writes in little-endian format</remarks>
+        /// <remarks>Throws away top byte</remarks>
+        public static bool WriteAsUInt24LittleEndian(this Stream stream, uint value)
+        {
+            byte[] buffer = value.ToByteArrayAsUInt24LittleEndian();
+            return WriteFromBuffer(stream, buffer);
+        }
+
+        /// <summary>
+        /// Write an Int32
+        /// </summary>
+        /// <remarks>Writes in machine native format</remarks>
         public static bool Write(this Stream stream, int value)
         {
-            byte[] buffer = value.ToByteArrayLittleEndian();
-            return WriteFromBuffer(stream, buffer);
+            if (BitConverter.IsLittleEndian)
+                return stream.WriteLittleEndian(value);
+            else
+                return stream.WriteBigEndian(value);
         }
 
         /// <summary>
@@ -232,12 +284,22 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Write an Int32
+        /// </summary>
+        /// <remarks>Writes in little-endian format</remarks>
+        public static bool WriteLittleEndian(this Stream stream, int value)
+        {
+            byte[] buffer = value.ToByteArrayLittleEndian();
+            return WriteFromBuffer(stream, buffer);
+        }
+
+        /// <summary>
         /// Write a Int32
         /// </summary>
         /// <remarks>Writes in both-endian format</remarks>
         public static bool WriteBothEndian(this Stream stream, BothInt32 value)
         {
-            bool actual = stream.Write(value.LittleEndian);
+            bool actual = stream.WriteLittleEndian(value.LittleEndian);
             actual &= stream.WriteBigEndian(value.BigEndian);
             return actual;
         }
@@ -245,11 +307,13 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a UInt32
         /// </summary>
-        /// <remarks>Writes in little-endian format</remarks>
+        /// <remarks>Writes in machine native format</remarks>
         public static bool Write(this Stream stream, uint value)
         {
-            byte[] buffer = value.ToByteArrayLittleEndian();
-            return WriteFromBuffer(stream, buffer);
+            if (BitConverter.IsLittleEndian)
+                return stream.WriteLittleEndian(value);
+            else
+                return stream.WriteBigEndian(value);
         }
 
         /// <summary>
@@ -265,10 +329,20 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a UInt32
         /// </summary>
+        /// <remarks>Writes in little-endian format</remarks>
+        public static bool WriteLittleEndian(this Stream stream, uint value)
+        {
+            byte[] buffer = value.ToByteArrayLittleEndian();
+            return WriteFromBuffer(stream, buffer);
+        }
+
+        /// <summary>
+        /// Write a UInt32
+        /// </summary>
         /// <remarks>Writes in both-endian format</remarks>
         public static bool WriteBothEndian(this Stream stream, BothUInt32 value)
         {
-            bool actual = stream.Write(value.LittleEndian);
+            bool actual = stream.WriteLittleEndian(value.LittleEndian);
             actual &= stream.WriteBigEndian(value.BigEndian);
             return actual;
         }
@@ -296,12 +370,14 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write an Int64 as an Int48
         /// </summary>
-        /// <remarks>Writes in little-endian format</remarks>
+        /// <remarks>Writes in machine native format</remarks>
         /// <remarks>Throws away top 2 bytes</remarks>
         public static bool WriteAsInt48(this Stream stream, long value)
         {
-            byte[] buffer = value.ToByteArrayAsInt48LittleEndian();
-            return WriteFromBuffer(stream, buffer);
+            if (BitConverter.IsLittleEndian)
+                return stream.WriteAsInt48LittleEndian(value);
+            else
+                return stream.WriteAsInt48BigEndian(value);
         }
 
         /// <summary>
@@ -316,14 +392,27 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Write a UInt64 as a UInt48
+        /// Write an Int64 as an Int48
         /// </summary>
         /// <remarks>Writes in little-endian format</remarks>
         /// <remarks>Throws away top 2 bytes</remarks>
+        public static bool WriteAsInt48LittleEndian(this Stream stream, long value)
+        {
+            byte[] buffer = value.ToByteArrayAsInt48LittleEndian();
+            return WriteFromBuffer(stream, buffer);
+        }
+
+        /// <summary>
+        /// Write a UInt64 as a UInt48
+        /// </summary>
+        /// <remarks>Writes in machine native format</remarks>
+        /// <remarks>Throws away top 2 bytes</remarks>
         public static bool WriteAsUInt48(this Stream stream, ulong value)
         {
-            byte[] buffer = value.ToByteArrayAsUInt48LittleEndian();
-            return WriteFromBuffer(stream, buffer);
+            if (BitConverter.IsLittleEndian)
+                return stream.WriteAsUInt48LittleEndian(value);
+            else
+                return stream.WriteAsUInt48BigEndian(value);
         }
 
         /// <summary>
@@ -338,13 +427,26 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Write an Int64
+        /// Write a UInt64 as a UInt48
         /// </summary>
         /// <remarks>Writes in little-endian format</remarks>
+        /// <remarks>Throws away top 2 bytes</remarks>
+        public static bool WriteAsUInt48LittleEndian(this Stream stream, ulong value)
+        {
+            byte[] buffer = value.ToByteArrayAsUInt48LittleEndian();
+            return WriteFromBuffer(stream, buffer);
+        }
+
+        /// <summary>
+        /// Write an Int64
+        /// </summary>
+        /// <remarks>Writes in machine native format</remarks>
         public static bool Write(this Stream stream, long value)
         {
-            byte[] buffer = value.ToByteArrayLittleEndian();
-            return WriteFromBuffer(stream, buffer);
+            if (BitConverter.IsLittleEndian)
+                return stream.WriteLittleEndian(value);
+            else
+                return stream.WriteBigEndian(value);
         }
 
         /// <summary>
@@ -358,12 +460,22 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Write an Int64
+        /// </summary>
+        /// <remarks>Writes in little-endian format</remarks>
+        public static bool WriteLittleEndian(this Stream stream, long value)
+        {
+            byte[] buffer = value.ToByteArrayLittleEndian();
+            return WriteFromBuffer(stream, buffer);
+        }
+
+        /// <summary>
         /// Write a Int64
         /// </summary>
         /// <remarks>Writes in both-endian format</remarks>
         public static bool WriteBothEndian(this Stream stream, BothInt64 value)
         {
-            bool actual = stream.Write(value.LittleEndian);
+            bool actual = stream.WriteLittleEndian(value.LittleEndian);
             actual &= stream.WriteBigEndian(value.BigEndian);
             return actual;
         }
@@ -371,11 +483,13 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a UInt64
         /// </summary>
-        /// <remarks>Writes in little-endian format</remarks>
+        /// <remarks>Writes in machine native format</remarks>
         public static bool Write(this Stream stream, ulong value)
         {
-            byte[] buffer = value.ToByteArrayLittleEndian();
-            return WriteFromBuffer(stream, buffer);
+            if (BitConverter.IsLittleEndian)
+                return stream.WriteLittleEndian(value);
+            else
+                return stream.WriteBigEndian(value);
         }
 
         /// <summary>
@@ -391,10 +505,20 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a UInt64
         /// </summary>
+        /// <remarks>Writes in little-endian format</remarks>
+        public static bool WriteLittleEndian(this Stream stream, ulong value)
+        {
+            byte[] buffer = value.ToByteArrayLittleEndian();
+            return WriteFromBuffer(stream, buffer);
+        }
+
+        /// <summary>
+        /// Write a UInt64
+        /// </summary>
         /// <remarks>Writes in both-endian format</remarks>
         public static bool WriteBothEndian(this Stream stream, BothUInt64 value)
         {
-            bool actual = stream.Write(value.LittleEndian);
+            bool actual = stream.WriteLittleEndian(value.LittleEndian);
             actual &= stream.WriteBigEndian(value.BigEndian);
             return actual;
         }
@@ -487,11 +611,13 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write an Int128
         /// </summary>
-        /// <remarks>Writes in little-endian format</remarks>
+        /// <remarks>Writes in machine native format</remarks>
         public static bool Write(this Stream stream, Int128 value)
         {
-            byte[] buffer = value.ToByteArrayLittleEndian();
-            return WriteFromBuffer(stream, buffer);
+            if (BitConverter.IsLittleEndian)
+                return stream.WriteLittleEndian(value);
+            else
+                return stream.WriteBigEndian(value);
         }
 
         /// <summary>
@@ -505,13 +631,25 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Write a UInt128
+        /// Write an Int128
         /// </summary>
         /// <remarks>Writes in little-endian format</remarks>
-        public static bool Write(this Stream stream, UInt128 value)
+        public static bool WriteLittleEndian(this Stream stream, Int128 value)
         {
             byte[] buffer = value.ToByteArrayLittleEndian();
             return WriteFromBuffer(stream, buffer);
+        }
+
+        /// <summary>
+        /// Write a UInt128
+        /// </summary>
+        /// <remarks>Writes in machine native format</remarks>
+        public static bool Write(this Stream stream, UInt128 value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return stream.WriteLittleEndian(value);
+            else
+                return stream.WriteBigEndian(value);
         }
 
         /// <summary>
@@ -521,6 +659,16 @@ namespace SabreTools.IO.Extensions
         public static bool WriteBigEndian(this Stream stream, UInt128 value)
         {
             byte[] buffer = value.ToByteArrayBigEndian();
+            return WriteFromBuffer(stream, buffer);
+        }
+
+        /// <summary>
+        /// Write a UInt128
+        /// </summary>
+        /// <remarks>Writes in little-endian format</remarks>
+        public static bool WriteLittleEndian(this Stream stream, UInt128 value)
+        {
+            byte[] buffer = value.ToByteArrayLittleEndian();
             return WriteFromBuffer(stream, buffer);
         }
 #endif
@@ -696,7 +844,7 @@ namespace SabreTools.IO.Extensions
                 return stream.Write((Guid)value);
 #if NET6_0_OR_GREATER
             else if (type == typeof(Half))
-                return stream.Write((Half)value);
+                return stream.WriteLittleEndian((Half)value);
 #endif
 #if NET7_0_OR_GREATER
             else if (type == typeof(Int128))

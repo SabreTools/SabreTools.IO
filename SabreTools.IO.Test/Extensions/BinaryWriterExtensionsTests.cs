@@ -134,6 +134,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteInt16LittleEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = [.. _bytes.Take(2)];
+            bw.WriteLittleEndian((short)0x0100);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
         public void WriteInt16BothEndianTest()
         {
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
@@ -167,6 +177,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteUInt16LittleEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = [.. _bytes.Take(2)];
+            bw.WriteLittleEndian((ushort)0x0100);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
         public void WriteUInt16BothEndianTest()
         {
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
@@ -179,16 +199,6 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
-        public void WriteHalfTest()
-        {
-            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
-            var bw = new BinaryWriter(stream);
-            byte[] expected = [.. _bytes.Take(2)];
-            bw.Write(BitConverter.Int16BitsToHalf(0x0100));
-            ValidateBytes(expected, stream.GetBuffer());
-        }
-
-        [Fact]
         public void WriteHalfBigEndianTest()
         {
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
@@ -196,6 +206,16 @@ namespace SabreTools.IO.Test.Extensions
             byte[] expected = [.. _bytes.Take(2)];
             bool write = bw.WriteBigEndian(BitConverter.Int16BitsToHalf(0x0001));
             Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteHalfLittleEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = [.. _bytes.Take(2)];
+            bw.WriteLittleEndian(BitConverter.Int16BitsToHalf(0x0100));
             ValidateBytes(expected, stream.GetBuffer());
         }
 
@@ -221,6 +241,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteInt24LittleEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = [.. _bytes.Take(3)];
+            bw.WriteAsInt24LittleEndian(0x020100);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
         public void WriteUInt24Test()
         {
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
@@ -242,6 +272,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteUInt24LittleEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = [.. _bytes.Take(3)];
+            bw.WriteAsUInt24LittleEndian(0x020100);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
         public void WriteInt32Test()
         {
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
@@ -259,6 +299,16 @@ namespace SabreTools.IO.Test.Extensions
             byte[] expected = [.. _bytes.Take(4)];
             bool write = bw.WriteBigEndian(0x00010203);
             Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteInt32LittleEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = [.. _bytes.Take(4)];
+            bw.WriteLittleEndian(0x03020100);
             ValidateBytes(expected, stream.GetBuffer());
         }
 
@@ -292,6 +342,16 @@ namespace SabreTools.IO.Test.Extensions
             byte[] expected = [.. _bytes.Take(4)];
             bool write = bw.WriteBigEndian((uint)0x00010203);
             Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteUInt32LittleEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = [.. _bytes.Take(4)];
+            bw.WriteLittleEndian((uint)0x03020100);
             ValidateBytes(expected, stream.GetBuffer());
         }
 
@@ -350,6 +410,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteInt48LittleEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = [.. _bytes.Take(6)];
+            bw.WriteAsInt48LittleEndian(0x050403020100);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
         public void WriteUInt48Test()
         {
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
@@ -371,6 +441,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteUInt48LittleEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = [.. _bytes.Take(6)];
+            bw.WriteAsUInt48LittleEndian(0x050403020100);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
         public void WriteInt64Test()
         {
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
@@ -388,6 +468,16 @@ namespace SabreTools.IO.Test.Extensions
             byte[] expected = [.. _bytes.Take(8)];
             bool write = bw.WriteBigEndian(0x0001020304050607);
             Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteInt64LittleEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = [.. _bytes.Take(8)];
+            bw.WriteLittleEndian(0x0706050403020100);
             ValidateBytes(expected, stream.GetBuffer());
         }
 
@@ -421,6 +511,16 @@ namespace SabreTools.IO.Test.Extensions
             byte[] expected = [.. _bytes.Take(8)];
             bool write = bw.WriteBigEndian((ulong)0x0001020304050607);
             Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteUInt64LittleEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = [.. _bytes.Take(8)];
+            bw.WriteLittleEndian((ulong)0x0706050403020100);
             ValidateBytes(expected, stream.GetBuffer());
         }
 
@@ -523,6 +623,17 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteInt128LittleEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = [.. _bytes.Take(16)];
+            bool write = bw.WriteLittleEndian((Int128)new BigInteger(_bytes));
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
         public void WriteUInt128Test()
         {
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);
@@ -540,6 +651,17 @@ namespace SabreTools.IO.Test.Extensions
             var bw = new BinaryWriter(stream);
             byte[] expected = [.. _bytes.Take(16)];
             bool write = bw.WriteBigEndian((UInt128)new BigInteger(Enumerable.Reverse(_bytes).ToArray()));
+            Assert.True(write);
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
+        public void WriteUInt128LittleEndianTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = [.. _bytes.Take(16)];
+            bool write = bw.WriteLittleEndian((UInt128)new BigInteger(_bytes));
             Assert.True(write);
             ValidateBytes(expected, stream.GetBuffer());
         }
