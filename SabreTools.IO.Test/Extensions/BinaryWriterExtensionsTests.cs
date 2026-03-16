@@ -199,6 +199,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteHalfTest()
+        {
+            var stream = new MemoryStream(new byte[16], 0, 16, true, true);
+            var bw = new BinaryWriter(stream);
+            byte[] expected = [.. _bytes.Take(2)];
+            bw.Write(BitConverter.Int16BitsToHalf(0x0100));
+            ValidateBytes(expected, stream.GetBuffer());
+        }
+
+        [Fact]
         public void WriteHalfBigEndianTest()
         {
             var stream = new MemoryStream(new byte[16], 0, 16, true, true);

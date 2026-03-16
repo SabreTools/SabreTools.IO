@@ -111,6 +111,18 @@ namespace SabreTools.IO.Extensions
             => reader.ReadUInt16BothEndian();
 
 #if NET5_0_OR_GREATER
+        /// <summary>
+        /// Read a Half from the underlying stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static Half ReadHalf(this BinaryReader reader)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.ReadHalfLittleEndian();
+            else
+                return reader.ReadHalfBigEndian();
+        }
+
         /// <inheritdoc cref="BinaryReader.ReadHalf"/>
         /// <remarks>Reads in big-endian format</remarks>
         public static Half ReadHalfBigEndian(this BinaryReader reader)

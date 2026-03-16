@@ -97,6 +97,18 @@ namespace SabreTools.IO.Extensions
         }
 
 #if NET5_0_OR_GREATER
+        /// <summary>
+        /// Write a Half to the underlying stream
+        /// </summary>
+        /// <remarks>Writes in machine native format</remarks>
+        public static bool Write(this BinaryWriter writer, Half value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return writer.WriteLittleEndian(value);
+            else
+                return writer.WriteBigEndian(value);
+        }
+
         /// <inheritdoc cref="BinaryWriter.Write(Half)"/>
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, Half value)
