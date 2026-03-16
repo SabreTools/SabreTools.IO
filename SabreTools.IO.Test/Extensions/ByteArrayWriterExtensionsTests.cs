@@ -3,6 +3,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using SabreTools.IO.Extensions;
+using SabreTools.Numerics;
 using Xunit;
 
 namespace SabreTools.IO.Test.Extensions
@@ -255,7 +256,7 @@ namespace SabreTools.IO.Test.Extensions
             byte[] buffer = new byte[16];
             int offset = 0;
             byte[] expected = [.. _bytes.Take(3)];
-            bool write = buffer.WriteAsInt24(ref offset, 0x020100);
+            bool write = buffer.Write(ref offset, (Int24)0x020100);
             Assert.True(write);
             ValidateBytes(expected, buffer);
         }
@@ -266,7 +267,7 @@ namespace SabreTools.IO.Test.Extensions
             byte[] buffer = new byte[16];
             int offset = 0;
             byte[] expected = [.. _bytes.Take(3)];
-            bool write = buffer.WriteAsInt24BigEndian(ref offset, 0x000102);
+            bool write = buffer.WriteBigEndian(ref offset, (Int24)0x000102);
             Assert.True(write);
             ValidateBytes(expected, buffer);
         }
@@ -277,7 +278,7 @@ namespace SabreTools.IO.Test.Extensions
             byte[] buffer = new byte[16];
             int offset = 0;
             byte[] expected = [.. _bytes.Take(3)];
-            bool write = buffer.WriteAsInt24LittleEndian(ref offset, 0x020100);
+            bool write = buffer.WriteLittleEndian(ref offset, (Int24)0x020100);
             Assert.True(write);
             ValidateBytes(expected, buffer);
         }
@@ -288,7 +289,7 @@ namespace SabreTools.IO.Test.Extensions
             byte[] buffer = new byte[16];
             int offset = 0;
             byte[] expected = [.. _bytes.Take(3)];
-            bool write = buffer.WriteAsUInt24(ref offset, 0x020100);
+            bool write = buffer.Write(ref offset, (UInt24)0x020100);
             Assert.True(write);
             ValidateBytes(expected, buffer);
         }
@@ -299,7 +300,7 @@ namespace SabreTools.IO.Test.Extensions
             byte[] buffer = new byte[16];
             int offset = 0;
             byte[] expected = [.. _bytes.Take(3)];
-            bool write = buffer.WriteAsUInt24BigEndian(ref offset, 0x000102);
+            bool write = buffer.WriteBigEndian(ref offset, (UInt24)0x000102);
             Assert.True(write);
             ValidateBytes(expected, buffer);
         }
@@ -310,7 +311,7 @@ namespace SabreTools.IO.Test.Extensions
             byte[] buffer = new byte[16];
             int offset = 0;
             byte[] expected = [.. _bytes.Take(3)];
-            bool write = buffer.WriteAsUInt24LittleEndian(ref offset, 0x020100);
+            bool write = buffer.WriteLittleEndian(ref offset, (UInt24)0x020100);
             Assert.True(write);
             ValidateBytes(expected, buffer);
         }
@@ -444,7 +445,7 @@ namespace SabreTools.IO.Test.Extensions
             byte[] buffer = new byte[16];
             int offset = 0;
             byte[] expected = [.. _bytes.Take(6)];
-            bool write = buffer.WriteAsInt48(ref offset, 0x050403020100);
+            bool write = buffer.Write(ref offset, (Int48)0x050403020100);
             Assert.True(write);
             ValidateBytes(expected, buffer);
         }
@@ -455,7 +456,7 @@ namespace SabreTools.IO.Test.Extensions
             byte[] buffer = new byte[16];
             int offset = 0;
             byte[] expected = [.. _bytes.Take(6)];
-            bool write = buffer.WriteAsInt48BigEndian(ref offset, 0x000102030405);
+            bool write = buffer.WriteBigEndian(ref offset, (Int48)0x000102030405);
             Assert.True(write);
             ValidateBytes(expected, buffer);
         }
@@ -466,7 +467,7 @@ namespace SabreTools.IO.Test.Extensions
             byte[] buffer = new byte[16];
             int offset = 0;
             byte[] expected = [.. _bytes.Take(6)];
-            bool write = buffer.WriteAsInt48LittleEndian(ref offset, 0x050403020100);
+            bool write = buffer.WriteLittleEndian(ref offset, (Int48)0x050403020100);
             Assert.True(write);
             ValidateBytes(expected, buffer);
         }
@@ -477,7 +478,7 @@ namespace SabreTools.IO.Test.Extensions
             byte[] buffer = new byte[16];
             int offset = 0;
             byte[] expected = [.. _bytes.Take(6)];
-            bool write = buffer.WriteAsUInt48(ref offset, 0x050403020100);
+            bool write = buffer.Write(ref offset, (UInt48)0x050403020100);
             Assert.True(write);
             ValidateBytes(expected, buffer);
         }
@@ -488,7 +489,7 @@ namespace SabreTools.IO.Test.Extensions
             byte[] buffer = new byte[16];
             int offset = 0;
             byte[] expected = [.. _bytes.Take(6)];
-            bool write = buffer.WriteAsUInt48BigEndian(ref offset, 0x000102030405);
+            bool write = buffer.WriteBigEndian(ref offset, (UInt48)0x000102030405);
             Assert.True(write);
             ValidateBytes(expected, buffer);
         }
@@ -499,7 +500,7 @@ namespace SabreTools.IO.Test.Extensions
             byte[] buffer = new byte[16];
             int offset = 0;
             byte[] expected = [.. _bytes.Take(6)];
-            bool write = buffer.WriteAsUInt48LittleEndian(ref offset, 0x050403020100);
+            bool write = buffer.WriteLittleEndian(ref offset, (UInt48)0x050403020100);
             Assert.True(write);
             ValidateBytes(expected, buffer);
         }

@@ -9,7 +9,6 @@ namespace SabreTools.IO.Extensions
     /// <summary>
     /// Extensions for byte arrays
     /// </summary>
-    /// TODO: Handle proper negative values for Int24 and Int48
     public static class ByteArrayWriterExtensions
     {
         /// <summary>
@@ -201,72 +200,66 @@ namespace SabreTools.IO.Extensions
 #endif
 
         /// <summary>
-        /// Write an Int32 as an Int24 and increment the pointer to an array
+        /// Write an Int24 and increment the pointer to an array
         /// </summary>
         /// <remarks>Writes in machine native format</remarks>
-        /// <remarks>Throws away top byte</remarks>
-        public static bool WriteAsInt24(this byte[] content, ref int offset, int value)
+        public static bool Write(this byte[] content, ref int offset, Int24 value)
         {
             if (BitConverter.IsLittleEndian)
-                return content.WriteAsInt24LittleEndian(ref offset, value);
+                return content.WriteLittleEndian(ref offset, value);
             else
-                return content.WriteAsInt24BigEndian(ref offset, value);
+                return content.WriteBigEndian(ref offset, value);
         }
 
         /// <summary>
-        /// Write an Int32 as an Int24 and increment the pointer to an array
+        /// Write an Int24 and increment the pointer to an array
         /// </summary>
         /// <remarks>Writes in big-endian format</remarks>
-        /// <remarks>Throws away top byte</remarks>
-        public static bool WriteAsInt24BigEndian(this byte[] content, ref int offset, int value)
+        public static bool WriteBigEndian(this byte[] content, ref int offset, Int24 value)
         {
-            byte[] buffer = value.GetBytesAsInt24BigEndian();
+            byte[] buffer = value.GetBytesBigEndian();
             return WriteFromBuffer(content, ref offset, buffer);
         }
 
         /// <summary>
-        /// Write an Int32 as an Int24 and increment the pointer to an array
+        /// Write an Int24 and increment the pointer to an array
         /// </summary>
         /// <remarks>Writes in little-endian format</remarks>
-        /// <remarks>Throws away top byte</remarks>
-        public static bool WriteAsInt24LittleEndian(this byte[] content, ref int offset, int value)
+        public static bool WriteLittleEndian(this byte[] content, ref int offset, Int24 value)
         {
-            byte[] buffer = value.GetBytesAsInt24LittleEndian();
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(content, ref offset, buffer);
         }
 
         /// <summary>
-        /// Write a UInt32 as a UInt24 and increment the pointer to an array
+        /// Write a UInt24 and increment the pointer to an array
         /// </summary>
         /// <remarks>Writes in machine native format</remarks>
-        /// <remarks>Throws away top byte</remarks>
-        public static bool WriteAsUInt24(this byte[] content, ref int offset, uint value)
+        public static bool Write(this byte[] content, ref int offset, UInt24 value)
         {
             if (BitConverter.IsLittleEndian)
-                return content.WriteAsUInt24LittleEndian(ref offset, value);
+                return content.WriteLittleEndian(ref offset, value);
             else
-                return content.WriteAsUInt24BigEndian(ref offset, value);
+                return content.WriteBigEndian(ref offset, value);
         }
 
         /// <summary>
-        /// Write a UInt32 as a UInt24 and increment the pointer to an array
+        /// Write a UInt24 and increment the pointer to an array
         /// </summary>
         /// <remarks>Writes in big-endian format</remarks>
-        /// <remarks>Throws away top byte</remarks>
-        public static bool WriteAsUInt24BigEndian(this byte[] content, ref int offset, uint value)
+        public static bool WriteBigEndian(this byte[] content, ref int offset, UInt24 value)
         {
-            byte[] buffer = value.GetBytesAsUInt24BigEndian();
+            byte[] buffer = value.GetBytesBigEndian();
             return WriteFromBuffer(content, ref offset, buffer);
         }
 
         /// <summary>
-        /// Write a UInt32 as a UInt24 and increment the pointer to an array
+        /// Write a UInt24 and increment the pointer to an array
         /// </summary>
         /// <remarks>Writes in little-endian format</remarks>
-        /// <remarks>Throws away top byte</remarks>
-        public static bool WriteAsUInt24LittleEndian(this byte[] content, ref int offset, uint value)
+        public static bool WriteLittleEndian(this byte[] content, ref int offset, UInt24 value)
         {
-            byte[] buffer = value.GetBytesAsUInt24LittleEndian();
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(content, ref offset, buffer);
         }
 
@@ -389,72 +382,66 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Write an Int64 as an Int48 and increment the pointer to an array
+        /// Write an Int48 and increment the pointer to an array
         /// </summary>
         /// <remarks>Writes in machine native format</remarks>
-        /// <remarks>Throws away top 2 bytes</remarks>
-        public static bool WriteAsInt48(this byte[] content, ref int offset, long value)
+        public static bool Write(this byte[] content, ref int offset, Int48 value)
         {
             if (BitConverter.IsLittleEndian)
-                return content.WriteAsInt48LittleEndian(ref offset, value);
+                return content.WriteLittleEndian(ref offset, value);
             else
-                return content.WriteAsInt48BigEndian(ref offset, value);
+                return content.WriteBigEndian(ref offset, value);
         }
 
         /// <summary>
-        /// Write an Int64 as an Int48 and increment the pointer to an array
+        /// Write an Int48 and increment the pointer to an array
         /// </summary>
         /// <remarks>Writes in big-endian format</remarks>
-        /// <remarks>Throws away top 2 bytes</remarks>
-        public static bool WriteAsInt48BigEndian(this byte[] content, ref int offset, long value)
+        public static bool WriteBigEndian(this byte[] content, ref int offset, Int48 value)
         {
-            byte[] buffer = value.GetBytesAsInt48BigEndian();
+            byte[] buffer = value.GetBytesBigEndian();
             return WriteFromBuffer(content, ref offset, buffer);
         }
 
         /// <summary>
-        /// Write an Int64 as an Int48 and increment the pointer to an array
+        /// Write an Int48 and increment the pointer to an array
         /// </summary>
         /// <remarks>Writes in little-endian format</remarks>
-        /// <remarks>Throws away top 2 bytes</remarks>
-        public static bool WriteAsInt48LittleEndian(this byte[] content, ref int offset, long value)
+        public static bool WriteLittleEndian(this byte[] content, ref int offset, Int48 value)
         {
-            byte[] buffer = value.GetBytesAsInt48LittleEndian();
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(content, ref offset, buffer);
         }
 
         /// <summary>
-        /// Write a UInt64 as a UInt48 and increment the pointer to an array
+        /// Write a UInt48 and increment the pointer to an array
         /// </summary>
         /// <remarks>Writes in machine native format</remarks>
-        /// <remarks>Throws away top 2 bytes</remarks>
-        public static bool WriteAsUInt48(this byte[] content, ref int offset, ulong value)
+        public static bool Write(this byte[] content, ref int offset, UInt48 value)
         {
             if (BitConverter.IsLittleEndian)
-                return content.WriteAsUInt48LittleEndian(ref offset, value);
+                return content.WriteLittleEndian(ref offset, value);
             else
-                return content.WriteAsUInt48BigEndian(ref offset, value);
+                return content.WriteBigEndian(ref offset, value);
         }
 
         /// <summary>
-        /// Write a UInt64 as a UInt48 and increment the pointer to an array
+        /// Write a UInt48 and increment the pointer to an array
         /// </summary>
         /// <remarks>Writes in big-endian format</remarks>
-        /// <remarks>Throws away top 2 bytes</remarks>
-        public static bool WriteAsUInt48BigEndian(this byte[] content, ref int offset, ulong value)
+        public static bool WriteBigEndian(this byte[] content, ref int offset, UInt48 value)
         {
-            byte[] buffer = value.GetBytesAsUInt48BigEndian();
+            byte[] buffer = value.GetBytesBigEndian();
             return WriteFromBuffer(content, ref offset, buffer);
         }
 
         /// <summary>
-        /// Write a UInt64 as a UInt48 and increment the pointer to an array
+        /// Write a UInt48 and increment the pointer to an array
         /// </summary>
         /// <remarks>Writes in little-endian format</remarks>
-        /// <remarks>Throws away top 2 bytes</remarks>
-        public static bool WriteAsUInt48LittleEndian(this byte[] content, ref int offset, ulong value)
+        public static bool WriteLittleEndian(this byte[] content, ref int offset, UInt48 value)
         {
-            byte[] buffer = value.GetBytesAsUInt48LittleEndian();
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(content, ref offset, buffer);
         }
 

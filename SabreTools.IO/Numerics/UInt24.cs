@@ -131,6 +131,114 @@ namespace SabreTools.Numerics
             return new UInt24(value);
         }
 
+        public static UInt24 operator &(UInt24 a, byte b)
+        {
+            uint value = a.Value & b;
+            return new UInt24(value);
+        }
+
+        public static UInt24 operator |(UInt24 a, byte b)
+        {
+            uint value = a.Value | b;
+            return new UInt24(value);
+        }
+
+        public static UInt24 operator ^(UInt24 a, byte b)
+        {
+            uint value = a.Value ^ b;
+            return new UInt24(value);
+        }
+
+        public static UInt24 operator &(UInt24 a, sbyte b)
+        {
+            uint value = a.Value & (uint)b;
+            return new UInt24(value);
+        }
+
+        public static UInt24 operator |(UInt24 a, sbyte b)
+        {
+            uint value = a.Value | (byte)b;
+            return new UInt24(value);
+        }
+
+        public static UInt24 operator ^(UInt24 a, sbyte b)
+        {
+            uint value = a.Value ^ (uint)b;
+            return new UInt24(value);
+        }
+
+        public static UInt24 operator &(UInt24 a, short b)
+        {
+            uint value = a.Value & (uint)b;
+            return new UInt24(value);
+        }
+
+        public static UInt24 operator |(UInt24 a, short b)
+        {
+            uint value = a.Value | (ushort)b;
+            return new UInt24(value);
+        }
+
+        public static UInt24 operator ^(UInt24 a, short b)
+        {
+            uint value = a.Value ^ (uint)b;
+            return new UInt24(value);
+        }
+
+        public static UInt24 operator &(UInt24 a, ushort b)
+        {
+            uint value = a.Value & b;
+            return new UInt24(value);
+        }
+
+        public static UInt24 operator |(UInt24 a, ushort b)
+        {
+            uint value = a.Value | b;
+            return new UInt24(value);
+        }
+
+        public static UInt24 operator ^(UInt24 a, ushort b)
+        {
+            uint value = a.Value ^ b;
+            return new UInt24(value);
+        }
+
+        public static UInt24 operator &(UInt24 a, int b)
+        {
+            uint value = a.Value & (uint)b;
+            return new UInt24(value);
+        }
+
+        public static UInt24 operator |(UInt24 a, int b)
+        {
+            uint value = a.Value | (uint)b;
+            return new UInt24(value);
+        }
+
+        public static UInt24 operator ^(UInt24 a, int b)
+        {
+            uint value = a.Value ^ (uint)b;
+            return new UInt24(value);
+        }
+
+        public static UInt24 operator &(UInt24 a, uint b)
+        {
+            uint value = a.Value & b;
+            return new UInt24(value);
+        }
+
+        public static UInt24 operator |(UInt24 a, uint b)
+        {
+            uint value = a.Value | b;
+            return new UInt24(value);
+        }
+
+        public static UInt24 operator ^(UInt24 a, uint b)
+        {
+            uint value = a.Value ^ b;
+            return new UInt24(value);
+        }
+
         #endregion
 
         #region Equality operators
@@ -155,9 +263,37 @@ namespace SabreTools.Numerics
 
         #region User-defined conversion operators
 
+        public static explicit operator byte(UInt24 a) => (byte)a.Value;
+
+        public static explicit operator UInt24(byte a) => new(a);
+
+        public static explicit operator sbyte(UInt24 a) => (sbyte)a.Value;
+
+        public static explicit operator UInt24(sbyte a) => new((uint)a);
+
+        public static explicit operator short(UInt24 a) => (short)a.Value;
+
+        public static explicit operator UInt24(short a) => new((uint)a);
+
+        public static explicit operator ushort(UInt24 a) => (ushort)a.Value;
+
+        public static explicit operator UInt24(ushort a) => new(a);
+
+        public static explicit operator int(UInt24 a) => (int)a.Value;
+
+        public static explicit operator UInt24(int a) => new((uint)a);
+
         public static explicit operator uint(UInt24 a) => a.Value;
 
         public static explicit operator UInt24(uint a) => new(a);
+
+        public static explicit operator long(UInt24 a) => a.Value;
+
+        public static explicit operator UInt24(long a) => new((uint)a);
+
+        public static explicit operator ulong(UInt24 a) => a.Value;
+
+        public static explicit operator UInt24(ulong a) => new((uint)a);
 
         #endregion
 

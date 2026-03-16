@@ -131,6 +131,150 @@ namespace SabreTools.Numerics
             return new UInt48(value);
         }
 
+        public static UInt48 operator &(UInt48 a, byte b)
+        {
+            ulong value = a.Value & b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator |(UInt48 a, byte b)
+        {
+            ulong value = a.Value | b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator ^(UInt48 a, byte b)
+        {
+            ulong value = a.Value ^ b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator &(UInt48 a, sbyte b)
+        {
+            ulong value = a.Value & (ulong)b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator |(UInt48 a, sbyte b)
+        {
+            ulong value = a.Value | (byte)b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator ^(UInt48 a, sbyte b)
+        {
+            ulong value = a.Value ^ (ulong)b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator &(UInt48 a, short b)
+        {
+            ulong value = a.Value & (ulong)b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator |(UInt48 a, short b)
+        {
+            ulong value = a.Value | (ushort)b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator ^(UInt48 a, short b)
+        {
+            ulong value = a.Value ^ (ulong)b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator &(UInt48 a, ushort b)
+        {
+            ulong value = a.Value & b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator |(UInt48 a, ushort b)
+        {
+            ulong value = a.Value | b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator ^(UInt48 a, ushort b)
+        {
+            ulong value = a.Value ^ b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator &(UInt48 a, int b)
+        {
+            ulong value = a.Value & (ulong)b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator |(UInt48 a, int b)
+        {
+            ulong value = a.Value | (uint)b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator ^(UInt48 a, int b)
+        {
+            ulong value = a.Value ^ (ulong)b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator &(UInt48 a, uint b)
+        {
+            ulong value = a.Value & b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator |(UInt48 a, uint b)
+        {
+            ulong value = a.Value | b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator ^(UInt48 a, uint b)
+        {
+            ulong value = a.Value ^ b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator &(UInt48 a, long b)
+        {
+            ulong value = a.Value & (ulong)b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator |(UInt48 a, long b)
+        {
+            ulong value = a.Value | (ulong)b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator ^(UInt48 a, long b)
+        {
+            ulong value = a.Value ^ (ulong)b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator &(UInt48 a, ulong b)
+        {
+            ulong value = a.Value & b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator |(UInt48 a, ulong b)
+        {
+            ulong value = a.Value | b;
+            return new UInt48(value);
+        }
+
+        public static UInt48 operator ^(UInt48 a, ulong b)
+        {
+            ulong value = a.Value ^ b;
+            return new UInt48(value);
+        }
+
         #endregion
 
         #region Equality operators
@@ -154,6 +298,34 @@ namespace SabreTools.Numerics
         #endregion
 
         #region User-defined conversion operators
+
+        public static explicit operator byte(UInt48 a) => (byte)a.Value;
+
+        public static explicit operator UInt48(byte a) => new(a);
+
+        public static explicit operator sbyte(UInt48 a) => (sbyte)a.Value;
+
+        public static explicit operator UInt48(sbyte a) => new((ulong)a);
+
+        public static explicit operator short(UInt48 a) => (short)a.Value;
+
+        public static explicit operator UInt48(short a) => new((ulong)a);
+
+        public static explicit operator ushort(UInt48 a) => (ushort)a.Value;
+
+        public static explicit operator UInt48(ushort a) => new(a);
+
+        public static explicit operator int(UInt48 a) => (int)a.Value;
+
+        public static explicit operator UInt48(int a) => new((ulong)a);
+
+        public static explicit operator uint(UInt48 a) => (uint)a.Value;
+
+        public static explicit operator UInt48(uint a) => new(a);
+
+        public static explicit operator long(UInt48 a) => (long)a.Value;
+
+        public static explicit operator UInt48(long a) => new((ulong)a);
 
         public static explicit operator ulong(UInt48 a) => a.Value;
 

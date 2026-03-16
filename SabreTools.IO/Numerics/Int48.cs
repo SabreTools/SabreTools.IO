@@ -150,6 +150,150 @@ namespace SabreTools.Numerics
             return new Int48(value);
         }
 
+        public static Int48 operator &(Int48 a, byte b)
+        {
+            long value = a.Value & b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator |(Int48 a, byte b)
+        {
+            long value = a.Value | b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator ^(Int48 a, byte b)
+        {
+            long value = a.Value ^ b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator &(Int48 a, sbyte b)
+        {
+            long value = a.Value & b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator |(Int48 a, sbyte b)
+        {
+            long value = a.Value | (long)b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator ^(Int48 a, sbyte b)
+        {
+            long value = a.Value ^ b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator &(Int48 a, short b)
+        {
+            long value = a.Value & b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator |(Int48 a, short b)
+        {
+            long value = a.Value | (long)b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator ^(Int48 a, short b)
+        {
+            long value = a.Value ^ b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator &(Int48 a, ushort b)
+        {
+            long value = a.Value & b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator |(Int48 a, ushort b)
+        {
+            long value = a.Value | b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator ^(Int48 a, ushort b)
+        {
+            long value = a.Value ^ b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator &(Int48 a, int b)
+        {
+            long value = a.Value & b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator |(Int48 a, int b)
+        {
+            long value = a.Value | (long)b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator ^(Int48 a, int b)
+        {
+            long value = a.Value ^ b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator &(Int48 a, uint b)
+        {
+            long value = a.Value & b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator |(Int48 a, uint b)
+        {
+            long value = a.Value | b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator ^(Int48 a, uint b)
+        {
+            long value = a.Value ^ b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator &(Int48 a, long b)
+        {
+            long value = a.Value & b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator |(Int48 a, long b)
+        {
+            long value = a.Value | b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator ^(Int48 a, long b)
+        {
+            long value = a.Value ^ b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator &(Int48 a, ulong b)
+        {
+            long value = a.Value & (long)b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator |(Int48 a, ulong b)
+        {
+            long value = a.Value | (long)b;
+            return new Int48(value);
+        }
+
+        public static Int48 operator ^(Int48 a, ulong b)
+        {
+            long value = a.Value ^ (long)b;
+            return new Int48(value);
+        }
+
         #endregion
 
         #region Equality operators
@@ -174,9 +318,37 @@ namespace SabreTools.Numerics
 
         #region User-defined conversion operators
 
+        public static explicit operator byte(Int48 a) => (byte)a.Value;
+
+        public static explicit operator Int48(byte a) => new(a);
+
+        public static explicit operator sbyte(Int48 a) => (sbyte)a.Value;
+
+        public static explicit operator Int48(sbyte a) => new(a);
+
+        public static explicit operator short(Int48 a) => (short)a.Value;
+
+        public static explicit operator Int48(short a) => new(a);
+
+        public static explicit operator ushort(Int48 a) => (ushort)a.Value;
+
+        public static explicit operator Int48(ushort a) => new(a);
+
+        public static explicit operator int(Int48 a) => (int)a.Value;
+
+        public static explicit operator Int48(int a) => new(a);
+
+        public static explicit operator uint(Int48 a) => (uint)a.Value;
+
+        public static explicit operator Int48(uint a) => new(a);
+
         public static explicit operator long(Int48 a) => a.Value;
 
         public static explicit operator Int48(long a) => new(a);
+
+        public static explicit operator ulong(Int48 a) => (ulong)a.Value;
+
+        public static explicit operator Int48(ulong a) => new((long)a);
 
         #endregion
 

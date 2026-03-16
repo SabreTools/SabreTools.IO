@@ -228,48 +228,48 @@ namespace SabreTools.IO.Test.Extensions
         public void ReadInt24Test()
         {
             int offset = 0;
-            int read = _bytes.ReadInt24(ref offset);
-            Assert.Equal(0x020100, read);
+            Int24 read = _bytes.ReadInt24(ref offset);
+            Assert.Equal(0x020100, (int)read);
         }
 
         [Fact]
         public void ReadInt24BigEndianTest()
         {
             int offset = 0;
-            int read = _bytes.ReadInt24BigEndian(ref offset);
-            Assert.Equal(0x000102, read);
+            Int24 read = _bytes.ReadInt24BigEndian(ref offset);
+            Assert.Equal(0x000102, (int)read);
         }
 
         [Fact]
         public void ReadInt24LittleEndianTest()
         {
             int offset = 0;
-            int read = _bytes.ReadInt24LittleEndian(ref offset);
-            Assert.Equal(0x020100, read);
+            Int24 read = _bytes.ReadInt24LittleEndian(ref offset);
+            Assert.Equal(0x020100, (int)read);
         }
 
         [Fact]
         public void ReadUInt24Test()
         {
             int offset = 0;
-            uint read = _bytes.ReadUInt24(ref offset);
-            Assert.Equal((uint)0x020100, read);
+            UInt24 read = _bytes.ReadUInt24(ref offset);
+            Assert.Equal((uint)0x020100, (uint)read);
         }
 
         [Fact]
         public void ReadUInt24BigEndianTest()
         {
             int offset = 0;
-            uint read = _bytes.ReadUInt24BigEndian(ref offset);
-            Assert.Equal((uint)0x000102, read);
+            UInt24 read = _bytes.ReadUInt24BigEndian(ref offset);
+            Assert.Equal((uint)0x000102, (uint)read);
         }
 
         [Fact]
         public void ReadUInt24LittleEndianTest()
         {
             int offset = 0;
-            uint read = _bytes.ReadUInt24LittleEndian(ref offset);
-            Assert.Equal((uint)0x020100, read);
+            UInt24 read = _bytes.ReadUInt24LittleEndian(ref offset);
+            Assert.Equal((uint)0x020100, (uint)read);
         }
 
         [Fact]
@@ -402,48 +402,48 @@ namespace SabreTools.IO.Test.Extensions
         public void ReadInt48Test()
         {
             int offset = 0;
-            long read = _bytes.ReadInt48(ref offset);
-            Assert.Equal(0x050403020100, read);
+            Int48 read = _bytes.ReadInt48(ref offset);
+            Assert.Equal(0x050403020100, (long)read);
         }
 
         [Fact]
         public void ReadInt48BigEndianTest()
         {
             int offset = 0;
-            long read = _bytes.ReadInt48BigEndian(ref offset);
-            Assert.Equal(0x000102030405, read);
+            Int48 read = _bytes.ReadInt48BigEndian(ref offset);
+            Assert.Equal(0x000102030405, (long)read);
         }
 
         [Fact]
         public void ReadInt48LittleEndianTest()
         {
             int offset = 0;
-            long read = _bytes.ReadInt48LittleEndian(ref offset);
-            Assert.Equal(0x050403020100, read);
+            Int48 read = _bytes.ReadInt48LittleEndian(ref offset);
+            Assert.Equal(0x050403020100, (long)read);
         }
 
         [Fact]
         public void ReadUInt48Test()
         {
             int offset = 0;
-            ulong read = _bytes.ReadUInt48(ref offset);
-            Assert.Equal((ulong)0x050403020100, read);
+            UInt48 read = _bytes.ReadUInt48(ref offset);
+            Assert.Equal((ulong)0x050403020100, (ulong)read);
         }
 
         [Fact]
         public void ReadUInt48BigEndianTest()
         {
             int offset = 0;
-            ulong read = _bytes.ReadUInt48BigEndian(ref offset);
-            Assert.Equal((ulong)0x000102030405, read);
+            UInt48 read = _bytes.ReadUInt48BigEndian(ref offset);
+            Assert.Equal((ulong)0x000102030405, (ulong)read);
         }
 
         [Fact]
         public void ReadUInt48LittleEndianTest()
         {
             int offset = 0;
-            ulong read = _bytes.ReadUInt48LittleEndian(ref offset);
-            Assert.Equal((ulong)0x050403020100, read);
+            UInt48 read = _bytes.ReadUInt48LittleEndian(ref offset);
+            Assert.Equal((ulong)0x050403020100, (ulong)read);
         }
 
         [Fact]
@@ -1174,8 +1174,8 @@ namespace SabreTools.IO.Test.Extensions
         public void PeekInt24Test()
         {
             int offset = 0;
-            int read = _bytes.PeekInt24(ref offset);
-            Assert.Equal(0x020100, read);
+            Int24 read = _bytes.PeekInt24(ref offset);
+            Assert.Equal(0x020100, (int)read);
             Assert.Equal(0, offset);
         }
 
@@ -1183,8 +1183,8 @@ namespace SabreTools.IO.Test.Extensions
         public void PeekInt24BigEndianTest()
         {
             int offset = 0;
-            int read = _bytes.PeekInt24BigEndian(ref offset);
-            Assert.Equal(0x000102, read);
+            Int24 read = _bytes.PeekInt24BigEndian(ref offset);
+            Assert.Equal(0x000102, (int)read);
             Assert.Equal(0, offset);
         }
 
@@ -1192,8 +1192,8 @@ namespace SabreTools.IO.Test.Extensions
         public void PeekInt24LittleEndianTest()
         {
             int offset = 0;
-            int read = _bytes.PeekInt24LittleEndian(ref offset);
-            Assert.Equal(0x020100, read);
+            Int24 read = _bytes.PeekInt24LittleEndian(ref offset);
+            Assert.Equal(0x020100, (int)read);
             Assert.Equal(0, offset);
         }
 
@@ -1201,8 +1201,8 @@ namespace SabreTools.IO.Test.Extensions
         public void PeekUInt24Test()
         {
             int offset = 0;
-            uint read = _bytes.PeekUInt24(ref offset);
-            Assert.Equal((uint)0x020100, read);
+            UInt24 read = _bytes.PeekUInt24(ref offset);
+            Assert.Equal((uint)0x020100, (uint)read);
             Assert.Equal(0, offset);
         }
 
@@ -1210,8 +1210,8 @@ namespace SabreTools.IO.Test.Extensions
         public void PeekUInt24BigEndianTest()
         {
             int offset = 0;
-            uint read = _bytes.PeekUInt24BigEndian(ref offset);
-            Assert.Equal((uint)0x000102, read);
+            UInt24 read = _bytes.PeekUInt24BigEndian(ref offset);
+            Assert.Equal((uint)0x000102, (uint)read);
             Assert.Equal(0, offset);
         }
 
@@ -1219,8 +1219,8 @@ namespace SabreTools.IO.Test.Extensions
         public void PeekUInt24LittleEndianTest()
         {
             int offset = 0;
-            uint read = _bytes.PeekUInt24LittleEndian(ref offset);
-            Assert.Equal((uint)0x020100, read);
+            UInt24 read = _bytes.PeekUInt24LittleEndian(ref offset);
+            Assert.Equal((uint)0x020100, (uint)read);
             Assert.Equal(0, offset);
         }
 
@@ -1369,8 +1369,8 @@ namespace SabreTools.IO.Test.Extensions
         public void PeekInt48Test()
         {
             int offset = 0;
-            long read = _bytes.PeekInt48(ref offset);
-            Assert.Equal(0x050403020100, read);
+            Int48 read = _bytes.PeekInt48(ref offset);
+            Assert.Equal(0x050403020100, (long)read);
             Assert.Equal(0, offset);
         }
 
@@ -1378,8 +1378,8 @@ namespace SabreTools.IO.Test.Extensions
         public void PeekInt48BigEndianTest()
         {
             int offset = 0;
-            long read = _bytes.PeekInt48BigEndian(ref offset);
-            Assert.Equal(0x000102030405, read);
+            Int48 read = _bytes.PeekInt48BigEndian(ref offset);
+            Assert.Equal(0x000102030405, (long)read);
             Assert.Equal(0, offset);
         }
 
@@ -1387,8 +1387,8 @@ namespace SabreTools.IO.Test.Extensions
         public void PeekInt48LittleEndianTest()
         {
             int offset = 0;
-            long read = _bytes.PeekInt48LittleEndian(ref offset);
-            Assert.Equal(0x050403020100, read);
+            Int48 read = _bytes.PeekInt48LittleEndian(ref offset);
+            Assert.Equal(0x050403020100, (long)read);
             Assert.Equal(0, offset);
         }
 
@@ -1396,8 +1396,8 @@ namespace SabreTools.IO.Test.Extensions
         public void PeekUInt48Test()
         {
             int offset = 0;
-            ulong read = _bytes.PeekUInt48(ref offset);
-            Assert.Equal((ulong)0x050403020100, read);
+            UInt48 read = _bytes.PeekUInt48(ref offset);
+            Assert.Equal((ulong)0x050403020100, (ulong)read);
             Assert.Equal(0, offset);
         }
 
@@ -1405,8 +1405,8 @@ namespace SabreTools.IO.Test.Extensions
         public void PeekUInt48BigEndianTest()
         {
             int offset = 0;
-            ulong read = _bytes.PeekUInt48BigEndian(ref offset);
-            Assert.Equal((ulong)0x000102030405, read);
+            UInt48 read = _bytes.PeekUInt48BigEndian(ref offset);
+            Assert.Equal((ulong)0x000102030405, (ulong)read);
             Assert.Equal(0, offset);
         }
 
@@ -1414,8 +1414,8 @@ namespace SabreTools.IO.Test.Extensions
         public void PeekUInt48LittleEndianTest()
         {
             int offset = 0;
-            ulong read = _bytes.PeekUInt48LittleEndian(ref offset);
-            Assert.Equal((ulong)0x050403020100, read);
+            UInt48 read = _bytes.PeekUInt48LittleEndian(ref offset);
+            Assert.Equal((ulong)0x050403020100, (ulong)read);
             Assert.Equal(0, offset);
         }
 
@@ -1893,54 +1893,54 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadInt24Test()
         {
             int offset = 0;
-            bool actual = Array.Empty<byte>().TryReadInt24(ref offset, out int read);
+            bool actual = Array.Empty<byte>().TryReadInt24(ref offset, out Int24 read);
             Assert.False(actual);
-            Assert.Equal(default, read);
+            Assert.Equal(default, (int)read);
         }
 
         [Fact]
         public void TryReadInt24BigEndianTest()
         {
             int offset = 0;
-            bool actual = Array.Empty<byte>().TryReadInt24BigEndian(ref offset, out int read);
+            bool actual = Array.Empty<byte>().TryReadInt24BigEndian(ref offset, out Int24 read);
             Assert.False(actual);
-            Assert.Equal(default, read);
+            Assert.Equal(default, (int)read);
         }
 
         [Fact]
         public void TryReadInt24LittleEndianTest()
         {
             int offset = 0;
-            bool actual = Array.Empty<byte>().TryReadInt24LittleEndian(ref offset, out int read);
+            bool actual = Array.Empty<byte>().TryReadInt24LittleEndian(ref offset, out Int24 read);
             Assert.False(actual);
-            Assert.Equal(default, read);
+            Assert.Equal(default, (int)read);
         }
 
         [Fact]
         public void TryReadUInt24Test()
         {
             int offset = 0;
-            bool actual = Array.Empty<byte>().TryReadUInt24(ref offset, out uint read);
+            bool actual = Array.Empty<byte>().TryReadUInt24(ref offset, out UInt24 read);
             Assert.False(actual);
-            Assert.Equal(default, read);
+            Assert.Equal(default, (uint)read);
         }
 
         [Fact]
         public void TryReadUInt24BigEndianTest()
         {
             int offset = 0;
-            bool actual = Array.Empty<byte>().TryReadUInt24BigEndian(ref offset, out uint read);
+            bool actual = Array.Empty<byte>().TryReadUInt24BigEndian(ref offset, out UInt24 read);
             Assert.False(actual);
-            Assert.Equal(default, read);
+            Assert.Equal(default, (uint)read);
         }
 
         [Fact]
         public void TryReadUInt24LittleEndianTest()
         {
             int offset = 0;
-            bool actual = Array.Empty<byte>().TryReadUInt24LittleEndian(ref offset, out uint read);
+            bool actual = Array.Empty<byte>().TryReadUInt24LittleEndian(ref offset, out UInt24 read);
             Assert.False(actual);
-            Assert.Equal(default, read);
+            Assert.Equal(default, (uint)read);
         }
 
         [Fact]
@@ -2085,54 +2085,54 @@ namespace SabreTools.IO.Test.Extensions
         public void TryReadInt48Test()
         {
             int offset = 0;
-            bool actual = Array.Empty<byte>().TryReadInt48(ref offset, out long read);
+            bool actual = Array.Empty<byte>().TryReadInt48(ref offset, out Int48 read);
             Assert.False(actual);
-            Assert.Equal(default, read);
+            Assert.Equal(default, (long)read);
         }
 
         [Fact]
         public void TryReadInt48BigEndianTest()
         {
             int offset = 0;
-            bool actual = Array.Empty<byte>().TryReadInt48BigEndian(ref offset, out long read);
+            bool actual = Array.Empty<byte>().TryReadInt48BigEndian(ref offset, out Int48 read);
             Assert.False(actual);
-            Assert.Equal(default, read);
+            Assert.Equal(default, (long)read);
         }
 
         [Fact]
         public void TryReadInt48LittleEndianTest()
         {
             int offset = 0;
-            bool actual = Array.Empty<byte>().TryReadInt48LittleEndian(ref offset, out long read);
+            bool actual = Array.Empty<byte>().TryReadInt48LittleEndian(ref offset, out Int48 read);
             Assert.False(actual);
-            Assert.Equal(default, read);
+            Assert.Equal(default, (long)read);
         }
 
         [Fact]
         public void TryReadUInt48Test()
         {
             int offset = 0;
-            bool actual = Array.Empty<byte>().TryReadUInt48(ref offset, out ulong read);
+            bool actual = Array.Empty<byte>().TryReadUInt48(ref offset, out UInt48 read);
             Assert.False(actual);
-            Assert.Equal(default, read);
+            Assert.Equal(default, (ulong)read);
         }
 
         [Fact]
         public void TryReadUInt48BigEndianTest()
         {
             int offset = 0;
-            bool actual = Array.Empty<byte>().TryReadUInt48BigEndian(ref offset, out ulong read);
+            bool actual = Array.Empty<byte>().TryReadUInt48BigEndian(ref offset, out UInt48 read);
             Assert.False(actual);
-            Assert.Equal(default, read);
+            Assert.Equal(default, (ulong)read);
         }
 
         [Fact]
         public void TryReadUInt48LittleEndianTest()
         {
             int offset = 0;
-            bool actual = Array.Empty<byte>().TryReadUInt48LittleEndian(ref offset, out ulong read);
+            bool actual = Array.Empty<byte>().TryReadUInt48LittleEndian(ref offset, out UInt48 read);
             Assert.False(actual);
-            Assert.Equal(default, read);
+            Assert.Equal(default, (ulong)read);
         }
 
         [Fact]

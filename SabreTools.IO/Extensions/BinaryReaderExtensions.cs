@@ -141,10 +141,10 @@ namespace SabreTools.IO.Extensions
 #endif
 
         /// <summary>
-        /// Read an Int24 encoded as an Int32 from the base stream
+        /// Read an Int24 from the base stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static int ReadInt24(this BinaryReader reader)
+        public static Int24 ReadInt24(this BinaryReader reader)
         {
             if (BitConverter.IsLittleEndian)
                 return reader.ReadInt24LittleEndian();
@@ -153,30 +153,30 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an Int24 encoded as an Int32 from the base stream
+        /// Read an Int24 from the base stream
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static int ReadInt24BigEndian(this BinaryReader reader)
+        public static Int24 ReadInt24BigEndian(this BinaryReader reader)
         {
             byte[] buffer = reader.ReadBytes(3);
             return buffer.ToInt24BigEndian();
         }
 
         /// <summary>
-        /// Read an Int24 encoded as an Int32 from the base stream
+        /// Read an Int24 from the base stream
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static int ReadInt24LittleEndian(this BinaryReader reader)
+        public static Int24 ReadInt24LittleEndian(this BinaryReader reader)
         {
             byte[] buffer = reader.ReadBytes(3);
             return buffer.ToInt24LittleEndian();
         }
 
         /// <summary>
-        /// Read a UInt24 encoded as a UInt32 from the base stream
+        /// Read a UInt24 from the base stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static uint ReadUInt24(this BinaryReader reader)
+        public static UInt24 ReadUInt24(this BinaryReader reader)
         {
             if (BitConverter.IsLittleEndian)
                 return reader.ReadUInt24LittleEndian();
@@ -185,20 +185,20 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a UInt24 encoded as a UInt32 from the base stream
+        /// Read a UInt24 from the base stream
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static uint ReadUInt24BigEndian(this BinaryReader reader)
+        public static UInt24 ReadUInt24BigEndian(this BinaryReader reader)
         {
             byte[] buffer = reader.ReadBytes(3);
             return buffer.ToUInt24BigEndian();
         }
 
         /// <summary>
-        /// Read a UInt24 encoded as a UInt32 from the base stream
+        /// Read a UInt24 from the base stream
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static uint ReadUInt24LittleEndian(this BinaryReader reader)
+        public static UInt24 ReadUInt24LittleEndian(this BinaryReader reader)
         {
             byte[] buffer = reader.ReadBytes(3);
             return buffer.ToUInt24LittleEndian();
@@ -298,10 +298,10 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an Int48 encoded as an Int64 from the base stream
+        /// Read an Int48 from the base stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static long ReadInt48(this BinaryReader reader)
+        public static Int48 ReadInt48(this BinaryReader reader)
         {
             if (BitConverter.IsLittleEndian)
                 return reader.ReadInt48LittleEndian();
@@ -310,30 +310,30 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an Int48 encoded as an Int64 from the base stream
+        /// Read an Int48 from the base stream
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static long ReadInt48BigEndian(this BinaryReader reader)
+        public static Int48 ReadInt48BigEndian(this BinaryReader reader)
         {
             byte[] buffer = reader.ReadBytes(6);
             return buffer.ToInt48BigEndian();
         }
 
         /// <summary>
-        /// Read an Int48 encoded as an Int64 from the base stream
+        /// Read an Int48 from the base stream
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static long ReadInt48LittleEndian(this BinaryReader reader)
+        public static Int48 ReadInt48LittleEndian(this BinaryReader reader)
         {
             byte[] buffer = reader.ReadBytes(6);
             return buffer.ToInt48LittleEndian();
         }
 
         /// <summary>
-        /// Read a UInt48 encoded as a UInt64 from the base stream
+        /// Read a UInt48 from the base stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static ulong ReadUInt48(this BinaryReader reader)
+        public static UInt48 ReadUInt48(this BinaryReader reader)
         {
             if (BitConverter.IsLittleEndian)
                 return reader.ReadUInt48LittleEndian();
@@ -342,20 +342,20 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a UInt48 encoded as a UInt64 from the base stream
+        /// Read a UInt48 from the base stream
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static ulong ReadUInt48BigEndian(this BinaryReader reader)
+        public static UInt48 ReadUInt48BigEndian(this BinaryReader reader)
         {
             byte[] buffer = reader.ReadBytes(6);
             return buffer.ToUInt48BigEndian();
         }
 
         /// <summary>
-        /// Read an UInt48 encoded as an UInt64 from the base stream
+        /// Read an UInt48 from the base stream
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static ulong ReadUInt48LittleEndian(this BinaryReader reader)
+        public static UInt48 ReadUInt48LittleEndian(this BinaryReader reader)
         {
             byte[] buffer = reader.ReadBytes(6);
             return buffer.ToUInt48LittleEndian();
@@ -1243,11 +1243,11 @@ namespace SabreTools.IO.Extensions
 #endif
 
         /// <summary>
-        /// Peek an Int24 encoded as an Int32 from the base stream
+        /// Peek an Int24 from the base stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
         /// <remarks>Only works properly on seekable streams</remarks>
-        public static int PeekInt24(this BinaryReader reader)
+        public static Int24 PeekInt24(this BinaryReader reader)
         {
             if (BitConverter.IsLittleEndian)
                 return reader.PeekInt24LittleEndian();
@@ -1256,35 +1256,35 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Peek an Int24 encoded as an Int32 from the base stream
+        /// Peek an Int24 from the base stream
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
         /// <remarks>Only works properly on seekable streams</remarks>
-        public static int PeekInt24BigEndian(this BinaryReader reader)
+        public static Int24 PeekInt24BigEndian(this BinaryReader reader)
         {
-            int value = reader.ReadInt24BigEndian();
+            Int24 value = reader.ReadInt24BigEndian();
             reader.BaseStream.SeekIfPossible(-3, SeekOrigin.Current);
             return value;
         }
 
         /// <summary>
-        /// Peek an Int24 encoded as an Int32 from the base stream
+        /// Peek an Int24 from the base stream
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
         /// <remarks>Only works properly on seekable streams</remarks>
-        public static int PeekInt24LittleEndian(this BinaryReader reader)
+        public static Int24 PeekInt24LittleEndian(this BinaryReader reader)
         {
-            int value = reader.ReadInt24LittleEndian();
+            Int24 value = reader.ReadInt24LittleEndian();
             reader.BaseStream.SeekIfPossible(-3, SeekOrigin.Current);
             return value;
         }
 
         /// <summary>
-        /// Peek a UInt24 encoded as a UInt32 from the base stream
+        /// Peek a UInt24 from the base stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
         /// <remarks>Only works properly on seekable streams</remarks>
-        public static uint PeekUInt24(this BinaryReader reader)
+        public static UInt24 PeekUInt24(this BinaryReader reader)
         {
             if (BitConverter.IsLittleEndian)
                 return reader.PeekUInt24LittleEndian();
@@ -1293,25 +1293,25 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Peek a UInt24 encoded as a UInt32 from the base stream
+        /// Peek a UInt24 from the base stream
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
         /// <remarks>Only works properly on seekable streams</remarks>
-        public static uint PeekUInt24BigEndian(this BinaryReader reader)
+        public static UInt24 PeekUInt24BigEndian(this BinaryReader reader)
         {
-            uint value = reader.ReadUInt24BigEndian();
+            UInt24 value = reader.ReadUInt24BigEndian();
             reader.BaseStream.SeekIfPossible(-3, SeekOrigin.Current);
             return value;
         }
 
         /// <summary>
-        /// Peek a UInt24 encoded as a UInt32 from the base stream
+        /// Peek a UInt24 from the base stream
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
         /// <remarks>Only works properly on seekable streams</remarks>
-        public static uint PeekUInt24LittleEndian(this BinaryReader reader)
+        public static UInt24 PeekUInt24LittleEndian(this BinaryReader reader)
         {
-            uint value = reader.ReadUInt24LittleEndian();
+            UInt24 value = reader.ReadUInt24LittleEndian();
             reader.BaseStream.SeekIfPossible(-3, SeekOrigin.Current);
             return value;
         }
@@ -1484,11 +1484,11 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Peek an Int48 encoded as an Int64 from the base stream
+        /// Peek an Int48 from the base stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
         /// <remarks>Only works properly on seekable streams</remarks>
-        public static long PeekInt48(this BinaryReader reader)
+        public static Int48 PeekInt48(this BinaryReader reader)
         {
             if (BitConverter.IsLittleEndian)
                 return reader.PeekInt48LittleEndian();
@@ -1497,35 +1497,35 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Peek an Int48 encoded as an Int64 from the base stream
+        /// Peek an Int48 from the base stream
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
         /// <remarks>Only works properly on seekable streams</remarks>
-        public static long PeekInt48BigEndian(this BinaryReader reader)
+        public static Int48 PeekInt48BigEndian(this BinaryReader reader)
         {
-            long value = reader.ReadInt48BigEndian();
+            Int48 value = reader.ReadInt48BigEndian();
             reader.BaseStream.SeekIfPossible(-6, SeekOrigin.Current);
             return value;
         }
 
         /// <summary>
-        /// Peek an Int48 encoded as an Int64 from the base stream
+        /// Peek an Int48 from the base stream
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
         /// <remarks>Only works properly on seekable streams</remarks>
-        public static long PeekInt48LittleEndian(this BinaryReader reader)
+        public static Int48 PeekInt48LittleEndian(this BinaryReader reader)
         {
-            long value = reader.ReadInt48LittleEndian();
+            Int48 value = reader.ReadInt48LittleEndian();
             reader.BaseStream.SeekIfPossible(-6, SeekOrigin.Current);
             return value;
         }
 
         /// <summary>
-        /// Peek a UInt48 encoded as a UInt64 from the base stream
+        /// Peek a UInt48 from the base stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
         /// <remarks>Only works properly on seekable streams</remarks>
-        public static ulong PeekUInt48(this BinaryReader reader)
+        public static UInt48 PeekUInt48(this BinaryReader reader)
         {
             if (BitConverter.IsLittleEndian)
                 return reader.PeekUInt48LittleEndian();
@@ -1534,25 +1534,25 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Peek an UInt48 encoded as an UInt64 from the base stream
+        /// Peek an UInt48 from the base stream
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
         /// <remarks>Only works properly on seekable streams</remarks>
-        public static ulong PeekUInt48BigEndian(this BinaryReader reader)
+        public static UInt48 PeekUInt48BigEndian(this BinaryReader reader)
         {
-            ulong value = reader.ReadUInt48BigEndian();
+            UInt48 value = reader.ReadUInt48BigEndian();
             reader.BaseStream.SeekIfPossible(-6, SeekOrigin.Current);
             return value;
         }
 
         /// <summary>
-        /// Peek an UInt48 encoded as an UInt64 from the base stream
+        /// Peek an UInt48 from the base stream
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
         /// <remarks>Only works properly on seekable streams</remarks>
-        public static ulong PeekUInt48LittleEndian(this BinaryReader reader)
+        public static UInt48 PeekUInt48LittleEndian(this BinaryReader reader)
         {
-            ulong value = reader.ReadUInt48LittleEndian();
+            UInt48 value = reader.ReadUInt48LittleEndian();
             reader.BaseStream.SeekIfPossible(-6, SeekOrigin.Current);
             return value;
         }
@@ -2165,10 +2165,10 @@ namespace SabreTools.IO.Extensions
 #endif
 
         /// <summary>
-        /// Read an Int24 encoded as an Int32 from the base stream
+        /// Read an Int24 from the base stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static bool TryReadInt24(this BinaryReader reader, out int value)
+        public static bool TryReadInt24(this BinaryReader reader, out Int24 value)
         {
             if (BitConverter.IsLittleEndian)
                 return reader.TryReadInt24LittleEndian(out value);
@@ -2177,14 +2177,14 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an Int24 encoded as an Int32 from the base stream
+        /// Read an Int24 from the base stream
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static bool TryReadInt24BigEndian(this BinaryReader reader, out int value)
+        public static bool TryReadInt24BigEndian(this BinaryReader reader, out Int24 value)
         {
             if (reader.BaseStream.Position > reader.BaseStream.Length - 3)
             {
-                value = default;
+                value = new Int24();
                 return false;
             }
 
@@ -2193,14 +2193,14 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an Int24 encoded as an Int32 from the base stream
+        /// Read an Int24 from the base stream
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static bool TryReadInt24LittleEndian(this BinaryReader reader, out int value)
+        public static bool TryReadInt24LittleEndian(this BinaryReader reader, out Int24 value)
         {
             if (reader.BaseStream.Position > reader.BaseStream.Length - 3)
             {
-                value = default;
+                value = new Int24();
                 return false;
             }
 
@@ -2209,10 +2209,10 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a UInt24 encoded as a UInt32 from the base stream
+        /// Read a UInt24 from the base stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static bool TryReadUInt24(this BinaryReader reader, out uint value)
+        public static bool TryReadUInt24(this BinaryReader reader, out UInt24 value)
         {
             if (BitConverter.IsLittleEndian)
                 return reader.TryReadUInt24LittleEndian(out value);
@@ -2221,14 +2221,14 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a UInt24 encoded as a UInt32 from the base stream
+        /// Read a UInt24 from the base stream
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static bool TryReadUInt24BigEndian(this BinaryReader reader, out uint value)
+        public static bool TryReadUInt24BigEndian(this BinaryReader reader, out UInt24 value)
         {
             if (reader.BaseStream.Position > reader.BaseStream.Length - 3)
             {
-                value = default;
+                value = new UInt24();
                 return false;
             }
 
@@ -2237,14 +2237,14 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a UInt24 encoded as a UInt32 from the base stream
+        /// Read a UInt24 from the base stream
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static bool TryReadUInt24LittleEndian(this BinaryReader reader, out uint value)
+        public static bool TryReadUInt24LittleEndian(this BinaryReader reader, out UInt24 value)
         {
             if (reader.BaseStream.Position > reader.BaseStream.Length - 3)
             {
-                value = default;
+                value = new UInt24();
                 return false;
             }
 
@@ -2445,10 +2445,10 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an Int48 encoded as an Int64 from the base stream
+        /// Read an Int48 from the base stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static bool TryReadInt48(this BinaryReader reader, out long value)
+        public static bool TryReadInt48(this BinaryReader reader, out Int48 value)
         {
             if (BitConverter.IsLittleEndian)
                 return reader.TryReadInt48LittleEndian(out value);
@@ -2457,14 +2457,14 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an Int48 encoded as an Int64 from the base stream
+        /// Read an Int48 from the base stream
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static bool TryReadInt48BigEndian(this BinaryReader reader, out long value)
+        public static bool TryReadInt48BigEndian(this BinaryReader reader, out Int48 value)
         {
             if (reader.BaseStream.Position > reader.BaseStream.Length - 6)
             {
-                value = default;
+                value = new Int48();
                 return false;
             }
 
@@ -2473,14 +2473,14 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an Int48 encoded as an Int64 from the base stream
+        /// Read an Int48 from the base stream
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static bool TryReadInt48LittleEndian(this BinaryReader reader, out long value)
+        public static bool TryReadInt48LittleEndian(this BinaryReader reader, out Int48 value)
         {
             if (reader.BaseStream.Position > reader.BaseStream.Length - 6)
             {
-                value = default;
+                value = new Int48();
                 return false;
             }
 
@@ -2489,10 +2489,10 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a UInt48 encoded as a UInt64 from the base stream
+        /// Read a UInt48 from the base stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static bool TryReadUInt48(this BinaryReader reader, out ulong value)
+        public static bool TryReadUInt48(this BinaryReader reader, out UInt48 value)
         {
             if (BitConverter.IsLittleEndian)
                 return reader.TryReadUInt48LittleEndian(out value);
@@ -2501,14 +2501,14 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a UInt48 encoded as a UInt64 from the base stream
+        /// Read a UInt48 from the base stream
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static bool TryReadUInt48BigEndian(this BinaryReader reader, out ulong value)
+        public static bool TryReadUInt48BigEndian(this BinaryReader reader, out UInt48 value)
         {
             if (reader.BaseStream.Position > reader.BaseStream.Length - 6)
             {
-                value = default;
+                value = new UInt48();
                 return false;
             }
 
@@ -2517,14 +2517,14 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an UInt48 encoded as an UInt64 from the base stream
+        /// Read an UInt48 from the base stream
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static bool TryReadUInt48LittleEndian(this BinaryReader reader, out ulong value)
+        public static bool TryReadUInt48LittleEndian(this BinaryReader reader, out UInt48 value)
         {
             if (reader.BaseStream.Position > reader.BaseStream.Length - 6)
             {
-                value = default;
+                value = new UInt48();
                 return false;
             }
 
@@ -2556,7 +2556,7 @@ namespace SabreTools.IO.Extensions
                 return false;
             }
 
-            value = reader.ReadInt48BigEndian();
+            value = reader.ReadInt64BigEndian();
             return true;
         }
 
@@ -2572,7 +2572,7 @@ namespace SabreTools.IO.Extensions
                 return false;
             }
 
-            value = reader.ReadInt48BigEndian();
+            value = reader.ReadInt64BigEndian();
             return true;
         }
 

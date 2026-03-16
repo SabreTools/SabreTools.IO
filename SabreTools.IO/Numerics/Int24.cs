@@ -150,6 +150,114 @@ namespace SabreTools.Numerics
             return new Int24(value);
         }
 
+        public static Int24 operator &(Int24 a, byte b)
+        {
+            int value = a.Value & b;
+            return new Int24(value);
+        }
+
+        public static Int24 operator |(Int24 a, byte b)
+        {
+            int value = a.Value | b;
+            return new Int24(value);
+        }
+
+        public static Int24 operator ^(Int24 a, byte b)
+        {
+            int value = a.Value ^ b;
+            return new Int24(value);
+        }
+
+        public static Int24 operator &(Int24 a, sbyte b)
+        {
+            int value = a.Value & b;
+            return new Int24(value);
+        }
+
+        public static Int24 operator |(Int24 a, sbyte b)
+        {
+            int value = a.Value | (int)b;
+            return new Int24(value);
+        }
+
+        public static Int24 operator ^(Int24 a, sbyte b)
+        {
+            int value = a.Value ^ b;
+            return new Int24(value);
+        }
+
+        public static Int24 operator &(Int24 a, short b)
+        {
+            int value = a.Value & b;
+            return new Int24(value);
+        }
+
+        public static Int24 operator |(Int24 a, short b)
+        {
+            int value = a.Value | (int)b;
+            return new Int24(value);
+        }
+
+        public static Int24 operator ^(Int24 a, short b)
+        {
+            int value = a.Value ^ b;
+            return new Int24(value);
+        }
+
+        public static Int24 operator &(Int24 a, ushort b)
+        {
+            int value = a.Value & b;
+            return new Int24(value);
+        }
+
+        public static Int24 operator |(Int24 a, ushort b)
+        {
+            int value = a.Value | b;
+            return new Int24(value);
+        }
+
+        public static Int24 operator ^(Int24 a, ushort b)
+        {
+            int value = a.Value ^ b;
+            return new Int24(value);
+        }
+
+        public static Int24 operator &(Int24 a, int b)
+        {
+            int value = a.Value & b;
+            return new Int24(value);
+        }
+
+        public static Int24 operator |(Int24 a, int b)
+        {
+            int value = a.Value | b;
+            return new Int24(value);
+        }
+
+        public static Int24 operator ^(Int24 a, int b)
+        {
+            int value = a.Value ^ b;
+            return new Int24(value);
+        }
+
+        public static Int24 operator &(Int24 a, uint b)
+        {
+            int value = a.Value & (int)b;
+            return new Int24(value);
+        }
+
+        public static Int24 operator |(Int24 a, uint b)
+        {
+            int value = a.Value | (int)b;
+            return new Int24(value);
+        }
+
+        public static Int24 operator ^(Int24 a, uint b)
+        {
+            int value = a.Value ^ (int)b;
+            return new Int24(value);
+        }
+
         #endregion
 
         #region Equality operators
@@ -174,9 +282,37 @@ namespace SabreTools.Numerics
 
         #region User-defined conversion operators
 
+        public static explicit operator byte(Int24 a) => (byte)a.Value;
+
+        public static explicit operator Int24(byte a) => new(a);
+
+        public static explicit operator sbyte(Int24 a) => (sbyte)a.Value;
+
+        public static explicit operator Int24(sbyte a) => new(a);
+
+        public static explicit operator short(Int24 a) => (short)a.Value;
+
+        public static explicit operator Int24(short a) => new(a);
+
+        public static explicit operator ushort(Int24 a) => (ushort)a.Value;
+
+        public static explicit operator Int24(ushort a) => new(a);
+
         public static explicit operator int(Int24 a) => a.Value;
 
         public static explicit operator Int24(int a) => new(a);
+
+        public static explicit operator uint(Int24 a) => (uint)a.Value;
+
+        public static explicit operator Int24(uint a) => new((int)a);
+
+        public static explicit operator long(Int24 a) => a.Value;
+
+        public static explicit operator Int24(long a) => new((int)a);
+
+        public static explicit operator ulong(Int24 a) => (ulong)a.Value;
+
+        public static explicit operator Int24(ulong a) => new((int)a);
 
         #endregion
 

@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
+using SabreTools.Numerics;
 
 namespace SabreTools.IO.Extensions
 {
     /// <summary>
     /// Extensions for numeric conversion
     /// </summary>
-    /// TODO: Handle proper negative values for Int24 and Int48
     public static class NumericExtensions
     {
         #region From Byte Array
@@ -126,75 +126,75 @@ namespace SabreTools.IO.Extensions
 #endif
 
         /// <summary>
-        /// Convert a byte array to an Int24 encoded as an Int32
+        /// Convert a byte array to an Int24
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static int ToInt24BigEndian(this byte[] value)
+        public static Int24 ToInt24BigEndian(this byte[] value)
             => value.ToInt24BigEndian(0);
 
         /// <summary>
-        /// Convert a byte array at an offset to an Int24 encoded as an Int32
+        /// Convert a byte array at an offset to an Int24
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static int ToInt24BigEndian(this byte[] value, int offset)
+        public static Int24 ToInt24BigEndian(this byte[] value, int offset)
         {
-            return value[offset + 2]
-                | (value[offset + 1] << 8)
-                | (value[offset + 0] << 16);
+            return (Int24)value[offset + 2]
+                | ((Int24)value[offset + 1] << 8)
+                | ((Int24)value[offset + 0] << 16);
         }
 
         /// <summary>
-        /// Convert a byte array to an Int24 encoded as an Int32
+        /// Convert a byte array to an Int24
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static int ToInt24LittleEndian(this byte[] value)
+        public static Int24 ToInt24LittleEndian(this byte[] value)
             => value.ToInt24LittleEndian(0);
 
         /// <summary>
-        /// Convert a byte array at an offset to an Int24 encoded as an Int32
+        /// Convert a byte array at an offset to an Int24
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static int ToInt24LittleEndian(this byte[] value, int offset)
+        public static Int24 ToInt24LittleEndian(this byte[] value, int offset)
         {
-            return value[offset + 0]
-                | (value[offset + 1] << 8)
-                | (value[offset + 2] << 16);
+            return (Int24)value[offset + 0]
+                | ((Int24)value[offset + 1] << 8)
+                | ((Int24)value[offset + 2] << 16);
         }
 
         /// <summary>
-        /// Convert a byte array to a UInt24 encoded as a UInt32
+        /// Convert a byte array to a UInt24
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static uint ToUInt24BigEndian(this byte[] value)
+        public static UInt24 ToUInt24BigEndian(this byte[] value)
             => value.ToUInt24BigEndian(0);
 
         /// <summary>
-        /// Convert a byte array at an offset to a UInt24 encoded as a UInt32
+        /// Convert a byte array at an offset to a UInt24
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static uint ToUInt24BigEndian(this byte[] value, int offset)
+        public static UInt24 ToUInt24BigEndian(this byte[] value, int offset)
         {
-            return (uint)(value[offset + 2]
-                       | (value[offset + 1] << 8)
-                       | (value[offset + 0] << 16));
+            return (UInt24)value[offset + 2]
+                | ((UInt24)value[offset + 1] << 8)
+                | ((UInt24)value[offset + 0] << 16);
         }
 
         /// <summary>
-        /// Convert a byte array to a UInt24 encoded as a UInt32
+        /// Convert a byte array to a UInt24
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static uint ToUInt24LittleEndian(this byte[] value)
+        public static UInt24 ToUInt24LittleEndian(this byte[] value)
             => value.ToUInt24LittleEndian(0);
 
         /// <summary>
-        /// Convert a byte array at an offset to a UInt24 encoded as a UInt32
+        /// Convert a byte array at an offset to a UInt24
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static uint ToUInt24LittleEndian(this byte[] value, int offset)
+        public static UInt24 ToUInt24LittleEndian(this byte[] value, int offset)
         {
-            return (uint)(value[offset + 0]
-                        | (value[offset + 1] << 8)
-                        | (value[offset + 2] << 16));
+            return (UInt24)value[offset + 0]
+                | ((UInt24)value[offset + 1] << 8)
+                | ((UInt24)value[offset + 2] << 16);
         }
 
         /// <summary>
@@ -322,87 +322,87 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Convert a byte array to an Int48 encoded as an Int64
+        /// Convert a byte array to an Int48
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static long ToInt48BigEndian(this byte[] value)
+        public static Int48 ToInt48BigEndian(this byte[] value)
             => value.ToInt48BigEndian(0);
 
         /// <summary>
-        /// Convert a byte array at an offset to an Int48 encoded as an Int64
+        /// Convert a byte array at an offset to an Int48
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static long ToInt48BigEndian(this byte[] value, int offset)
+        public static Int48 ToInt48BigEndian(this byte[] value, int offset)
         {
-            return value[offset + 5]
-                | ((long)value[offset + 4] << 8)
-                | ((long)value[offset + 3] << 16)
-                | ((long)value[offset + 2] << 24)
-                | ((long)value[offset + 1] << 32)
-                | ((long)value[offset + 0] << 40);
+            return (Int48)value[offset + 5]
+                | ((Int48)value[offset + 4] << 8)
+                | ((Int48)value[offset + 3] << 16)
+                | ((Int48)value[offset + 2] << 24)
+                | ((Int48)value[offset + 1] << 32)
+                | ((Int48)value[offset + 0] << 40);
         }
 
         /// <summary>
-        /// Convert a byte array to an Int48 encoded as an Int64
+        /// Convert a byte array to an Int48
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static long ToInt48LittleEndian(this byte[] value)
+        public static Int48 ToInt48LittleEndian(this byte[] value)
             => value.ToInt48LittleEndian(0);
 
         /// <summary>
-        /// Convert a byte array at an offset to an Int48 encoded as an Int64
+        /// Convert a byte array at an offset to an Int48
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static long ToInt48LittleEndian(this byte[] value, int offset)
+        public static Int48 ToInt48LittleEndian(this byte[] value, int offset)
         {
-            return value[offset + 0]
-                | ((long)value[offset + 1] << 8)
-                | ((long)value[offset + 2] << 16)
-                | ((long)value[offset + 3] << 24)
-                | ((long)value[offset + 4] << 32)
-                | ((long)value[offset + 5] << 40);
+            return (Int48)value[offset + 0]
+                | ((Int48)value[offset + 1] << 8)
+                | ((Int48)value[offset + 2] << 16)
+                | ((Int48)value[offset + 3] << 24)
+                | ((Int48)value[offset + 4] << 32)
+                | ((Int48)value[offset + 5] << 40);
         }
 
         /// <summary>
-        /// Convert a byte array to a UInt48 encoded as a UInt64
+        /// Convert a byte array to a UInt48
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static ulong ToUInt48BigEndian(this byte[] value)
+        public static UInt48 ToUInt48BigEndian(this byte[] value)
             => value.ToUInt48BigEndian(0);
 
         /// <summary>
-        /// Convert a byte array at an offset to a UInt48 encoded as a UInt64
+        /// Convert a byte array at an offset to a UInt48
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static ulong ToUInt48BigEndian(this byte[] value, int offset)
+        public static UInt48 ToUInt48BigEndian(this byte[] value, int offset)
         {
-            return value[offset + 5]
-                | ((ulong)value[offset + 4] << 8)
-                | ((ulong)value[offset + 3] << 16)
-                | ((ulong)value[offset + 2] << 24)
-                | ((ulong)value[offset + 1] << 32)
-                | ((ulong)value[offset + 0] << 40);
+            return (UInt48)value[offset + 5]
+                | ((UInt48)value[offset + 4] << 8)
+                | ((UInt48)value[offset + 3] << 16)
+                | ((UInt48)value[offset + 2] << 24)
+                | ((UInt48)value[offset + 1] << 32)
+                | ((UInt48)value[offset + 0] << 40);
         }
 
         /// <summary>
-        /// Convert a byte array to a UInt48 encoded as a UInt64
+        /// Convert a byte array to a UInt48
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static ulong ToUInt48LittleEndian(this byte[] value)
+        public static UInt48 ToUInt48LittleEndian(this byte[] value)
             => value.ToUInt48LittleEndian(0);
 
         /// <summary>
-        /// Convert a byte array at an offset to a UInt48 encoded as a UInt64
+        /// Convert a byte array at an offset to a UInt48
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static ulong ToUInt48LittleEndian(this byte[] value, int offset)
+        public static UInt48 ToUInt48LittleEndian(this byte[] value, int offset)
         {
-            return value[offset + 0]
-                | ((ulong)value[offset + 1] << 8)
-                | ((ulong)value[offset + 2] << 16)
-                | ((ulong)value[offset + 3] << 24)
-                | ((ulong)value[offset + 4] << 32)
-                | ((ulong)value[offset + 5] << 40);
+            return (UInt48)value[offset + 0]
+                | ((UInt48)value[offset + 1] << 8)
+                | ((UInt48)value[offset + 2] << 16)
+                | ((UInt48)value[offset + 3] << 24)
+                | ((UInt48)value[offset + 4] << 32)
+                | ((UInt48)value[offset + 5] << 40);
         }
 
         /// <summary>
@@ -868,10 +868,10 @@ namespace SabreTools.IO.Extensions
 #endif
 
         /// <summary>
-        /// Convert an Int24 encoded as an Int32 to a byte array
+        /// Convert an Int24 to a byte array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] GetBytesAsInt24BigEndian(this int value)
+        public static byte[] GetBytesBigEndian(this Int24 value)
         {
             byte[] output =
             [
@@ -884,10 +884,10 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Convert an Int24 encoded as an Int32 to a byte array
+        /// Convert an Int24 to a byte array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static byte[] GetBytesAsInt24LittleEndian(this int value)
+        public static byte[] GetBytesLittleEndian(this Int24 value)
         {
             byte[] output =
             [
@@ -900,10 +900,10 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Convert a UInt24 encoded as a UInt32 to a byte array
+        /// Convert a UInt24 to a byte array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] GetBytesAsUInt24BigEndian(this uint value)
+        public static byte[] GetBytesBigEndian(this UInt24 value)
         {
             byte[] output =
             [
@@ -916,10 +916,10 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Convert a UInt24 encoded as a UInt32 to a byte array
+        /// Convert a UInt24 to a byte array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static byte[] GetBytesAsUInt24LittleEndian(this uint value)
+        public static byte[] GetBytesLittleEndian(this UInt24 value)
         {
             byte[] output =
             [
@@ -1042,10 +1042,10 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Convert an Int48 encoded as an Int64 to a byte array
+        /// Convert an Int48 to a byte array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] GetBytesAsInt48BigEndian(this long value)
+        public static byte[] GetBytesBigEndian(this Int48 value)
         {
             byte[] output =
             [
@@ -1061,10 +1061,10 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Convert an Int48 encoded as an Int64 to a byte array
+        /// Convert an Int48 to a byte array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static byte[] GetBytesAsInt48LittleEndian(this long value)
+        public static byte[] GetBytesLittleEndian(this Int48 value)
         {
             byte[] output =
             [
@@ -1080,10 +1080,10 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Converta UInt48 encoded as a UInt64 to a byte array
+        /// Converta UInt48 to a byte array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] GetBytesAsUInt48BigEndian(this ulong value)
+        public static byte[] GetBytesBigEndian(this UInt48 value)
         {
             byte[] output =
             [
@@ -1099,10 +1099,10 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Convert a UInt48 encoded as a UInt64 to a byte array
+        /// Convert a UInt48 to a byte array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static byte[] GetBytesAsUInt48LittleEndian(this ulong value)
+        public static byte[] GetBytesLittleEndian(this UInt48 value)
         {
             byte[] output =
             [

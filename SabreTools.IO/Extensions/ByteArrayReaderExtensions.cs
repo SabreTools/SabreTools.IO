@@ -224,10 +224,10 @@ namespace SabreTools.IO.Extensions
 #endif
 
         /// <summary>
-        /// Read an Int24 encoded as an Int32 and increment the pointer to an array
+        /// Read an Int24 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static int ReadInt24(this byte[] content, ref int offset)
+        public static Int24 ReadInt24(this byte[] content, ref int offset)
         {
             if (BitConverter.IsLittleEndian)
                 return content.ReadInt24LittleEndian(ref offset);
@@ -236,30 +236,30 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an Int24 encoded as an Int32 and increment the pointer to an array
+        /// Read an Int24 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static int ReadInt24BigEndian(this byte[] content, ref int offset)
+        public static Int24 ReadInt24BigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 3);
             return buffer.ToInt24BigEndian();
         }
 
         /// <summary>
-        /// Read an Int24 encoded as an Int32 and increment the pointer to an array
+        /// Read an Int24 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static int ReadInt24LittleEndian(this byte[] content, ref int offset)
+        public static Int24 ReadInt24LittleEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 3);
             return buffer.ToInt24LittleEndian();
         }
 
         /// <summary>
-        /// Read a UInt24 encoded as a UInt32 and increment the pointer to an array
+        /// Read a UInt24 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static uint ReadUInt24(this byte[] content, ref int offset)
+        public static UInt24 ReadUInt24(this byte[] content, ref int offset)
         {
             if (BitConverter.IsLittleEndian)
                 return content.ReadUInt24LittleEndian(ref offset);
@@ -268,20 +268,20 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a UInt24 encoded as a UInt32 and increment the pointer to an array
+        /// Read a UInt24 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static uint ReadUInt24BigEndian(this byte[] content, ref int offset)
+        public static UInt24 ReadUInt24BigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 3);
             return buffer.ToUInt24BigEndian();
         }
 
         /// <summary>
-        /// Read a UInt24 encoded as a UInt32 and increment the pointer to an array
+        /// Read a UInt24 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static uint ReadUInt24LittleEndian(this byte[] content, ref int offset)
+        public static UInt24 ReadUInt24LittleEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 3);
             return buffer.ToUInt24LittleEndian();
@@ -434,10 +434,10 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an Int48 encoded as an Int64 and increment the pointer to an array
+        /// Read an Int48 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static long ReadInt48(this byte[] content, ref int offset)
+        public static Int48 ReadInt48(this byte[] content, ref int offset)
         {
             if (BitConverter.IsLittleEndian)
                 return content.ReadInt48LittleEndian(ref offset);
@@ -446,30 +446,30 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an Int48 encoded as an Int64 and increment the pointer to an array
+        /// Read an Int48 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static long ReadInt48BigEndian(this byte[] content, ref int offset)
+        public static Int48 ReadInt48BigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 6);
             return buffer.ToInt48BigEndian();
         }
 
         /// <summary>
-        /// Read an Int48 encoded as an Int64 and increment the pointer to an array
+        /// Read an Int48 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static long ReadInt48LittleEndian(this byte[] content, ref int offset)
+        public static Int48 ReadInt48LittleEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 6);
             return buffer.ToInt48LittleEndian();
         }
 
         /// <summary>
-        /// Read a UInt48 encoded as a UInt64 and increment the pointer to an array
+        /// Read a UInt48 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static ulong ReadUInt48(this byte[] content, ref int offset)
+        public static UInt48 ReadUInt48(this byte[] content, ref int offset)
         {
             if (BitConverter.IsLittleEndian)
                 return content.ReadUInt48LittleEndian(ref offset);
@@ -478,20 +478,20 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an UInt48 encoded as an UInt64 and increment the pointer to an array
+        /// Read an UInt48 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static ulong ReadUInt48BigEndian(this byte[] content, ref int offset)
+        public static UInt48 ReadUInt48BigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 6);
             return buffer.ToUInt48BigEndian();
         }
 
         /// <summary>
-        /// Read an UInt48 encoded as an UInt64 and increment the pointer to an array
+        /// Read an UInt48 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static ulong ReadUInt48LittleEndian(this byte[] content, ref int offset)
+        public static UInt48 ReadUInt48LittleEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 6);
             return buffer.ToUInt48LittleEndian();
@@ -1483,10 +1483,10 @@ namespace SabreTools.IO.Extensions
 #endif
 
         /// <summary>
-        /// Peek an Int24 encoded as an Int32 without incrementing the pointer to an array
+        /// Peek an Int24 without incrementing the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static int PeekInt24(this byte[] content, ref int offset)
+        public static Int24 PeekInt24(this byte[] content, ref int offset)
         {
             if (BitConverter.IsLittleEndian)
                 return content.PeekInt24LittleEndian(ref offset);
@@ -1495,32 +1495,32 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Peek an Int24 encoded as an Int32 without incrementing the pointer to an array
+        /// Peek an Int24 without incrementing the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static int PeekInt24BigEndian(this byte[] content, ref int offset)
+        public static Int24 PeekInt24BigEndian(this byte[] content, ref int offset)
         {
-            int value = content.ReadInt24BigEndian(ref offset);
+            Int24 value = content.ReadInt24BigEndian(ref offset);
             offset -= 3;
             return value;
         }
 
         /// <summary>
-        /// Peek an Int24 encoded as an Int32 without incrementing the pointer to an array
+        /// Peek an Int24 without incrementing the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static int PeekInt24LittleEndian(this byte[] content, ref int offset)
+        public static Int24 PeekInt24LittleEndian(this byte[] content, ref int offset)
         {
-            int value = content.ReadInt24LittleEndian(ref offset);
+            Int24 value = content.ReadInt24LittleEndian(ref offset);
             offset -= 3;
             return value;
         }
 
         /// <summary>
-        /// Peek a UInt24 encoded as a UInt32 without incrementing the pointer to an array
+        /// Peek a UInt24 without incrementing the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static uint PeekUInt24(this byte[] content, ref int offset)
+        public static UInt24 PeekUInt24(this byte[] content, ref int offset)
         {
             if (BitConverter.IsLittleEndian)
                 return content.PeekUInt24LittleEndian(ref offset);
@@ -1529,23 +1529,23 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Peek a UInt24 encoded as a UInt32 without incrementing the pointer to an array
+        /// Peek a UInt24 without incrementing the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static uint PeekUInt24BigEndian(this byte[] content, ref int offset)
+        public static UInt24 PeekUInt24BigEndian(this byte[] content, ref int offset)
         {
-            uint value = content.ReadUInt24BigEndian(ref offset);
+            UInt24 value = content.ReadUInt24BigEndian(ref offset);
             offset -= 3;
             return value;
         }
 
         /// <summary>
-        /// Peek a UInt24 encoded as a UInt32 without incrementing the pointer to an array
+        /// Peek a UInt24 without incrementing the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static uint PeekUInt24LittleEndian(this byte[] content, ref int offset)
+        public static UInt24 PeekUInt24LittleEndian(this byte[] content, ref int offset)
         {
-            uint value = content.ReadUInt24LittleEndian(ref offset);
+            UInt24 value = content.ReadUInt24LittleEndian(ref offset);
             offset -= 3;
             return value;
         }
@@ -1703,10 +1703,10 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Peek an Int48 encoded as an Int64 without incrementing the pointer to an array
+        /// Peek an Int48 without incrementing the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static long PeekInt48(this byte[] content, ref int offset)
+        public static Int48 PeekInt48(this byte[] content, ref int offset)
         {
             if (BitConverter.IsLittleEndian)
                 return content.PeekInt48LittleEndian(ref offset);
@@ -1715,32 +1715,32 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Peek an Int48 encoded as an Int64 without incrementing the pointer to an array
+        /// Peek an Int48 without incrementing the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static long PeekInt48BigEndian(this byte[] content, ref int offset)
+        public static Int48 PeekInt48BigEndian(this byte[] content, ref int offset)
         {
-            long value = content.ReadInt48BigEndian(ref offset);
+            Int48 value = content.ReadInt48BigEndian(ref offset);
             offset -= 6;
             return value;
         }
 
         /// <summary>
-        /// Peek an Int48 encoded as an Int64 without incrementing the pointer to an array
+        /// Peek an Int48 without incrementing the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static long PeekInt48LittleEndian(this byte[] content, ref int offset)
+        public static Int48 PeekInt48LittleEndian(this byte[] content, ref int offset)
         {
-            long value = content.ReadInt48LittleEndian(ref offset);
+            Int48 value = content.ReadInt48LittleEndian(ref offset);
             offset -= 6;
             return value;
         }
 
         /// <summary>
-        /// Peek a UInt48 encoded as a UInt64 without incrementing the pointer to an array
+        /// Peek a UInt48 without incrementing the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static ulong PeekUInt48(this byte[] content, ref int offset)
+        public static UInt48 PeekUInt48(this byte[] content, ref int offset)
         {
             if (BitConverter.IsLittleEndian)
                 return content.PeekUInt48LittleEndian(ref offset);
@@ -1749,23 +1749,23 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Peek an UInt48 encoded as an UInt64 without incrementing the pointer to an array
+        /// Peek an UInt48 without incrementing the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static ulong PeekUInt48BigEndian(this byte[] content, ref int offset)
+        public static UInt48 PeekUInt48BigEndian(this byte[] content, ref int offset)
         {
-            ulong value = content.ReadUInt48BigEndian(ref offset);
+            UInt48 value = content.ReadUInt48BigEndian(ref offset);
             offset -= 6;
             return value;
         }
 
         /// <summary>
-        /// Peek an UInt48 encoded as an UInt64 without incrementing the pointer to an array
+        /// Peek an UInt48 without incrementing the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static ulong PeekUInt48LittleEndian(this byte[] content, ref int offset)
+        public static UInt48 PeekUInt48LittleEndian(this byte[] content, ref int offset)
         {
-            ulong value = content.ReadUInt48LittleEndian(ref offset);
+            UInt48 value = content.ReadUInt48LittleEndian(ref offset);
             offset -= 6;
             return value;
         }
@@ -2366,10 +2366,10 @@ namespace SabreTools.IO.Extensions
 #endif
 
         /// <summary>
-        /// Read an Int24 encoded as an Int32 and increment the pointer to an array
+        /// Read an Int24 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static bool TryReadInt24(this byte[] content, ref int offset, out int value)
+        public static bool TryReadInt24(this byte[] content, ref int offset, out Int24 value)
         {
             if (BitConverter.IsLittleEndian)
                 return content.TryReadInt24LittleEndian(ref offset, out value);
@@ -2378,14 +2378,14 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an Int24 encoded as an Int32 and increment the pointer to an array
+        /// Read an Int24 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static bool TryReadInt24BigEndian(this byte[] content, ref int offset, out int value)
+        public static bool TryReadInt24BigEndian(this byte[] content, ref int offset, out Int24 value)
         {
             if (offset > content.Length - 3)
             {
-                value = default;
+                value = new Int24();
                 return false;
             }
 
@@ -2394,14 +2394,14 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an Int24 encoded as an Int32 and increment the pointer to an array
+        /// Read an Int24 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static bool TryReadInt24LittleEndian(this byte[] content, ref int offset, out int value)
+        public static bool TryReadInt24LittleEndian(this byte[] content, ref int offset, out Int24 value)
         {
             if (offset > content.Length - 3)
             {
-                value = default;
+                value = new Int24();
                 return false;
             }
 
@@ -2410,10 +2410,10 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a UInt24 encoded as a UInt32 and increment the pointer to an array
+        /// Read a UInt24 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static bool TryReadUInt24(this byte[] content, ref int offset, out uint value)
+        public static bool TryReadUInt24(this byte[] content, ref int offset, out UInt24 value)
         {
             if (BitConverter.IsLittleEndian)
                 return content.TryReadUInt24LittleEndian(ref offset, out value);
@@ -2422,14 +2422,14 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a UInt24 encoded as a UInt32 and increment the pointer to an array
+        /// Read a UInt24 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static bool TryReadUInt24BigEndian(this byte[] content, ref int offset, out uint value)
+        public static bool TryReadUInt24BigEndian(this byte[] content, ref int offset, out UInt24 value)
         {
             if (offset > content.Length - 3)
             {
-                value = default;
+                value = new UInt24();
                 return false;
             }
 
@@ -2438,14 +2438,14 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a UInt24 encoded as a UInt32 and increment the pointer to an array
+        /// Read a UInt24 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static bool TryReadUInt24LittleEndian(this byte[] content, ref int offset, out uint value)
+        public static bool TryReadUInt24LittleEndian(this byte[] content, ref int offset, out UInt24 value)
         {
             if (offset > content.Length - 3)
             {
-                value = default;
+                value = new UInt24();
                 return false;
             }
 
@@ -2646,10 +2646,10 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an Int48 encoded as an Int64 and increment the pointer to an array
+        /// Read an Int48 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static bool TryReadInt48(this byte[] content, ref int offset, out long value)
+        public static bool TryReadInt48(this byte[] content, ref int offset, out Int48 value)
         {
             if (BitConverter.IsLittleEndian)
                 return content.TryReadInt48LittleEndian(ref offset, out value);
@@ -2658,14 +2658,14 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an Int48 encoded as an Int64 and increment the pointer to an array
+        /// Read an Int48 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static bool TryReadInt48BigEndian(this byte[] content, ref int offset, out long value)
+        public static bool TryReadInt48BigEndian(this byte[] content, ref int offset, out Int48 value)
         {
             if (offset > content.Length - 6)
             {
-                value = default;
+                value = new Int48();
                 return false;
             }
 
@@ -2674,14 +2674,14 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an Int48 encoded as an Int64 and increment the pointer to an array
+        /// Read an Int48 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static bool TryReadInt48LittleEndian(this byte[] content, ref int offset, out long value)
+        public static bool TryReadInt48LittleEndian(this byte[] content, ref int offset, out Int48 value)
         {
             if (offset > content.Length - 6)
             {
-                value = default;
+                value = new Int48();
                 return false;
             }
 
@@ -2690,10 +2690,10 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a UInt48 encoded as a UInt64 and increment the pointer to an array
+        /// Read a UInt48 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
-        public static bool TryReadUInt48(this byte[] content, ref int offset, out ulong value)
+        public static bool TryReadUInt48(this byte[] content, ref int offset, out UInt48 value)
         {
             if (BitConverter.IsLittleEndian)
                 return content.TryReadUInt48LittleEndian(ref offset, out value);
@@ -2702,14 +2702,14 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a UInt48 encoded as a UInt64 and increment the pointer to an array
+        /// Read a UInt48 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static bool TryReadUInt48BigEndian(this byte[] content, ref int offset, out ulong value)
+        public static bool TryReadUInt48BigEndian(this byte[] content, ref int offset, out UInt48 value)
         {
             if (offset > content.Length - 6)
             {
-                value = default;
+                value = new UInt48();
                 return false;
             }
 
@@ -2718,14 +2718,14 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read an UInt48 encoded as an UInt64 and increment the pointer to an array
+        /// Read an UInt48 and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static bool TryReadUInt48LittleEndian(this byte[] content, ref int offset, out ulong value)
+        public static bool TryReadUInt48LittleEndian(this byte[] content, ref int offset, out UInt48 value)
         {
             if (offset > content.Length - 6)
             {
-                value = default;
+                value = new UInt48();
                 return false;
             }
 
@@ -2757,7 +2757,7 @@ namespace SabreTools.IO.Extensions
                 return false;
             }
 
-            value = content.ReadInt48BigEndian(ref offset);
+            value = content.ReadInt64BigEndian(ref offset);
             return true;
         }
 
@@ -2773,7 +2773,7 @@ namespace SabreTools.IO.Extensions
                 return false;
             }
 
-            value = content.ReadInt48BigEndian(ref offset);
+            value = content.ReadInt64BigEndian(ref offset);
             return true;
         }
 
