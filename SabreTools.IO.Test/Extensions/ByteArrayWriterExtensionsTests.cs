@@ -208,6 +208,17 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteHalfTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = [.. _bytes.Take(2)];
+            bool write = buffer.Write(ref offset, BitConverter.Int16BitsToHalf(0x0100));
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
         public void WriteHalfBigEndianTest()
         {
             byte[] buffer = new byte[16];
@@ -408,6 +419,17 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void WriteSingleLittleEndianTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = [.. _bytes.Take(4)];
+            bool write = buffer.WriteLittleEndian(ref offset, BitConverter.Int32BitsToSingle(0x03020100));
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
         public void WriteInt48Test()
         {
             byte[] buffer = new byte[16];
@@ -586,23 +608,12 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
-        public void WriteDecimalTest()
+        public void WriteDoubleLittleEndianTest()
         {
             byte[] buffer = new byte[16];
             int offset = 0;
-            byte[] expected = [.. _decimalBytes.Take(16)];
-            bool write = buffer.Write(ref offset, 0.0123456789M);
-            Assert.True(write);
-            ValidateBytes(expected, buffer);
-        }
-
-        [Fact]
-        public void WriteDecimalBigEndianTest()
-        {
-            byte[] buffer = new byte[16];
-            int offset = 0;
-            byte[] expected = [.. _decimalBytes.Take(16).Reverse()];
-            bool write = buffer.WriteBigEndian(ref offset, 0.0123456789M);
+            byte[] expected = [.. _bytes.Take(8)];
+            bool write = buffer.WriteLittleEndian(ref offset, BitConverter.Int64BitsToDouble(0x0706050403020100));
             Assert.True(write);
             ValidateBytes(expected, buffer);
         }
@@ -691,6 +702,39 @@ namespace SabreTools.IO.Test.Extensions
             int offset = 0;
             byte[] expected = [.. _bytes.Take(16)];
             bool write = buffer.WriteLittleEndian(ref offset, (UInt128)new BigInteger(_bytes));
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteDecimalTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = [.. _decimalBytes.Take(16)];
+            bool write = buffer.Write(ref offset, 0.0123456789M);
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteDecimalBigEndianTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = [.. _decimalBytes.Take(16).Reverse()];
+            bool write = buffer.WriteBigEndian(ref offset, 0.0123456789M);
+            Assert.True(write);
+            ValidateBytes(expected, buffer);
+        }
+
+        [Fact]
+        public void WriteDecimalLittleEndianTest()
+        {
+            byte[] buffer = new byte[16];
+            int offset = 0;
+            byte[] expected = [.. _decimalBytes.Take(16)];
+            bool write = buffer.WriteLittleEndian(ref offset, 0.0123456789M);
             Assert.True(write);
             ValidateBytes(expected, buffer);
         }

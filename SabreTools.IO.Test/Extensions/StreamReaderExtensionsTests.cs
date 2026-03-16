@@ -211,6 +211,15 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void ReadHalfLittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            Half expected = BitConverter.Int16BitsToHalf(0x0100);
+            Half read = stream.ReadHalfLittleEndian();
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
         public void ReadInt24Test()
         {
             var stream = new MemoryStream(_bytes);
@@ -372,6 +381,15 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(_bytes);
             float expected = BitConverter.Int32BitsToSingle(0x00010203);
             float read = stream.ReadSingleBigEndian();
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadSingleLittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            float expected = BitConverter.Int32BitsToSingle(0x03020100);
+            float read = stream.ReadSingleLittleEndian();
             Assert.Equal(expected, read);
         }
 
@@ -541,20 +559,11 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
-        public void ReadDecimalTest()
+        public void ReadDoubleLittleEndianTest()
         {
-            var stream = new MemoryStream(_decimalBytes);
-            decimal expected = 0.0123456789M;
-            decimal read = stream.ReadDecimal();
-            Assert.Equal(expected, read);
-        }
-
-        [Fact]
-        public void ReadDecimalBigEndianTest()
-        {
-            var stream = new MemoryStream([.. Enumerable.Reverse(_decimalBytes)]);
-            decimal expected = 0.0123456789M;
-            decimal read = stream.ReadDecimalBigEndian();
+            var stream = new MemoryStream(_bytes);
+            double expected = BitConverter.Int64BitsToDouble(0x0706050403020100);
+            double read = stream.ReadDoubleLittleEndian();
             Assert.Equal(expected, read);
         }
 
@@ -629,6 +638,33 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(_bytes);
             var expected = (UInt128)new BigInteger(_bytes);
             UInt128 read = stream.ReadUInt128LittleEndian();
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadDecimalTest()
+        {
+            var stream = new MemoryStream(_decimalBytes);
+            decimal expected = 0.0123456789M;
+            decimal read = stream.ReadDecimal();
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadDecimalBigEndianTest()
+        {
+            var stream = new MemoryStream([.. Enumerable.Reverse(_decimalBytes)]);
+            decimal expected = 0.0123456789M;
+            decimal read = stream.ReadDecimalBigEndian();
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadDecimalLittleEndianTest()
+        {
+            var stream = new MemoryStream(_decimalBytes);
+            decimal expected = 0.0123456789M;
+            decimal read = stream.ReadDecimalLittleEndian();
             Assert.Equal(expected, read);
         }
 
@@ -1103,6 +1139,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void PeekHalfLittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            Half expected = BitConverter.Int16BitsToHalf(0x0100);
+            Half read = stream.PeekHalfLittleEndian();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Fact]
         public void PeekInt24Test()
         {
             var stream = new MemoryStream(_bytes);
@@ -1283,6 +1329,16 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(_bytes);
             float expected = BitConverter.Int32BitsToSingle(0x00010203);
             float read = stream.PeekSingleBigEndian();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Fact]
+        public void PeekSingleLittleEndianTest()
+        {
+            var stream = new MemoryStream(_bytes);
+            float expected = BitConverter.Int32BitsToSingle(0x03020100);
+            float read = stream.PeekSingleLittleEndian();
             Assert.Equal(expected, read);
             Assert.Equal(0, stream.Position);
         }
@@ -1473,21 +1529,11 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
-        public void PeekDecimalTest()
+        public void PeekDoubleLittleEndianTest()
         {
-            var stream = new MemoryStream(_decimalBytes);
-            decimal expected = 0.0123456789M;
-            decimal read = stream.PeekDecimal();
-            Assert.Equal(expected, read);
-            Assert.Equal(0, stream.Position);
-        }
-
-        [Fact]
-        public void PeekDecimalBigEndianTest()
-        {
-            var stream = new MemoryStream([.. Enumerable.Reverse(_decimalBytes)]);
-            decimal expected = 0.0123456789M;
-            decimal read = stream.PeekDecimalBigEndian();
+            var stream = new MemoryStream(_bytes);
+            double expected = BitConverter.Int64BitsToDouble(0x0706050403020100);
+            double read = stream.PeekDoubleLittleEndian();
             Assert.Equal(expected, read);
             Assert.Equal(0, stream.Position);
         }
@@ -1570,6 +1616,36 @@ namespace SabreTools.IO.Test.Extensions
             var stream = new MemoryStream(_bytes);
             var expected = (UInt128)new BigInteger(_bytes);
             UInt128 read = stream.PeekUInt128LittleEndian();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Fact]
+        public void PeekDecimalTest()
+        {
+            var stream = new MemoryStream(_decimalBytes);
+            decimal expected = 0.0123456789M;
+            decimal read = stream.PeekDecimal();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Fact]
+        public void PeekDecimalBigEndianTest()
+        {
+            var stream = new MemoryStream([.. Enumerable.Reverse(_decimalBytes)]);
+            decimal expected = 0.0123456789M;
+            decimal read = stream.PeekDecimalBigEndian();
+            Assert.Equal(expected, read);
+            Assert.Equal(0, stream.Position);
+        }
+
+        [Fact]
+        public void PeekDecimalLittleEndianTest()
+        {
+            var stream = new MemoryStream(_decimalBytes);
+            decimal expected = 0.0123456789M;
+            decimal read = stream.PeekDecimalLittleEndian();
             Assert.Equal(expected, read);
             Assert.Equal(0, stream.Position);
         }
@@ -1765,6 +1841,15 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void TryReadHalfLittleEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            bool actual = stream.TryReadHalfLittleEndian(out Half read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
         public void TryReadInt24Test()
         {
             var stream = new MemoryStream([]);
@@ -1943,6 +2028,15 @@ namespace SabreTools.IO.Test.Extensions
         {
             var stream = new MemoryStream([]);
             bool actual = stream.TryReadSingleBigEndian(out float read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadSingleLittleEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            bool actual = stream.TryReadSingleLittleEndian(out float read);
             Assert.False(actual);
             Assert.Equal(default, read);
         }
@@ -2131,19 +2225,10 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
-        public void TryReadDecimalTest()
+        public void TryReadDoubleLittleEndianTest()
         {
             var stream = new MemoryStream([]);
-            bool actual = stream.TryReadDecimal(out decimal read);
-            Assert.False(actual);
-            Assert.Equal(default, read);
-        }
-
-        [Fact]
-        public void TryReadDecimalBigEndianTest()
-        {
-            var stream = new MemoryStream([]);
-            bool actual = stream.TryReadDecimalBigEndian(out decimal read);
+            bool actual = stream.TryReadDoubleLittleEndian(out double read);
             Assert.False(actual);
             Assert.Equal(default, read);
         }
@@ -2216,6 +2301,33 @@ namespace SabreTools.IO.Test.Extensions
         {
             var stream = new MemoryStream([]);
             bool actual = stream.TryReadUInt128LittleEndian(out UInt128 read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDecimalTest()
+        {
+            var stream = new MemoryStream([]);
+            bool actual = stream.TryReadDecimal(out decimal read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDecimalBigEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            bool actual = stream.TryReadDecimalBigEndian(out decimal read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDecimalLittleEndianTest()
+        {
+            var stream = new MemoryStream([]);
+            bool actual = stream.TryReadDecimalLittleEndian(out decimal read);
             Assert.False(actual);
             Assert.Equal(default, read);
         }

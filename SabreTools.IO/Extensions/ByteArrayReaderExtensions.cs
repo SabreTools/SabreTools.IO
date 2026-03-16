@@ -189,16 +189,17 @@ namespace SabreTools.IO.Extensions
         public static BothUInt16 ReadWORDBothEndian(this byte[] content, ref int offset)
             => content.ReadUInt16BothEndian(ref offset);
 
-        // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
-#if NET6_0_OR_GREATER
+#if NET5_0_OR_GREATER
         /// <summary>
         /// Read a Half and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
         public static Half ReadHalf(this byte[] content, ref int offset)
         {
-            byte[] buffer = ReadExactlyToBuffer(content, ref offset, 2);
-            return BitConverter.ToHalf(buffer, 0);
+            if (BitConverter.IsLittleEndian)
+                return content.ReadHalfLittleEndian(ref offset);
+            else
+                return content.ReadHalfBigEndian(ref offset);
         }
 
         /// <summary>
@@ -208,8 +209,17 @@ namespace SabreTools.IO.Extensions
         public static Half ReadHalfBigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 2);
-            Array.Reverse(buffer);
-            return BitConverter.ToHalf(buffer, 0);
+            return buffer.ToHalfBigEndian();
+        }
+
+        /// <summary>
+        /// Read a Half and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static Half ReadHalfLittleEndian(this byte[] content, ref int offset)
+        {
+            byte[] buffer = ReadExactlyToBuffer(content, ref offset, 2);
+            return buffer.ToHalfLittleEndian();
         }
 #endif
 
@@ -397,8 +407,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static float ReadSingle(this byte[] content, ref int offset)
         {
-            byte[] buffer = ReadExactlyToBuffer(content, ref offset, 4);
-            return BitConverter.ToSingle(buffer, 0);
+            if (BitConverter.IsLittleEndian)
+                return content.ReadSingleLittleEndian(ref offset);
+            else
+                return content.ReadSingleBigEndian(ref offset);
         }
 
         /// <summary>
@@ -408,8 +420,17 @@ namespace SabreTools.IO.Extensions
         public static float ReadSingleBigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 4);
-            Array.Reverse(buffer);
-            return BitConverter.ToSingle(buffer, 0);
+            return buffer.ToSingleBigEndian();
+        }
+
+        /// <summary>
+        /// Read a Single and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static float ReadSingleLittleEndian(this byte[] content, ref int offset)
+        {
+            byte[] buffer = ReadExactlyToBuffer(content, ref offset, 4);
+            return buffer.ToSingleLittleEndian();
         }
 
         /// <summary>
@@ -596,8 +617,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static double ReadDouble(this byte[] content, ref int offset)
         {
-            byte[] buffer = ReadExactlyToBuffer(content, ref offset, 8);
-            return BitConverter.ToDouble(buffer, 0);
+            if (BitConverter.IsLittleEndian)
+                return content.ReadDoubleLittleEndian(ref offset);
+            else
+                return content.ReadDoubleBigEndian(ref offset);
         }
 
         /// <summary>
@@ -607,41 +630,17 @@ namespace SabreTools.IO.Extensions
         public static double ReadDoubleBigEndian(this byte[] content, ref int offset)
         {
             byte[] buffer = ReadExactlyToBuffer(content, ref offset, 8);
-            Array.Reverse(buffer);
-            return BitConverter.ToDouble(buffer, 0);
+            return buffer.ToDoubleBigEndian();
         }
 
         /// <summary>
-        /// Read a Decimal and increment the pointer to an array
+        /// Read a Double and increment the pointer to an array
         /// </summary>
-        /// <remarks>Reads in machine native format</remarks>
-        public static decimal ReadDecimal(this byte[] content, ref int offset)
+        /// <remarks>Reads in little-endian format</remarks>
+        public static double ReadDoubleLittleEndian(this byte[] content, ref int offset)
         {
-            byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
-
-            int lo = BitConverter.ToInt32(buffer, 0);
-            int mid = BitConverter.ToInt32(buffer, 4);
-            int hi = BitConverter.ToInt32(buffer, 8);
-            int flags = BitConverter.ToInt32(buffer, 12);
-
-            return new decimal([lo, mid, hi, flags]);
-        }
-
-        /// <summary>
-        /// Read a Decimal and increment the pointer to an array
-        /// </summary>
-        /// <remarks>Reads in big-endian format</remarks>
-        public static decimal ReadDecimalBigEndian(this byte[] content, ref int offset)
-        {
-            byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
-            Array.Reverse(buffer);
-
-            int lo = BitConverter.ToInt32(buffer, 0);
-            int mid = BitConverter.ToInt32(buffer, 4);
-            int hi = BitConverter.ToInt32(buffer, 8);
-            int flags = BitConverter.ToInt32(buffer, 12);
-
-            return new decimal([lo, mid, hi, flags]);
+            byte[] buffer = ReadExactlyToBuffer(content, ref offset, 8);
+            return buffer.ToDoubleLittleEndian();
         }
 
         /// <summary>
@@ -730,6 +729,38 @@ namespace SabreTools.IO.Extensions
             return buffer.ToUInt128LittleEndian();
         }
 #endif
+
+        /// <summary>
+        /// Read a Decimal and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static decimal ReadDecimal(this byte[] content, ref int offset)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.ReadDecimalLittleEndian(ref offset);
+            else
+                return content.ReadDecimalBigEndian(ref offset);
+        }
+
+        /// <summary>
+        /// Read a Decimal and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static decimal ReadDecimalBigEndian(this byte[] content, ref int offset)
+        {
+            byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
+            return buffer.ToDecimalBigEndian();
+        }
+
+        /// <summary>
+        /// Read a Decimal and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static decimal ReadDecimalLittleEndian(this byte[] content, ref int offset)
+        {
+            byte[] buffer = ReadExactlyToBuffer(content, ref offset, 16);
+            return buffer.ToDecimalLittleEndian();
+        }
 
         /// <summary>
         /// Read a null-terminated string from the array
@@ -938,7 +969,7 @@ namespace SabreTools.IO.Extensions
             // Handle special struct cases
             if (type == typeof(Guid))
                 return content.ReadGuid(ref offset);
-#if NET6_0_OR_GREATER
+#if NET5_0_OR_GREATER
             else if (type == typeof(Half))
                 return content.ReadHalf(ref offset);
 #endif
@@ -1404,17 +1435,17 @@ namespace SabreTools.IO.Extensions
         public static BothUInt16 PeekWORDBothEndian(this byte[] content, ref int offset)
             => content.PeekUInt16BothEndian(ref offset);
 
-        // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
-#if NET6_0_OR_GREATER
+#if NET5_0_OR_GREATER
         /// <summary>
         /// Peek a Half without incrementing the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
         public static Half PeekHalf(this byte[] content, ref int offset)
         {
-            Half value = content.ReadHalf(ref offset);
-            offset -= 2;
-            return value;
+            if (BitConverter.IsLittleEndian)
+                return content.PeekHalfLittleEndian(ref offset);
+            else
+                return content.PeekHalfBigEndian(ref offset);
         }
 
         /// <summary>
@@ -1424,6 +1455,17 @@ namespace SabreTools.IO.Extensions
         public static Half PeekHalfBigEndian(this byte[] content, ref int offset)
         {
             Half value = content.ReadHalfBigEndian(ref offset);
+            offset -= 2;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Half without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static Half PeekHalfLittleEndian(this byte[] content, ref int offset)
+        {
+            Half value = content.ReadHalfLittleEndian(ref offset);
             offset -= 2;
             return value;
         }
@@ -1621,9 +1663,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static float PeekSingle(this byte[] content, ref int offset)
         {
-            float value = content.ReadSingle(ref offset);
-            offset -= 4;
-            return value;
+            if (BitConverter.IsLittleEndian)
+                return content.PeekSingleLittleEndian(ref offset);
+            else
+                return content.PeekSingleBigEndian(ref offset);
         }
 
         /// <summary>
@@ -1633,6 +1676,17 @@ namespace SabreTools.IO.Extensions
         public static float PeekSingleBigEndian(this byte[] content, ref int offset)
         {
             float value = content.ReadSingleBigEndian(ref offset);
+            offset -= 4;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Single without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static float PeekSingleLittleEndian(this byte[] content, ref int offset)
+        {
+            float value = content.ReadSingleLittleEndian(ref offset);
             offset -= 4;
             return value;
         }
@@ -1829,9 +1883,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static double PeekDouble(this byte[] content, ref int offset)
         {
-            double value = content.ReadDouble(ref offset);
-            offset -= 8;
-            return value;
+            if (BitConverter.IsLittleEndian)
+                return content.PeekDoubleLittleEndian(ref offset);
+            else
+                return content.PeekDoubleBigEndian(ref offset);
         }
 
         /// <summary>
@@ -1846,24 +1901,13 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Peek a Decimal without incrementing the pointer to an array
+        /// Peek a Double without incrementing the pointer to an array
         /// </summary>
-        /// <remarks>Reads in machine native format</remarks>
-        public static decimal PeekDecimal(this byte[] content, ref int offset)
+        /// <remarks>Reads in little-endian format</remarks>
+        public static double PeekDoubleLittleEndian(this byte[] content, ref int offset)
         {
-            decimal value = content.ReadDecimal(ref offset);
-            offset -= 16;
-            return value;
-        }
-
-        /// <summary>
-        /// Peek a Decimal without incrementing the pointer to an array
-        /// </summary>
-        /// <remarks>Reads in big-endian format</remarks>
-        public static decimal PeekDecimalBigEndian(this byte[] content, ref int offset)
-        {
-            decimal value = content.ReadDecimalBigEndian(ref offset);
-            offset -= 16;
+            double value = content.ReadDoubleLittleEndian(ref offset);
+            offset -= 8;
             return value;
         }
 
@@ -1958,6 +2002,40 @@ namespace SabreTools.IO.Extensions
             return value;
         }
 #endif
+
+        /// <summary>
+        /// Peek a Decimal without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static decimal PeekDecimal(this byte[] content, ref int offset)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.PeekDecimalLittleEndian(ref offset);
+            else
+                return content.PeekDecimalBigEndian(ref offset);
+        }
+
+        /// <summary>
+        /// Peek a Decimal without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static decimal PeekDecimalBigEndian(this byte[] content, ref int offset)
+        {
+            decimal value = content.ReadDecimalBigEndian(ref offset);
+            offset -= 16;
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Decimal without incrementing the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static decimal PeekDecimalLittleEndian(this byte[] content, ref int offset)
+        {
+            decimal value = content.ReadDecimalLittleEndian(ref offset);
+            offset -= 16;
+            return value;
+        }
 
         #endregion
 
@@ -2218,22 +2296,17 @@ namespace SabreTools.IO.Extensions
         public static bool TryReadWORDBothEndian(this byte[] content, ref int offset, out BothUInt16 value)
             => content.TryReadUInt16BothEndian(ref offset, out value);
 
-        // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
-#if NET6_0_OR_GREATER
+#if NET5_0_OR_GREATER
         /// <summary>
         /// Read a Half and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
         public static bool TryReadHalf(this byte[] content, ref int offset, out Half value)
         {
-            if (offset > content.Length - 2)
-            {
-                value = default;
-                return false;
-            }
-
-            value = content.ReadHalf(ref offset);
-            return true;
+            if (BitConverter.IsLittleEndian)
+                return content.TryReadHalfLittleEndian(ref offset, out value);
+            else
+                return content.TryReadHalfBigEndian(ref offset, out value);
         }
 
         /// <summary>
@@ -2249,6 +2322,22 @@ namespace SabreTools.IO.Extensions
             }
 
             value = content.ReadHalfBigEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Half and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadHalfLittleEndian(this byte[] content, ref int offset, out Half value)
+        {
+            if (offset > content.Length - 2)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadHalfLittleEndian(ref offset);
             return true;
         }
 #endif
@@ -2495,14 +2584,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static bool TryReadSingle(this byte[] content, ref int offset, out float value)
         {
-            if (offset > content.Length - 4)
-            {
-                value = default;
-                return false;
-            }
-
-            value = content.ReadSingle(ref offset);
-            return true;
+            if (BitConverter.IsLittleEndian)
+                return content.TryReadSingleLittleEndian(ref offset, out value);
+            else
+                return content.TryReadSingleBigEndian(ref offset, out value);
         }
 
         /// <summary>
@@ -2518,6 +2603,22 @@ namespace SabreTools.IO.Extensions
             }
 
             value = content.ReadSingleBigEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Single and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadSingleLittleEndian(this byte[] content, ref int offset, out float value)
+        {
+            if (offset > content.Length - 4)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadSingleLittleEndian(ref offset);
             return true;
         }
 
@@ -2763,14 +2864,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static bool TryReadDouble(this byte[] content, ref int offset, out double value)
         {
-            if (offset > content.Length - 8)
-            {
-                value = default;
-                return false;
-            }
-
-            value = content.ReadDouble(ref offset);
-            return true;
+            if (BitConverter.IsLittleEndian)
+                return content.TryReadDoubleLittleEndian(ref offset, out value);
+            else
+                return content.TryReadDoubleBigEndian(ref offset, out value);
         }
 
         /// <summary>
@@ -2790,34 +2887,18 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a Decimal and increment the pointer to an array
-        /// </summary>
-        /// <remarks>Reads in machine native format</remarks>
-        public static bool TryReadDecimal(this byte[] content, ref int offset, out decimal value)
-        {
-            if (offset > content.Length - 16)
-            {
-                value = default;
-                return false;
-            }
-
-            value = content.ReadDecimal(ref offset);
-            return true;
-        }
-
-        /// <summary>
-        /// Read a Decimal and increment the pointer to an array
+        /// Read a Double and increment the pointer to an array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static bool TryReadDecimalBigEndian(this byte[] content, ref int offset, out decimal value)
+        public static bool TryReadDoubleLittleEndian(this byte[] content, ref int offset, out double value)
         {
-            if (offset > content.Length - 16)
+            if (offset > content.Length - 8)
             {
                 value = default;
                 return false;
             }
 
-            value = content.ReadDecimalBigEndian(ref offset);
+            value = content.ReadDoubleLittleEndian(ref offset);
             return true;
         }
 
@@ -2942,6 +3023,50 @@ namespace SabreTools.IO.Extensions
             return true;
         }
 #endif
+
+        /// <summary>
+        /// Read a Decimal and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadDecimal(this byte[] content, ref int offset, out decimal value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.TryReadDecimalLittleEndian(ref offset, out value);
+            else
+                return content.TryReadDecimalBigEndian(ref offset, out value);
+        }
+
+        /// <summary>
+        /// Read a Decimal and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadDecimalBigEndian(this byte[] content, ref int offset, out decimal value)
+        {
+            if (offset > content.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadDecimalBigEndian(ref offset);
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Decimal and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadDecimalLittleEndian(this byte[] content, ref int offset, out decimal value)
+        {
+            if (offset > content.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = content.ReadDecimalLittleEndian(ref offset);
+            return true;
+        }
 
         #endregion
     }

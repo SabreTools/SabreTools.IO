@@ -207,6 +207,15 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void ReadHalfLittleEndianTest()
+        {
+            int offset = 0;
+            Half expected = BitConverter.Int16BitsToHalf(0x0100);
+            Half read = _bytes.ReadHalfLittleEndian(ref offset);
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
         public void ReadInt24Test()
         {
             int offset = 0;
@@ -368,6 +377,15 @@ namespace SabreTools.IO.Test.Extensions
             int offset = 0;
             float expected = BitConverter.Int32BitsToSingle(0x00010203);
             float read = _bytes.ReadSingleBigEndian(ref offset);
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadSingleLittleEndianTest()
+        {
+            int offset = 0;
+            float expected = BitConverter.Int32BitsToSingle(0x03020100);
+            float read = _bytes.ReadSingleLittleEndian(ref offset);
             Assert.Equal(expected, read);
         }
 
@@ -537,20 +555,11 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
-        public void ReadDecimalTest()
+        public void ReadDoubleLittleEndianTest()
         {
             int offset = 0;
-            decimal expected = 0.0123456789M;
-            decimal read = _decimalBytes.ReadDecimal(ref offset);
-            Assert.Equal(expected, read);
-        }
-
-        [Fact]
-        public void ReadDecimalBigEndianTest()
-        {
-            int offset = 0;
-            decimal expected = 0.0123456789M;
-            decimal read = Enumerable.Reverse(_decimalBytes).ToArray().ReadDecimalBigEndian(ref offset);
+            double expected = BitConverter.Int64BitsToDouble(0x0706050403020100);
+            double read = _bytes.ReadDoubleLittleEndian(ref offset);
             Assert.Equal(expected, read);
         }
 
@@ -625,6 +634,33 @@ namespace SabreTools.IO.Test.Extensions
             int offset = 0;
             var expected = (UInt128)new BigInteger(_bytes);
             UInt128 read = _bytes.ReadUInt128LittleEndian(ref offset);
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadDecimalTest()
+        {
+            int offset = 0;
+            decimal expected = 0.0123456789M;
+            decimal read = _decimalBytes.ReadDecimal(ref offset);
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadDecimalBigEndianTest()
+        {
+            int offset = 0;
+            decimal expected = 0.0123456789M;
+            decimal read = Enumerable.Reverse(_decimalBytes).ToArray().ReadDecimalBigEndian(ref offset);
+            Assert.Equal(expected, read);
+        }
+
+        [Fact]
+        public void ReadDecimalLittleEndianTest()
+        {
+            int offset = 0;
+            decimal expected = 0.0123456789M;
+            decimal read = _decimalBytes.ReadDecimalLittleEndian(ref offset);
             Assert.Equal(expected, read);
         }
 
@@ -1107,6 +1143,16 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void PeekHalfLittleEndianTest()
+        {
+            int offset = 0;
+            Half expected = BitConverter.Int16BitsToHalf(0x0100);
+            Half read = _bytes.PeekHalfLittleEndian(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
         public void PeekInt24Test()
         {
             int offset = 0;
@@ -1287,6 +1333,16 @@ namespace SabreTools.IO.Test.Extensions
             int offset = 0;
             float expected = BitConverter.Int32BitsToSingle(0x00010203);
             float read = _bytes.PeekSingleBigEndian(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekSingleLittleEndianTest()
+        {
+            int offset = 0;
+            float expected = BitConverter.Int32BitsToSingle(0x03020100);
+            float read = _bytes.PeekSingleLittleEndian(ref offset);
             Assert.Equal(expected, read);
             Assert.Equal(0, offset);
         }
@@ -1477,21 +1533,11 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
-        public void PeekDecimalTest()
+        public void PeekDoubleLittleEndianTest()
         {
             int offset = 0;
-            decimal expected = 0.0123456789M;
-            decimal read = _decimalBytes.PeekDecimal(ref offset);
-            Assert.Equal(expected, read);
-            Assert.Equal(0, offset);
-        }
-
-        [Fact]
-        public void PeekDecimalBigEndianTest()
-        {
-            int offset = 0;
-            decimal expected = 0.0123456789M;
-            decimal read = Enumerable.Reverse(_decimalBytes).ToArray().PeekDecimalBigEndian(ref offset);
+            double expected = BitConverter.Int64BitsToDouble(0x0706050403020100);
+            double read = _bytes.PeekDoubleLittleEndian(ref offset);
             Assert.Equal(expected, read);
             Assert.Equal(0, offset);
         }
@@ -1574,6 +1620,36 @@ namespace SabreTools.IO.Test.Extensions
             int offset = 0;
             var expected = (UInt128)new BigInteger(_bytes);
             UInt128 read = _bytes.PeekUInt128LittleEndian(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekDecimalTest()
+        {
+            int offset = 0;
+            decimal expected = 0.0123456789M;
+            decimal read = _decimalBytes.PeekDecimal(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekDecimalBigEndianTest()
+        {
+            int offset = 0;
+            decimal expected = 0.0123456789M;
+            decimal read = Enumerable.Reverse(_decimalBytes).ToArray().PeekDecimalBigEndian(ref offset);
+            Assert.Equal(expected, read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void PeekDecimalLittleEndianTest()
+        {
+            int offset = 0;
+            decimal expected = 0.0123456789M;
+            decimal read = _decimalBytes.PeekDecimalLittleEndian(ref offset);
             Assert.Equal(expected, read);
             Assert.Equal(0, offset);
         }
@@ -1777,6 +1853,15 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
+        public void TryReadHalfLittleEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadHalfLittleEndian(ref offset, out Half read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
         public void TryReadInt24Test()
         {
             int offset = 0;
@@ -1955,6 +2040,15 @@ namespace SabreTools.IO.Test.Extensions
         {
             int offset = 0;
             bool actual = Array.Empty<byte>().TryReadSingleBigEndian(ref offset, out float read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadSingleLittleEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadSingleLittleEndian(ref offset, out float read);
             Assert.False(actual);
             Assert.Equal(default, read);
         }
@@ -2143,19 +2237,10 @@ namespace SabreTools.IO.Test.Extensions
         }
 
         [Fact]
-        public void TryReadDecimalTest()
+        public void TryReadDoubleLittleEndianTest()
         {
             int offset = 0;
-            bool actual = Array.Empty<byte>().TryReadDecimal(ref offset, out decimal read);
-            Assert.False(actual);
-            Assert.Equal(default, read);
-        }
-
-        [Fact]
-        public void TryReadDecimalBigEndianTest()
-        {
-            int offset = 0;
-            bool actual = Array.Empty<byte>().TryReadDecimalBigEndian(ref offset, out decimal read);
+            bool actual = Array.Empty<byte>().TryReadDoubleLittleEndian(ref offset, out double read);
             Assert.False(actual);
             Assert.Equal(default, read);
         }
@@ -2228,6 +2313,33 @@ namespace SabreTools.IO.Test.Extensions
         {
             int offset = 0;
             bool actual = Array.Empty<byte>().TryReadUInt128LittleEndian(ref offset, out UInt128 read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDecimalTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadDecimal(ref offset, out decimal read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDecimalBigEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadDecimalBigEndian(ref offset, out decimal read);
+            Assert.False(actual);
+            Assert.Equal(default, read);
+        }
+
+        [Fact]
+        public void TryReadDecimalLittleEndianTest()
+        {
+            int offset = 0;
+            bool actual = Array.Empty<byte>().TryReadDecimalLittleEndian(ref offset, out decimal read);
             Assert.False(actual);
             Assert.Equal(default, read);
         }

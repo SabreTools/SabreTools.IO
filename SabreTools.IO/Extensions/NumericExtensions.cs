@@ -1,9 +1,11 @@
+using System;
+using System.Collections.Generic;
+
 namespace SabreTools.IO.Extensions
 {
     /// <summary>
     /// Extensions for numeric conversion
     /// </summary>
-    /// TODO: Add fractional types (Half, Single, Double, Decimal)
     /// TODO: Add GUID
     public static class NumericExtensions
     {
@@ -76,6 +78,52 @@ namespace SabreTools.IO.Extensions
             return (ushort)(value[offset + 0]
                          | (value[offset + 1] << 8));
         }
+
+#if NET5_0_OR_GREATER
+        /// <summary>
+        /// Convert a byte array to a Half
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static Half ToHalfBigEndian(this byte[] value)
+            => value.ToHalfBigEndian(0);
+
+        /// <summary>
+        /// Convert a byte array to a Half
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static unsafe Half ToHalfBigEndian(this byte[] value, int offset)
+        {
+            var output = new Half();
+            byte* p = (byte*)&output;
+
+            *p++ = value[1];
+            *p = value[0];
+
+            return output;
+        }
+
+        /// <summary>
+        /// Convert a byte array to a Half
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static Half ToHalfLittleEndian(this byte[] value)
+            => value.ToHalfLittleEndian(0);
+
+        /// <summary>
+        /// Convert a byte array to a Half
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static unsafe Half ToHalfLittleEndian(this byte[] value, int offset)
+        {
+            var output = new Half();
+            byte* p = (byte*)&output;
+
+            *p++ = value[0];
+            *p = value[1];
+
+            return output;
+        }
+#endif
 
         /// <summary>
         /// Convert a byte array to an Int24 encoded as an Int32
@@ -223,6 +271,54 @@ namespace SabreTools.IO.Extensions
                        | (value[offset + 1] << 8)
                        | (value[offset + 2] << 16)
                        | (value[offset + 3] << 24));
+        }
+
+        /// <summary>
+        /// Convert a byte array to a Single
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static float ToSingleBigEndian(this byte[] value)
+            => value.ToSingleBigEndian(0);
+
+        /// <summary>
+        /// Convert a byte array to a Single
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static unsafe float ToSingleBigEndian(this byte[] value, int offset)
+        {
+            var output = new float();
+            byte* p = (byte*)&output;
+
+            *p++ = value[3];
+            *p++ = value[2];
+            *p++ = value[1];
+            *p = value[0];
+
+            return output;
+        }
+
+        /// <summary>
+        /// Convert a byte array to a Single
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static float ToSingleLittleEndian(this byte[] value)
+            => value.ToSingleLittleEndian(0);
+
+        /// <summary>
+        /// Convert a byte array to a Single
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static unsafe float ToSingleLittleEndian(this byte[] value, int offset)
+        {
+            var output = new float();
+            byte* p = (byte*)&output;
+
+            *p++ = value[0];
+            *p++ = value[1];
+            *p++ = value[2];
+            *p = value[3];
+
+            return output;
         }
 
         /// <summary>
@@ -401,131 +497,229 @@ namespace SabreTools.IO.Extensions
                 | ((ulong)value[offset + 7] << 56);
         }
 
+        /// <summary>
+        /// Convert a byte array to a Double
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static double ToDoubleBigEndian(this byte[] value)
+            => value.ToDoubleBigEndian(0);
+
+        /// <summary>
+        /// Convert a byte array to a Double
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static unsafe double ToDoubleBigEndian(this byte[] value, int offset)
+        {
+            var output = new double();
+            byte* p = (byte*)&output;
+
+            *p++ = value[7];
+            *p++ = value[6];
+            *p++ = value[5];
+            *p++ = value[4];
+            *p++ = value[3];
+            *p++ = value[2];
+            *p++ = value[1];
+            *p = value[0];
+
+            return output;
+        }
+
+        /// <summary>
+        /// Convert a byte array to a Double
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static double ToDoubleLittleEndian(this byte[] value)
+            => value.ToDoubleLittleEndian(0);
+
+        /// <summary>
+        /// Convert a byte array to a Double
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static unsafe double ToDoubleLittleEndian(this byte[] value, int offset)
+        {
+            var output = new double();
+            byte* p = (byte*)&output;
+
+            *p++ = value[0];
+            *p++ = value[1];
+            *p++ = value[2];
+            *p++ = value[3];
+            *p++ = value[4];
+            *p++ = value[5];
+            *p++ = value[6];
+            *p = value[7];
+
+            return output;
+        }
+
 #if NET7_0_OR_GREATER
         /// <summary>
         /// Convert a byte array to an Int128
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static System.Int128 ToInt128BigEndian(this byte[] value)
+        public static Int128 ToInt128BigEndian(this byte[] value)
             => value.ToInt128BigEndian(0);
 
         /// <summary>
         /// Convert a byte array at an offset to an Int128
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static System.Int128 ToInt128BigEndian(this byte[] value, int offset)
+        public static Int128 ToInt128BigEndian(this byte[] value, int offset)
         {
             return value[offset + 15]
-                | ((System.Int128)value[offset + 14] << 8)
-                | ((System.Int128)value[offset + 13] << 16)
-                | ((System.Int128)value[offset + 12] << 24)
-                | ((System.Int128)value[offset + 11] << 32)
-                | ((System.Int128)value[offset + 10] << 40)
-                | ((System.Int128)value[offset + 9] << 48)
-                | ((System.Int128)value[offset + 8] << 56)
-                | ((System.Int128)value[offset + 7] << 64)
-                | ((System.Int128)value[offset + 6] << 72)
-                | ((System.Int128)value[offset + 5] << 80)
-                | ((System.Int128)value[offset + 4] << 88)
-                | ((System.Int128)value[offset + 3] << 96)
-                | ((System.Int128)value[offset + 2] << 104)
-                | ((System.Int128)value[offset + 1] << 112)
-                | ((System.Int128)value[offset + 0] << 120);
+                | ((Int128)value[offset + 14] << 8)
+                | ((Int128)value[offset + 13] << 16)
+                | ((Int128)value[offset + 12] << 24)
+                | ((Int128)value[offset + 11] << 32)
+                | ((Int128)value[offset + 10] << 40)
+                | ((Int128)value[offset + 9] << 48)
+                | ((Int128)value[offset + 8] << 56)
+                | ((Int128)value[offset + 7] << 64)
+                | ((Int128)value[offset + 6] << 72)
+                | ((Int128)value[offset + 5] << 80)
+                | ((Int128)value[offset + 4] << 88)
+                | ((Int128)value[offset + 3] << 96)
+                | ((Int128)value[offset + 2] << 104)
+                | ((Int128)value[offset + 1] << 112)
+                | ((Int128)value[offset + 0] << 120);
         }
 
         /// <summary>
         /// Convert a byte array to an Int128
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static System.Int128 ToInt128LittleEndian(this byte[] value)
+        public static Int128 ToInt128LittleEndian(this byte[] value)
             => value.ToInt128LittleEndian(0);
 
         /// <summary>
         /// Convert a byte array at an offset to an Int128
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static System.Int128 ToInt128LittleEndian(this byte[] value, int offset)
+        public static Int128 ToInt128LittleEndian(this byte[] value, int offset)
         {
             return value[offset + 0]
-                | ((System.Int128)value[offset + 1] << 8)
-                | ((System.Int128)value[offset + 2] << 16)
-                | ((System.Int128)value[offset + 3] << 24)
-                | ((System.Int128)value[offset + 4] << 32)
-                | ((System.Int128)value[offset + 5] << 40)
-                | ((System.Int128)value[offset + 6] << 48)
-                | ((System.Int128)value[offset + 7] << 56)
-                | ((System.Int128)value[offset + 8] << 64)
-                | ((System.Int128)value[offset + 9] << 72)
-                | ((System.Int128)value[offset + 10] << 80)
-                | ((System.Int128)value[offset + 11] << 88)
-                | ((System.Int128)value[offset + 12] << 96)
-                | ((System.Int128)value[offset + 13] << 104)
-                | ((System.Int128)value[offset + 14] << 112)
-                | ((System.Int128)value[offset + 15] << 120);
+                | ((Int128)value[offset + 1] << 8)
+                | ((Int128)value[offset + 2] << 16)
+                | ((Int128)value[offset + 3] << 24)
+                | ((Int128)value[offset + 4] << 32)
+                | ((Int128)value[offset + 5] << 40)
+                | ((Int128)value[offset + 6] << 48)
+                | ((Int128)value[offset + 7] << 56)
+                | ((Int128)value[offset + 8] << 64)
+                | ((Int128)value[offset + 9] << 72)
+                | ((Int128)value[offset + 10] << 80)
+                | ((Int128)value[offset + 11] << 88)
+                | ((Int128)value[offset + 12] << 96)
+                | ((Int128)value[offset + 13] << 104)
+                | ((Int128)value[offset + 14] << 112)
+                | ((Int128)value[offset + 15] << 120);
         }
 
         /// <summary>
         /// Convert a byte array to a UInt128
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static System.UInt128 ToUInt128BigEndian(this byte[] value)
+        public static UInt128 ToUInt128BigEndian(this byte[] value)
             => value.ToUInt128BigEndian(0);
 
         /// <summary>
         /// Convert a byte array at an offset to a UInt128
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static System.UInt128 ToUInt128BigEndian(this byte[] value, int offset)
+        public static UInt128 ToUInt128BigEndian(this byte[] value, int offset)
         {
             return value[offset + 15]
-                | ((System.UInt128)value[offset + 14] << 8)
-                | ((System.UInt128)value[offset + 13] << 16)
-                | ((System.UInt128)value[offset + 12] << 24)
-                | ((System.UInt128)value[offset + 11] << 32)
-                | ((System.UInt128)value[offset + 10] << 40)
-                | ((System.UInt128)value[offset + 9] << 48)
-                | ((System.UInt128)value[offset + 8] << 56)
-                | ((System.UInt128)value[offset + 7] << 64)
-                | ((System.UInt128)value[offset + 6] << 72)
-                | ((System.UInt128)value[offset + 5] << 80)
-                | ((System.UInt128)value[offset + 4] << 88)
-                | ((System.UInt128)value[offset + 3] << 96)
-                | ((System.UInt128)value[offset + 2] << 104)
-                | ((System.UInt128)value[offset + 1] << 112)
-                | ((System.UInt128)value[offset + 0] << 120);
+                | ((UInt128)value[offset + 14] << 8)
+                | ((UInt128)value[offset + 13] << 16)
+                | ((UInt128)value[offset + 12] << 24)
+                | ((UInt128)value[offset + 11] << 32)
+                | ((UInt128)value[offset + 10] << 40)
+                | ((UInt128)value[offset + 9] << 48)
+                | ((UInt128)value[offset + 8] << 56)
+                | ((UInt128)value[offset + 7] << 64)
+                | ((UInt128)value[offset + 6] << 72)
+                | ((UInt128)value[offset + 5] << 80)
+                | ((UInt128)value[offset + 4] << 88)
+                | ((UInt128)value[offset + 3] << 96)
+                | ((UInt128)value[offset + 2] << 104)
+                | ((UInt128)value[offset + 1] << 112)
+                | ((UInt128)value[offset + 0] << 120);
         }
 
         /// <summary>
         /// Convert a byte array to a UInt128
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static System.UInt128 ToUInt128LittleEndian(this byte[] value)
+        public static UInt128 ToUInt128LittleEndian(this byte[] value)
             => value.ToUInt128LittleEndian(0);
 
         /// <summary>
         /// Convert a byte array at an offset to a UInt128
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static System.UInt128 ToUInt128LittleEndian(this byte[] value, int offset)
+        public static UInt128 ToUInt128LittleEndian(this byte[] value, int offset)
         {
             return value[offset + 0]
-                | ((System.UInt128)value[offset + 1] << 8)
-                | ((System.UInt128)value[offset + 2] << 16)
-                | ((System.UInt128)value[offset + 3] << 24)
-                | ((System.UInt128)value[offset + 4] << 32)
-                | ((System.UInt128)value[offset + 5] << 40)
-                | ((System.UInt128)value[offset + 6] << 48)
-                | ((System.UInt128)value[offset + 7] << 56)
-                | ((System.UInt128)value[offset + 8] << 64)
-                | ((System.UInt128)value[offset + 9] << 72)
-                | ((System.UInt128)value[offset + 10] << 80)
-                | ((System.UInt128)value[offset + 11] << 88)
-                | ((System.UInt128)value[offset + 12] << 96)
-                | ((System.UInt128)value[offset + 13] << 104)
-                | ((System.UInt128)value[offset + 14] << 112)
-                | ((System.UInt128)value[offset + 15] << 120);
+                | ((UInt128)value[offset + 1] << 8)
+                | ((UInt128)value[offset + 2] << 16)
+                | ((UInt128)value[offset + 3] << 24)
+                | ((UInt128)value[offset + 4] << 32)
+                | ((UInt128)value[offset + 5] << 40)
+                | ((UInt128)value[offset + 6] << 48)
+                | ((UInt128)value[offset + 7] << 56)
+                | ((UInt128)value[offset + 8] << 64)
+                | ((UInt128)value[offset + 9] << 72)
+                | ((UInt128)value[offset + 10] << 80)
+                | ((UInt128)value[offset + 11] << 88)
+                | ((UInt128)value[offset + 12] << 96)
+                | ((UInt128)value[offset + 13] << 104)
+                | ((UInt128)value[offset + 14] << 112)
+                | ((UInt128)value[offset + 15] << 120);
         }
 #endif
+
+        /// <summary>
+        /// Convert a byte array to a Decimal
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static decimal ToDecimalBigEndian(this byte[] value)
+            => value.ToDecimalBigEndian(0);
+
+        /// <summary>
+        /// Convert a byte array to a Decimal
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static decimal ToDecimalBigEndian(this byte[] value, int offset)
+        {
+            int flags = value.ToInt32BigEndian(offset + 0);
+            int hi = value.ToInt32BigEndian(offset + 4);
+            int mid = value.ToInt32BigEndian(offset + 8);
+            int lo = value.ToInt32BigEndian(offset + 12);
+
+            return new decimal([lo, mid, hi, flags]);
+        }
+
+        /// <summary>
+        /// Convert a byte array to a Decimal
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static decimal ToDecimalLittleEndian(this byte[] value)
+            => value.ToDecimalLittleEndian(0);
+
+        /// <summary>
+        /// Convert a byte array to a Decimal
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static decimal ToDecimalLittleEndian(this byte[] value, int offset)
+        {
+            int lo = value.ToInt32LittleEndian(offset + 0);
+            int mid = value.ToInt32LittleEndian(offset + 4);
+            int hi = value.ToInt32LittleEndian(offset + 8);
+            int flags = value.ToInt32LittleEndian(offset + 12);
+
+            return new decimal([lo, mid, hi, flags]);
+        }
 
         #endregion
 
@@ -590,6 +784,46 @@ namespace SabreTools.IO.Extensions
 
             return output;
         }
+
+#if NET5_0_OR_GREATER
+        /// <summary>
+        /// Convert a Half to a byte array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static unsafe byte[] GetBytesBigEndian(this Half value)
+        {
+            byte* p = (byte*)&value;
+
+            List<byte> output = [];
+
+            output.Add(*p++);
+            output.Add(*p);
+
+            if (BitConverter.IsLittleEndian)
+                output.Reverse();
+
+            return [.. output];
+        }
+
+        /// <summary>
+        /// Convert a Half to a byte array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static unsafe byte[] GetBytesLittleEndian(this Half value)
+        {
+            byte* p = (byte*)&value;
+
+            List<byte> output = [];
+
+            output.Add(*p++);
+            output.Add(*p);
+
+            if (!BitConverter.IsLittleEndian)
+                output.Reverse();
+
+            return [.. output];
+        }
+#endif
 
         /// <summary>
         /// Convert an Int24 encoded as an Int32 to a byte array
@@ -721,6 +955,48 @@ namespace SabreTools.IO.Extensions
             ];
 
             return output;
+        }
+
+        /// <summary>
+        /// Convert a Single to a byte array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static unsafe byte[] GetBytesBigEndian(this float value)
+        {
+            byte* p = (byte*)&value;
+
+            List<byte> output = [];
+
+            output.Add(*p++);
+            output.Add(*p++);
+            output.Add(*p++);
+            output.Add(*p);
+
+            if (BitConverter.IsLittleEndian)
+                output.Reverse();
+
+            return [.. output];
+        }
+
+        /// <summary>
+        /// Convert a Single to a byte array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static unsafe byte[] GetBytesLittleEndian(this float value)
+        {
+            byte* p = (byte*)&value;
+
+            List<byte> output = [];
+
+            output.Add(*p++);
+            output.Add(*p++);
+            output.Add(*p++);
+            output.Add(*p);
+
+            if (!BitConverter.IsLittleEndian)
+                output.Reverse();
+
+            return [.. output];
         }
 
         /// <summary>
@@ -883,12 +1159,62 @@ namespace SabreTools.IO.Extensions
             return output;
         }
 
+        /// <summary>
+        /// Convert a Double to a byte array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static unsafe byte[] GetBytesBigEndian(this double value)
+        {
+            byte* p = (byte*)&value;
+
+            List<byte> output = [];
+
+            output.Add(*p++);
+            output.Add(*p++);
+            output.Add(*p++);
+            output.Add(*p++);
+            output.Add(*p++);
+            output.Add(*p++);
+            output.Add(*p++);
+            output.Add(*p);
+
+            if (BitConverter.IsLittleEndian)
+                output.Reverse();
+
+            return [.. output];
+        }
+
+        /// <summary>
+        /// Convert a Double to a byte array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static unsafe byte[] GetBytesLittleEndian(this double value)
+        {
+            byte* p = (byte*)&value;
+
+            List<byte> output = [];
+
+            output.Add(*p++);
+            output.Add(*p++);
+            output.Add(*p++);
+            output.Add(*p++);
+            output.Add(*p++);
+            output.Add(*p++);
+            output.Add(*p++);
+            output.Add(*p);
+
+            if (!BitConverter.IsLittleEndian)
+                output.Reverse();
+
+            return [.. output];
+        }
+
 #if NET7_0_OR_GREATER
         /// <summary>
         /// Convert an Int64 to a byte array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] GetBytesBigEndian(this System.Int128 value)
+        public static byte[] GetBytesBigEndian(this Int128 value)
         {
             byte[] output =
             [
@@ -917,7 +1243,7 @@ namespace SabreTools.IO.Extensions
         /// Convert an Int64 to a byte array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static byte[] GetBytesLittleEndian(this System.Int128 value)
+        public static byte[] GetBytesLittleEndian(this Int128 value)
         {
             byte[] output =
             [
@@ -946,7 +1272,7 @@ namespace SabreTools.IO.Extensions
         /// Convert a UInt64 to a byte array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] GetBytesBigEndian(this System.UInt128 value)
+        public static byte[] GetBytesBigEndian(this UInt128 value)
         {
             byte[] output =
             [
@@ -975,7 +1301,7 @@ namespace SabreTools.IO.Extensions
         /// Convert a UInt64 to a byte array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static byte[] GetBytesLittleEndian(this System.UInt128 value)
+        public static byte[] GetBytesLittleEndian(this UInt128 value)
         {
             byte[] output =
             [
@@ -1000,6 +1326,38 @@ namespace SabreTools.IO.Extensions
             return output;
         }
 #endif
+
+        /// <summary>
+        /// Convert a Decimal to a byte array
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static byte[] GetBytesBigEndian(this decimal value)
+        {
+            int[] bits = decimal.GetBits(value);
+
+            byte[] lo = bits[0].GetBytesBigEndian();
+            byte[] mid = bits[1].GetBytesBigEndian();
+            byte[] hi = bits[2].GetBytesBigEndian();
+            byte[] flags = bits[3].GetBytesBigEndian();
+
+            return [.. flags, .. hi, .. mid, .. lo];
+        }
+
+        /// <summary>
+        /// Convert a Decimal to a byte array
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static byte[] GetBytesLittleEndian(this decimal value)
+        {
+            int[] bits = decimal.GetBits(value);
+
+            byte[] lo = bits[0].GetBytesLittleEndian();
+            byte[] mid = bits[1].GetBytesLittleEndian();
+            byte[] hi = bits[2].GetBytesLittleEndian();
+            byte[] flags = bits[3].GetBytesLittleEndian();
+
+            return [.. lo, .. mid, .. hi, .. flags];
+        }
 
         #endregion
     }

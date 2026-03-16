@@ -96,14 +96,12 @@ namespace SabreTools.IO.Extensions
             return true;
         }
 
-        // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
-#if NET6_0_OR_GREATER
+#if NET5_0_OR_GREATER
         /// <inheritdoc cref="BinaryWriter.Write(Half)"/>
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, Half value)
         {
-            byte[] buffer = BitConverter.GetBytes(value);
-            Array.Reverse(buffer);
+            byte[] buffer = value.GetBytesBigEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -111,7 +109,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in little-endian format</remarks>
         public static bool WriteLittleEndian(this BinaryWriter writer, Half value)
         {
-            byte[] buffer = BitConverter.GetBytes(value);
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(writer, buffer);
         }
 #endif
@@ -240,8 +238,15 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, float value)
         {
-            byte[] buffer = BitConverter.GetBytes(value);
-            Array.Reverse(buffer);
+            byte[] buffer = value.GetBytesBigEndian();
+            return WriteFromBuffer(writer, buffer);
+        }
+
+        /// <inheritdoc cref="BinaryWriter.Write(float)"/>
+        /// <remarks>Writes in little-endian format</remarks>
+        public static bool WriteLittleEndian(this BinaryWriter writer, float value)
+        {
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -369,29 +374,15 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, double value)
         {
-            byte[] buffer = BitConverter.GetBytes(value);
-            Array.Reverse(buffer);
+            byte[] buffer = value.GetBytesBigEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
-        /// <inheritdoc cref="BinaryWriter.Write(decimal)"/>
-        /// <remarks>Writes in big-endian format</remarks>
-        public static bool WriteBigEndian(this BinaryWriter writer, decimal value)
+        /// <inheritdoc cref="BinaryWriter.Write(double)"/>
+        /// <remarks>Writes in little-endian format</remarks>
+        public static bool WriteLittleEndian(this BinaryWriter writer, double value)
         {
-            int[] bits = decimal.GetBits(value);
-
-            byte[] lo = BitConverter.GetBytes(bits[0]);
-            byte[] mid = BitConverter.GetBytes(bits[1]);
-            byte[] hi = BitConverter.GetBytes(bits[2]);
-            byte[] flags = BitConverter.GetBytes(bits[3]);
-
-            byte[] buffer = new byte[16];
-            Array.Copy(lo, 0, buffer, 0, 4);
-            Array.Copy(mid, 0, buffer, 4, 4);
-            Array.Copy(hi, 0, buffer, 8, 4);
-            Array.Copy(flags, 0, buffer, 12, 4);
-
-            Array.Reverse(buffer);
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -480,6 +471,22 @@ namespace SabreTools.IO.Extensions
             return WriteFromBuffer(writer, buffer);
         }
 #endif
+
+        /// <inheritdoc cref="BinaryWriter.Write(decimal)"/>
+        /// <remarks>Writes in big-endian format</remarks>
+        public static bool WriteBigEndian(this BinaryWriter writer, decimal value)
+        {
+            byte[] buffer = value.GetBytesBigEndian();
+            return WriteFromBuffer(writer, buffer);
+        }
+
+         /// <inheritdoc cref="BinaryWriter.Write(decimal)"/>
+        /// <remarks>Writes in little-endian format</remarks>
+        public static bool WriteLittleEndian(this BinaryWriter writer, decimal value)
+        {
+            byte[] buffer = value.GetBytesLittleEndian();
+            return WriteFromBuffer(writer, buffer);
+        }
 
         /// <summary>
         /// Write a null-terminated string to the underlying stream
@@ -646,7 +653,7 @@ namespace SabreTools.IO.Extensions
             // Handle special struct cases
             if (type == typeof(Guid))
                 return writer.Write((Guid)value);
-#if NET6_0_OR_GREATER
+#if NET5_0_OR_GREATER
             else if (type == typeof(Half))
             {
                 writer.Write((Half)value);

@@ -110,15 +110,21 @@ namespace SabreTools.IO.Extensions
         public static BothUInt16 ReadWORDBothEndian(this BinaryReader reader)
             => reader.ReadUInt16BothEndian();
 
-        // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
-#if NET6_0_OR_GREATER
+#if NET5_0_OR_GREATER
         /// <inheritdoc cref="BinaryReader.ReadHalf"/>
         /// <remarks>Reads in big-endian format</remarks>
         public static Half ReadHalfBigEndian(this BinaryReader reader)
         {
             byte[] buffer = reader.ReadBytes(2);
-            Array.Reverse(buffer);
-            return BitConverter.ToHalf(buffer, 0);
+            return buffer.ToHalfBigEndian();
+        }
+
+        /// <inheritdoc cref="BinaryReader.ReadHalf"/>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static Half ReadHalfLittleEndian(this BinaryReader reader)
+        {
+            byte[] buffer = reader.ReadBytes(2);
+            return buffer.ToHalfLittleEndian();
         }
 #endif
 
@@ -268,8 +274,15 @@ namespace SabreTools.IO.Extensions
         public static float ReadSingleBigEndian(this BinaryReader reader)
         {
             byte[] buffer = reader.ReadBytes(4);
-            Array.Reverse(buffer);
-            return BitConverter.ToSingle(buffer, 0);
+            return buffer.ToSingleBigEndian();
+        }
+
+        /// <inheritdoc cref="BinaryReader.ReadSingle"/>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static float ReadSingleLittleEndian(this BinaryReader reader)
+        {
+            byte[] buffer = reader.ReadBytes(4);
+            return buffer.ToSingleLittleEndian();
         }
 
         /// <summary>
@@ -419,23 +432,15 @@ namespace SabreTools.IO.Extensions
         public static double ReadDoubleBigEndian(this BinaryReader reader)
         {
             byte[] buffer = reader.ReadBytes(8);
-            Array.Reverse(buffer);
-            return BitConverter.ToDouble(buffer, 0);
+            return buffer.ToDoubleBigEndian();
         }
 
-        /// <inheritdoc cref="BinaryReader.ReadDecimal"/>
-        /// <remarks>Reads in big-endian format</remarks>
-        public static decimal ReadDecimalBigEndian(this BinaryReader reader)
+        /// <inheritdoc cref="BinaryReader.ReadDouble"/>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static double ReadDoubleLittleEndian(this BinaryReader reader)
         {
-            byte[] buffer = reader.ReadBytes(16);
-            Array.Reverse(buffer);
-
-            int lo = BitConverter.ToInt32(buffer, 0);
-            int mid = BitConverter.ToInt32(buffer, 4);
-            int hi = BitConverter.ToInt32(buffer, 8);
-            int flags = BitConverter.ToInt32(buffer, 12);
-
-            return new decimal([lo, mid, hi, flags]);
+            byte[] buffer = reader.ReadBytes(8);
+            return buffer.ToDoubleLittleEndian();
         }
 
         /// <summary>
@@ -523,6 +528,22 @@ namespace SabreTools.IO.Extensions
             return buffer.ToUInt128LittleEndian();
         }
 #endif
+
+        /// <inheritdoc cref="BinaryReader.ReadDecimal"/>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static decimal ReadDecimalBigEndian(this BinaryReader reader)
+        {
+            byte[] buffer = reader.ReadBytes(16);
+            return buffer.ToDecimalBigEndian();
+        }
+
+        /// <inheritdoc cref="BinaryReader.ReadDecimal"/>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static decimal ReadDecimalLittleEndian(this BinaryReader reader)
+        {
+            byte[] buffer = reader.ReadBytes(16);
+            return buffer.ToDecimalLittleEndian();
+        }
 
         /// <summary>
         /// Read a null-terminated string from the underlying stream
@@ -713,7 +734,7 @@ namespace SabreTools.IO.Extensions
             // Handle special struct cases
             if (type == typeof(Guid))
                 return reader.ReadGuid();
-#if NET6_0_OR_GREATER
+#if NET5_0_OR_GREATER
             else if (type == typeof(Half))
                 return reader.ReadHalf();
 #endif
@@ -1158,8 +1179,7 @@ namespace SabreTools.IO.Extensions
         public static BothUInt16 PeekWORDBothEndian(this BinaryReader reader)
             => reader.PeekUInt16BothEndian();
 
-        // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
-#if NET6_0_OR_GREATER
+#if NET5_0_OR_GREATER
         /// <summary>
         /// Peek a Half from the base stream
         /// </summary>
@@ -1167,9 +1187,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Only works properly on seekable streams</remarks>
         public static Half PeekHalf(this BinaryReader reader)
         {
-            Half value = reader.ReadHalf();
-            reader.BaseStream.SeekIfPossible(-2, SeekOrigin.Current);
-            return value;
+            if (BitConverter.IsLittleEndian)
+                return reader.PeekHalfLittleEndian();
+            else
+                return reader.PeekHalfBigEndian();
         }
 
         /// <summary>
@@ -1180,6 +1201,18 @@ namespace SabreTools.IO.Extensions
         public static Half PeekHalfBigEndian(this BinaryReader reader)
         {
             Half value = reader.ReadHalfBigEndian();
+            reader.BaseStream.SeekIfPossible(-2, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Half from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static Half PeekHalfLittleEndian(this BinaryReader reader)
+        {
+            Half value = reader.ReadHalfLittleEndian();
             reader.BaseStream.SeekIfPossible(-2, SeekOrigin.Current);
             return value;
         }
@@ -1396,9 +1429,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Only works properly on seekable streams</remarks>
         public static float PeekSingle(this BinaryReader reader)
         {
-            float value = reader.ReadSingle();
-            reader.BaseStream.SeekIfPossible(-4, SeekOrigin.Current);
-            return value;
+            if (BitConverter.IsLittleEndian)
+                return reader.PeekSingleLittleEndian();
+            else
+                return reader.PeekSingleBigEndian();
         }
 
         /// <summary>
@@ -1409,6 +1443,18 @@ namespace SabreTools.IO.Extensions
         public static float PeekSingleBigEndian(this BinaryReader reader)
         {
             float value = reader.ReadSingleBigEndian();
+            reader.BaseStream.SeekIfPossible(-4, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Single from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static float PeekSingleLittleEndian(this BinaryReader reader)
+        {
+            float value = reader.ReadSingleLittleEndian();
             reader.BaseStream.SeekIfPossible(-4, SeekOrigin.Current);
             return value;
         }
@@ -1624,9 +1670,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Only works properly on seekable streams</remarks>
         public static double PeekDouble(this BinaryReader reader)
         {
-            double value = reader.ReadDouble();
-            reader.BaseStream.SeekIfPossible(-8, SeekOrigin.Current);
-            return value;
+            if (BitConverter.IsLittleEndian)
+                return reader.PeekDoubleLittleEndian();
+            else
+                return reader.PeekDoubleBigEndian();
         }
 
         /// <summary>
@@ -1642,26 +1689,14 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Peek a Decimal from the base stream
+        /// Peek a Double from the base stream
         /// </summary>
-        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Reads in little-endian format</remarks>
         /// <remarks>Only works properly on seekable streams</remarks>
-        public static decimal PeekDecimal(this BinaryReader reader)
+        public static double PeekDoubleLittleEndian(this BinaryReader reader)
         {
-            decimal value = reader.ReadDecimal();
-            reader.BaseStream.SeekIfPossible(-16, SeekOrigin.Current);
-            return value;
-        }
-
-        /// <summary>
-        /// Peek a Decimal from the base stream
-        /// </summary>
-        /// <remarks>Reads in big-endian format</remarks>
-        /// <remarks>Only works properly on seekable streams</remarks>
-        public static decimal PeekDecimalBigEndian(this BinaryReader reader)
-        {
-            decimal value = reader.ReadDecimalBigEndian();
-            reader.BaseStream.SeekIfPossible(-16, SeekOrigin.Current);
+            double value = reader.ReadDoubleLittleEndian();
+            reader.BaseStream.SeekIfPossible(-8, SeekOrigin.Current);
             return value;
         }
 
@@ -1764,6 +1799,43 @@ namespace SabreTools.IO.Extensions
             return value;
         }
 #endif
+
+        /// <summary>
+        /// Peek a Decimal from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static decimal PeekDecimal(this BinaryReader reader)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.PeekDecimalLittleEndian();
+            else
+                return reader.PeekDecimalBigEndian();
+        }
+
+        /// <summary>
+        /// Peek a Decimal from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static decimal PeekDecimalBigEndian(this BinaryReader reader)
+        {
+            decimal value = reader.ReadDecimalBigEndian();
+            reader.BaseStream.SeekIfPossible(-16, SeekOrigin.Current);
+            return value;
+        }
+
+        /// <summary>
+        /// Peek a Decimal from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        /// <remarks>Only works properly on seekable streams</remarks>
+        public static decimal PeekDecimalLittleEndian(this BinaryReader reader)
+        {
+            decimal value = reader.ReadDecimalLittleEndian();
+            reader.BaseStream.SeekIfPossible(-16, SeekOrigin.Current);
+            return value;
+        }
 
         #endregion
 
@@ -2009,22 +2081,17 @@ namespace SabreTools.IO.Extensions
         public static bool TryReadWORDBothEndian(this BinaryReader reader, out BothUInt16 value)
             => reader.TryReadUInt16BothEndian(out value);
 
-        // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
-#if NET6_0_OR_GREATER
+#if NET5_0_OR_GREATER
         /// <summary>
         /// Read a Half from the base stream
         /// </summary>
         /// <remarks>Reads in machine native format</remarks>
         public static bool TryReadHalf(this BinaryReader reader, out Half value)
         {
-            if (reader.BaseStream.Position > reader.BaseStream.Length - 2)
-            {
-                value = default;
-                return false;
-            }
-
-            value = reader.ReadHalf();
-            return true;
+            if (BitConverter.IsLittleEndian)
+                return reader.TryReadHalfLittleEndian(out value);
+            else
+                return reader.TryReadHalfBigEndian(out value);
         }
 
         /// <summary>
@@ -2040,6 +2107,22 @@ namespace SabreTools.IO.Extensions
             }
 
             value = reader.ReadHalfBigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Half from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadHalfLittleEndian(this BinaryReader reader, out Half value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 2)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadHalfLittleEndian();
             return true;
         }
 #endif
@@ -2286,14 +2369,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static bool TryReadSingle(this BinaryReader reader, out float value)
         {
-            if (reader.BaseStream.Position > reader.BaseStream.Length - 4)
-            {
-                value = default;
-                return false;
-            }
-
-            value = reader.ReadSingle();
-            return true;
+            if (BitConverter.IsLittleEndian)
+                return reader.TryReadSingleLittleEndian(out value);
+            else
+                return reader.TryReadSingleBigEndian(out value);
         }
 
         /// <summary>
@@ -2309,6 +2388,22 @@ namespace SabreTools.IO.Extensions
             }
 
             value = reader.ReadSingleBigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Single from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadSingleLittleEndian(this BinaryReader reader, out float value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 4)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadSingleLittleEndian();
             return true;
         }
 
@@ -2554,14 +2649,10 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Reads in machine native format</remarks>
         public static bool TryReadDouble(this BinaryReader reader, out double value)
         {
-            if (reader.BaseStream.Position > reader.BaseStream.Length - 8)
-            {
-                value = default;
-                return false;
-            }
-
-            value = reader.ReadDouble();
-            return true;
+            if (BitConverter.IsLittleEndian)
+                return reader.TryReadDoubleLittleEndian(out value);
+            else
+                return reader.TryReadDoubleBigEndian(out value);
         }
 
         /// <summary>
@@ -2581,34 +2672,18 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read a Decimal from the base stream
+        /// Read a Double from the base stream
         /// </summary>
-        /// <remarks>Reads in machine native format</remarks>
-        public static bool TryReadDecimal(this BinaryReader reader, out decimal value)
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadDoubleLittleEndian(this BinaryReader reader, out double value)
         {
-            if (reader.BaseStream.Position > reader.BaseStream.Length - 16)
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 8)
             {
                 value = default;
                 return false;
             }
 
-            value = reader.ReadDecimal();
-            return true;
-        }
-
-        /// <summary>
-        /// Read a Decimal from the base stream
-        /// </summary>
-        /// <remarks>Reads in big-endian format</remarks>
-        public static bool TryReadDecimalBigEndian(this BinaryReader reader, out decimal value)
-        {
-            if (reader.BaseStream.Position > reader.BaseStream.Length - 16)
-            {
-                value = default;
-                return false;
-            }
-
-            value = reader.ReadDecimalBigEndian();
+            value = reader.ReadDoubleLittleEndian();
             return true;
         }
 
@@ -2733,6 +2808,50 @@ namespace SabreTools.IO.Extensions
             return true;
         }
 #endif
+
+        /// <summary>
+        /// Read a Decimal from the base stream
+        /// </summary>
+        /// <remarks>Reads in machine native format</remarks>
+        public static bool TryReadDecimal(this BinaryReader reader, out decimal value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return reader.TryReadDecimalLittleEndian(out value);
+            else
+                return reader.TryReadDecimalBigEndian(out value);
+        }
+
+        /// <summary>
+        /// Read a Decimal from the base stream
+        /// </summary>
+        /// <remarks>Reads in big-endian format</remarks>
+        public static bool TryReadDecimalBigEndian(this BinaryReader reader, out decimal value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadDecimalBigEndian();
+            return true;
+        }
+
+        /// <summary>
+        /// Read a Decimal from the base stream
+        /// </summary>
+        /// <remarks>Reads in little-endian format</remarks>
+        public static bool TryReadDecimalLittleEndian(this BinaryReader reader, out decimal value)
+        {
+            if (reader.BaseStream.Position > reader.BaseStream.Length - 16)
+            {
+                value = default;
+                return false;
+            }
+
+            value = reader.ReadDecimalLittleEndian();
+            return true;
+        }
 
         #endregion
     }

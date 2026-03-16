@@ -166,16 +166,26 @@ namespace SabreTools.IO.Extensions
             return actual;
         }
 
-        // Half was introduced in net5.0 but doesn't have a BitConverter implementation until net6.0
-#if NET6_0_OR_GREATER
+#if NET5_0_OR_GREATER
+        /// <summary>
+        /// Write a Half and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Writes in machine native format</remarks>
+        public static bool Write(this byte[] content, ref int offset, Half value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.WriteLittleEndian(ref offset, value);
+            else
+                return content.WriteBigEndian(ref offset, value);
+        }
+
         /// <summary>
         /// Write a Half and increment the pointer to an array
         /// </summary>
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this byte[] content, ref int offset, Half value)
         {
-            byte[] buffer = BitConverter.GetBytes(value);
-            Array.Reverse(buffer);
+            byte[] buffer = value.GetBytesBigEndian();
             return WriteFromBuffer(content, ref offset, buffer);
         }
 
@@ -185,7 +195,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in little-endian format</remarks>
         public static bool WriteLittleEndian(this byte[] content, ref int offset, Half value)
         {
-            byte[] buffer = BitConverter.GetBytes(value);
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(content, ref offset, buffer);
         }
 #endif
@@ -349,11 +359,13 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a Single and increment the pointer to an array
         /// </summary>
-        /// <remarks>Writes in little-endian format</remarks>
+        /// <remarks>Writes in machine native format</remarks>
         public static bool Write(this byte[] content, ref int offset, float value)
         {
-            byte[] buffer = BitConverter.GetBytes(value);
-            return WriteFromBuffer(content, ref offset, buffer);
+            if (BitConverter.IsLittleEndian)
+                return content.WriteLittleEndian(ref offset, value);
+            else
+                return content.WriteBigEndian(ref offset, value);
         }
 
         /// <summary>
@@ -362,8 +374,17 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this byte[] content, ref int offset, float value)
         {
-            byte[] buffer = BitConverter.GetBytes(value);
-            Array.Reverse(buffer);
+            byte[] buffer = value.GetBytesBigEndian();
+            return WriteFromBuffer(content, ref offset, buffer);
+        }
+
+        /// <summary>
+        /// Write a Single and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Writes in little-endian format</remarks>
+        public static bool WriteLittleEndian(this byte[] content, ref int offset, float value)
+        {
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(content, ref offset, buffer);
         }
 
@@ -526,10 +547,13 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Write a Double and increment the pointer to an array
         /// </summary>
+        /// <remarks>Writes in machine native format</remarks>
         public static bool Write(this byte[] content, ref int offset, double value)
         {
-            byte[] buffer = BitConverter.GetBytes(value);
-            return WriteFromBuffer(content, ref offset, buffer);
+            if (BitConverter.IsLittleEndian)
+                return content.WriteLittleEndian(ref offset, value);
+            else
+                return content.WriteBigEndian(ref offset, value);
         }
 
         /// <summary>
@@ -538,52 +562,17 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this byte[] content, ref int offset, double value)
         {
-            byte[] buffer = BitConverter.GetBytes(value);
-            Array.Reverse(buffer);
+            byte[] buffer = value.GetBytesBigEndian();
             return WriteFromBuffer(content, ref offset, buffer);
         }
 
         /// <summary>
-        /// Write a Decimal and increment the pointer to an array
+        /// Write a Double and increment the pointer to an array
         /// </summary>
-        public static bool Write(this byte[] content, ref int offset, decimal value)
+        /// <remarks>Writes in little-endian format</remarks>
+        public static bool WriteLittleEndian(this byte[] content, ref int offset, double value)
         {
-            int[] bits = decimal.GetBits(value);
-
-            byte[] lo = BitConverter.GetBytes(bits[0]);
-            byte[] mid = BitConverter.GetBytes(bits[1]);
-            byte[] hi = BitConverter.GetBytes(bits[2]);
-            byte[] flags = BitConverter.GetBytes(bits[3]);
-
-            byte[] buffer = new byte[16];
-            Array.Copy(lo, 0, buffer, 0, 4);
-            Array.Copy(mid, 0, buffer, 4, 4);
-            Array.Copy(hi, 0, buffer, 8, 4);
-            Array.Copy(flags, 0, buffer, 12, 4);
-
-            return WriteFromBuffer(content, ref offset, buffer);
-        }
-
-        /// <summary>
-        /// Write a Decimal and increment the pointer to an array
-        /// </summary>
-        /// <remarks>Writes in big-endian format</remarks>
-        public static bool WriteBigEndian(this byte[] content, ref int offset, decimal value)
-        {
-            int[] bits = decimal.GetBits(value);
-
-            byte[] lo = BitConverter.GetBytes(bits[0]);
-            byte[] mid = BitConverter.GetBytes(bits[1]);
-            byte[] hi = BitConverter.GetBytes(bits[2]);
-            byte[] flags = BitConverter.GetBytes(bits[3]);
-
-            byte[] buffer = new byte[16];
-            Array.Copy(lo, 0, buffer, 0, 4);
-            Array.Copy(mid, 0, buffer, 4, 4);
-            Array.Copy(hi, 0, buffer, 8, 4);
-            Array.Copy(flags, 0, buffer, 12, 4);
-
-            Array.Reverse(buffer);
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(content, ref offset, buffer);
         }
 
@@ -672,6 +661,38 @@ namespace SabreTools.IO.Extensions
             return WriteFromBuffer(content, ref offset, buffer);
         }
 #endif
+
+        /// <summary>
+        /// Write a Decimal and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Writes in machine native format</remarks>
+        public static bool Write(this byte[] content, ref int offset, decimal value)
+        {
+            if (BitConverter.IsLittleEndian)
+                return content.WriteLittleEndian(ref offset, value);
+            else
+                return content.WriteBigEndian(ref offset, value);
+        }
+
+        /// <summary>
+        /// Write a Decimal and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Writes in big-endian format</remarks>
+        public static bool WriteBigEndian(this byte[] content, ref int offset, decimal value)
+        {
+            byte[] buffer = value.GetBytesBigEndian();
+            return WriteFromBuffer(content, ref offset, buffer);
+        }
+
+        /// <summary>
+        /// Write a Decimal and increment the pointer to an array
+        /// </summary>
+        /// <remarks>Writes in little-endian format</remarks>
+        public static bool WriteLittleEndian(this byte[] content, ref int offset, decimal value)
+        {
+            byte[] buffer = value.GetBytesLittleEndian();
+            return WriteFromBuffer(content, ref offset, buffer);
+        }
 
         /// <summary>
         /// Write a null-terminated string to the array
@@ -842,9 +863,9 @@ namespace SabreTools.IO.Extensions
             // Handle special struct cases
             if (type == typeof(Guid))
                 return content.Write(ref offset, (Guid)value);
-#if NET6_0_OR_GREATER
+#if NET5_0_OR_GREATER
             else if (type == typeof(Half))
-                return content.WriteLittleEndian(ref offset, (Half)value);
+                return content.Write(ref offset, (Half)value);
 #endif
 #if NET7_0_OR_GREATER
             else if (type == typeof(Int128))
