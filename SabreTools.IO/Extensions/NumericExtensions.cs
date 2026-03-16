@@ -6,6 +6,7 @@ namespace SabreTools.IO.Extensions
     /// <summary>
     /// Extensions for numeric conversion
     /// </summary>
+    /// TODO: Handle proper negative values for Int24 and Int48
     public static class NumericExtensions
     {
         #region From Byte Array
