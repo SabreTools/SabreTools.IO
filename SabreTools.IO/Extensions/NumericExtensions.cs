@@ -535,7 +535,7 @@ namespace SabreTools.IO.Extensions
         /// Convert an Int16 to a byte array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] ToByteArrayBigEndian(this short value)
+        public static byte[] GetBytesBigEndian(this short value)
         {
             byte[] output =
             [
@@ -550,7 +550,7 @@ namespace SabreTools.IO.Extensions
         /// Convert an Int16 to a byte array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static byte[] ToByteArrayLittleEndian(this short value)
+        public static byte[] GetBytesLittleEndian(this short value)
         {
             byte[] output =
             [
@@ -565,7 +565,7 @@ namespace SabreTools.IO.Extensions
         /// Convert a UInt16 to a byte array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] ToByteArrayBigEndian(this ushort value)
+        public static byte[] GetBytesBigEndian(this ushort value)
         {
             byte[] output =
             [
@@ -580,7 +580,7 @@ namespace SabreTools.IO.Extensions
         /// Convert a UInt16 to a byte array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static byte[] ToByteArrayLittleEndian(this ushort value)
+        public static byte[] GetBytesLittleEndian(this ushort value)
         {
             byte[] output =
             [
@@ -595,7 +595,7 @@ namespace SabreTools.IO.Extensions
         /// Convert an Int24 encoded as an Int32 to a byte array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] ToByteArrayAsInt24BigEndian(this int value)
+        public static byte[] GetBytesAsInt24BigEndian(this int value)
         {
             byte[] output =
             [
@@ -611,7 +611,7 @@ namespace SabreTools.IO.Extensions
         /// Convert an Int24 encoded as an Int32 to a byte array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static byte[] ToByteArrayAsInt24LittleEndian(this int value)
+        public static byte[] GetBytesAsInt24LittleEndian(this int value)
         {
             byte[] output =
             [
@@ -627,7 +627,7 @@ namespace SabreTools.IO.Extensions
         /// Convert a UInt24 encoded as a UInt32 to a byte array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] ToByteArrayAsUInt24BigEndian(this uint value)
+        public static byte[] GetBytesAsUInt24BigEndian(this uint value)
         {
             byte[] output =
             [
@@ -643,7 +643,7 @@ namespace SabreTools.IO.Extensions
         /// Convert a UInt24 encoded as a UInt32 to a byte array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static byte[] ToByteArrayAsUInt24LittleEndian(this uint value)
+        public static byte[] GetBytesAsUInt24LittleEndian(this uint value)
         {
             byte[] output =
             [
@@ -659,7 +659,7 @@ namespace SabreTools.IO.Extensions
         /// Convert an Int32 to a byte array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] ToByteArrayBigEndian(this int value)
+        public static byte[] GetBytesBigEndian(this int value)
         {
             byte[] output =
             [
@@ -676,7 +676,7 @@ namespace SabreTools.IO.Extensions
         /// Convert an Int32 to a byte array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static byte[] ToByteArrayLittleEndian(this int value)
+        public static byte[] GetBytesLittleEndian(this int value)
         {
             byte[] output =
             [
@@ -693,7 +693,7 @@ namespace SabreTools.IO.Extensions
         /// Convert a UInt32 to a byte array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] ToByteArrayBigEndian(this uint value)
+        public static byte[] GetBytesBigEndian(this uint value)
         {
             byte[] output =
             [
@@ -710,7 +710,7 @@ namespace SabreTools.IO.Extensions
         /// Convert a UInt32 to a byte array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static byte[] ToByteArrayLittleEndian(this uint value)
+        public static byte[] GetBytesLittleEndian(this uint value)
         {
             byte[] output =
             [
@@ -727,7 +727,7 @@ namespace SabreTools.IO.Extensions
         /// Convert an Int48 encoded as an Int64 to a byte array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] ToByteArrayAsInt48BigEndian(this long value)
+        public static byte[] GetBytesAsInt48BigEndian(this long value)
         {
             byte[] output =
             [
@@ -746,7 +746,7 @@ namespace SabreTools.IO.Extensions
         /// Convert an Int48 encoded as an Int64 to a byte array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static byte[] ToByteArrayAsInt48LittleEndian(this long value)
+        public static byte[] GetBytesAsInt48LittleEndian(this long value)
         {
             byte[] output =
             [
@@ -765,7 +765,7 @@ namespace SabreTools.IO.Extensions
         /// Converta UInt48 encoded as a UInt64 to a byte array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] ToByteArrayAsUInt48BigEndian(this ulong value)
+        public static byte[] GetBytesAsUInt48BigEndian(this ulong value)
         {
             byte[] output =
             [
@@ -784,7 +784,7 @@ namespace SabreTools.IO.Extensions
         /// Convert a UInt48 encoded as a UInt64 to a byte array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static byte[] ToByteArrayAsUInt48LittleEndian(this ulong value)
+        public static byte[] GetBytesAsUInt48LittleEndian(this ulong value)
         {
             byte[] output =
             [
@@ -803,7 +803,7 @@ namespace SabreTools.IO.Extensions
         /// Convert an Int64 to a byte array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] ToByteArrayBigEndian(this long value)
+        public static byte[] GetBytesBigEndian(this long value)
         {
             byte[] output =
             [
@@ -824,7 +824,7 @@ namespace SabreTools.IO.Extensions
         /// Convert an Int64 to a byte array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static byte[] ToByteArrayLittleEndian(this long value)
+        public static byte[] GetBytesLittleEndian(this long value)
         {
             byte[] output =
             [
@@ -845,7 +845,7 @@ namespace SabreTools.IO.Extensions
         /// Convert a UInt64 to a byte array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] ToByteArrayBigEndian(this ulong value)
+        public static byte[] GetBytesBigEndian(this ulong value)
         {
             byte[] output =
             [
@@ -866,7 +866,7 @@ namespace SabreTools.IO.Extensions
         /// Convert a UInt64 to a byte array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static byte[] ToByteArrayLittleEndian(this ulong value)
+        public static byte[] GetBytesLittleEndian(this ulong value)
         {
             byte[] output =
             [
@@ -888,7 +888,7 @@ namespace SabreTools.IO.Extensions
         /// Convert an Int64 to a byte array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] ToByteArrayBigEndian(this System.Int128 value)
+        public static byte[] GetBytesBigEndian(this System.Int128 value)
         {
             byte[] output =
             [
@@ -917,7 +917,7 @@ namespace SabreTools.IO.Extensions
         /// Convert an Int64 to a byte array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static byte[] ToByteArrayLittleEndian(this System.Int128 value)
+        public static byte[] GetBytesLittleEndian(this System.Int128 value)
         {
             byte[] output =
             [
@@ -946,7 +946,7 @@ namespace SabreTools.IO.Extensions
         /// Convert a UInt64 to a byte array
         /// </summary>
         /// <remarks>Reads in big-endian format</remarks>
-        public static byte[] ToByteArrayBigEndian(this System.UInt128 value)
+        public static byte[] GetBytesBigEndian(this System.UInt128 value)
         {
             byte[] output =
             [
@@ -975,7 +975,7 @@ namespace SabreTools.IO.Extensions
         /// Convert a UInt64 to a byte array
         /// </summary>
         /// <remarks>Reads in little-endian format</remarks>
-        public static byte[] ToByteArrayLittleEndian(this System.UInt128 value)
+        public static byte[] GetBytesLittleEndian(this System.UInt128 value)
         {
             byte[] output =
             [

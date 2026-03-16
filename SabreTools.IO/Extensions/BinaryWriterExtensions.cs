@@ -50,7 +50,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, short value)
         {
-            byte[] buffer = value.ToByteArrayBigEndian();
+            byte[] buffer = value.GetBytesBigEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -58,7 +58,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in little-endian format</remarks>
         public static bool WriteLittleEndian(this BinaryWriter writer, short value)
         {
-            byte[] buffer = value.ToByteArrayLittleEndian();
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -75,7 +75,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, ushort value)
         {
-            byte[] buffer = value.ToByteArrayBigEndian();
+            byte[] buffer = value.GetBytesBigEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -83,7 +83,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in little-endian format</remarks>
         public static bool WriteLittleEndian(this BinaryWriter writer, ushort value)
         {
-            byte[] buffer = value.ToByteArrayLittleEndian();
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -136,7 +136,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Throws away top byte</remarks>
         public static bool WriteAsInt24BigEndian(this BinaryWriter writer, int value)
         {
-            byte[] buffer = value.ToByteArrayAsInt24BigEndian();
+            byte[] buffer = value.GetBytesAsInt24BigEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -147,7 +147,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Throws away top byte</remarks>
         public static bool WriteAsInt24LittleEndian(this BinaryWriter writer, int value)
         {
-            byte[] buffer = value.ToByteArrayAsInt24LittleEndian();
+            byte[] buffer = value.GetBytesAsInt24LittleEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -171,7 +171,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Throws away top byte</remarks>
         public static bool WriteAsUInt24BigEndian(this BinaryWriter writer, uint value)
         {
-            byte[] buffer = value.ToByteArrayAsUInt24BigEndian();
+            byte[] buffer = value.GetBytesAsUInt24BigEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -182,7 +182,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Throws away top byte</remarks>
         public static bool WriteAsUInt24LittleEndian(this BinaryWriter writer, uint value)
         {
-            byte[] buffer = value.ToByteArrayAsUInt24LittleEndian();
+            byte[] buffer = value.GetBytesAsUInt24LittleEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -190,7 +190,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, int value)
         {
-            byte[] buffer = value.ToByteArrayBigEndian();
+            byte[] buffer = value.GetBytesBigEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -198,7 +198,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in little-endian format</remarks>
         public static bool WriteLittleEndian(this BinaryWriter writer, int value)
         {
-            byte[] buffer = value.ToByteArrayLittleEndian();
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -215,7 +215,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, uint value)
         {
-            byte[] buffer = value.ToByteArrayBigEndian();
+            byte[] buffer = value.GetBytesBigEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -223,7 +223,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in little-endian format</remarks>
         public static bool WriteLittleEndian(this BinaryWriter writer, uint value)
         {
-            byte[] buffer = value.ToByteArrayLittleEndian();
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -265,7 +265,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Throws away top 2 bytes</remarks>
         public static bool WriteAsInt48BigEndian(this BinaryWriter writer, long value)
         {
-            byte[] buffer = value.ToByteArrayAsInt48BigEndian();
+            byte[] buffer = value.GetBytesAsInt48BigEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -276,7 +276,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Throws away top 2 bytes</remarks>
         public static bool WriteAsInt48LittleEndian(this BinaryWriter writer, long value)
         {
-            byte[] buffer = value.ToByteArrayAsInt48LittleEndian();
+            byte[] buffer = value.GetBytesAsInt48LittleEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -300,7 +300,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Throws away top 2 bytes</remarks>
         public static bool WriteAsUInt48BigEndian(this BinaryWriter writer, ulong value)
         {
-            byte[] buffer = value.ToByteArrayAsUInt48BigEndian();
+            byte[] buffer = value.GetBytesAsUInt48BigEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -311,7 +311,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Throws away top 2 bytes</remarks>
         public static bool WriteAsUInt48LittleEndian(this BinaryWriter writer, ulong value)
         {
-            byte[] buffer = value.ToByteArrayAsUInt48LittleEndian();
+            byte[] buffer = value.GetBytesAsUInt48LittleEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -319,7 +319,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, long value)
         {
-            byte[] buffer = value.ToByteArrayBigEndian();
+            byte[] buffer = value.GetBytesBigEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -327,7 +327,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in little-endian format</remarks>
         public static bool WriteLittleEndian(this BinaryWriter writer, long value)
         {
-            byte[] buffer = value.ToByteArrayLittleEndian();
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -344,7 +344,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, ulong value)
         {
-            byte[] buffer = value.ToByteArrayBigEndian();
+            byte[] buffer = value.GetBytesBigEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -352,7 +352,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in little-endian format</remarks>
         public static bool WriteLittleEndian(this BinaryWriter writer, ulong value)
         {
-            byte[] buffer = value.ToByteArrayLittleEndian();
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -434,7 +434,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, Int128 value)
         {
-            byte[] buffer = value.ToByteArrayBigEndian();
+            byte[] buffer = value.GetBytesBigEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -444,7 +444,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in little-endian format</remarks>
         public static bool WriteLittleEndian(this BinaryWriter writer, Int128 value)
         {
-            byte[] buffer = value.ToByteArrayLittleEndian();
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -466,7 +466,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in big-endian format</remarks>
         public static bool WriteBigEndian(this BinaryWriter writer, UInt128 value)
         {
-            byte[] buffer = value.ToByteArrayBigEndian();
+            byte[] buffer = value.GetBytesBigEndian();
             return WriteFromBuffer(writer, buffer);
         }
 
@@ -476,7 +476,7 @@ namespace SabreTools.IO.Extensions
         /// <remarks>Writes in little-endian format</remarks>
         public static bool WriteLittleEndian(this BinaryWriter writer, UInt128 value)
         {
-            byte[] buffer = value.ToByteArrayLittleEndian();
+            byte[] buffer = value.GetBytesLittleEndian();
             return WriteFromBuffer(writer, buffer);
         }
 #endif
