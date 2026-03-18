@@ -68,6 +68,8 @@ Extensions for `BinaryReader`, `byte[]`, and `Stream` to help with reading and w
 
 This namespace also contains other various extensions that help with common functionality and safe access.
 
+Relies on functionality found in `SabreTools.IO.Matching`, `SabreTools.Numerics`, and `SabreTools.Text.Compare`.
+
 ### `SabreTools.Logging`
 
 Logic for a logging system, including writing to console and textfile outputs. There are 4 possible log levels for logging statements to be invoked with. There is also a stopwatch implementation included for logging statements with automatic timespan tracking.
@@ -120,6 +122,8 @@ Custom numeric types and related functionality.
 ### `SabreTools.Security.Cryptography`
 
 Various encryption implementations that are used across multiple projects. Most of the implementations are be ports of existing C and C++ code.
+
+Relies on functionality found in `SabreTools.IO.Extensions`.
 
 #### Supported Encryption Schemes
 
