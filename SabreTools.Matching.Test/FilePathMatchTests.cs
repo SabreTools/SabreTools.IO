@@ -1,8 +1,7 @@
 using System.IO;
-using SabreTools.Matching;
 using Xunit;
 
-namespace SabreTools.IO.Test.Matching
+namespace SabreTools.Matching.Test
 {
     /// <remarks>
     /// All other test cases are covered by <see cref="PathMatchTests"/>

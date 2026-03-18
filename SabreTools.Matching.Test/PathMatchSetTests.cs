@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using SabreTools.Matching;
 using Xunit;
 
 #pragma warning disable CA1861 // Prefer 'static readonly' fields
-namespace SabreTools.IO.Test.Matching
+namespace SabreTools.Matching.Test
 {
     public class PathMatchSetTests
     {

@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using SabreTools.Matching;
 using Xunit;
 
-namespace SabreTools.IO.Test.Matching
+namespace SabreTools.Matching.Test
 {
     public class PathMatchTests
     {

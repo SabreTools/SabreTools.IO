@@ -1,9 +1,8 @@
 using System;
 using System.IO;
-using SabreTools.Matching;
 using Xunit;
 
-namespace SabreTools.IO.Test.Matching
+namespace SabreTools.Matching.Test
 {
     public class ContentMatchTests
     {
