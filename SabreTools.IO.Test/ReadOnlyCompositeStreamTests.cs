@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Xunit;
 
-namespace SabreTools.IO.Test.Streams
+namespace SabreTools.IO.Test
 {
     public class ReadOnlyCompositeStreamTests
     {

@@ -3,7 +3,7 @@ using System.IO;
 using Xunit;
 
 #pragma warning disable IDE0017 // Object initialization can be simplified
-namespace SabreTools.IO.Test.Streams
+namespace SabreTools.IO.Test
 {
     public class ViewStreamTests
     {

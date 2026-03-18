@@ -18,7 +18,8 @@ namespace SabreTools.IO
         /// <summary>
         /// Original stream source
         /// </summary>
-        private readonly Stream _source;
+        /// <remarks>Internal to allow for specialized extensions</remarks>
+        internal readonly Stream _source;
 
         /// <summary>
         /// Last read byte value from the stream
@@ -134,97 +135,6 @@ namespace SabreTools.IO
             }
 
             return value;
-        }
-
-        /// <summary>
-        /// Read a byte, if possible
-        /// </summary>
-        /// <returns>The next byte, null on error or end of stream</returns>
-        /// <remarks>Assumes the stream is byte-aligned</remarks>
-        public byte? ReadByte()
-        {
-            try
-            {
-                Discard();
-                return _source.ReadByteValue();
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Read a UInt16, if possible
-        /// </summary>
-        /// <returns>The next UInt16, null on error or end of stream</returns>
-        /// <remarks>Assumes the stream is byte-aligned</remarks>
-        public ushort? ReadUInt16()
-        {
-            try
-            {
-                Discard();
-                return _source.ReadUInt16();
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Read a UInt32, if possible
-        /// </summary>
-        /// <returns>The next UInt32, null on error or end of stream</returns>
-        /// <remarks>Assumes the stream is byte-aligned</remarks>
-        public uint? ReadUInt32()
-        {
-            try
-            {
-                Discard();
-                return _source.ReadUInt32();
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Read a UInt64, if possible
-        /// </summary>
-        /// <returns>The next UInt64, null on error or end of stream</returns>
-        /// <remarks>Assumes the stream is byte-aligned</remarks>
-        public ulong? ReadUInt64()
-        {
-            try
-            {
-                Discard();
-                return _source.ReadUInt64();
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Read <paramref name="bytes"/> bytes, if possible
-        /// </summary>
-        /// <param name="bytes">Number of bytes to read</param>
-        /// <returns>The next <paramref name="bytes"/> bytes, null on error or end of stream</returns>
-        /// <remarks>Assumes the stream is byte-aligned</remarks>
-        public byte[]? ReadBytes(int bytes)
-        {
-            try
-            {
-                Discard();
-                return _source.ReadBytes(bytes);
-            }
-            catch
-            {
-                return null;
-            }
         }
 
         /// <summary>
