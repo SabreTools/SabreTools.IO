@@ -4,7 +4,7 @@ using SabreTools.IO.Compression.MSZIP;
 using SabreTools.IO.Extensions;
 using Xunit;
 
-namespace SabreTools.IO.Test.Compression
+namespace SabreTools.IO.Compression.Test
 {
     public class MSZIPTests
     {

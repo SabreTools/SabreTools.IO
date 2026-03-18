@@ -1,4 +1,4 @@
-namespace SabreTools.IO.Test.Extensions
+namespace SabreTools.IO.Extensions.Test
 {
     internal enum TestEnum : uint
     {

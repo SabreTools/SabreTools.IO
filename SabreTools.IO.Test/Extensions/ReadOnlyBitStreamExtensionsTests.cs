@@ -1,9 +1,8 @@
 using System.IO;
 using System.Linq;
-using SabreTools.IO.Extensions;
 using Xunit;
 
-namespace SabreTools.IO.Test.Extensions
+namespace SabreTools.IO.Extensions.Test
 {
     public class ReadOnlyBitStreamExtensionsTests
     {

@@ -3,11 +3,10 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text;
-using SabreTools.IO.Extensions;
 using SabreTools.Numerics;
 using Xunit;
 
-namespace SabreTools.IO.Test.Extensions
+namespace SabreTools.IO.Extensions.Test
 {
     public class BinaryWriterExtensionsTests
     {

@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 
 #pragma warning disable CS0618 // Obsolete unmanaged types
-namespace SabreTools.IO.Test.Extensions
+namespace SabreTools.IO.Extensions.Test
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     internal struct TestStructStrings

@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace SabreTools.IO.Test.Extensions
+namespace SabreTools.IO.Extensions.Test
 {
     [StructLayout(LayoutKind.Explicit)]
     internal struct TestStructExplicit

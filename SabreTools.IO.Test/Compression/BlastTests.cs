@@ -4,7 +4,7 @@ using System.Text;
 using SabreTools.IO.Compression.Blast;
 using Xunit;
 
-namespace SabreTools.IO.Test.Compression
+namespace SabreTools.IO.Compression.Test
 {
     public class BlastTests
     {
