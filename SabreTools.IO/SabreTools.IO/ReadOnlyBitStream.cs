@@ -1,6 +1,5 @@
 using System.Data;
 using System.IO;
-using SabreTools.IO.Extensions;
 
 namespace SabreTools.IO
 {
@@ -145,7 +144,7 @@ namespace SabreTools.IO
         {
             try
             {
-                return _source.ReadByteValue();
+                return (byte)_source.ReadByte();
             }
             catch
             {
