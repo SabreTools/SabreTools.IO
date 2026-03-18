@@ -39,17 +39,6 @@ Various compression implementations that are used across multiple projects. Most
 | [DotNetZip](https://github.com/DinoChiesa/DotNetZip) | BZip2 and DEFLATE implementations; minor edits have been made |
 | [ZLibPort](https://github.com/Nanook/zlib-C-To-CSharp-Port) | Adds zlib code for internal and external use; minor edits have been made |
 
-### `SabreTools.IO.Encryption`
-
-Various encryption implementations that are used across multiple projects. Most of the implementations are be ports of existing C and C++ code.
-
-#### Supported Encryption Schemes
-
-| Encryption Scheme | Encrypt | Decrypt | Notes |
-| --- | --- | --- | --- |
-| AES/CTR | Yes | Yes | Subset of functionality exposed from [The Bouncy Castle Cryptography Library For .NET](https://github.com/bcgit/bc-csharp) |
-| MoPaQ | No | Yes | Used to encrypt and decrypt MoPaQ tables for processing |
-
 ### `SabreTools.IO.Extensions`
 
 Extensions for `BinaryReader`, `byte[]`, and `Stream` to help with reading and writing various data types. Some data types are locked behind .NET version support.
@@ -122,6 +111,17 @@ Custom numeric types and related functionality.
 | `UInt48` | 48-bit (3 byte) unsigned value |
 
 **Both-endian** or **bi-endian** numbers are represented by a little-endian value followed by a big-endian value, where both values are the same number.
+
+### `SabreTools.Security.Cryptography`
+
+Various encryption implementations that are used across multiple projects. Most of the implementations are be ports of existing C and C++ code.
+
+#### Supported Encryption Schemes
+
+| Encryption Scheme | Encrypt | Decrypt | Notes |
+| --- | --- | --- | --- |
+| AES/CTR | Yes | Yes | Subset of functionality exposed from [The Bouncy Castle Cryptography Library For .NET](https://github.com/bcgit/bc-csharp) |
+| MoPaQ | No | Yes | Used to encrypt and decrypt MoPaQ tables for processing |
 
 ### `SabreTools.Text.Compare`
 

@@ -5,7 +5,7 @@ using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;
 using SabreTools.IO.Extensions;
 
-namespace SabreTools.IO.Encryption
+namespace SabreTools.Security.Cryptography
 {
     public static class AESCTR
     {

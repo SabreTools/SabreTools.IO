@@ -5,7 +5,7 @@ using SabreTools.Hashing;
 using SabreTools.IO.Extensions;
 
 #pragma warning disable IDE0051
-namespace SabreTools.IO.Encryption
+namespace SabreTools.Security.Cryptography
 {
     /// <summary>
     /// Handler for decrypting MoPaQ block and table data
