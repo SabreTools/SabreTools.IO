@@ -445,25 +445,23 @@ namespace SabreTools.IO
                     // If the buffer pointer has been reset
                     if (pos == 0)
                     {
-                        output.Write(buffer);
+                        output.Write(buffer, 0, buffer.Length);
                         output.Flush();
                         buffer = new byte[4];
                     }
                 }
 
                 // If there's anything more in the buffer
-                for (int i = 0; i < pos; i++)
-                {
+                if (pos > 0)
                     output.Write(buffer, 0, pos);
-                }
 
                 // If the stream still has data
                 if (input.Position < input.Length)
                 {
-                    int count = (int)(input.Length - input.Position);
-                    byte[] bytes = new byte[count];
-                    input.Read(bytes, 0, count);
-                    output.Write(bytes);
+                    int remaining = (int)(input.Length - input.Position);
+                    byte[] bytes = new byte[remaining];
+                    int read = input.Read(bytes, 0, remaining);
+                    output.Write(bytes, 0, read);
                     output.Flush();
                 }
 
