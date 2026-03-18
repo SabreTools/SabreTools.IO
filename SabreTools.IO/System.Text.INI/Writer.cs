@@ -60,7 +60,7 @@ namespace SabreTools.Text.INI
                 return;
 
             if (string.IsNullOrEmpty(value))
-                throw new ArgumentNullException("Section tag cannot be null or empty", nameof(value));
+                throw new ArgumentNullException(nameof(value), "Section tag cannot be null or empty");
 
             _writer.WriteLine($"[{value!.TrimStart('[').TrimEnd(']')}]");
         }
@@ -77,7 +77,7 @@ namespace SabreTools.Text.INI
                 return;
 
             if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException("Key cannot be null or empty", nameof(key));
+                throw new ArgumentNullException(nameof(key), "Key cannot be null or empty");
 
             value ??= string.Empty;
             _writer.WriteLine($"{key}={value}");

@@ -2,7 +2,7 @@
 
 [![Build and Test](https://github.com/SabreTools/SabreTools.IO/actions/workflows/build_and_test.yml/badge.svg)](https://github.com/SabreTools/SabreTools.IO/actions/workflows/build_and_test.yml)
 
-This library compries of I/O functionality used by other SabreTools projects.
+This meta-library comprises of I/O and related functionality used by other SabreTools projects.
 
 Find the link to the Nuget package [here](https://www.nuget.org/packages/SabreTools.IO).
 
