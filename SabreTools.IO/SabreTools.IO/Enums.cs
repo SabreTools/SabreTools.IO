@@ -1,9 +1,9 @@
-namespace SabreTools.IO.Transform
+namespace SabreTools.IO
 {
     /// <summary>
     /// Determines the swapping operation
     /// </summary>
-    public enum Operation
+    public enum SwapOperation
     {
         /// <summary>
         /// Reverse endianness of each byte
