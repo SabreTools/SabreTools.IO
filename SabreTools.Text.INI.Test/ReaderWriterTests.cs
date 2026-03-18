@@ -1,12 +1,10 @@
 using System.IO;
 using System.Text;
-using SabreTools.IO.Readers;
-using SabreTools.IO.Writers;
 using Xunit;
 
-namespace SabreTools.IO.Test.ReadersWriters
+namespace SabreTools.Text.INI.Test
 {
-    public class IniTests
+    public class ReaderWriterTests
     {
         [Fact]
         public void EndToEndTest()
@@ -15,7 +13,7 @@ namespace SabreTools.IO.Test.ReadersWriters
 
             // Build and write the INI
             var stream = new MemoryStream();
-            var writer = new IniWriter(stream, Encoding.UTF8);
+            var writer = new Writer(stream, Encoding.UTF8);
 
             writer.WriteSection("section1");
             writer.WriteKeyValuePair("key1", "value1");
@@ -34,7 +32,7 @@ namespace SabreTools.IO.Test.ReadersWriters
 
             // Parse the INI
             stream.Seek(0, SeekOrigin.Begin);
-            var reader = new IniReader(stream, Encoding.UTF8);
+            var reader = new Reader(stream, Encoding.UTF8);
 
             while (!reader.EndOfStream)
             {

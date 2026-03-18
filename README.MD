@@ -19,7 +19,6 @@ Generic helper classes that involve custom functionality and utility.
 | Class | Notes |
 | --- | --- |
 | `BufferedStream` | Not a true stream implementation used for buffered, single-byte reads |
-| `IniFile` | Key-value pair INI file, implementing `Dictionary<string, string?>` |
 | `ParentablePath` | Class that represents a path that is rooted by a parent directory |
 | `PathTool` | Utility class for common Path-related functions |
 | `ReadOnlyBitStream` | Read-only stream implementation allowing bitwise reading |
@@ -137,6 +136,10 @@ Various encryption implementations that are used across multiple projects. Most 
 ### `SabreTools.Text.Compare`
 
 Classes focused on string comparison by natural sorting. For example, "5" would be sorted before "100".
+
+### `SabreTools.Text.INI`
+
+Key-value pair INI file, implementing `Dictionary<string, string?>`. Includes reader and writer classes for easier access.
 
 ## Releases
 

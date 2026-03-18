@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace SabreTools.IO.Readers
+namespace SabreTools.Text.INI
 {
-    public class IniReader : IDisposable
+    public class Reader : IDisposable
     {
         #region Fields
 
@@ -32,7 +32,7 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Current row type
         /// </summary>
-        public IniRowType RowType { get; private set; } = IniRowType.None;
+        public RowType RowType { get; private set; } = RowType.None;
 
         /// <summary>
         /// Current section being read
@@ -60,7 +60,7 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Constructor for reading from a file
         /// </summary>
-        public IniReader(string filename)
+        public Reader(string filename)
         {
             _reader = new StreamReader(filename);
         }
@@ -68,7 +68,7 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Constructor for reading from a stream
         /// </summary>
-        public IniReader(Stream stream, Encoding encoding)
+        public Reader(Stream stream, Encoding encoding)
         {
             _reader = new StreamReader(stream, encoding);
         }
@@ -76,7 +76,7 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Constructor for reading from a stream reader
         /// </summary>
-        public IniReader(StreamReader streamReader)
+        public Reader(StreamReader streamReader)
         {
             _reader = streamReader;
         }
@@ -116,14 +116,14 @@ namespace SabreTools.IO.Readers
             if (CurrentLine.StartsWith(";"))
             {
                 KeyValuePair = null;
-                RowType = IniRowType.Comment;
+                RowType = RowType.Comment;
             }
 
             // Section
             else if (CurrentLine.StartsWith("[") && CurrentLine.EndsWith("]"))
             {
                 KeyValuePair = null;
-                RowType = IniRowType.SectionHeader;
+                RowType = RowType.SectionHeader;
                 Section = CurrentLine.TrimStart('[').TrimEnd(']');
             }
 
@@ -140,7 +140,7 @@ namespace SabreTools.IO.Readers
                 string value = string.Join("=", valueArr).Trim();
 
                 KeyValuePair = new KeyValuePair<string, string>(key, value);
-                RowType = IniRowType.KeyValue;
+                RowType = RowType.KeyValue;
             }
 
             // Empty
@@ -148,14 +148,14 @@ namespace SabreTools.IO.Readers
             {
                 KeyValuePair = null;
                 CurrentLine = string.Empty;
-                RowType = IniRowType.None;
+                RowType = RowType.None;
             }
 
             // Invalid
             else
             {
                 KeyValuePair = null;
-                RowType = IniRowType.Invalid;
+                RowType = RowType.Invalid;
 
                 if (ValidateRows)
                     throw new InvalidDataException($"Invalid INI row found, cannot continue: {CurrentLine}");

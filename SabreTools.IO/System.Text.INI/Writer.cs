@@ -2,9 +2,9 @@
 using System.IO;
 using System.Text;
 
-namespace SabreTools.IO.Writers
+namespace SabreTools.Text.INI
 {
-    public class IniWriter : IDisposable
+    public class Writer : IDisposable
     {
         #region Private Properties
 
@@ -20,7 +20,7 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// Constructor for writing to a file
         /// </summary>
-        public IniWriter(string filename)
+        public Writer(string filename)
         {
             _writer = new StreamWriter(filename);
         }
@@ -28,7 +28,7 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// Consturctor for writing to a stream
         /// </summary>
-        public IniWriter(Stream stream, Encoding encoding)
+        public Writer(Stream stream, Encoding encoding)
         {
 #if NET20 || NET35 || NET40
             _writer = new StreamWriter(stream, encoding);
@@ -40,7 +40,7 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// Constructor for writing to a stream writer
         /// </summary>
-        public IniWriter(StreamWriter streamWriter)
+        public Writer(StreamWriter streamWriter)
         {
             _writer = streamWriter;
         }

@@ -12,16 +12,4 @@
         Comment,
         EndTopLevel,
     }
-
-    /// <summary>
-    /// Different types of INI rows being parsed
-    /// </summary>
-    public enum IniRowType
-    {
-        None,
-        SectionHeader,
-        KeyValue,
-        Comment,
-        Invalid,
-    }
 }

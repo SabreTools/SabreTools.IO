@@ -3,10 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using SabreTools.IO.Readers;
-using SabreTools.IO.Writers;
 
-namespace SabreTools.IO
+namespace SabreTools.Text.INI
 {
     /// <summary>
     /// Key-value pair INI file
@@ -111,7 +109,7 @@ namespace SabreTools.IO
 
             try
             {
-                using IniWriter writer = new(stream, Encoding.UTF8);
+                using Writer writer = new(stream, Encoding.UTF8);
 
                 // Order the keys to link sections together
                 var orderedKeys = new string[_keyValuePairs.Keys.Count];
@@ -171,7 +169,7 @@ namespace SabreTools.IO
             try
             {
                 // TODO: Can we use the section header in the reader?
-                using var reader = new IniReader(stream, Encoding.UTF8);
+                using var reader = new Reader(stream, Encoding.UTF8);
 
                 string? section = string.Empty;
                 while (!reader.EndOfStream)
@@ -183,11 +181,11 @@ namespace SabreTools.IO
                     // Process the row according to type
                     switch (reader.RowType)
                     {
-                        case IniRowType.SectionHeader:
+                        case RowType.SectionHeader:
                             section = reader.Section;
                             break;
 
-                        case IniRowType.KeyValue:
+                        case RowType.KeyValue:
                             string? key = reader.KeyValuePair?.Key;
 
                             // Section names are prepended to the key with a '.' separating
@@ -198,9 +196,9 @@ namespace SabreTools.IO
                             this[key] = reader.KeyValuePair?.Value;
                             break;
 
-                        case IniRowType.None:
-                        case IniRowType.Comment:
-                        case IniRowType.Invalid:
+                        case RowType.None:
+                        case RowType.Comment:
+                        case RowType.Invalid:
                         default:
                             // No-op
                             break;

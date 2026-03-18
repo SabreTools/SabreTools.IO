@@ -2,7 +2,7 @@ using System.IO;
 using System.Text;
 using Xunit;
 
-namespace SabreTools.IO.Test
+namespace SabreTools.Text.INI.Test
 {
     public class IniFileTests
     {

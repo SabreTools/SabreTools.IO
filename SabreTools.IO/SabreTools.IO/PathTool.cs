@@ -25,7 +25,7 @@ namespace SabreTools.IO
         public static string GetRuntimeDirectory()
         {
 #if NET20 || NET35 || NET40 || NET452
-            return Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 #else
             return AppContext.BaseDirectory;
 #endif

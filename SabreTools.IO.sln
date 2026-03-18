@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SabreTools.Matching.Test", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SabreTools.Text.Compare.Test", "SabreTools.Text.Compare.Test\SabreTools.Text.Compare.Test.csproj", "{2FEFC7F7-814D-4FDB-84CA-946137373160}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SabreTools.Text.INI.Test", "SabreTools.Text.INI.Test\SabreTools.Text.INI.Test.csproj", "{4054E2C0-AC30-44EA-916E-73DD9FB3F2D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,18 @@ Global
 		{2FEFC7F7-814D-4FDB-84CA-946137373160}.Release|x64.Build.0 = Release|Any CPU
 		{2FEFC7F7-814D-4FDB-84CA-946137373160}.Release|x86.ActiveCfg = Release|Any CPU
 		{2FEFC7F7-814D-4FDB-84CA-946137373160}.Release|x86.Build.0 = Release|Any CPU
+		{4054E2C0-AC30-44EA-916E-73DD9FB3F2D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4054E2C0-AC30-44EA-916E-73DD9FB3F2D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4054E2C0-AC30-44EA-916E-73DD9FB3F2D0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4054E2C0-AC30-44EA-916E-73DD9FB3F2D0}.Debug|x64.Build.0 = Debug|Any CPU
+		{4054E2C0-AC30-44EA-916E-73DD9FB3F2D0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4054E2C0-AC30-44EA-916E-73DD9FB3F2D0}.Debug|x86.Build.0 = Debug|Any CPU
+		{4054E2C0-AC30-44EA-916E-73DD9FB3F2D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4054E2C0-AC30-44EA-916E-73DD9FB3F2D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4054E2C0-AC30-44EA-916E-73DD9FB3F2D0}.Release|x64.ActiveCfg = Release|Any CPU
+		{4054E2C0-AC30-44EA-916E-73DD9FB3F2D0}.Release|x64.Build.0 = Release|Any CPU
+		{4054E2C0-AC30-44EA-916E-73DD9FB3F2D0}.Release|x86.ActiveCfg = Release|Any CPU
+		{4054E2C0-AC30-44EA-916E-73DD9FB3F2D0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
