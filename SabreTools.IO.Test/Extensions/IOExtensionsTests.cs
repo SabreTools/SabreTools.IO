@@ -8,7 +8,7 @@ namespace SabreTools.IO.Test.Extensions
 {
     public class IOExtensionsTests
     {
-        #region Ensure
+        #region EnsureDirectory
 
         [Theory]
         [InlineData(null, null)]
@@ -16,14 +16,14 @@ namespace SabreTools.IO.Test.Extensions
         [InlineData("     ", "     ")] // TODO: This is a bad result
         [InlineData("dirname", "dirname")]
         [InlineData("\"dirname\"", "dirname")]
-        public void EnsureTest(string? dir, string? expected)
+        public void EnsureDirectoryTest(string? dir, string? expected)
         {
             // Handle test setup
             expected ??= PathTool.GetRuntimeDirectory();
             if (expected is not null)
                 expected = Path.GetFullPath(expected);
 
-            string actual = dir.Ensure(create: false);
+            string actual = dir.EnsureDirectory(create: false);
             Assert.Equal(expected, actual);
         }
 
@@ -131,6 +131,39 @@ namespace SabreTools.IO.Test.Extensions
         public void GetNormalizedExtensionTest(string? path, string? expected)
         {
             string? actual = path.GetNormalizedExtension();
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion
+
+        #region Normalize Path
+
+        [Theory]
+        [InlineData(null, false, "")]
+        [InlineData(null, true, "")]
+        [InlineData("", false, "")]
+        [InlineData("", true, "")]
+        [InlineData("filename.bin", false, "filename.bin")]
+        [InlineData("filename.bin", true, "filename.bin")]
+        [InlineData("\"filename.bin\"", false, "filename.bin")]
+        [InlineData("\"filename.bin\"", true, "filename.bin")]
+        [InlineData("<filename.bin>", false, "filename.bin")]
+        [InlineData("<filename.bin>", true, "filename.bin")]
+        [InlineData("1.2.3.4..bin", false, "1.2.3.4..bin")]
+        [InlineData("1.2.3.4..bin", true, "1.2.3.4..bin")]
+        [InlineData("dir/filename.bin", false, "dir/filename.bin")]
+        [InlineData("dir/filename.bin", true, "dir/filename.bin")]
+        [InlineData(" dir / filename.bin", false, "dir/filename.bin")]
+        [InlineData(" dir / filename.bin", true, "dir/filename.bin")]
+        [InlineData("\0dir/\0filename.bin", false, "_dir/_filename.bin")]
+        [InlineData("\0dir/\0filename.bin", true, "_dir/_filename.bin")]
+        public void NormalizeOutputPathsTest(string? path, bool getFullPath, string expected)
+        {
+            // Modify expected to account for test data if necessary
+            if (getFullPath && !string.IsNullOrEmpty(expected))
+                expected = Path.GetFullPath(expected);
+
+            string actual = path.NormalizeFilePath(getFullPath);
             Assert.Equal(expected, actual);
         }
 
