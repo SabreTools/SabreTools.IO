@@ -20,7 +20,6 @@ Generic helper classes that involve custom functionality and utility.
 | --- | --- |
 | `BufferedStream` | Not a true stream implementation used for buffered, single-byte reads |
 | `IniFile` | Key-value pair INI file, implementing `Dictionary<string, string?>` |
-| `MatchUtil` | Utility class for easier invocation of `SabreTools.Matching` functionality |
 | `ParentablePath` | Class that represents a path that is rooted by a parent directory |
 | `PathTool` | Utility class for common Path-related functions |
 | `ReadOnlyBitStream` | Read-only stream implementation allowing bitwise reading |
@@ -97,6 +96,7 @@ Classes designed to make matching contents and paths easier. These classes allow
 | `ContentMatch` | `IMatch<byte?[]>` | Matches contents of a byte array, allowing wildcard bytes using `null` |
 | `ContentMatchSet` | `IMatchSet<ContentMatch, byte?[]>` | Group of logically-linked `ContentMatch` |
 | `FilePathMatch` | `IMatch<string>` | Specialization of `PathMatch` that assumes the string is a filename |
+| `MatchUtil` | Utility class for easier invocation of `SabreTools.Matching` functionality |
 | `PathMatch` | `IMatch<string>` | Matches a set of strings representing a directory hierarchy |
 | `PathMatchSet` | `IMatchSet<PathMatch, string>` | Group of logically-linked `PathMatch` |
 

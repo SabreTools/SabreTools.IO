@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using SabreTools.Matching;
 
-namespace SabreTools.IO
+namespace SabreTools.Matching
 {
     /// <summary>
     /// Helper class for matching
