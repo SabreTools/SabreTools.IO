@@ -25,7 +25,7 @@ Generic helper classes that involve custom functionality and utility.
 | `PathTool` | Utility class for common Path-related functions |
 | `ReadOnlyBitStream` | Read-only stream implementation allowing bitwise reading |
 | `ReadOnlyCompositeStream` | Read-only stream implementation that wraps multiple source streams in a set order |
-| `Transform` | File and stream implementations of common data transformations |
+| `Transform` | Utility class that allows common data transformations for streams and byte arrays |
 | `ViewStream` | Read-only stream implementation representing a view into source data |
 
 `Transform` functionality includes:
