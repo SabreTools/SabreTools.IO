@@ -1,4 +1,4 @@
-namespace SabreTools.IO.Logging
+namespace SabreTools.Logging
 {
     public static class Converters
     {

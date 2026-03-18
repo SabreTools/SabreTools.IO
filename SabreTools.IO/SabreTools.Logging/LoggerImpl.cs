@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace SabreTools.IO.Logging
+namespace SabreTools.Logging
 {
     /// <summary>
     /// Internal logging implementation

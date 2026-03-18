@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SabreTools.IO.Logging
+namespace SabreTools.Logging
 {
     /// <summary>
     /// Per-class logging

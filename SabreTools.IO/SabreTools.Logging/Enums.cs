@@ -1,4 +1,4 @@
-﻿namespace SabreTools.IO.Logging
+﻿namespace SabreTools.Logging
 {
     /// <summary>
     /// Severity of the logging statement

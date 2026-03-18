@@ -1,4 +1,4 @@
-using SabreTools.IO.Logging;
+using SabreTools.Logging;
 using Xunit;
 
 namespace SabreTools.IO.Test.Logging

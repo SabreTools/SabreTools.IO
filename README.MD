@@ -58,10 +58,6 @@ Extensions for `BinaryReader`, `byte[]`, and `Stream` to help with reading and w
 
 This namespace also contains other various extensions that help with common functionality and safe access.
 
-### `SabreTools.IO.Logging`
-
-Logic for a logging system, including writing to console and textfile outputs. There are 4 possible log levels for logging statements to be invoked with. There is also a stopwatch implementation included for logging statements with automatic timespan tracking.
-
 ### `SabreTools.IO.Readers` and `SabreTools.IO.Writers`
 
 Reading and writing support for the following file types:
@@ -79,6 +75,10 @@ File and stream implementations of common data transformations:
 - Combine using either ordered concatenation or interleaving
 - Split by even/odd chunks or based on block size
 - Convert data either by bit-swapping, byte-swapping, word-swapping, or word/byte-swapping
+
+### `SabreTools.Logging`
+
+Logic for a logging system, including writing to console and textfile outputs. There are 4 possible log levels for logging statements to be invoked with. There is also a stopwatch implementation included for logging statements with automatic timespan tracking.
 
 ### `SabreTools.Matching`
 
