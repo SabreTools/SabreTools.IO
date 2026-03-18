@@ -56,7 +56,7 @@ namespace SabreTools.IO.Test.Transform
             string odd = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
             string output = Guid.NewGuid().ToString();
 
-            bool actual = Combine.Interleave(even, odd, output, BlockSize.Byte);
+            bool actual = Combine.Interleave(even, odd, output, 1);
             Assert.False(actual);
         }
 
@@ -67,33 +67,33 @@ namespace SabreTools.IO.Test.Transform
             string odd = "NOT A REAL PATH";
             string output = Guid.NewGuid().ToString();
 
-            bool actual = Combine.Interleave(even, odd, output, BlockSize.Byte);
+            bool actual = Combine.Interleave(even, odd, output, 1);
             Assert.False(actual);
         }
 
         [Fact]
-        public void Interleave_InvalidType_False()
+        public void Interleave_InvalidValue_False()
         {
             string even = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
             string odd = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
             string output = Guid.NewGuid().ToString();
 
-            bool actual = Combine.Interleave(even, odd, output, (BlockSize)int.MaxValue);
+            bool actual = Combine.Interleave(even, odd, output, -1);
             Assert.False(actual);
         }
 
         [Theory]
-        [InlineData(BlockSize.Byte, "TThhiiss  ddooeessnn''tt  mmaattcchh  aannyytthhiinngg")]
-        [InlineData(BlockSize.Word, "ThThisis d doeoesnsn't't m matatchch a anynyththiningg")]
-        [InlineData(BlockSize.Dword, "ThisThis doe doesn'tsn't mat match ach anythnythinging")]
-        [InlineData(BlockSize.Qword, "This doeThis doesn't matsn't match anythch anythinging")]
-        public void Interleave_SameLength_True(BlockSize type, string expected)
+        [InlineData(1, "TThhiiss  ddooeessnn''tt  mmaattcchh  aannyytthhiinngg")]
+        [InlineData(2, "ThThisis d doeoesnsn't't m matatchch a anynyththiningg")]
+        [InlineData(4, "ThisThis doe doesn'tsn't mat match ach anythnythinging")]
+        [InlineData(8, "This doeThis doesn't matsn't match anythch anythinging")]
+        public void Interleave_SameLength_True(int blockSize, string expected)
         {
             string even = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
             string odd = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
             string output = Guid.NewGuid().ToString();
 
-            bool actual = Combine.Interleave(even, odd, output, type);
+            bool actual = Combine.Interleave(even, odd, output, blockSize);
             Assert.True(actual);
 
             string text = File.ReadAllText(output);
@@ -110,7 +110,7 @@ namespace SabreTools.IO.Test.Transform
 
             string output = Guid.NewGuid().ToString();
 
-            bool actual = Combine.Interleave(even, odd, output, BlockSize.Byte);
+            bool actual = Combine.Interleave(even, odd, output, 1);
             Assert.True(actual);
 
             string text = File.ReadAllText(output);

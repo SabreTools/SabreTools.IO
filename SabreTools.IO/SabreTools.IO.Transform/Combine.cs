@@ -70,9 +70,9 @@ namespace SabreTools.IO.Transform
         /// <param name="even">First file to interleave</param>
         /// <param name="odd">Second file to interleave</param>
         /// <param name="output">Path to the output file</param>
-        /// <param name="type"><see cref="BlockSize"> representing how to process the inputs</param>
+        /// <param name="blockSize">Number of bytes read before switching input</param>
         /// <returns>True if the files were interleaved successfully, false otherwise</returns>
-        public static bool Interleave(string even, string odd, string output, BlockSize type)
+        public static bool Interleave(string even, string odd, string output, int blockSize)
         {
             // If either file does not exist
             if (!File.Exists(even) || !File.Exists(odd))
@@ -85,7 +85,7 @@ namespace SabreTools.IO.Transform
                 using var oddStream = File.Open(odd, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
                 // Interleave the streams
-                using var interleaved = Interleave(evenStream, oddStream, type);
+                using var interleaved = Interleave(evenStream, oddStream, blockSize);
                 if (interleaved is null)
                     return false;
 
@@ -111,26 +111,20 @@ namespace SabreTools.IO.Transform
         /// <param name="even">First stream to interleave</param>
         /// <param name="odd">Second stream to interleave</param>
         /// <param name="output">Path to the output file</param>
-        /// <param name="type"><see cref="BlockSize"> representing how to process the inputs</param>
+        /// <param name="blockSize">Number of bytes read before switching input</param>
         /// <returns>A filled stream on success, null otherwise</returns>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown if <paramref name="type"/> is not a recognized value.
+        /// Thrown if <paramref name="blockSize"/> is non-positive.
         /// </exception>
-        public static Stream? Interleave(Stream even, Stream odd, BlockSize type)
+        public static Stream? Interleave(Stream even, Stream odd, int blockSize)
         {
             // If either stream is unreadable
             if (!even.CanRead || !odd.CanRead)
                 return null;
 
-            // Get the number of bytes to process
-            int byteCount = type switch
-            {
-                BlockSize.Byte => 1,
-                BlockSize.Word => 2,
-                BlockSize.Dword => 4,
-                BlockSize.Qword => 8,
-                _ => throw new ArgumentOutOfRangeException(nameof(type)),
-            };
+            // If the block size is invalid
+            if (blockSize <= 0)
+                throw new ArgumentOutOfRangeException(nameof(blockSize));
 
             try
             {
@@ -141,8 +135,8 @@ namespace SabreTools.IO.Transform
                 bool useEven = true;
                 while (even.Position < even.Length || odd.Position < odd.Length)
                 {
-                    byte[] read = new byte[byteCount];
-                    int actual = (useEven ? even : odd).Read(read, 0, byteCount);
+                    byte[] read = new byte[blockSize];
+                    int actual = (useEven ? even : odd).Read(read, 0, blockSize);
                     outputStream.Write(read, 0, actual);
                     outputStream.Flush();
                     useEven = !useEven;
