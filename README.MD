@@ -116,6 +116,10 @@ Custom numeric types and related functionality.
 | `BothUInt32` | Both-endian `UInt32` value |
 | `BothInt64` | Both-endian `Int64` value |
 | `BothUInt64` | Both-endian `UInt64` value |
+| `Int24` | 24-bit (3 byte) signed value |
+| `UInt24` | 24-bit (3 byte) unsigned value |
+| `Int48` | 48-bit (3 byte) signed value |
+| `UInt48` | 48-bit (3 byte) unsigned value |
 
 **Both-endian** or **bi-endian** numbers are represented by a little-endian value followed by a big-endian value, where both values are the same number.
 
