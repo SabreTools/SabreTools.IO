@@ -1,5 +1,4 @@
 using System;
-using SabreTools.Numerics;
 using Xunit;
 
 namespace SabreTools.Numerics.Test

@@ -1,7 +1,6 @@
-using SabreTools.Logging;
 using Xunit;
 
-namespace SabreTools.IO.Test.Logging
+namespace SabreTools.Logging.Test
 {
     public class ConvertersTests
     {
