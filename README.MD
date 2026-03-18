@@ -148,6 +148,10 @@ Key-value pair INI file, implementing `Dictionary<string, string?>`. Includes re
 
 Reader and writer classes for separated-Value files (e.g. CSV, SSV, TSV).
 
+### `SabreTools.Text.Utilities`
+
+Various helper classes for dealing with strings. This includes special normalization code used by other SabreTools projects.
+
 ## Releases
 
 For the most recent stable build, download the latest release here: [Releases Page](https://github.com/SabreTools/SabreTools.IO/releases)
