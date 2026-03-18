@@ -13,9 +13,9 @@ namespace SabreTools.IO.Transform
         /// </summary>
         /// <param name="input">Input file name</param>
         /// <param name="outputDir">Path to the output directory</param>
-        /// <param name="type"><see cref="BlockSize"> representing how to process the inputs</param>
+        /// <param name="blockSize">Number of bytes read before switching output</param>
         /// <returns>True if the file could be split, false otherwise</returns>
-        public static bool BlockSplit(string input, string? outputDir, BlockSize type)
+        public static bool BlockSplit(string input, string? outputDir, int blockSize)
         {
             // If the file does not exist
             if (!File.Exists(input))
@@ -27,7 +27,7 @@ namespace SabreTools.IO.Transform
                 using var inputStream = File.Open(input, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
                 // Split the stream
-                if (!BlockSplit(inputStream, type, out Stream? evenStream, out Stream? oddStream))
+                if (!BlockSplit(inputStream, blockSize, out Stream? evenStream, out Stream? oddStream))
                     return false;
                 else if (evenStream is null || oddStream is null)
                     return false;
@@ -65,14 +65,14 @@ namespace SabreTools.IO.Transform
         /// Split an input stream into two output streams
         /// </summary>
         /// <param name="input">Input stream</param>
-        /// <param name="type"><see cref="BlockSize"> representing how to process the inputs</param>
+        /// <param name="blockSize">Number of bytes read before switching output</param>
         /// <param name="even">Even block output stream on success, null otherwise</param>
         /// <param name="odd">Odd block output stream on success, null otherwise</param>
         /// <returns>True if the stream could be split, false otherwise</returns>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown if <paramref name="type"/> is not a recognized value.
+        /// Thrown if <paramref name="blockSize"/> is non-positive.
         /// </exception>
-        public static bool BlockSplit(Stream input, BlockSize type, out Stream? even, out Stream? odd)
+        public static bool BlockSplit(Stream input, int blockSize, out Stream? even, out Stream? odd)
         {
             // Set default values for the outputs
             even = null;
@@ -82,15 +82,9 @@ namespace SabreTools.IO.Transform
             if (!input.CanRead)
                 return false;
 
-            // Get the number of bytes to process
-            int byteCount = type switch
-            {
-                BlockSize.Byte => 1,
-                BlockSize.Word => 2,
-                BlockSize.Dword => 4,
-                BlockSize.Qword => 8,
-                _ => throw new ArgumentOutOfRangeException(nameof(type)),
-            };
+            // If the block size is invalid
+            if (blockSize <= 0)
+                throw new ArgumentOutOfRangeException(nameof(blockSize));
 
             try
             {
@@ -102,8 +96,8 @@ namespace SabreTools.IO.Transform
                 bool useEven = true;
                 while (input.Position < input.Length)
                 {
-                    byte[] read = new byte[byteCount];
-                    int actual = input.Read(read, 0, byteCount);
+                    byte[] read = new byte[blockSize];
+                    int actual = input.Read(read, 0, blockSize);
                     (useEven ? even : odd).Write(read, 0, actual);
                     (useEven ? even : odd).Flush();
                     useEven = !useEven;

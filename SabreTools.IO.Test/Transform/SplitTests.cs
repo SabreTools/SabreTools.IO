@@ -14,7 +14,7 @@ namespace SabreTools.IO.Test.Transform
         {
             string input = string.Empty;
             string outputDir = string.Empty;
-            bool actual = Split.BlockSplit(input, outputDir, BlockSize.Byte);
+            bool actual = Split.BlockSplit(input, outputDir, 1);
             Assert.False(actual);
         }
 
@@ -23,31 +23,31 @@ namespace SabreTools.IO.Test.Transform
         {
             string input = "INVALID";
             string outputDir = string.Empty;
-            bool actual = Split.BlockSplit(input, outputDir, BlockSize.Byte);
+            bool actual = Split.BlockSplit(input, outputDir, 1);
             Assert.False(actual);
         }
 
         [Fact]
-        public void BlockSplit_InvalidType_False()
+        public void BlockSplit_InvalidValue_False()
         {
             string input = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
             string outputDir = Guid.NewGuid().ToString();
 
-            bool actual = Split.BlockSplit(input, outputDir, (BlockSize)int.MaxValue);
+            bool actual = Split.BlockSplit(input, outputDir, -1);
             Assert.False(actual);
         }
 
         [Theory]
-        [InlineData(BlockSize.Byte, "Ti os' ac ntig", "hsdentmthayhn")]
-        [InlineData(BlockSize.Word, "Th dsn mchnyin", "isoe'tat athg")]
-        [InlineData(BlockSize.Dword, "Thissn'tch aing", " doe matnyth")]
-        [InlineData(BlockSize.Qword, "This doech anyth", "sn't mating")]
-        public void BlockSplit_ValidFile_True(BlockSize type, string expectedEven, string expectedOdd)
+        [InlineData(1, "Ti os' ac ntig", "hsdentmthayhn")]
+        [InlineData(2, "Th dsn mchnyin", "isoe'tat athg")]
+        [InlineData(4, "Thissn'tch aing", " doe matnyth")]
+        [InlineData(8, "This doech anyth", "sn't mating")]
+        public void BlockSplit_ValidFile_True(int blockSize, string expectedEven, string expectedOdd)
         {
             string input = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
             string outputDir = Guid.NewGuid().ToString();
 
-            bool actual = Split.BlockSplit(input, outputDir, type);
+            bool actual = Split.BlockSplit(input, outputDir, blockSize);
             Assert.True(actual);
 
             string baseFilename = Path.GetFileName(input);
