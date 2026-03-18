@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using SabreTools.IO.Extensions;
 
 namespace SabreTools.IO
 {
@@ -406,7 +405,7 @@ namespace SabreTools.IO
                 int pos = 0;
                 while (input.Position < endBoundary)
                 {
-                    byte b = input.ReadByteValue();
+                    byte b = (byte)input.ReadByte();
                     switch (operation)
                     {
                         case SwapOperation.Bitswap:
@@ -455,13 +454,15 @@ namespace SabreTools.IO
                 // If there's anything more in the buffer
                 for (int i = 0; i < pos; i++)
                 {
-                    output.Write(buffer[i]);
+                    output.Write(buffer, 0, pos);
                 }
 
                 // If the stream still has data
                 if (input.Position < input.Length)
                 {
-                    byte[] bytes = input.ReadBytes((int)(input.Length - input.Position));
+                    int count = (int)(input.Length - input.Position);
+                    byte[] bytes = new byte[count];
+                    input.Read(bytes, 0, count);
                     output.Write(bytes);
                     output.Flush();
                 }
