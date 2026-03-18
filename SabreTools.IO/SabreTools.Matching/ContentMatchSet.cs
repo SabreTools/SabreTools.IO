@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
-using SabreTools.IO.Interfaces;
 
-namespace SabreTools.IO.Matching
+namespace SabreTools.Matching
 {
     /// <summary>
     /// A set of content matches that work together

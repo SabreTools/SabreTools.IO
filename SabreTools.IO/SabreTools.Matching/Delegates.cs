@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace SabreTools.IO.Matching
+namespace SabreTools.Matching
 {
     /// <summary>
     /// Get a version number from a file

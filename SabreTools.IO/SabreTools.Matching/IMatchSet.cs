@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SabreTools.IO.Interfaces
+namespace SabreTools.Matching
 {
     /// <summary>
     /// Wrapper for a single set of matching criteria

@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using SabreTools.IO.Matching;
+using SabreTools.Matching;
 using Xunit;
 
 namespace SabreTools.IO.Test.Matching

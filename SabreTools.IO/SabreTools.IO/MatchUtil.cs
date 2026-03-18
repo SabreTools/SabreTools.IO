@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using SabreTools.IO.Matching;
+using SabreTools.Matching;
 
 namespace SabreTools.IO
 {

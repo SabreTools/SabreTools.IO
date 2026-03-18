@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace SabreTools.IO.Matching
+namespace SabreTools.Matching
 {
     /// <summary>
     /// File path matching criteria

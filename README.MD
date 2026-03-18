@@ -45,22 +45,9 @@ Extensions for `BinaryReader`, `byte[]`, and `Stream` to help with reading and w
 
 This namespace also contains other various extensions that help with common functionality and safe access.
 
-### `SabreTools.IO.Interfaces`
-
-Common interfaces used mainly internal to the library.
-
-| Interface | Notes |
-| --- | --- |
-| `IMatch<T>` | Represents a matcher for a generic type |
-| `IMatchSet<T, U>` | Represents a set of `IMatch<T>` types |
-
 ### `SabreTools.IO.Logging`
 
 Logic for a logging system, including writing to console and textfile outputs. There are 4 possible log levels for logging statements to be invoked with. There is also a stopwatch implementation included for logging statements with automatic timespan tracking.
-
-### `SabreTools.IO.Matching`
-
-Classes designed to make matching contents and paths easier. These classes allow for both grouped and single matching as well as post-processing of matched information.
 
 ### `SabreTools.IO.Readers` and `SabreTools.IO.Writers`
 
@@ -88,6 +75,27 @@ File and stream implementations of common data transformations:
 - Combine using either ordered concatenation or interleaving
 - Split by even/odd chunks or based on block size
 - Convert data either by bit-swapping, byte-swapping, word-swapping, or word/byte-swapping
+
+### `SabreTools.Matching`
+
+Classes designed to make matching contents and paths easier. These classes allow for both grouped and single matching as well as post-processing of matched information.
+
+#### Interfaces
+
+| Interface | Notes |
+| --- | --- |
+| `IMatch<T>` | Represents a matcher for a generic type |
+| `IMatchSet<T, U>` | Represents a set of `IMatch<T>` types |
+
+#### Matching Classes
+
+| Class | Implements | Notes |
+| --- | --- |
+| `ContentMatch` | `IMatch<byte?[]>` | Matches contents of a byte array, allowing wildcard bytes using `null` |
+| `ContentMatchSet` | `IMatchSet<ContentMatch, byte?[]>` | Group of logically-linked `ContentMatch` |
+| `FilePathMatch` | `IMatch<string>` | Specialization of `PathMatch` that assumes the string is a filename |
+| `PathMatch` | `IMatch<string>` | Matches a set of strings representing a directory hierarchy |
+| `PathMatchSet` | `IMatchSet<PathMatch, string>` | Group of logically-linked `PathMatch` |
 
 ### `SabreTools.Numerics`
 

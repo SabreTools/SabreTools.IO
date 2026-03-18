@@ -1,8 +1,7 @@
 using System;
 using System.IO;
-using SabreTools.IO.Interfaces;
 
-namespace SabreTools.IO.Matching
+namespace SabreTools.Matching
 {
     /// <summary>
     /// Content matching criteria

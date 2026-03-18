@@ -1,4 +1,4 @@
-﻿namespace SabreTools.IO.Interfaces
+﻿namespace SabreTools.Matching
 {
     /// <summary>
     /// Represents a matcher for a particular type
