@@ -14,17 +14,22 @@ Below are a list of the included namespaces and their overall utility.
 
 Generic helper classes that involve custom functionality and utility.
 
-#### Classes
+#### Stream Implementations
 
 | Class | Notes |
 | --- | --- |
 | `BufferedStream` | Not a true stream implementation used for buffered, single-byte reads |
-| `ParentablePath` | Class that represents a path that is rooted by a parent directory |
-| `PathTool` | Utility class for common Path-related functions |
 | `ReadOnlyBitStream` | Read-only stream implementation allowing bitwise reading |
 | `ReadOnlyCompositeStream` | Read-only stream implementation that wraps multiple source streams in a set order |
-| `Transform` | Utility class that allows common data transformations for streams and byte arrays |
 | `ViewStream` | Read-only stream implementation representing a view into source data |
+
+#### Utility Classes
+
+| Class | Notes |
+| --- | --- |
+| `ParentablePath` | Class that represents a path that is rooted by a parent directory |
+| `PathTool` | Utility class for common Path-related functions |
+| `Transform` | Utility class that allows common data transformations for streams and byte arrays |
 
 `Transform` functionality includes:
 
