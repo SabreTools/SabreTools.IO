@@ -14,6 +14,19 @@ Below are a list of the included namespaces and their overall utility.
 
 Generic helper classes that involve custom functionality and utility.
 
+#### Classes
+
+| Class | Notes |
+| --- | --- |
+| `BufferedStream` | Not a true stream implementation used for buffered, single-byte reads |
+| `IniFile` | Key-value pair INI file, implementing `Dictionary<string, string?>` |
+| `MatchUtil` | Utility class for easier invocation of `SabreTools.Matching` functionality |
+| `ParentablePath` | Class that represents a path that is rooted by a parent directory |
+| `PathTool` | Utility class for common Path-related functions |
+| `ReadOnlyBitStream` | Read-only stream implementation allowing bitwise reading |
+| `ReadOnlyCompositeStream` | Read-only stream implementation that wraps multiple source streams in a set order |
+| `ViewStream` | Read-only stream implementation representing a view into source data |
+
 ### `SabreTools.IO.Compression`
 
 Various compression implementations that are used across multiple projects. Most of the implementations are be ports of existing C and C++ code.
@@ -59,15 +72,6 @@ Reading and writing support for the following file types:
 
 For a generic INI implementation, see `SabreTools.IO.IniFile`.
 
-### `SabreTools.IO.Streams`
-
-Custom `Stream` implementations that are required for specialized use:
-
-- `BufferedStream`: A format that is not a true stream implementation used for buffered, single-byte reads
-- `ReadOnlyBitStream`: A readonly stream implementation allowing bitwise reading
-- `ReadOnlyCompositeStream`: A readonly stream implementation that wraps multiple source streams in a set order
-- `ViewStream`: A readonly stream implementation representing a view into source data
-
 ### `SabreTools.IO.Transform`
 
 File and stream implementations of common data transformations:
@@ -90,7 +94,7 @@ Classes designed to make matching contents and paths easier. These classes allow
 #### Matching Classes
 
 | Class | Implements | Notes |
-| --- | --- |
+| --- | --- | --- |
 | `ContentMatch` | `IMatch<byte?[]>` | Matches contents of a byte array, allowing wildcard bytes using `null` |
 | `ContentMatchSet` | `IMatchSet<ContentMatch, byte?[]>` | Group of logically-linked `ContentMatch` |
 | `FilePathMatch` | `IMatch<string>` | Specialization of `PathMatch` that assumes the string is a filename |

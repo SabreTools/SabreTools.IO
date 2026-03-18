@@ -2,7 +2,7 @@ using System.Data;
 using System.IO;
 using SabreTools.IO.Extensions;
 
-namespace SabreTools.IO.Streams
+namespace SabreTools.IO
 {
     /// <summary>
     /// Wrapper to allow reading bits from a source stream

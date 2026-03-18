@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using SabreTools.IO.Streams;
 using Xunit;
 
 #pragma warning disable IDE0017 // Object initialization can be simplified

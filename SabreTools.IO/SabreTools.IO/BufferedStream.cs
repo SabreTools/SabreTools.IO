@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace SabreTools.IO.Streams
+namespace SabreTools.IO
 {
     /// <summary>
     /// Buffered stream that reads in blocks

@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace SabreTools.IO.Streams
+namespace SabreTools.IO
 {
     /// <summary>
     /// Stream representing a view into a source

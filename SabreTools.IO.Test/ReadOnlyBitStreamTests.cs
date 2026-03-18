@@ -1,6 +1,5 @@
 using System.IO;
 using System.Linq;
-using SabreTools.IO.Streams;
 using Xunit;
 
 namespace SabreTools.IO.Test.Streams
