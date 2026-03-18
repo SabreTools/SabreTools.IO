@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using SabreTools.IO.Extensions;
 
 namespace SabreTools.IO.Logging
 {
@@ -82,15 +81,18 @@ namespace SabreTools.IO.Logging
         /// <param name="addDate">True to append a date to the filename, false otherwise</param>
         public static void SetFilename(string filename, bool addDate = true)
         {
-            // Get the full log path
+            // Get the full log path and extension
             string fullPath = Path.GetFullPath(filename);
+            string extension = Path.GetExtension(filename).TrimStart('.');
 
             // Set the log directory
             LogDirectory = Path.GetDirectoryName(fullPath);
 
-            // Set the
-            if (addDate)
-                Filename = $"{Path.GetFileNameWithoutExtension(fullPath)} ({DateTime.Now:yyyy-MM-dd HH-mm-ss}).{fullPath.GetNormalizedExtension()}";
+            // Update the filename, if needed
+            if (addDate && extension.Length > 0)
+                Filename = $"{Path.GetFileNameWithoutExtension(fullPath)} ({DateTime.Now:yyyy-MM-dd HH-mm-ss}).{extension}";
+            else if (addDate && extension.Length == 0)
+                Filename = $"{Path.GetFileNameWithoutExtension(fullPath)} ({DateTime.Now:yyyy-MM-dd HH-mm-ss})";
             else
                 Filename = Path.GetFileName(fullPath);
         }
