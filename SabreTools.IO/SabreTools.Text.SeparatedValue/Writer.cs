@@ -3,9 +3,9 @@ using System.Data;
 using System.IO;
 using System.Text;
 
-namespace SabreTools.IO.Writers
+namespace SabreTools.Text.SeparatedValue
 {
-    public class SeparatedValueWriter : IDisposable
+    public class Writer : IDisposable
     {
         #region Fields
 
@@ -55,7 +55,7 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// Constructor for writing to a file
         /// </summary>
-        public SeparatedValueWriter(string filename)
+        public Writer(string filename)
         {
             _writer = new StreamWriter(filename);
         }
@@ -63,7 +63,7 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// Consturctor for writing to a stream
         /// </summary>
-        public SeparatedValueWriter(Stream stream, Encoding encoding)
+        public Writer(Stream stream, Encoding encoding)
         {
 #if NET20 || NET35 || NET40
             _writer = new StreamWriter(stream, encoding);
@@ -75,7 +75,7 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// Consturctor for writing to a stream writer
         /// </summary>
-        public SeparatedValueWriter(StreamWriter streamWriter)
+        public Writer(StreamWriter streamWriter)
         {
             _writer = streamWriter;
         }

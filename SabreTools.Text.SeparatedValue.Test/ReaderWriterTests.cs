@@ -1,12 +1,10 @@
 using System.IO;
 using System.Text;
-using SabreTools.IO.Readers;
-using SabreTools.IO.Writers;
 using Xunit;
 
-namespace SabreTools.IO.Test.ReadersWriters
+namespace SabreTools.Text.SeparatedValue.Test
 {
-    public class SeparatedValueTests
+    public class ReaderWriterTests
     {
         [Fact]
         public void EndToEndTest()
@@ -15,7 +13,7 @@ namespace SabreTools.IO.Test.ReadersWriters
 
             // Build and write the CSV
             var stream = new MemoryStream();
-            var writer = new SeparatedValueWriter(stream, Encoding.UTF8);
+            var writer = new Writer(stream, Encoding.UTF8);
             Assert.True(writer.Quotes);
             Assert.Equal(',', writer.Separator);
             Assert.True(writer.VerifyFieldCount);
@@ -34,7 +32,7 @@ namespace SabreTools.IO.Test.ReadersWriters
 
             // Parse the CSV
             stream.Seek(0, SeekOrigin.Begin);
-            var reader = new SeparatedValueReader(stream, Encoding.UTF8);
+            var reader = new Reader(stream, Encoding.UTF8);
             Assert.True(reader.Header);
             Assert.True(reader.Quotes);
             Assert.Equal(',', reader.Separator);

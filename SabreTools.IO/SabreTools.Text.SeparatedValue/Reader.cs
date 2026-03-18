@@ -4,9 +4,9 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace SabreTools.IO.Readers
+namespace SabreTools.Text.SeparatedValue
 {
-    public class SeparatedValueReader : IDisposable
+    public class Reader : IDisposable
     {
         #region Fields
 
@@ -76,7 +76,7 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Constructor for reading from a file
         /// </summary>
-        public SeparatedValueReader(string filename)
+        public Reader(string filename)
         {
             _reader = new StreamReader(filename);
         }
@@ -84,7 +84,7 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Constructor for reading from a stream
         /// </summary>
-        public SeparatedValueReader(Stream stream, Encoding encoding)
+        public Reader(Stream stream, Encoding encoding)
         {
             _reader = new StreamReader(stream, encoding);
         }
@@ -92,7 +92,7 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Constructor for reading from a stream reader
         /// </summary>
-        public SeparatedValueReader(StreamReader streamReader)
+        public Reader(StreamReader streamReader)
         {
             _reader = streamReader;
         }

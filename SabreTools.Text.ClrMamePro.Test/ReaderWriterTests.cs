@@ -1,12 +1,10 @@
 using System.IO;
 using System.Text;
-using SabreTools.IO.Readers;
-using SabreTools.IO.Writers;
 using Xunit;
 
-namespace SabreTools.IO.Test.ReadersWriters
+namespace SabreTools.Text.ClrMamePro.Test
 {
-    public class ClrMameProTests
+    public class ReaderWriterTests
     {
         [Fact]
         public void EndToEndTest()
@@ -15,7 +13,7 @@ namespace SabreTools.IO.Test.ReadersWriters
 
             // Build and write the CMP file
             var stream = new MemoryStream();
-            var writer = new ClrMameProWriter(stream, Encoding.UTF8);
+            var writer = new Writer(stream, Encoding.UTF8);
             Assert.True(writer.Quotes);
 
             writer.WriteStartElement("header");
@@ -42,7 +40,7 @@ namespace SabreTools.IO.Test.ReadersWriters
 
             // Parse the CMP file
             stream.Seek(0, SeekOrigin.Begin);
-            var reader = new ClrMameProReader(stream, Encoding.UTF8);
+            var reader = new Reader(stream, Encoding.UTF8);
             Assert.False(reader.DosCenter);
             Assert.True(reader.Quotes);
 

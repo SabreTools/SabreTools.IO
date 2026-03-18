@@ -4,9 +4,9 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace SabreTools.IO.Readers
+namespace SabreTools.Text.ClrMamePro
 {
-    public class ClrMameProReader : IDisposable
+    public class Reader : IDisposable
     {
         #region Constants
 
@@ -93,7 +93,7 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Constructor for reading from a file
         /// </summary>
-        public ClrMameProReader(string filename)
+        public Reader(string filename)
         {
             _reader = new StreamReader(filename);
         }
@@ -101,7 +101,7 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Constructor for reading from a stream and encoding
         /// </summary>
-        public ClrMameProReader(Stream stream, Encoding encoding)
+        public Reader(Stream stream, Encoding encoding)
         {
             _reader = new StreamReader(stream, encoding);
         }
@@ -109,7 +109,7 @@ namespace SabreTools.IO.Readers
         /// <summary>
         /// Constructor for reading from a stream reader
         /// </summary>
-        public ClrMameProReader(StreamReader streamReader)
+        public Reader(StreamReader streamReader)
         {
             _reader = streamReader;
         }

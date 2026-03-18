@@ -63,16 +63,6 @@ Extensions for `BinaryReader`, `byte[]`, and `Stream` to help with reading and w
 
 This namespace also contains other various extensions that help with common functionality and safe access.
 
-### `SabreTools.IO.Readers` and `SabreTools.IO.Writers`
-
-Reading and writing support for the following file types:
-
-- ClrMamePro-derived Metadata files
-- Standard and non-standard INI files
-- Separated-Value files (e.g. CSV, SSV, TSV)
-
-For a generic INI implementation, see `SabreTools.IO.IniFile`.
-
 ### `SabreTools.Logging`
 
 Logic for a logging system, including writing to console and textfile outputs. There are 4 possible log levels for logging statements to be invoked with. There is also a stopwatch implementation included for logging statements with automatic timespan tracking.
@@ -133,6 +123,10 @@ Various encryption implementations that are used across multiple projects. Most 
 | AES/CTR | Yes | Yes | Subset of functionality exposed from [The Bouncy Castle Cryptography Library For .NET](https://github.com/bcgit/bc-csharp) |
 | MoPaQ | No | Yes | Used to encrypt and decrypt MoPaQ tables for processing |
 
+### `SabreTools.Text.ClrMamePro`
+
+Reader and writer classes for ClrMamePro-derived Metadata files.
+
 ### `SabreTools.Text.Compare`
 
 Classes focused on string comparison by natural sorting. For example, "5" would be sorted before "100".
@@ -140,6 +134,10 @@ Classes focused on string comparison by natural sorting. For example, "5" would 
 ### `SabreTools.Text.INI`
 
 Key-value pair INI file, implementing `Dictionary<string, string?>`. Includes reader and writer classes for easier access.
+
+### `SabreTools.Text.SeparatedValue`
+
+Reader and writer classes for separated-Value files (e.g. CSV, SSV, TSV).
 
 ## Releases
 

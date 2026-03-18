@@ -2,13 +2,13 @@
 using System.IO;
 using System.Text;
 
-namespace SabreTools.IO.Writers
+namespace SabreTools.Text.ClrMamePro
 {
     /// <summary>
     /// ClrMamePro writer patterned heavily off of XmlTextWriter
     /// </summary>
     /// <see cref="https://referencesource.microsoft.com/#System.Xml/System/Xml/Core/XmlTextWriter.cs"/>
-    public class ClrMameProWriter : IDisposable
+    public class Writer : IDisposable
     {
         #region Private Enums and Structs
 
@@ -120,7 +120,7 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// Constructor for writing to a file
         /// </summary>
-        public ClrMameProWriter(string filename)
+        public Writer(string filename)
         {
             _writer = new StreamWriter(filename);
             Quotes = true;
@@ -134,7 +134,7 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// Constructor for writing to a stream
         /// </summary>
-        public ClrMameProWriter(Stream stream, Encoding encoding)
+        public Writer(Stream stream, Encoding encoding)
         {
 #if NET20 || NET35 || NET40
             _writer = new StreamWriter(stream, encoding);
@@ -152,7 +152,7 @@ namespace SabreTools.IO.Writers
         /// <summary>
         /// Constructor for writing to a stream writer
         /// </summary>
-        public ClrMameProWriter(StreamWriter streamWriter)
+        public Writer(StreamWriter streamWriter)
         {
             _writer = streamWriter;
             Quotes = true;

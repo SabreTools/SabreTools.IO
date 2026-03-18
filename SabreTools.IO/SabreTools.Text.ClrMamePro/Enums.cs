@@ -1,4 +1,4 @@
-﻿namespace SabreTools.IO.Readers
+﻿namespace SabreTools.Text.ClrMamePro
 {
     /// <summary>
     /// Different types of CMP rows being parsed
