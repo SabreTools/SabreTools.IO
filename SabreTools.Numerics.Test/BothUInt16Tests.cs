@@ -2,7 +2,7 @@ using System;
 using SabreTools.Numerics;
 using Xunit;
 
-namespace SabreTools.IO.Test.Numerics
+namespace SabreTools.Numerics.Test
 {
     public class BothUInt16Tests
     {

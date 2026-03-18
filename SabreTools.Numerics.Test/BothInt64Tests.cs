@@ -2,16 +2,16 @@ using System;
 using SabreTools.Numerics;
 using Xunit;
 
-namespace SabreTools.IO.Test.Numerics
+namespace SabreTools.Numerics.Test
 {
-    public class BothInt16Tests
+    public class BothInt64Tests
     {
         [Theory]
         [InlineData(0, 0, true)]
         [InlineData(0, 1, false)]
-        public void IsValidTest(short le, short be, bool expected)
+        public void IsValidTest(long le, long be, bool expected)
         {
-            var val = new BothInt16(le, be);
+            var val = new BothInt64(le, be);
 
             Assert.Equal(le, val.LittleEndian);
             Assert.Equal(be, val.BigEndian);
@@ -21,13 +21,13 @@ namespace SabreTools.IO.Test.Numerics
         [Fact]
         public void ImplicitConversionTest()
         {
-            short expected = 1;
-            var val = new BothInt16(expected, expected);
+            long expected = 1;
+            var val = new BothInt64(expected, expected);
 
-            short to = (short)val;
+            long to = (long)val;
             Assert.Equal(expected, to);
 
-            BothInt16 back = (BothInt16)to;
+            BothInt64 back = (BothInt64)to;
             Assert.Equal(expected, back.LittleEndian);
             Assert.Equal(expected, back.BigEndian);
         }
@@ -36,10 +36,10 @@ namespace SabreTools.IO.Test.Numerics
         [InlineData(0, -1)]
         [InlineData(1, 0)]
         [InlineData(2, 1)]
-        public void CompareToTest(short le, int expected)
+        public void CompareToTest(long le, int expected)
         {
-            short compare = 1;
-            var val = new BothInt16(le, le);
+            long compare = 1;
+            var val = new BothInt64(le, le);
 
             int actual = val.CompareTo(compare);
             Assert.Equal(expected, actual);
@@ -48,62 +48,62 @@ namespace SabreTools.IO.Test.Numerics
         [Fact]
         public void GetTypeCodeTest()
         {
-            TypeCode expected = ((short)1).GetTypeCode();
+            TypeCode expected = ((long)1).GetTypeCode();
 
-            var val = new BothInt16(1, 1);
+            var val = new BothInt64(1, 1);
             Assert.Equal(expected, val.GetTypeCode());
         }
 
         [Fact]
         public void ToTypesTest()
         {
-            var val = new BothInt16(1, 1);
+            var val = new BothInt64(1, 1);
 
-            bool expectedBool = Convert.ToBoolean((short)1);
+            bool expectedBool = Convert.ToBoolean((long)1);
             Assert.Equal(expectedBool, val.ToBoolean(null));
 
-            char expectedChar = Convert.ToChar((short)1);
+            char expectedChar = Convert.ToChar((long)1);
             Assert.Equal(expectedChar, val.ToChar(null));
 
-            sbyte expectedSByte = Convert.ToSByte((short)1);
+            sbyte expectedSByte = Convert.ToSByte((long)1);
             Assert.Equal(expectedSByte, val.ToSByte(null));
 
-            byte expectedByte = Convert.ToByte((short)1);
+            byte expectedByte = Convert.ToByte((long)1);
             Assert.Equal(expectedByte, val.ToByte(null));
 
-            short expectedInt16 = Convert.ToInt16((short)1);
+            short expectedInt16 = Convert.ToInt16((long)1);
             Assert.Equal(expectedInt16, val.ToInt16(null));
 
-            ushort expectedUInt16 = Convert.ToUInt16((short)1);
+            ushort expectedUInt16 = Convert.ToUInt16((long)1);
             Assert.Equal(expectedUInt16, val.ToUInt16(null));
 
-            int expectedInt32 = Convert.ToInt32((short)1);
+            int expectedInt32 = Convert.ToInt32((long)1);
             Assert.Equal(expectedInt32, val.ToInt32(null));
 
-            uint expectedUInt32 = Convert.ToUInt32((short)1);
+            uint expectedUInt32 = Convert.ToUInt32((long)1);
             Assert.Equal(expectedUInt32, val.ToUInt32(null));
 
-            long expectedInt64 = Convert.ToInt64((short)1);
+            long expectedInt64 = Convert.ToInt64((long)1);
             Assert.Equal(expectedInt64, val.ToInt64(null));
 
-            ulong expectedUInt64 = Convert.ToUInt64((short)1);
+            ulong expectedUInt64 = Convert.ToUInt64((long)1);
             Assert.Equal(expectedUInt64, val.ToUInt64(null));
 
-            float expectedSingle = Convert.ToSingle((short)1);
+            float expectedSingle = Convert.ToSingle((long)1);
             Assert.Equal(expectedSingle, val.ToSingle(null));
 
-            double expectedDouble = Convert.ToDouble((short)1);
+            double expectedDouble = Convert.ToDouble((long)1);
             Assert.Equal(expectedDouble, val.ToDouble(null));
 
-            decimal expectedDecimal = Convert.ToDecimal((short)1);
+            decimal expectedDecimal = Convert.ToDecimal((long)1);
             Assert.Equal(expectedDecimal, val.ToDecimal(null));
 
             Assert.Throws<InvalidCastException>(() => val.ToDateTime(null));
 
-            string expectedString = Convert.ToString((short)1);
+            string expectedString = Convert.ToString((long)1);
             Assert.Equal(expectedString, val.ToString(null));
 
-            ulong expectedObject = Convert.ToUInt64((short)1);
+            ulong expectedObject = Convert.ToUInt64((long)1);
             Assert.Equal(expectedObject, val.ToType(typeof(ulong), null));
         }
 
@@ -112,10 +112,10 @@ namespace SabreTools.IO.Test.Numerics
         [InlineData(0, 1, false)]
         [InlineData(1, 0, false)]
         [InlineData(1, 1, true)]
-        public void Equals_BothEndian(short le, short be, bool expected)
+        public void Equals_BothEndian(long le, long be, bool expected)
         {
-            var val = new BothInt16(le, be);
-            var equalTo = new BothInt16(1, 1);
+            var val = new BothInt64(le, be);
+            var equalTo = new BothInt64(1, 1);
 
             bool actual = val.Equals(equalTo);
             Assert.Equal(expected, actual);
@@ -124,10 +124,10 @@ namespace SabreTools.IO.Test.Numerics
         [Theory]
         [InlineData(0, 0, false)]
         [InlineData(1, 1, true)]
-        public void Equals_BaseType(short le, short be, bool expected)
+        public void Equals_BaseType(long le, long be, bool expected)
         {
-            var val = new BothInt16(le, be);
-            short equalTo = 1;
+            var val = new BothInt64(le, be);
+            long equalTo = 1;
 
             bool actual = val.Equals(equalTo);
             Assert.Equal(expected, actual);
@@ -136,21 +136,21 @@ namespace SabreTools.IO.Test.Numerics
         [Fact]
         public void ArithmeticUnaryOperatorsTest()
         {
-            var valA = new BothInt16(2, 2);
-            short expected = 3;
+            var valA = new BothInt64(2, 2);
+            long expected = 3;
             valA++;
             Assert.Equal(expected, valA.LittleEndian);
             Assert.Equal(expected, valA.BigEndian);
 
-            valA = new BothInt16(2, 2);
+            valA = new BothInt64(2, 2);
             expected = 1;
             valA--;
             Assert.Equal(expected, valA.LittleEndian);
             Assert.Equal(expected, valA.BigEndian);
 
-            valA = new BothInt16(2, 2);
+            valA = new BothInt64(2, 2);
             expected = 2;
-            BothInt16 actual = +valA;
+            BothInt64 actual = +valA;
             Assert.Equal(expected, actual.LittleEndian);
             Assert.Equal(expected, actual.BigEndian);
 
@@ -163,11 +163,11 @@ namespace SabreTools.IO.Test.Numerics
         [Fact]
         public void ArithmeticBinaryOperatorsTest()
         {
-            var valA = new BothInt16(3, 3);
-            var valB = new BothInt16(2, 2);
+            var valA = new BothInt64(3, 3);
+            var valB = new BothInt64(2, 2);
 
-            short expected = 6;
-            BothInt16 actual = valA * valB;
+            long expected = 6;
+            BothInt64 actual = valA * valB;
             Assert.Equal(expected, actual.LittleEndian);
             Assert.Equal(expected, actual.BigEndian);
 
@@ -195,9 +195,9 @@ namespace SabreTools.IO.Test.Numerics
         [Fact]
         public void BitwiseUnaryOperatorsTest()
         {
-            var valA = new BothInt16(2, 2);
-            short expected = ~2;
-            BothInt16 actual = ~valA;
+            var valA = new BothInt64(2, 2);
+            long expected = ~2;
+            BothInt64 actual = ~valA;
             Assert.Equal(expected, actual.LittleEndian);
             Assert.Equal(expected, actual.BigEndian);
         }
@@ -205,11 +205,11 @@ namespace SabreTools.IO.Test.Numerics
         [Fact]
         public void ShiftBinaryOperatorsTest()
         {
-            var valA = new BothInt16(2, 2);
-            var valB = new BothInt16(1, 1);
+            var valA = new BothInt64(2, 2);
+            var valB = new BothInt32(1, 1);
 
-            short expected = 2 << 1;
-            BothInt16 actual = valA << valB;
+            long expected = 2 << 1;
+            BothInt64 actual = valA << valB;
             Assert.Equal(expected, actual.LittleEndian);
             Assert.Equal(expected, actual.BigEndian);
 
@@ -227,11 +227,11 @@ namespace SabreTools.IO.Test.Numerics
         [Fact]
         public void BitwiseBinaryOperatorsTest()
         {
-            var valA = new BothInt16(3, 3);
-            var valB = new BothInt16(2, 2);
+            var valA = new BothInt64(3, 3);
+            var valB = new BothInt64(2, 2);
 
-            short expected = 3 & 2;
-            BothInt16 actual = valA & valB;
+            long expected = 3 & 2;
+            BothInt64 actual = valA & valB;
             Assert.Equal(expected, actual.LittleEndian);
             Assert.Equal(expected, actual.BigEndian);
 
