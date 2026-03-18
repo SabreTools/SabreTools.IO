@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using SabreTools.IO.Extensions;
 using Xunit;
 
-namespace SabreTools.IO.Test
+namespace SabreTools.IO.Test.Extensions
 {
-    public class PathToolTests
+    public class ParentablePathExtensionsTests
     {
         [Fact]
         public void GetDirectoriesOnly_NoAppendParent()
@@ -19,7 +20,7 @@ namespace SabreTools.IO.Test
                 Path.Combine(Environment.CurrentDirectory, "TestData"),
                 Path.Combine(Environment.CurrentDirectory, "TestData", "Subdir*"),
             ];
-            var actual = PathTool.GetDirectoriesOnly(inputs, appendParent: true);
+            var actual = ParentablePathExtensions.GetDirectoriesOnly(inputs, appendParent: true);
             Assert.NotEmpty(actual);
 
             var first = actual[0];
@@ -39,7 +40,7 @@ namespace SabreTools.IO.Test
                 Path.Combine(Environment.CurrentDirectory, "TestData"),
                 Path.Combine(Environment.CurrentDirectory, "TestData", "Subdir*"),
             ];
-            var actual = PathTool.GetDirectoriesOnly(inputs, appendParent: false);
+            var actual = ParentablePathExtensions.GetDirectoriesOnly(inputs, appendParent: false);
             Assert.NotEmpty(actual);
 
             var first = actual[0];
@@ -60,7 +61,7 @@ namespace SabreTools.IO.Test
                 Path.Combine(Environment.CurrentDirectory, "TestData", "Subdir*"),
                 Path.Combine(Environment.CurrentDirectory, "TestData", "utf8bom.txt"),
             ];
-            var actual = PathTool.GetFilesOnly(inputs, appendParent: true);
+            var actual = ParentablePathExtensions.GetFilesOnly(inputs, appendParent: true);
             Assert.NotEmpty(actual);
 
             var first = actual[0];
@@ -81,7 +82,7 @@ namespace SabreTools.IO.Test
                 Path.Combine(Environment.CurrentDirectory, "TestData", "Subdir*"),
                 Path.Combine(Environment.CurrentDirectory, "TestData", "utf8bom.txt"),
             ];
-            var actual = PathTool.GetFilesOnly(inputs, appendParent: false);
+            var actual = ParentablePathExtensions.GetFilesOnly(inputs, appendParent: false);
             Assert.NotEmpty(actual);
 
             var first = actual[0];
