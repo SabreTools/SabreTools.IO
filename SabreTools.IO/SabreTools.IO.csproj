@@ -6,7 +6,6 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <IncludeSymbols>true</IncludeSymbols>
         <LangVersion>latest</LangVersion>
-        <NoWarn>CS0618</NoWarn>
         <Nullable>enable</Nullable>
         <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -16,13 +15,13 @@
         <!-- Package Properties -->
         <AssemblyName>SabreTools.IO.Common</AssemblyName>
         <Authors>Matt Nadareski</Authors>
-        <Description>Common IO utilities by other SabreTools projects</Description>
-        <Copyright>Copyright (c) Matt Nadareski 2019-2025</Copyright>
+        <Description>Custom stream implementations and utility classes for general IO operations</Description>
+        <Copyright>Copyright (c) Matt Nadareski 2019-2026</Copyright>
         <PackageProjectUrl>https://github.com/SabreTools/</PackageProjectUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <RepositoryUrl>https://github.com/SabreTools/SabreTools.IO</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <PackageTags>io reading writing ini csv ssv tsv</PackageTags>
+        <PackageTags>io streams path transform bitswap byteswap</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 

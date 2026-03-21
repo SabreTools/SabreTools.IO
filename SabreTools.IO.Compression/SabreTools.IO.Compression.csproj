@@ -15,13 +15,13 @@
 
         <!-- Package Properties -->
         <Authors>Matt Nadareski</Authors>
-        <Description>Common IO utilities by other SabreTools projects</Description>
-        <Copyright>Copyright (c) Matt Nadareski 2019-2025</Copyright>
+        <Description>Compression implementations that are used across multiple projects</Description>
+        <Copyright>Copyright (c) Matt Nadareski 2019-2026</Copyright>
         <PackageProjectUrl>https://github.com/SabreTools/</PackageProjectUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <RepositoryUrl>https://github.com/SabreTools/SabreTools.IO</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <PackageTags>io reading writing ini csv ssv tsv</PackageTags>
+        <PackageTags>compression blast bzip2 deflate lzx mszip quantum szdd zlib</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 
@@ -35,7 +35,11 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\SabreTools.IO\SabreTools.IO.csproj" />
       <ProjectReference Include="..\SabreTools.IO.Extensions\SabreTools.IO.Extensions.csproj" />
+      <ProjectReference Include="..\SabreTools.Matching\SabreTools.Matching.csproj" />
+      <ProjectReference Include="..\SabreTools.Numerics\SabreTools.Numerics.csproj" />
+      <ProjectReference Include="..\SabreTools.Text.Compare\SabreTools.Text.Compare.csproj" />
     </ItemGroup>
 
 </Project>
