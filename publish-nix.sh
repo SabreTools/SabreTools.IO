@@ -32,5 +32,5 @@ then
     dotnet restore
 
     # Create Nuget Package
-    dotnet pack SabreTools.IO/SabreTools.IO.csproj --output $BUILD_FOLDER
+    dotnet pack SabreTools.IO.Meta/SabreTools.IO.Meta.csproj --output $BUILD_FOLDER
 fi

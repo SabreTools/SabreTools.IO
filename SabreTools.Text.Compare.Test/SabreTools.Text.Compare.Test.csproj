@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\SabreTools.IO\SabreTools.IO.csproj" />
+        <ProjectReference Include="..\SabreTools.Text.Compare\SabreTools.Text.Compare.csproj" />
     </ItemGroup>
 
 </Project>

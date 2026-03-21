@@ -14,7 +14,6 @@
         <Version>1.9.1</Version>
 
         <!-- Package Properties -->
-        <AssemblyName>SabreTools.IO.Common</AssemblyName>
         <Authors>Matt Nadareski</Authors>
         <Description>Common IO utilities by other SabreTools projects</Description>
         <Copyright>Copyright (c) Matt Nadareski 2019-2025</Copyright>
@@ -31,7 +30,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="SabreTools.IO.Extensions" />
+        <ProjectReference Include="..\SabreTools.IO\SabreTools.IO.csproj" />
+        <ProjectReference Include="..\SabreTools.Matching\SabreTools.Matching.csproj" />
+        <ProjectReference Include="..\SabreTools.Numerics\SabreTools.Numerics.csproj" />
+        <ProjectReference Include="..\SabreTools.Text.Compare\SabreTools.Text.Compare.csproj" />
     </ItemGroup>
 
 </Project>

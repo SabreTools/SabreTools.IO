@@ -14,7 +14,6 @@
         <Version>1.9.1</Version>
 
         <!-- Package Properties -->
-        <AssemblyName>SabreTools.IO.Common</AssemblyName>
         <Authors>Matt Nadareski</Authors>
         <Description>Common IO utilities by other SabreTools projects</Description>
         <Copyright>Copyright (c) Matt Nadareski 2019-2025</Copyright>
@@ -31,7 +30,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="SabreTools.IO.Extensions" />
+        <PackageReference Include="GrindCore" Version="0.7.0" Condition="!$(TargetFramework.StartsWith(`net2`))" />
+        <PackageReference Include="SabreTools.Hashing" Version="[1.6.1]" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SabreTools.IO.Extensions\SabreTools.IO.Extensions.csproj" />
     </ItemGroup>
 
 </Project>

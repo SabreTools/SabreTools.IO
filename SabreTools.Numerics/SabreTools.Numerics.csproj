@@ -14,7 +14,6 @@
         <Version>1.9.1</Version>
 
         <!-- Package Properties -->
-        <AssemblyName>SabreTools.IO.Common</AssemblyName>
         <Authors>Matt Nadareski</Authors>
         <Description>Common IO utilities by other SabreTools projects</Description>
         <Copyright>Copyright (c) Matt Nadareski 2019-2025</Copyright>
@@ -28,10 +27,6 @@
 
     <ItemGroup>
         <None Include="README.md" Pack="true" PackagePath="" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <InternalsVisibleTo Include="SabreTools.IO.Extensions" />
     </ItemGroup>
 
 </Project>

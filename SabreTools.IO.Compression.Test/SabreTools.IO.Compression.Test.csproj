@@ -10,6 +10,16 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <None Remove="TestData\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="TestData\**">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="8.0.0">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
@@ -23,7 +33,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\SabreTools.Text.SeparatedValue\SabreTools.Text.SeparatedValue.csproj" />
+        <ProjectReference Include="..\SabreTools.IO.Compression\SabreTools.IO.Compression.csproj" />
     </ItemGroup>
 
 </Project>

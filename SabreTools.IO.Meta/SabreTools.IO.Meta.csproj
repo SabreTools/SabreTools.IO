@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <!-- Assembly Properties -->
+        <TargetFrameworks>net20;net35;net40;net452;net462;net472;net48;netcoreapp3.1;net5.0;net6.0;net7.0;net8.0;net9.0;net10.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <IncludeSymbols>true</IncludeSymbols>
+        <LangVersion>latest</LangVersion>
+        <NoWarn>CS0618</NoWarn>
+        <Nullable>enable</Nullable>
+        <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <Version>1.9.1</Version>
+
+        <!-- Package Properties -->
+        <AssemblyName>SabreTools.IO</AssemblyName>
+        <Authors>Matt Nadareski</Authors>
+        <Description>Common IO utilities by other SabreTools projects</Description>
+        <Copyright>Copyright (c) Matt Nadareski 2019-2025</Copyright>
+        <PackageProjectUrl>https://github.com/SabreTools/</PackageProjectUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>https://github.com/SabreTools/SabreTools.IO</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>io reading writing ini csv ssv tsv</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="../README.md" Pack="true" PackagePath="" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Include="..\SabreTools.IO\*.cs" />
+        <Compile Include="..\SabreTools.IO.Compression\Blast\*.cs" />
+        <Compile Include="..\SabreTools.IO.Compression\BZip2\*.cs" />
+        <Compile Include="..\SabreTools.IO.Compression\Deflate\*.cs" />
+        <Compile Include="..\SabreTools.IO.Compression\LZX\*.cs" />
+        <Compile Include="..\SabreTools.IO.Compression\MSZIP\*.cs" />
+        <Compile Include="..\SabreTools.IO.Compression\Quantum\*.cs" />
+        <Compile Include="..\SabreTools.IO.Compression\SZDD\*.cs" />
+        <Compile Include="..\SabreTools.IO.Compression\zlib\**\*.cs" />
+        <Compile Include="..\SabreTools.IO.Extensions\*.cs" Exclude="..\SabreTools.IO.Extensions\ExtensionAttribute.cs" />
+        <Compile Include="..\SabreTools.Logging\*.cs" Exclude="..\SabreTools.Logging\ExtensionAttribute.cs" />
+        <Compile Include="..\SabreTools.Matching\*.cs" />
+        <Compile Include="..\SabreTools.Numerics\*.cs" />
+        <Compile Include="..\SabreTools.Security.Cryptography\*.cs" />
+        <Compile Include="..\SabreTools.Text.ClrMamePro\*.cs" />
+        <Compile Include="..\SabreTools.Text.Compare\*.cs" />
+        <Compile Include="..\SabreTools.Text.INI\*.cs" />
+        <Compile Include="..\SabreTools.Text.SeparatedValue\*.cs" />
+        <Compile Include="..\SabreTools.Text.Utilities\*.cs" Exclude="..\SabreTools.Text.Utilities\ExtensionAttribute.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BouncyCastle.NetCore" Version="1.9.0" Condition="$(TargetFramework.StartsWith(`net2`)) OR $(TargetFramework.StartsWith(`net3`)) OR $(TargetFramework.StartsWith(`net40`))" />
+        <PackageReference Include="BouncyCastle.NetCore" Version="2.2.1" Condition="!$(TargetFramework.StartsWith(`net2`)) AND !$(TargetFramework.StartsWith(`net3`)) AND !$(TargetFramework.StartsWith(`net40`))" />
+        <PackageReference Include="SabreTools.Hashing" Version="[1.6.1]" />
+        <PackageReference Include="GrindCore" Version="0.7.0" Condition="!$(TargetFramework.StartsWith(`net2`))" />
+    </ItemGroup>
+
+</Project>
