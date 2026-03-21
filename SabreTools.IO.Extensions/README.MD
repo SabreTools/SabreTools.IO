@@ -22,5 +22,6 @@ Relies on functionality found in `SabreTools.IO.Matching`, `SabreTools.Numerics`
 | `StreamExtensions` | Utility `Stream` extensions commonly used in other SabreTools projects. |
 | `StreamReaderExtensions` | Extensions to `Stream` allowing for endian-specific reads, peeking functionality, and try-read functionality. |
 | `StreamWriterExtensions` | Extensions to `Stream` allowing for endian-specific writes. |
+| `StringBuilderExtensions` | Formatting overloads for `StringBuilder` to allow for type-specific handling. |
 | `StringExtensions` | Optional overloads to `string.Contains`, `string.EndsWith`, `string.Equals`, and `string.StartsWith`. |
 | `XmlTextWriterExtensions` | Overloads to `XmlTextWriter.WriteAttributeString` and `XmlTextWriter.WriteElementString`. |
