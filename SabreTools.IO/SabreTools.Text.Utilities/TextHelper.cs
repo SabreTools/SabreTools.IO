@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
-using SabreTools.Hashing;
 
 namespace SabreTools.Text.Utilities
 {
@@ -30,64 +29,72 @@ namespace SabreTools.Text.Utilities
         /// <summary>
         /// Normalize a CRC32 string and pad to the correct size
         /// </summary>
+        /// <remarks>8 characters long</remarks>
         public static string? NormalizeCRC32(string? hash)
-            => NormalizeHashData(hash, Constants.CRCLength);
+            => NormalizeHashData(hash, 8);
 
         /// <summary>
         /// Normalize a MD2 string and pad to the correct size
         /// </summary>
-        /// <remarks>MD2 is the same length as MD5</remarks>
+        /// <remarks>32 characters long</remarks>
         public static string? NormalizeMD2(string? hash)
-            => NormalizeHashData(hash, Constants.MD5Length);
+            => NormalizeHashData(hash, 32);
 
         /// <summary>
         /// Normalize a MD4 string and pad to the correct size
         /// </summary>
-        /// <remarks>MD4 is the same length as MD5</remarks>
+        /// <remarks>32 characters long</remarks>
         public static string? NormalizeMD4(string? hash)
-            => NormalizeHashData(hash, Constants.MD5Length);
+            => NormalizeHashData(hash, 32);
 
         /// <summary>
         /// Normalize a MD5 string and pad to the correct size
         /// </summary>
+        /// <remarks>32 characters long</remarks>
         public static string? NormalizeMD5(string? hash)
-            => NormalizeHashData(hash, Constants.MD5Length);
+            => NormalizeHashData(hash, 32);
 
         /// <summary>
         /// Normalize a RIPEMD128 string and pad to the correct size
         /// </summary>
+        /// <remarks>32 characters long</remarks>
         public static string? NormalizeRIPEMD128(string? hash)
-            => NormalizeHashData(hash, Constants.MD5Length);
+            => NormalizeHashData(hash, 32);
 
         /// <summary>
         /// Normalize a RIPEMD160 string and pad to the correct size
         /// </summary>
+        /// <remarks>40 characters long</remarks>
         public static string? NormalizeRIPEMD160(string? hash)
-            => NormalizeHashData(hash, Constants.SHA1Length);
+            => NormalizeHashData(hash, 40);
 
         /// <summary>
         /// Normalize a SHA1 string and pad to the correct size
         /// </summary>
+        /// <remarks>40 characters long</remarks>
         public static string? NormalizeSHA1(string? hash)
-            => NormalizeHashData(hash, Constants.SHA1Length);
+            => NormalizeHashData(hash, 40);
 
         /// <summary>
         /// Normalize a SHA256 string and pad to the correct size
         /// </summary>
+        /// <remarks>64 characters long</remarks>
         public static string? NormalizeSHA256(string? hash)
-            => NormalizeHashData(hash, Constants.SHA256Length);
+            => NormalizeHashData(hash, 64);
 
         /// <summary>
         /// Normalize a SHA384 string and pad to the correct size
         /// </summary>
+        /// <remarks>96 characters long</remarks>
         public static string? NormalizeSHA384(string? hash)
-            => NormalizeHashData(hash, Constants.SHA384Length);
+            => NormalizeHashData(hash, 96);
 
         /// <summary>
         /// Normalize a SHA512 string and pad to the correct size
         /// </summary>
+        /// <remarks>128 characters long</remarks>
         public static string? NormalizeSHA512(string? hash)
-            => NormalizeHashData(hash, Constants.SHA512Length);
+            => NormalizeHashData(hash, 128);
 
         /// <summary>
         /// Remove all chars that are considered path unsafe
