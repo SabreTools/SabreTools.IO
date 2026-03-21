@@ -10,18 +10,18 @@ Find the link to the Nuget package [here](https://www.nuget.org/packages/SabreTo
 
 Below are a list of the included namespaces with links to their README files:
 
-- [SabreTools.IO](LINKHERE)
-- [SabreTools.IO.Compression](LINKHERE)
-- [SabreTools.IO.Extensions](LINKHERE)
-- [SabreTools.Logging](LINKHERE)
-- [SabreTools.Matching](LINKHERE)
-- [SabreTools.Numerics](LINKHERE)
-- [SabreTools.Security.Cryptography](LINKHERE)
-- [SabreTools.Text.ClrMamePro](LINKHERE)
-- [SabreTools.Text.Compare](LINKHERE)
-- [SabreTools.Text.INI](LINKHERE)
-- [SabreTools.Text.SeparatedValue](LINKHERE)
-- [SabreTools.Text.Utilities](LINKHERE)
+- [SabreTools.IO](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.IO/SabreTools.IO)
+- [SabreTools.IO.Compression](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.IO/SabreTools.IO.Compression)
+- [SabreTools.IO.Extensions](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.IO/SabreTools.IO.Extensions)
+- [SabreTools.Logging](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.IO/SabreTools.Logging)
+- [SabreTools.Matching](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.IO/SabreTools.Matching)
+- [SabreTools.Numerics](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.IO/SabreTools.Numerics)
+- [SabreTools.Security.Cryptography](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.IO/SabreTools.Security.Cryptography)
+- [SabreTools.Text.ClrMamePro](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.IO/SabreTools.Text.ClrMamePro)
+- [SabreTools.Text.Compare](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.IO/SabreTools.Text.Compare)
+- [SabreTools.Text.INI](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.IO/SabreTools.Text.INI)
+- [SabreTools.Text.SeparatedValue](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.IO/SabreTools.Text.SeparatedValue)
+- [SabreTools.Text.Utilities](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.IO/SabreTools.Text.Utilities)
 
 ## Releases
 
