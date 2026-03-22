@@ -18,6 +18,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\SabreTools.Numerics.Extensions\SabreTools.Numerics.Extensions.csproj" />
+        <ProjectReference Include="..\SabreTools.Matching\SabreTools.Matching.csproj" />
     </ItemGroup>
 
 </Project>
