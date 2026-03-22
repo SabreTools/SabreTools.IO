@@ -269,6 +269,31 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Helper to get the filesize from a path
+        /// </summary>
+        /// <returns>Size of the file path, -1 on error</returns>
+        public static long GetFileSize(this string? filename)
+        {
+            // Invalid filenames are ignored
+            if (string.IsNullOrEmpty(filename))
+                return -1;
+
+            // Non-file paths are ignored
+            if (!File.Exists(filename))
+                return -1;
+
+            try
+            {
+                return new FileInfo(filename).Length;
+            }
+            catch
+            {
+                // Ignore errors
+                return -1;
+            }
+        }
+
+        /// <summary>
         /// Get the extension from the path, if possible
         /// </summary>
         /// <param name="path">Path to get extension from</param>

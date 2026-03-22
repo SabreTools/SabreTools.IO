@@ -235,6 +235,34 @@ namespace SabreTools.IO.Extensions.Test
 
         #endregion
 
+        #region FileSize
+
+        [Fact]
+        public void FileSize_Null_Invalid()
+        {
+            string? filename = null;
+            long actual = filename.GetFileSize();
+            Assert.Equal(-1, actual);
+        }
+
+        [Fact]
+        public void FileSize_Empty_Invalid()
+        {
+            string? filename = string.Empty;
+            long actual = filename.GetFileSize();
+            Assert.Equal(-1, actual);
+        }
+
+        [Fact]
+        public void FileSize_Invalid_Invalid()
+        {
+            string? filename = "INVALID";
+            long actual = filename.GetFileSize();
+            Assert.Equal(-1, actual);
+        }
+
+        #endregion
+
         #region GetNormalizedExtension
 
         [Theory]
