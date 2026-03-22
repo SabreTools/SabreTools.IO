@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace SabreTools.IO.Extensions.Test
+namespace SabreTools.Text.Extensions.Test
 {
     public class StringExtensionsTests
     {

@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Text;
 using Xunit;
 
 namespace SabreTools.IO.Extensions.Test
@@ -17,52 +16,6 @@ namespace SabreTools.IO.Extensions.Test
             0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
             0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
         ];
-
-        [Fact]
-        public void ReadNullTerminatedStringTest()
-        {
-            // Encoding.ASCII
-            byte[] bytes = [0x41, 0x42, 0x43, 0x00];
-            var stream = new MemoryStream(bytes);
-            string? actual = stream.ReadNullTerminatedString(Encoding.ASCII);
-            Assert.Equal("ABC", actual);
-
-            // Encoding.Latin1
-            bytes = [0x41, 0x42, 0x43, 0x00];
-            stream = new MemoryStream(bytes);
-            actual = stream.ReadNullTerminatedString(Encoding.Latin1);
-            Assert.Equal("ABC", actual);
-
-            // Encoding.UTF8
-            bytes = [0x41, 0x42, 0x43, 0x00];
-            stream = new MemoryStream(bytes);
-            actual = stream.ReadNullTerminatedString(Encoding.UTF8);
-            Assert.Equal("ABC", actual);
-
-            // Encoding.Unicode
-            bytes = [0x41, 0x00, 0x42, 0x00, 0x43, 0x00, 0x00, 0x00];
-            stream = new MemoryStream(bytes);
-            actual = stream.ReadNullTerminatedString(Encoding.Unicode);
-            Assert.Equal("ABC", actual);
-
-            // Encoding.BigEndianUnicode
-            bytes = [0x00, 0x41, 0x00, 0x42, 0x00, 0x43, 0x00, 0x00];
-            stream = new MemoryStream(bytes);
-            actual = stream.ReadNullTerminatedString(Encoding.BigEndianUnicode);
-            Assert.Equal("ABC", actual);
-
-            // Encoding.UTF32
-            bytes = [0x41, 0x00, 0x00, 0x00, 0x42, 0x00, 0x00, 0x00, 0x43, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
-            stream = new MemoryStream(bytes);
-            actual = stream.ReadNullTerminatedString(Encoding.UTF32);
-            Assert.Equal("ABC", actual);
-
-            // Encoding.Latin1
-            bytes = [0x41, 0x42, 0x43, 0x00];
-            stream = new MemoryStream(bytes);
-            actual = stream.ReadNullTerminatedString(Encoding.Latin1);
-            Assert.Equal("ABC", actual);
-        }
 
         [Fact]
         public void ReadTypeTest()

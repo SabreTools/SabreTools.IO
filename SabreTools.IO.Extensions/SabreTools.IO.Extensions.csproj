@@ -35,6 +35,7 @@
         <ProjectReference Include="..\SabreTools.Numerics\SabreTools.Numerics.csproj" />
         <ProjectReference Include="..\SabreTools.Numerics.Extensions\SabreTools.Numerics.Extensions.csproj" />
         <ProjectReference Include="..\SabreTools.Text.Compare\SabreTools.Text.Compare.csproj" />
+        <ProjectReference Include="..\SabreTools.Text.Extensions\SabreTools.Text.Extensions.csproj" />
     </ItemGroup>
 
 </Project>

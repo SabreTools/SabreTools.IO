@@ -1,6 +1,6 @@
 using System;
 
-namespace SabreTools.IO.Extensions
+namespace SabreTools.Text.Extensions
 {
     public static class StringExtensions
     {

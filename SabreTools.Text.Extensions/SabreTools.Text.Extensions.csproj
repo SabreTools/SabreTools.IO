@@ -28,4 +28,8 @@
         <None Include="README.md" Pack="true" PackagePath="" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\SabreTools.Numerics.Extensions\SabreTools.Numerics.Extensions.csproj" />
+    </ItemGroup>
+
 </Project>

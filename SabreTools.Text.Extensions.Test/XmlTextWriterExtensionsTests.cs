@@ -4,7 +4,7 @@ using System.Text;
 using System.Xml;
 using Xunit;
 
-namespace SabreTools.IO.Extensions.Test
+namespace SabreTools.Text.Extensions.Test
 {
     public class XmlTextWriterExtensionsTests
     {

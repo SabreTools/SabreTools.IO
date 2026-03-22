@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml;
 
-namespace SabreTools.IO.Extensions
+namespace SabreTools.Text.Extensions
 {
     /// <summary>
     /// Additional methods for XmlTextWriter

@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using SabreTools.Numerics;
 
-namespace SabreTools.IO.Extensions
+namespace SabreTools.Text.Extensions
 {
     // TODO: Add extension for printing enums, if possible
     public static class StringBuilderExtensions
