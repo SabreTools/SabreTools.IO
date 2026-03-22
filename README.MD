@@ -2,7 +2,7 @@
 
 [![Build and Test](https://github.com/SabreTools/SabreTools.IO/actions/workflows/build_and_test.yml/badge.svg)](https://github.com/SabreTools/SabreTools.IO/actions/workflows/build_and_test.yml)
 
-This meta-library comprises of I/O and related functionality used by other SabreTools projects. The original version of the package which includes all namespaces below is in the `SabreTools.IO.Meta` directory.
+This meta-library contains core functionality classes that is used by other SabreTools projects. The original version of the package which includes all namespaces below is in the `SabreTools.IO.Meta` directory.
 
 Find the link to the Nuget package [here](https://www.nuget.org/packages/SabreTools.IO).
 
