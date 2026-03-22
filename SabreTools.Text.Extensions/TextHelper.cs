@@ -6,6 +6,49 @@ namespace SabreTools.Text.Extensions
 {
     public static class TextHelper
     {
+        #region Hex Strings
+
+        /// <summary>
+        /// Convert a byte array to a hex string
+        /// </summary>
+        public static string? ToHexString(this byte[]? bytes)
+        {
+            // If we get null in, we send null out
+            if (bytes is null)
+                return null;
+
+            string hex = BitConverter.ToString(bytes);
+            return hex.Replace("-", string.Empty).ToLowerInvariant();
+        }
+
+        /// <summary>
+        /// Convert a hex string to a byte array
+        /// </summary>
+        public static byte[]? FromHexString(this string? hex)
+        {
+            // If we get null in, we send null out
+            if (string.IsNullOrEmpty(hex))
+                return null;
+
+            try
+            {
+                int chars = hex!.Length;
+                byte[] bytes = new byte[chars / 2];
+                for (int i = 0; i < chars; i += 2)
+                {
+                    bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
+                }
+
+                return bytes;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        #endregion
+
         #region Normalization
 
         /// <summary>

@@ -11,6 +11,8 @@ namespace SabreTools.Text.Extensions
     /// </summary>
     public static class StreamReaderExtensions
     {
+        #region Read Null Terminated
+
         /// <summary>
         /// Read a null-terminated string from the stream
         /// </summary>
@@ -122,6 +124,10 @@ namespace SabreTools.Text.Extensions
             return Encoding.UTF32.GetString(buffer);
         }
 
+        #endregion
+
+        #region Read Prefixed
+
         /// <summary>
         /// Read a byte-prefixed ASCII string from the stream
         /// </summary>
@@ -188,6 +194,10 @@ namespace SabreTools.Text.Extensions
             return Encoding.BigEndianUnicode.GetString(buffer);
         }
 
+        #endregion
+
+        #region Read Until Null Helpers
+
         /// <summary>
         /// Read bytes until a 1-byte null terminator is found
         /// </summary>
@@ -241,5 +251,7 @@ namespace SabreTools.Text.Extensions
 
             return [.. bytes];
         }
+
+        #endregion
     }
 }

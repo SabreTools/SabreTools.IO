@@ -9,6 +9,8 @@ namespace SabreTools.Text.Extensions
     /// </summary>
     public static class ByteArrayWriterExtensions
     {
+        #region Write Null Terminated
+
         /// <summary>
         /// Write a null-terminated string to the array
         /// </summary>
@@ -61,6 +63,10 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static bool WriteNullTerminatedUTF32String(this byte[] content, ref int offset, string? value)
             => content.WriteNullTerminatedString(ref offset, value, Encoding.UTF32);
+
+        #endregion
+
+        #region Write Prefixed
 
         /// <summary>
         /// Write a byte-prefixed ASCII string to the byte array
@@ -143,6 +149,8 @@ namespace SabreTools.Text.Extensions
             // Write the buffer
             return WriteFromBuffer(content, ref offset, buffer);
         }
+
+        #endregion
 
         /// <summary>
         /// Write an array of bytes to the byte array

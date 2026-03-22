@@ -8,6 +8,8 @@ namespace SabreTools.Text.Extensions
     /// </summary>
     public static class BinaryWriterExtensions
     {
+        #region Write Null Terminated
+
         /// <summary>
         /// Write a null-terminated string to the underlying stream
         /// </summary>
@@ -60,6 +62,10 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static bool WriteNullTerminatedUTF32String(this BinaryWriter writer, string? value)
             => writer.WriteNullTerminatedString(value, Encoding.UTF32);
+
+        #endregion
+
+        #region Write Prefixed
 
         /// <summary>
         /// Write a byte-prefixed ASCII string to the underlying stream
@@ -138,6 +144,8 @@ namespace SabreTools.Text.Extensions
             // Write the buffer
             return WriteFromBuffer(writer, buffer);
         }
+
+        #endregion
 
         /// <summary>
         /// Write an array of bytes to the underlying stream
