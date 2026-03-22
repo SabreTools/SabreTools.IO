@@ -1,6 +1,6 @@
 using System;
 
-namespace SabreTools.Text.Utilities
+namespace SabreTools.Text.Extensions
 {
     public static class NumberHelper
     {

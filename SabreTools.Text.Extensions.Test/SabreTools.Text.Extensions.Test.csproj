@@ -17,7 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\SabreTools.Text.Utilities\SabreTools.Text.Utilities.csproj" />
+        <ProjectReference Include="..\SabreTools.Text.Extensions\SabreTools.Text.Extensions.csproj" />
     </ItemGroup>
 
 </Project>

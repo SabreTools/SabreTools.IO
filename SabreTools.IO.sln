@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SabreTools.Text.ClrMamePro.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SabreTools.Text.SeparatedValue.Test", "SabreTools.Text.SeparatedValue.Test\SabreTools.Text.SeparatedValue.Test.csproj", "{F6366D73-08CF-4169-A05D-DC69047703E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SabreTools.Text.Utilities.Test", "SabreTools.Text.Utilities.Test\SabreTools.Text.Utilities.Test.csproj", "{71B85140-6468-4747-AF42-C1C0F04A4D80}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SabreTools.Text.Extensions.Test", "SabreTools.Text.Extensions.Test\SabreTools.Text.Extensions.Test.csproj", "{71B85140-6468-4747-AF42-C1C0F04A4D80}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SabreTools.IO.Meta", "SabreTools.IO.Meta\SabreTools.IO.Meta.csproj", "{5BCF7EB4-33AC-4139-8466-41E06FF86072}"
 EndProject
@@ -45,7 +45,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SabreTools.Text.INI", "Sabr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SabreTools.Text.SeparatedValue", "SabreTools.Text.SeparatedValue\SabreTools.Text.SeparatedValue.csproj", "{E1E0B039-2714-40EE-9BF2-0864D3D3535A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SabreTools.Text.Utilities", "SabreTools.Text.Utilities\SabreTools.Text.Utilities.csproj", "{E8842271-ECA1-41BD-B360-E3C73505BAEC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SabreTools.Text.Extensions", "SabreTools.Text.Extensions\SabreTools.Text.Extensions.csproj", "{E8842271-ECA1-41BD-B360-E3C73505BAEC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SabreTools.IO.Compression.Test", "SabreTools.IO.Compression.Test\SabreTools.IO.Compression.Test.csproj", "{F3036FE7-8B03-4B47-AE6D-93E99C09FF8F}"
 EndProject

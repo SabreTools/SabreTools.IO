@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace SabreTools.Text.Utilities.Test
+namespace SabreTools.Text.Extensions.Test
 {
     public class NumberHelperTests
     {

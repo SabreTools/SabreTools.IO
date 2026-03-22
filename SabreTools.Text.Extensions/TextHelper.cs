@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace SabreTools.Text.Utilities
+namespace SabreTools.Text.Extensions
 {
     public static class TextHelper
     {

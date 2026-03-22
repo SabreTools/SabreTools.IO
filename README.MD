@@ -20,9 +20,9 @@ Below are a list of the included namespaces with links to their README files:
 - [SabreTools.Security.Cryptography](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.Security.Cryptography)
 - [SabreTools.Text.ClrMamePro](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.Text.ClrMamePro)
 - [SabreTools.Text.Compare](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.Text.Compare)
+- [SabreTools.Text.Extensions](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.Text.Extensions)
 - [SabreTools.Text.INI](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.Text.INI)
 - [SabreTools.Text.SeparatedValue](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.Text.SeparatedValue)
-- [SabreTools.Text.Utilities](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.Text.Utilities)
 
 ## Releases
 

@@ -50,7 +50,7 @@
         <Compile Include="..\SabreTools.Text.Compare\*.cs" />
         <Compile Include="..\SabreTools.Text.INI\*.cs" />
         <Compile Include="..\SabreTools.Text.SeparatedValue\*.cs" />
-        <Compile Include="..\SabreTools.Text.Utilities\*.cs" Exclude="..\SabreTools.Text.Utilities\ExtensionAttribute.cs" />
+        <Compile Include="..\SabreTools.Text.Extensions\*.cs" Exclude="..\SabreTools.Text.Extensions\ExtensionAttribute.cs" />
     </ItemGroup>
 
     <ItemGroup>
