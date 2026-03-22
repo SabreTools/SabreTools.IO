@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
-using  SabreTools.Numerics.Extensions;
+using SabreTools.Numerics.Extensions;
+using SabreTools.Text.Extensions;
 
 namespace SabreTools.IO.Extensions
 {
