@@ -16,6 +16,7 @@ Below are a list of the included namespaces with links to their README files:
 - [SabreTools.Logging](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.Logging)
 - [SabreTools.Matching](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.Matching)
 - [SabreTools.Numerics](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.Numerics)
+- [SabreTools.Numerics.Extensions](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.Numerics.Extensions)
 - [SabreTools.Security.Cryptography](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.Security.Cryptography)
 - [SabreTools.Text.ClrMamePro](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.Text.ClrMamePro)
 - [SabreTools.Text.Compare](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.Text.Compare)

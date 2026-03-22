@@ -1,3 +1,5 @@
+using SabreTools.Numerics.Extensions;
+
 namespace SabreTools.IO.Extensions
 {
     /// <summary>

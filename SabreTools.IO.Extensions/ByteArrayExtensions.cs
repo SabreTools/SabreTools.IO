@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using SabreTools.Matching;
+using SabreTools.Numerics.Extensions;
 
 namespace SabreTools.IO.Extensions
 {

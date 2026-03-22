@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <!-- Assembly Properties -->
@@ -15,7 +15,7 @@
 
         <!-- Package Properties -->
         <Authors>Matt Nadareski</Authors>
-        <Description>IO-related extensions with some functionality locked behind .NET version support</Description>
+        <Description>Numeric-related extensions with some functionality locked behind .NET version support</Description>
         <Copyright>Copyright (c) Matt Nadareski 2019-2026</Copyright>
         <PackageProjectUrl>https://github.com/SabreTools/</PackageProjectUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -30,11 +30,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\SabreTools.IO\SabreTools.IO.csproj" />
-        <ProjectReference Include="..\SabreTools.Matching\SabreTools.Matching.csproj" />
         <ProjectReference Include="..\SabreTools.Numerics\SabreTools.Numerics.csproj" />
-        <ProjectReference Include="..\SabreTools.Numerics.Extensions\SabreTools.Numerics.Extensions.csproj" />
-        <ProjectReference Include="..\SabreTools.Text.Compare\SabreTools.Text.Compare.csproj" />
     </ItemGroup>
 
 </Project>

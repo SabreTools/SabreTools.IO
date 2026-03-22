@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using SabreTools.Numerics;
 
-namespace SabreTools.IO.Extensions
+namespace SabreTools.Numerics.Extensions
 {
     /// <summary>
     /// Extensions for numeric conversion

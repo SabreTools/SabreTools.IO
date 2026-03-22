@@ -44,6 +44,7 @@
         <Compile Include="..\SabreTools.Logging\*.cs" Exclude="..\SabreTools.Logging\ExtensionAttribute.cs" />
         <Compile Include="..\SabreTools.Matching\*.cs" />
         <Compile Include="..\SabreTools.Numerics\*.cs" />
+        <Compile Include="..\SabreTools.Numerics.Extensions\*.cs"  Exclude="..\SabreTools.Numerics.Extensions\ExtensionAttribute.cs" />
         <Compile Include="..\SabreTools.Security.Cryptography\*.cs" />
         <Compile Include="..\SabreTools.Text.ClrMamePro\*.cs" />
         <Compile Include="..\SabreTools.Text.Compare\*.cs" />
