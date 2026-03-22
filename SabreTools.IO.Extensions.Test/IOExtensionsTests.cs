@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Xunit;
@@ -28,7 +29,80 @@ namespace SabreTools.IO.Extensions.Test
 
         #endregion
 
-        #region Get Encoding
+        #region GetDirectoriesOnly
+
+        [Fact]
+        public void GetDirectoriesOnly_NoAppendParent()
+        {
+            string expectedParent = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string expectedCurrent = Path.Combine(expectedParent, "Subdirectory");
+
+            List<string> inputs =
+            [
+                string.Empty,
+                Path.Combine(Environment.CurrentDirectory, "TestData"),
+                Path.Combine(Environment.CurrentDirectory, "TestData", "Subdir*"),
+            ];
+            var actual = IOExtensions.GetDirectoriesOnly(inputs, appendParent: true);
+            Assert.NotEmpty(actual);
+
+            var first = actual[0];
+            Assert.Equal(expectedCurrent, first.CurrentPath);
+            Assert.Equal(expectedParent, first.ParentPath);
+        }
+
+        [Fact]
+        public void GetDirectoriesOnly_AppendParent()
+        {
+            string expectedParent = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string expectedCurrent = Path.Combine(expectedParent, "Subdirectory");
+
+            List<string> inputs =
+            [
+                string.Empty,
+                Path.Combine(Environment.CurrentDirectory, "TestData"),
+                Path.Combine(Environment.CurrentDirectory, "TestData", "Subdir*"),
+            ];
+            var actual = IOExtensions.GetDirectoriesOnly(inputs, appendParent: false);
+            Assert.NotEmpty(actual);
+
+            var first = actual[0];
+            Assert.Equal(expectedCurrent, first.CurrentPath);
+            Assert.Equal(string.Empty, first.ParentPath);
+        }
+
+        #endregion
+
+        #region ListEmpty
+
+        [Fact]
+        public void ListEmpty_NullDirectory()
+        {
+            string? dir = null;
+            var empty = dir.ListEmpty();
+            Assert.Null(empty);
+        }
+
+        [Fact]
+        public void ListEmpty_InvalidDirectory()
+        {
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "INVALID");
+            var empty = dir.ListEmpty();
+            Assert.Null(empty);
+        }
+
+        [Fact]
+        public void ListEmpty_ValidDirectory()
+        {
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            var empty = dir.ListEmpty();
+            Assert.NotNull(empty);
+            Assert.Empty(empty);
+        }
+
+        #endregion
+
+        #region GetEncoding
 
         [Fact]
         public void GetEncoding_EmptyPath()
@@ -115,7 +189,53 @@ namespace SabreTools.IO.Extensions.Test
 
         #endregion
 
-        #region Get Normalized Extension
+        #region GetFilesOnly
+
+        [Fact]
+        public void GetFilesOnly_NoAppendParent()
+        {
+            string expectedParent = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string expectedCurrent = Path.Combine(expectedParent, "ascii.txt");
+
+            List<string> inputs =
+            [
+                string.Empty,
+                Path.Combine(Environment.CurrentDirectory, "TestData"),
+                Path.Combine(Environment.CurrentDirectory, "TestData", "Subdir*"),
+                Path.Combine(Environment.CurrentDirectory, "TestData", "utf8bom.txt"),
+            ];
+            var actual = IOExtensions.GetFilesOnly(inputs, appendParent: true);
+            Assert.NotEmpty(actual);
+
+            var first = actual[0];
+            Assert.Equal(expectedCurrent, first.CurrentPath);
+            Assert.Equal(expectedParent, first.ParentPath);
+        }
+
+        [Fact]
+        public void GetFilesOnly_AppendParent()
+        {
+            string expectedParent = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string expectedCurrent = Path.Combine(expectedParent, "ascii.txt");
+
+            List<string> inputs =
+            [
+                string.Empty,
+                Path.Combine(Environment.CurrentDirectory, "TestData"),
+                Path.Combine(Environment.CurrentDirectory, "TestData", "Subdir*"),
+                Path.Combine(Environment.CurrentDirectory, "TestData", "utf8bom.txt"),
+            ];
+            var actual = IOExtensions.GetFilesOnly(inputs, appendParent: false);
+            Assert.NotEmpty(actual);
+
+            var first = actual[0];
+            Assert.Equal(expectedCurrent, first.CurrentPath);
+            Assert.Equal(string.Empty, first.ParentPath);
+        }
+
+        #endregion
+
+        #region GetNormalizedExtension
 
         [Theory]
         [InlineData(null, null)]
@@ -135,7 +255,7 @@ namespace SabreTools.IO.Extensions.Test
 
         #endregion
 
-        #region Normalize Path
+        #region NormalizeFilePath
 
         [Theory]
         [InlineData(null, false, "")]
@@ -168,32 +288,7 @@ namespace SabreTools.IO.Extensions.Test
 
         #endregion
 
-        #region Path
-
-        [Fact]
-        public void ListEmpty_NullDirectory()
-        {
-            string? dir = null;
-            var empty = dir.ListEmpty();
-            Assert.Null(empty);
-        }
-
-        [Fact]
-        public void ListEmpty_InvalidDirectory()
-        {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "INVALID");
-            var empty = dir.ListEmpty();
-            Assert.Null(empty);
-        }
-
-        [Fact]
-        public void ListEmpty_ValidDirectory()
-        {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
-            var empty = dir.ListEmpty();
-            Assert.NotNull(empty);
-            Assert.Empty(empty);
-        }
+        #region SafeGetDirectories
 
         [Fact]
         public void SafeGetDirectories_ValidDirectory()
@@ -219,6 +314,10 @@ namespace SabreTools.IO.Extensions.Test
             Assert.Single(dirs);
         }
 
+        #endregion
+
+        #region SafeGetFiles
+
         [Fact]
         public void SafeGetFiles_ValidDirectory()
         {
@@ -242,6 +341,10 @@ namespace SabreTools.IO.Extensions.Test
             var files = dir.SafeGetFiles("*", SearchOption.AllDirectories);
             Assert.NotEmpty(files);
         }
+
+        #endregion
+
+        #region SafeGetFileSystemEntries
 
         [Fact]
         public void SafeGetFileSystemEntries_ValidDirectory()
@@ -267,6 +370,10 @@ namespace SabreTools.IO.Extensions.Test
             Assert.NotEmpty(entries);
         }
 
+        #endregion
+
+        #region SafeEnumerateDirectories
+
         [Fact]
         public void SafeEnumerateDirectories_ValidDirectory()
         {
@@ -291,6 +398,10 @@ namespace SabreTools.IO.Extensions.Test
             Assert.Single(dirs);
         }
 
+        #endregion
+
+        #region SafeEnumerateFiles
+
         [Fact]
         public void SafeEnumerateFiles_ValidDirectory()
         {
@@ -314,6 +425,10 @@ namespace SabreTools.IO.Extensions.Test
             var files = dir.SafeEnumerateFiles("*", SearchOption.AllDirectories);
             Assert.NotEmpty(files);
         }
+
+        #endregion
+
+        #region SafeEnumerateFileSystemEntries
 
         [Fact]
         public void SafeEnumerateFileSystemEntries_ValidDirectory()

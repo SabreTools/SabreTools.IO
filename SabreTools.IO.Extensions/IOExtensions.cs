@@ -11,6 +11,8 @@ namespace SabreTools.IO.Extensions
     /// </summary>
     public static class IOExtensions
     {
+        #region Directory
+
         /// <summary>
         /// Ensure the output directory is a proper format and can be created
         /// </summary>
@@ -32,6 +34,109 @@ namespace SabreTools.IO.Extensions
 
             return dir;
         }
+
+        /// <summary>
+        /// Retrieve a list of just directories from inputs
+        /// </summary>
+        /// <param name="inputs">List of strings representing directories and files</param>
+        /// <param name="appendParent">True if the parent name should be included in the ParentablePath, false otherwise (default)</param>
+        /// <returns>List of strings representing just directories from the inputs</returns>
+        public static List<ParentablePath> GetDirectoriesOnly(List<string> inputs, bool appendParent = false)
+        {
+            var outputs = new List<ParentablePath>();
+            for (int i = 0; i < inputs.Count; i++)
+            {
+                string input = inputs[i];
+
+                // If we have a null or empty path
+                if (string.IsNullOrEmpty(input))
+                    continue;
+
+                // If we have a wildcard
+                string pattern = "*";
+                if (input.Contains("*") || input.Contains("?"))
+                {
+                    pattern = Path.GetFileName(input);
+                    input = input.Substring(0, input.Length - pattern.Length);
+                }
+
+                // Get the parent path in case of appending
+                string parentPath = Path.GetFullPath(input);
+                if (Directory.Exists(input))
+                {
+                    List<string> directories = input.GetDirectoriesOrdered(pattern);
+                    foreach (string dir in directories)
+                    {
+                        outputs.Add(new ParentablePath(Path.GetFullPath(dir), appendParent ? parentPath : string.Empty));
+                    }
+                }
+            }
+
+            return outputs;
+        }
+
+        /// <summary>
+        /// Retrieve a list of directories from a directory recursively in proper order
+        /// </summary>
+        /// <param name="dir">Directory to parse</param>
+        /// <param name="pattern">Optional pattern to search for directory names</param>
+        /// <returns>List with all new files</returns>
+        public static List<string> GetDirectoriesOrdered(this string dir, string pattern = "*")
+            => GetDirectoriesOrderedHelper(dir, [], pattern);
+
+        /// <summary>
+        /// Retrieve a list of directories from a directory recursively in proper order
+        /// </summary>
+        /// <param name="dir">Directory to parse</param>
+        /// <param name="infiles">List representing existing files</param>
+        /// <param name="pattern">Optional pattern to search for directory names</param>
+        /// <returns>List with all new files</returns>
+        private static List<string> GetDirectoriesOrderedHelper(string dir, List<string> infiles, string pattern)
+        {
+            // Take care of the files in the top directory
+            List<string> toadd = [.. dir.SafeEnumerateDirectories(pattern, SearchOption.TopDirectoryOnly)];
+            toadd.Sort(new NaturalComparer());
+            infiles.AddRange(toadd);
+
+            // Then recurse through and add from the directories
+            foreach (string subDir in toadd)
+            {
+                infiles = GetDirectoriesOrderedHelper(subDir, infiles, pattern);
+            }
+
+            // Return the new list
+            return infiles;
+        }
+
+        /// <summary>
+        /// Get all empty folders within a root folder
+        /// </summary>
+        /// <param name="root">Root directory to parse</param>
+        /// <returns>IEumerable containing all directories that are empty, an empty enumerable if the root is empty, null otherwise</returns>
+        public static List<string>? ListEmpty(this string? root)
+        {
+            // Check null or empty first
+            if (root is null)
+                return null;
+
+            // Then, check if the root exists
+            if (!Directory.Exists(root))
+                return null;
+
+            // Otherwise, get the complete list
+            var empty = new List<string>();
+            foreach (var dir in SafeGetDirectories(root, "*", SearchOption.AllDirectories))
+            {
+                if (SafeGetFiles(dir).Length == 0)
+                    empty.Add(dir);
+            }
+
+            return empty;
+        }
+
+        #endregion
+
+        #region File
 
         /// <summary>
         /// Determines a text file's encoding by analyzing its byte order mark (BOM).
@@ -85,36 +190,47 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Retrieve a list of directories from a directory recursively in proper order
+        /// Retrieve a list of just files from inputs
         /// </summary>
-        /// <param name="dir">Directory to parse</param>
-        /// <param name="pattern">Optional pattern to search for directory names</param>
-        /// <returns>List with all new files</returns>
-        public static List<string> GetDirectoriesOrdered(this string dir, string pattern = "*")
-            => GetDirectoriesOrderedHelper(dir, [], pattern);
-
-        /// <summary>
-        /// Retrieve a list of directories from a directory recursively in proper order
-        /// </summary>
-        /// <param name="dir">Directory to parse</param>
-        /// <param name="infiles">List representing existing files</param>
-        /// <param name="pattern">Optional pattern to search for directory names</param>
-        /// <returns>List with all new files</returns>
-        private static List<string> GetDirectoriesOrderedHelper(string dir, List<string> infiles, string pattern)
+        /// <param name="inputs">List of strings representing directories and files</param>
+        /// <param name="appendParent">True if the parent name should be be included in the ParentablePath, false otherwise (default)</param>
+        /// <returns>List of strings representing just files from the inputs</returns>
+        public static List<ParentablePath> GetFilesOnly(List<string> inputs, bool appendParent = false)
         {
-            // Take care of the files in the top directory
-            List<string> toadd = [.. dir.SafeEnumerateDirectories(pattern, SearchOption.TopDirectoryOnly)];
-            toadd.Sort(new NaturalComparer());
-            infiles.AddRange(toadd);
-
-            // Then recurse through and add from the directories
-            foreach (string subDir in toadd)
+            var outputs = new List<ParentablePath>();
+            for (int i = 0; i < inputs.Count; i++)
             {
-                infiles = GetDirectoriesOrderedHelper(subDir, infiles, pattern);
+                string input = inputs[i].Trim('"');
+
+                // If we have a null or empty path
+                if (string.IsNullOrEmpty(input))
+                    continue;
+
+                // If we have a wildcard
+                string pattern = "*";
+                if (input.Contains("*") || input.Contains("?"))
+                {
+                    pattern = Path.GetFileName(input);
+                    input = input.Substring(0, input.Length - pattern.Length);
+                }
+
+                // Get the parent path in case of appending
+                string parentPath = Path.GetFullPath(input);
+                if (Directory.Exists(input))
+                {
+                    List<string> files = input.GetFilesOrdered(pattern);
+                    foreach (string file in files)
+                    {
+                        outputs.Add(new ParentablePath(Path.GetFullPath(file), appendParent ? parentPath : string.Empty));
+                    }
+                }
+                else if (File.Exists(input))
+                {
+                    outputs.Add(new ParentablePath(Path.GetFullPath(input), appendParent ? parentPath : string.Empty));
+                }
             }
 
-            // Return the new list
-            return infiles;
+            return outputs;
         }
 
         /// <summary>
@@ -176,32 +292,6 @@ namespace SabreTools.IO.Extensions
             return ext;
         }
 
-        /// <summary>
-        /// Get all empty folders within a root folder
-        /// </summary>
-        /// <param name="root">Root directory to parse</param>
-        /// <returns>IEumerable containing all directories that are empty, an empty enumerable if the root is empty, null otherwise</returns>
-        public static List<string>? ListEmpty(this string? root)
-        {
-            // Check null or empty first
-            if (root is null)
-                return null;
-
-            // Then, check if the root exists
-            if (!Directory.Exists(root))
-                return null;
-
-            // Otherwise, get the complete list
-            var empty = new List<string>();
-            foreach (var dir in SafeGetDirectories(root, "*", SearchOption.AllDirectories))
-            {
-                if (SafeGetFiles(dir).Length == 0)
-                    empty.Add(dir);
-            }
-
-            return empty;
-        }
-
         /// <inheritdoc cref="NormalizeFilePath(string?, bool)"/>
         public static string NormalizeFilePath(this string? path)
             => path.NormalizeFilePath(fullPath: true);
@@ -259,6 +349,8 @@ namespace SabreTools.IO.Extensions
 
             return path ?? string.Empty;
         }
+
+        #endregion
 
         #region Safe Directory Enumeration
 
