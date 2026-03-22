@@ -10,3 +10,12 @@ Relies on functionality found in `SabreTools.IO.Extensions`.
 | --- | --- | --- | --- |
 | AES/CTR | Yes | Yes | Subset of functionality exposed from [The Bouncy Castle Cryptography Library For .NET](https://github.com/bcgit/bc-csharp) |
 | MoPaQ | No | Yes | Used to encrypt and decrypt MoPaQ tables for processing |
+
+## Additional Classes
+
+| Class | Description |
+| --- | --- |
+| `N3DSEncryptionSettings` | Common encryption settings for 3DS, including validators for known keys |
+| `N3DSPartitionKeys` | Per-partition keys that are generated based on provided values |
+
+**Note:** No encryption keys are provided as a part of this package.
