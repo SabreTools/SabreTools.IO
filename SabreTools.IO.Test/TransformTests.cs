@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using SabreTools.IO.Extensions;
+using SabreTools.Matching;
 using Xunit;
 
 #pragma warning disable IDE0230 // Use UTF-8 string literal

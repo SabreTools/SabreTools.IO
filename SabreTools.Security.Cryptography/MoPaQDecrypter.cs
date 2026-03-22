@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using SabreTools.Hashing;
-using SabreTools.IO.Extensions;
+using SabreTools.Matching;
 
 #pragma warning disable IDE0051
 namespace SabreTools.Security.Cryptography

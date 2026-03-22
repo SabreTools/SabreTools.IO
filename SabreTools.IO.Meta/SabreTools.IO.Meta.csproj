@@ -42,7 +42,7 @@
         <Compile Include="..\SabreTools.IO.Compression\zlib\**\*.cs" />
         <Compile Include="..\SabreTools.IO.Extensions\*.cs" Exclude="..\SabreTools.IO.Extensions\ExtensionAttribute.cs" />
         <Compile Include="..\SabreTools.Logging\*.cs" Exclude="..\SabreTools.Logging\ExtensionAttribute.cs" />
-        <Compile Include="..\SabreTools.Matching\*.cs" />
+        <Compile Include="..\SabreTools.Matching\*.cs" Exclude="..\SabreTools.Matching\ExtensionAttribute.cs" />
         <Compile Include="..\SabreTools.Numerics\*.cs" />
         <Compile Include="..\SabreTools.Numerics.Extensions\*.cs"  Exclude="..\SabreTools.Numerics.Extensions\ExtensionAttribute.cs" />
         <Compile Include="..\SabreTools.Security.Cryptography\*.cs" />

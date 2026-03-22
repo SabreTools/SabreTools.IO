@@ -16,6 +16,11 @@ This library contains classes designed to make matching contents and paths easie
 | `ContentMatch` | `IMatch<byte?[]>` | Matches contents of a byte array, allowing wildcard bytes using `null` |
 | `ContentMatchSet` | `IMatchSet<ContentMatch, byte?[]>` | Group of logically-linked `ContentMatch` |
 | `FilePathMatch` | `IMatch<string>` | Specialization of `PathMatch` that assumes the string is a filename |
-| `MatchUtil` | N/A | Utility class for easier invocation of `SabreTools.Matching` functionality |
 | `PathMatch` | `IMatch<string>` | Matches a set of strings representing a directory hierarchy |
 | `PathMatchSet` | `IMatchSet<PathMatch, string>` | Group of logically-linked `PathMatch` |
+
+## Utility Classes
+
+| Class | Description |
+| `ByteArrayExtensions` | Extensions for searching and matching within a byte array, similar to `System.Linq` |
+| `MatchUtil` | Utility class for easier invocation of `SabreTools.Matching` functionality |
