@@ -10,6 +10,7 @@ Find the link to the Nuget package [here](https://www.nuget.org/packages/SabreTo
 
 Below are a list of the included namespaces with links to their README files:
 
+- [SabreTools.Collections.Extensions](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.Collections.Extensions)
 - [SabreTools.IO](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.IO)
 - [SabreTools.IO.Compression](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.IO.Compression)
 - [SabreTools.IO.Extensions](https://github.com/SabreTools/SabreTools.IO/tree/main/SabreTools.IO.Extensions)

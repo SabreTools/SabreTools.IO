@@ -31,6 +31,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Compile Include="..\SabreTools.Collections.Extensions\*.cs" Exclude="..\SabreTools.Collections.Extensions\ExtensionAttribute.cs" />
         <Compile Include="..\SabreTools.IO\*.cs" />
         <Compile Include="..\SabreTools.IO.Compression\Blast\*.cs" />
         <Compile Include="..\SabreTools.IO.Compression\BZip2\*.cs" />

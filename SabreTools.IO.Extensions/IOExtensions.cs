@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using SabreTools.Collections.Extensions;
 using SabreTools.Text.Compare;
 
 namespace SabreTools.IO.Extensions

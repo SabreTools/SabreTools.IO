@@ -7,7 +7,7 @@ using Xunit;
 
 #pragma warning disable IDE0060 // Remove unused parameter
 #pragma warning disable IDE0290 // Use primary constructor
-namespace SabreTools.IO.Extensions.Test
+namespace SabreTools.Collections.Extensions.Test
 {
     public class EnumerableExtensionsTests
     {

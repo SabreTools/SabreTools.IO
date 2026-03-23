@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Xunit;
 
-namespace SabreTools.IO.Extensions.Test
+namespace SabreTools.Collections.Extensions.Test
 {
     public class DictionaryExtensionsTests
     {

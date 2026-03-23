@@ -2,7 +2,7 @@
 
 This library contains IO-related extensions with some functionality locked behind .NET version support.
 
-Relies on functionality found in `SabreTools.IO.Matching`, `SabreTools.Numerics`, and `SabreTools.Text.Compare`.
+Relies on functionality found in `SabreTools.Collections.Extensions`, `SabreTools.IO`, `SabreTools.IO.Matching`, `SabreTools.Numerics`, `SabreTools.Numerics.Extensions`, `SabreTools.Text.Compare`, and `SabreTools.Text.Extensions`.
 
 | Class | Description |
 | --- | --- |
@@ -12,8 +12,6 @@ Relies on functionality found in `SabreTools.IO.Matching`, `SabreTools.Numerics`
 | `ByteArrayReaderExtensions` | Extensions to `byte[]` for specialized type reading. |
 | `ByteArrayWriterExtensions` | Extensions to `byte[]` for specialized type writing. |
 | `DateTimeExtensions` | `DateTime` conversion, specifically between standard and MS-DOS formats. |
-| `DictionaryExtensions` | Utility `Dictionary<string, List<string>>` extensions commonly used in SabreTools projects. |
-| `EnumerableExtensions` | Specialized enumeration wrapper functionality. |
 | `IOExtensions` | Path, directory, and file extensions. |
 | `MarshalHelpers` | Internal-only reflection-based extensions used by some other extension classes. |
 | `ParentablePathExtensions` | Extensions to `SabreTools.IO.ParentablePath` for filtering. |

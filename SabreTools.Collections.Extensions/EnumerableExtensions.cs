@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SabreTools.IO.Extensions
+namespace SabreTools.Collections.Extensions
 {
     public static class EnumerableExtensions
     {
