@@ -17,6 +17,7 @@
         <Authors>Matt Nadareski</Authors>
         <Description>Custom stream implementations and utility classes for general IO operations</Description>
         <Copyright>Copyright (c) Matt Nadareski 2019-2026</Copyright>
+        <PackageId>SabreTools.IO.Common</PackageId>
         <PackageProjectUrl>https://github.com/SabreTools/</PackageProjectUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <RepositoryUrl>https://github.com/SabreTools/SabreTools.IO</RepositoryUrl>

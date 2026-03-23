@@ -18,6 +18,7 @@
         <Authors>Matt Nadareski</Authors>
         <Description>Common IO utilities by other SabreTools projects</Description>
         <Copyright>Copyright (c) Matt Nadareski 2019-2026</Copyright>
+        <PackageId>SabreTools.IO</PackageId>
         <PackageProjectUrl>https://github.com/SabreTools/</PackageProjectUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <RepositoryUrl>https://github.com/SabreTools/SabreTools.IO</RepositoryUrl>
