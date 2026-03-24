@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using SabreTools.Numerics.Extensions;
@@ -81,6 +82,88 @@ namespace SabreTools.IO.Extensions
             }
         }
 
+        #region InterleaveWith
+
+        /// <summary>
+        /// Interleave two files into a single output
+        /// </summary>
+        /// <param name="even">First file to interleave</param>
+        /// <param name="odd">Second file to interleave</param>
+        /// <param name="output">Path to the output file</param>
+        /// <param name="blockSize">Number of bytes read before switching input</param>
+        /// <returns>True if the files were interleaved successfully, false otherwise</returns>
+        public static bool InterleaveWith(this string even, string odd, string output, int blockSize)
+        {
+            // If either file does not exist
+            if (!File.Exists(even) || !File.Exists(odd))
+                return false;
+
+            try
+            {
+                // Get the input and output streams
+                using var evenStream = File.Open(even, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                using var oddStream = File.Open(odd, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                using var outputStream = File.Open(output, FileMode.Create, FileAccess.Write, FileShare.None);
+
+                // Interleave the streams
+                return evenStream.InterleaveWith(oddStream, outputStream, blockSize);
+            }
+            catch
+            {
+                // Absorb all errors for now
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Interleave two streams into a single output
+        /// </summary>
+        /// <param name="even">First stream to interleave</param>
+        /// <param name="odd">Second stream to interleave</param>
+        /// <param name="output">Output stream</param>
+        /// <param name="blockSize">Number of bytes read before switching input</param>
+        /// <returns>A filled stream on success, null otherwise</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if <paramref name="blockSize"/> is non-positive.
+        /// </exception>
+        public static bool InterleaveWith(this Stream even, Stream odd, Stream output, int blockSize)
+        {
+            // If either stream is unreadable
+            if (!even.CanRead || !odd.CanRead)
+                return false;
+
+            // If the output is unwritable
+            if (!output.CanWrite)
+                return false;
+
+            // If the block size is invalid
+            if (blockSize <= 0)
+                throw new ArgumentOutOfRangeException(nameof(blockSize));
+
+            try
+            {
+                // Alternate between inputs during reading
+                bool useEven = true;
+                while (even.Position < even.Length || odd.Position < odd.Length)
+                {
+                    byte[] read = new byte[blockSize];
+                    int actual = (useEven ? even : odd).Read(read, 0, blockSize);
+                    output.Write(read, 0, actual);
+                    output.Flush();
+                    useEven = !useEven;
+                }
+
+                return true;
+            }
+            catch
+            {
+                // Absorb all errors for now
+                return false;
+            }
+        }
+
+        #endregion
+
         /// <summary>
         /// Read a number of bytes from an offset in a stream, if possible
         /// </summary>
@@ -144,6 +227,8 @@ namespace SabreTools.IO.Extensions
             return data.ReadStringsFrom(charLimit);
         }
 
+        #region SeekIfPossible
+
         /// <summary>
         /// Seek to a specific point in the stream, if possible
         /// </summary>
@@ -182,6 +267,8 @@ namespace SabreTools.IO.Extensions
             }
         }
 
+        #endregion
+
         /// <summary>
         /// Check if a segment is valid in the stream
         /// </summary>
@@ -200,5 +287,153 @@ namespace SabreTools.IO.Extensions
 
             return true;
         }
+
+        #region Swap
+
+        /// <summary>
+        /// Transform an input file using the given rule
+        /// </summary>
+        /// <param name="input">Input file name</param>
+        /// <param name="output">Output file name</param>
+        /// <param name="operation">Transform operation to carry out</param>
+        /// <returns>True if the file was transformed properly, false otherwise</returns>
+        public static bool Swap(this string input, string output, SwapOperation operation)
+        {
+            // If the file does not exist
+            if (!File.Exists(input))
+                return false;
+
+            // Create the output directory if it doesn't already
+            string? outputDirectory = Path.GetDirectoryName(Path.GetFullPath(output));
+            if (outputDirectory is not null && !Directory.Exists(outputDirectory))
+                Directory.CreateDirectory(outputDirectory);
+
+            try
+            {
+                // Get the input and output streams
+                using var inputStream = File.Open(input, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                using var outputStream = File.Open(output, FileMode.Create, FileAccess.Write, FileShare.None);
+
+                // Transform the stream
+                return Swap(inputStream, outputStream, operation);
+            }
+            catch
+            {
+                // Absorb all errors for now
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Transform an input stream using the given rule
+        /// </summary>
+        /// <param name="input">Input stream</param>
+        /// <param name="output">Output stream</param>
+        /// <param name="operation">Transform operation to carry out</param>
+        /// <returns>True if the file was transformed properly, false otherwise</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if <paramref name="type"/> is not a recognized value.
+        /// </exception>
+        public static bool Swap(this Stream input, Stream output, SwapOperation operation)
+        {
+            // If the input is unreadable
+            if (!input.CanRead)
+                return false;
+
+            // If the output is unwritable
+            if (!output.CanWrite)
+                return false;
+
+            // If the operation is not defined
+            if (!Enum.IsDefined(typeof(SwapOperation), operation))
+                return false;
+
+            try
+            {
+                // Determine the cutoff boundary for the operation
+                long endBoundary = operation switch
+                {
+                    SwapOperation.Bitswap => input.Length,
+                    SwapOperation.Byteswap => input.Length - (input.Length % 2),
+                    SwapOperation.Wordswap => input.Length - (input.Length % 4),
+                    SwapOperation.WordByteswap => input.Length - (input.Length % 4),
+                    _ => throw new ArgumentOutOfRangeException(nameof(operation)),
+                };
+
+                // Loop over the input and process in blocks
+                byte[] buffer = new byte[4];
+                int pos = 0;
+                while (input.Position < endBoundary)
+                {
+                    byte b = (byte)input.ReadByte();
+                    switch (operation)
+                    {
+                        case SwapOperation.Bitswap:
+                            uint r = b;
+                            int s = 7;
+                            for (b >>= 1; b != 0; b >>= 1)
+                            {
+                                r <<= 1;
+                                r |= (byte)(b & 1);
+                                s--;
+                            }
+
+                            r <<= s;
+                            buffer[pos] = (byte)r;
+                            break;
+                        case SwapOperation.Byteswap:
+                            if (pos % 2 == 1)
+                                buffer[pos - 1] = b;
+                            else
+                                buffer[pos + 1] = b;
+
+                            break;
+                        case SwapOperation.Wordswap:
+                            buffer[(pos + 2) % 4] = b;
+                            break;
+                        case SwapOperation.WordByteswap:
+                            buffer[3 - pos] = b;
+                            break;
+                        default:
+                            buffer[pos] = b;
+                            break;
+                    }
+
+                    // Set the buffer position to default write to
+                    pos = (pos + 1) % 4;
+
+                    // If the buffer pointer has been reset
+                    if (pos == 0)
+                    {
+                        output.Write(buffer, 0, buffer.Length);
+                        output.Flush();
+                        buffer = new byte[4];
+                    }
+                }
+
+                // If there's anything more in the buffer
+                if (pos > 0)
+                    output.Write(buffer, 0, pos);
+
+                // If the stream still has data
+                if (input.Position < input.Length)
+                {
+                    int remaining = (int)(input.Length - input.Position);
+                    byte[] bytes = new byte[remaining];
+                    int read = input.Read(bytes, 0, remaining);
+                    output.Write(bytes, 0, read);
+                    output.Flush();
+                }
+
+                return true;
+            }
+            catch
+            {
+                // Absorb all errors for now
+                return false;
+            }
+        }
+
+        #endregion
     }
 }

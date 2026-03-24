@@ -28,6 +28,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\SabreTools.IO.Extensions\SabreTools.IO.Extensions.csproj" />
+        <ProjectReference Include="..\SabreTools.Matching\SabreTools.Matching.csproj" />
     </ItemGroup>
 
 </Project>
