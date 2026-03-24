@@ -71,10 +71,15 @@ namespace SabreTools.IO
         /// Split an input file into two outputs
         /// </summary>
         /// <param name="input">Input file name</param>
-        /// <param name="outputDir">Path to the output directory</param>
+        /// <param name="even">Output file name for even blocks, must be distinct from <paramref name="odd"/></param>
+        /// <param name="odd">Output file name for odd blocks, must be distinct from <paramref name="even"/></param>
         /// <param name="blockSize">Number of bytes read before switching output</param>
         /// <returns>True if the file could be split, false otherwise</returns>
-        public static bool BlockSplit(string input, string? outputDir, int blockSize)
+        /// <remarks>
+        /// If <paramref name="even"/> and <paramref name="odd"/> point to the same file, then there will be an
+        /// internal exception when trying to create the output files which is absorbed by this method.
+        /// </remarks>
+        public static bool SplitToEvenOdd(string input, string even, string odd, int blockSize)
         {
             // If the file does not exist
             if (!File.Exists(input))
@@ -82,63 +87,44 @@ namespace SabreTools.IO
 
             try
             {
-                // Get the input stream
+                // Get the input and output streams
                 using var inputStream = File.Open(input, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                using var evenStream = File.Open(even, FileMode.Create, FileAccess.Write, FileShare.None);
+                using var oddStream = File.Open(odd, FileMode.Create, FileAccess.Write, FileShare.None);
 
                 // Split the stream
-                if (!BlockSplit(inputStream, blockSize, out Stream? evenStream, out Stream? oddStream))
-                    return false;
-                else if (evenStream is null || oddStream is null)
-                    return false;
-
-                // Get the base filename for output files
-                outputDir ??= Path.GetDirectoryName(input);
-                string baseFilename = Path.GetFileName(input);
-                if (!string.IsNullOrEmpty(outputDir))
-                    baseFilename = Path.Combine(outputDir, baseFilename);
-
-                // Create the output directory, if possible
-                if (outputDir is not null && !Directory.Exists(outputDir))
-                    Directory.CreateDirectory(outputDir);
-
-                // Open the output files
-                using var outEvenStream = File.Open($"{baseFilename}.even", FileMode.Create, FileAccess.Write, FileShare.None);
-                using var outOddStream = File.Open($"{baseFilename}.odd", FileMode.Create, FileAccess.Write, FileShare.None);
-
-                // Write the split data
-                evenStream.CopyTo(outEvenStream);
-                outEvenStream.Flush();
-                oddStream.CopyTo(outOddStream);
-                outOddStream.Flush();
+                return SplitToEvenOdd(inputStream, evenStream, oddStream, blockSize);
             }
             catch
             {
                 // Absorb all errors for now
                 return false;
             }
-
-            return true;
         }
 
         /// <summary>
         /// Split an input stream into two output streams
         /// </summary>
         /// <param name="input">Input stream</param>
+        /// <param name="even">Output stream for even blocks</param>
+        /// <param name="odd">Output stream for odd blocks</param>
         /// <param name="blockSize">Number of bytes read before switching output</param>
-        /// <param name="even">Even block output stream on success, null otherwise</param>
-        /// <param name="odd">Odd block output stream on success, null otherwise</param>
         /// <returns>True if the stream could be split, false otherwise</returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if <paramref name="blockSize"/> is non-positive.
         /// </exception>
-        public static bool BlockSplit(Stream input, int blockSize, out Stream? even, out Stream? odd)
+        /// <remarks>
+        /// If <paramref name="even"/> and <paramref name="odd"/> point to the same stream, then only half
+        /// of the expected output will exist because both streams will not be pointing to the same index.
+        /// </remarks>
+        public static bool SplitToEvenOdd(Stream input, Stream even, Stream odd, int blockSize)
         {
-            // Set default values for the outputs
-            even = null;
-            odd = null;
-
             // If the stream is unreadable
             if (!input.CanRead)
+                return false;
+
+            // If either output is unwritable
+            if (!even.CanWrite || !odd.CanWrite)
                 return false;
 
             // If the block size is invalid
@@ -147,10 +133,6 @@ namespace SabreTools.IO
 
             try
             {
-                // Create the output streams
-                even = new MemoryStream();
-                odd = new MemoryStream();
-
                 // Alternate between inputs during reading
                 bool useEven = true;
                 while (input.Position < input.Length)
@@ -162,15 +144,11 @@ namespace SabreTools.IO
                     useEven = !useEven;
                 }
 
-                even.Seek(0, SeekOrigin.Begin);
-                odd.Seek(0, SeekOrigin.Begin);
                 return true;
             }
             catch
             {
                 // Absorb all errors for now
-                even = null;
-                odd = null;
                 return false;
             }
         }
