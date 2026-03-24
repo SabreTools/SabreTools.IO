@@ -1,4 +1,4 @@
-namespace SabreTools.IO
+namespace SabreTools.IO.Extensions
 {
     /// <summary>
     /// Determines the swapping operation
