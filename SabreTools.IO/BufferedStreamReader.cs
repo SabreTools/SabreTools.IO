@@ -3,10 +3,9 @@ using System.IO;
 namespace SabreTools.IO
 {
     /// <summary>
-    /// Buffered stream that reads in blocks
+    /// Buffered stream reader that reads in blocks
     /// </summary>
-    /// <remarks>Not a true <see cref="Stream"/> implementation yet</remarks>
-    public class BufferedStream
+    public class BufferedStreamReader
     {
         /// <summary>
         /// Source stream for populating the buffer
@@ -31,7 +30,7 @@ namespace SabreTools.IO
         /// <summary>
         /// Create a new buffered stream
         /// </summary>
-        public BufferedStream(Stream source)
+        public BufferedStreamReader(Stream source)
         {
             _source = source;
         }

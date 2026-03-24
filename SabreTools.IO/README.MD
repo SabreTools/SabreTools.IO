@@ -8,7 +8,6 @@ This library contains both custom stream implementations and utility classes for
 
 | Class | Notes |
 | --- | --- |
-| `BufferedStream` | Not a true stream implementation used for buffered, single-byte reads |
 | `ReadOnlyBitStream` | Read-only stream implementation allowing bitwise reading |
 | `ReadOnlyCompositeStream` | Read-only stream implementation that wraps multiple source streams in a set order |
 | `ReadOnlyViewStream` | Read-only stream implementation representing a view into source data |
@@ -17,5 +16,6 @@ This library contains both custom stream implementations and utility classes for
 
 | Class | Notes |
 | --- | --- |
+| `BufferedStreamReader` | Stream reader used for buffered, single-byte reads |
 | `ParentablePath` | Class that represents a path that is rooted by a parent directory |
 | `PathTool` | Utility class for common Path-related functions |

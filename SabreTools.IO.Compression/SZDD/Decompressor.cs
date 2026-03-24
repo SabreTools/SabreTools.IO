@@ -14,7 +14,7 @@ namespace SabreTools.IO.Compression.SZDD
         /// <summary>
         /// Source stream for the decompressor
         /// </summary>
-        private readonly BufferedStream _source;
+        private readonly BufferedStreamReader _source;
 
         /// <summary>
         /// SZDD format being decompressed
@@ -43,7 +43,7 @@ namespace SabreTools.IO.Compression.SZDD
 
             // Initialize the window with space characters
             _window = Array.ConvertAll(_window, b => (byte)0x20);
-            _source = new BufferedStream(source);
+            _source = new BufferedStreamReader(source);
         }
 
         /// <summary>

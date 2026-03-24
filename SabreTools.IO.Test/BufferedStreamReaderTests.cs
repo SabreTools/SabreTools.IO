@@ -3,7 +3,7 @@ using Xunit;
 
 namespace SabreTools.IO.Test
 {
-    public class BufferedStreamTests
+    public class BufferedStreamReaderTests
     {
         #region ReadNextByte
 
@@ -11,7 +11,7 @@ namespace SabreTools.IO.Test
         public void ReadNextByte_Empty_Null()
         {
             var source = new MemoryStream();
-            var stream = new BufferedStream(source);
+            var stream = new BufferedStreamReader(source);
             byte? actual = stream.ReadNextByte();
             Assert.Null(actual);
         }
@@ -20,7 +20,7 @@ namespace SabreTools.IO.Test
         public void ReadNextByte_Filled_ValidPosition_Byte()
         {
             var source = new MemoryStream(new byte[1024]);
-            var stream = new BufferedStream(source);
+            var stream = new BufferedStreamReader(source);
             byte? actual = stream.ReadNextByte();
             Assert.Equal((byte)0x00, actual);
         }
@@ -30,7 +30,7 @@ namespace SabreTools.IO.Test
         {
             var source = new MemoryStream(new byte[1024]);
             source.Seek(0, SeekOrigin.End);
-            var stream = new BufferedStream(source);
+            var stream = new BufferedStreamReader(source);
             byte? actual = stream.ReadNextByte();
             Assert.Null(actual);
         }
