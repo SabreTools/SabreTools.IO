@@ -2,6 +2,8 @@
 
 This library contains both custom stream implementations and utility classes for general IO operations.
 
+**Note:** This package is called `SabreTools.IO.Common` due to the former monolithic library that was also just called `SabreTools.IO`. That package is now reserved for the `SabreTools.IO` meta-package, which is built using `SabreTools.IO.Meta` in this repository.
+
 ## Stream Implementations
 
 | Class | Notes |
