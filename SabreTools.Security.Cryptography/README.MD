@@ -2,7 +2,7 @@
 
 This library contains various encryption implementations that are used across multiple projects. Most of the implementations are be ports of existing C and C++ code.
 
-Relies on functionality found in `SabreTools.IO.Extensions`.
+Relies on functionality found in `SabreTools.Hashing`, `SabreTools.IO.Extensions`m `SabreTools.Matching`, and `SabreTools.Numerics.Extensions`.
 
 ## Supported Encryption Schemes
 

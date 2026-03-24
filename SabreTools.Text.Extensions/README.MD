@@ -2,6 +2,8 @@
 
 This library contains various extensions and helper classes for dealing with strings. This includes special normalization code used by other SabreTools projects.
 
+Relies on functionality found in `SabreTools.Numerics` and `SabreTools.Numerics.Extensions`.
+
 | Class | Description |
 | --- | --- |
 | `BinaryReaderExtensions` | Extensions to `BinaryReader` for specialized string reading. |

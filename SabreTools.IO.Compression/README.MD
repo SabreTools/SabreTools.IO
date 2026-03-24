@@ -2,6 +2,8 @@
 
 This library contains various compression implementations that are used across multiple projects. Most of the implementations are be ports of existing C and C++ code.
 
+Relies on functionality found in `SabreTools.Hashing`, `SabreTools.IO`, `SabreTools.IO.Extensions`, and `SabreTools.Numerics.Extensions`.
+
 ## Supported Compressions
 
 | Compression Name | Decompress | Compress | Notes |

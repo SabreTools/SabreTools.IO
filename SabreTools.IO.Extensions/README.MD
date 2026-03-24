@@ -2,7 +2,7 @@
 
 This library contains IO-related extensions with some functionality locked behind .NET version support.
 
-Relies on functionality found in `SabreTools.Collections.Extensions`, `SabreTools.IO`, `SabreTools.IO.Matching`, `SabreTools.Numerics`, `SabreTools.Numerics.Extensions`, `SabreTools.Text.Compare`, and `SabreTools.Text.Extensions`.
+Relies on functionality found in `SabreTools.Collections.Extensions`, `SabreTools.IO`, `SabreTools.Numerics.Extensions`, `SabreTools.Text.Compare`, and `SabreTools.Text.Extensions`.
 
 | Class | Description |
 | --- | --- |
