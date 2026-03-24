@@ -10,16 +10,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="TestData\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Content Include="TestData\**">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="8.0.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
         <PackageReference Include="xunit" Version="2.9.3" />

@@ -19,10 +19,3 @@ This library contains both custom stream implementations and utility classes for
 | --- | --- |
 | `ParentablePath` | Class that represents a path that is rooted by a parent directory |
 | `PathTool` | Utility class for common Path-related functions |
-| `Transform` | Utility class that allows common data transformations for streams and byte arrays |
-
-`Transform` functionality includes:
-
-- Combine using either ordered concatenation or interleaving
-- Split by even/odd chunks or based on block size
-- Convert data either by bit-swapping, byte-swapping, word-swapping, or word/byte-swapping

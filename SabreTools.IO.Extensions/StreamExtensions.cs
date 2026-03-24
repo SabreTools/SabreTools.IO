@@ -288,9 +288,97 @@ namespace SabreTools.IO.Extensions
             return true;
         }
 
+        #region SplitToChunks
+
+        /// <summary>
+        /// Split an input file into files of up to <paramref name="blockSize"/> bytes
+        /// </summary>
+        /// <param name="input">Input file name</param>
+        /// <param name="baseFilename">Path to the output directory</param>
+        /// <param name="blockSize">Maximum number of bytes to split on</param>
+        /// <returns>True if the file could be split, false otherwise</returns>
+        public static bool SplitToChunks(this string input, string? outputDir, int blockSize)
+        {
+            // If the file does not exist
+            if (!File.Exists(input))
+                return false;
+
+            try
+            {
+                // Get the input stream
+                using var inputStream = File.Open(input, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+
+                // Get the base filename for output files
+                outputDir ??= Path.GetDirectoryName(input);
+                string baseFilename = Path.GetFileName(input);
+                if (!string.IsNullOrEmpty(outputDir))
+                    baseFilename = Path.Combine(outputDir, baseFilename);
+
+                // Attempt to split the input
+                return SplitToChunks(inputStream, baseFilename, blockSize);
+            }
+            catch
+            {
+                // Absorb all errors for now
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Split an input file into files of up to <paramref name="blockSize"/> bytes
+        /// </summary>
+        /// <param name="input">Input file name</param>
+        /// <param name="baseFilename">Path used as a base filename when generating numbered chunks</param>
+        /// <param name="blockSize">Maximum number of bytes to split on</param>
+        /// <returns>True if the file could be split, false otherwise</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if <paramref name="blockSize"/> is non-positive.
+        /// </exception>
+        public static bool SplitToChunks(this Stream input, string baseFilename, int blockSize)
+        {
+            // If the stream is unreadable
+            if (!input.CanRead)
+                return false;
+
+            // If the block size is invalid
+            if (blockSize <= 0)
+                throw new ArgumentOutOfRangeException(nameof(blockSize));
+
+            try
+            {
+                // Create the output directory, if possible
+                string? outputDirectory = Path.GetDirectoryName(Path.GetFullPath(baseFilename));
+                if (outputDirectory is not null && !Directory.Exists(outputDirectory))
+                    Directory.CreateDirectory(outputDirectory);
+
+                // Loop while there is data left
+                int part = 0;
+                while (input.Position < input.Length)
+                {
+                    // Create the next output file
+                    using var partStream = File.Open($"{baseFilename}.{part++}", FileMode.Create, FileAccess.Write, FileShare.None);
+
+                    // Process the next block of data
+                    byte[] data = new byte[blockSize];
+                    int actual = input.Read(data, 0, blockSize);
+                    partStream.Write(data, 0, actual);
+                    partStream.Flush();
+                }
+
+                return true;
+            }
+            catch
+            {
+                // Absorb all errors for now
+                return false;
+            }
+        }
+
+        #endregion
+
         #region SplitToEvenOdd
 
-/// <summary>
+        /// <summary>
         /// Split an input file into two outputs
         /// </summary>
         /// <param name="input">Input file name</param>
