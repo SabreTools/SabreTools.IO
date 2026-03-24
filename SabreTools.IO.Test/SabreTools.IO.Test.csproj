@@ -30,6 +30,7 @@
         <ProjectReference Include="..\SabreTools.IO\SabreTools.IO.csproj" />
         <ProjectReference Include="..\SabreTools.IO.Compression\SabreTools.IO.Compression.csproj" />
         <ProjectReference Include="..\SabreTools.IO.Extensions\SabreTools.IO.Extensions.csproj" />
+        <ProjectReference Include="..\SabreTools.Matching\SabreTools.Matching.csproj" />
     </ItemGroup>
 
 </Project>
