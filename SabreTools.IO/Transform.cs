@@ -79,29 +79,19 @@ namespace SabreTools.IO
 
             try
             {
-                // Get the input streams
+                // Get the input and output streams
                 using var evenStream = File.Open(even, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 using var oddStream = File.Open(odd, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-
-                // Interleave the streams
-                using var interleaved = Interleave(evenStream, oddStream, blockSize);
-                if (interleaved is null)
-                    return false;
-
-                // Open the output file
                 using var outputStream = File.Open(output, FileMode.Create, FileAccess.Write, FileShare.None);
 
-                // Write the interleaved data
-                interleaved.CopyTo(outputStream);
-                outputStream.Flush();
+                // Interleave the streams
+                return Interleave(evenStream, oddStream, outputStream, blockSize);
             }
             catch
             {
                 // Absorb all errors for now
                 return false;
             }
-
-            return true;
         }
 
         /// <summary>
@@ -109,17 +99,21 @@ namespace SabreTools.IO
         /// </summary>
         /// <param name="even">First stream to interleave</param>
         /// <param name="odd">Second stream to interleave</param>
-        /// <param name="output">Path to the output file</param>
+        /// <param name="output">Output stream</param>
         /// <param name="blockSize">Number of bytes read before switching input</param>
         /// <returns>A filled stream on success, null otherwise</returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if <paramref name="blockSize"/> is non-positive.
         /// </exception>
-        public static Stream? Interleave(Stream even, Stream odd, int blockSize)
+        public static bool Interleave(Stream even, Stream odd, Stream output, int blockSize)
         {
             // If either stream is unreadable
             if (!even.CanRead || !odd.CanRead)
-                return null;
+                return false;
+
+            // If the output is unwritable
+            if (!output.CanWrite)
+                return false;
 
             // If the block size is invalid
             if (blockSize <= 0)
@@ -127,27 +121,23 @@ namespace SabreTools.IO
 
             try
             {
-                // Create an output stream
-                var outputStream = new MemoryStream();
-
                 // Alternate between inputs during reading
                 bool useEven = true;
                 while (even.Position < even.Length || odd.Position < odd.Length)
                 {
                     byte[] read = new byte[blockSize];
                     int actual = (useEven ? even : odd).Read(read, 0, blockSize);
-                    outputStream.Write(read, 0, actual);
-                    outputStream.Flush();
+                    output.Write(read, 0, actual);
+                    output.Flush();
                     useEven = !useEven;
                 }
 
-                outputStream.Seek(0, SeekOrigin.Begin);
-                return outputStream;
+                return true;
             }
             catch
             {
                 // Absorb all errors for now
-                return null;
+                return false;
             }
         }
 
@@ -342,54 +332,46 @@ namespace SabreTools.IO
 
             try
             {
-                // Get the input stream
+                // Get the input and output streams
                 using var inputStream = File.Open(input, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-
-                // Transform the stream
-                var transformed = Swap(inputStream, operation);
-                if (transformed is null)
-                    return false;
-
-                // Open the output file
                 using var outputStream = File.Open(output, FileMode.Create, FileAccess.Write, FileShare.None);
 
-                // Write the transformed data
-                transformed.CopyTo(outputStream);
-                outputStream.Flush();
+                // Transform the stream
+                return Swap(inputStream, outputStream, operation);
             }
             catch
             {
                 // Absorb all errors for now
                 return false;
             }
-
-            return true;
         }
 
         /// <summary>
         /// Transform an input stream using the given rule
         /// </summary>
         /// <param name="input">Input stream</param>
+        /// <param name="output">Output stream</param>
         /// <param name="operation">Transform operation to carry out</param>
         /// <returns>True if the file was transformed properly, false otherwise</returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if <paramref name="type"/> is not a recognized value.
         /// </exception>
-        public static Stream? Swap(Stream input, SwapOperation operation)
+        public static bool Swap(Stream input, Stream output, SwapOperation operation)
         {
-            // If the stream is unreadable
+            // If the input is unreadable
             if (!input.CanRead)
-                return null;
+                return false;
+
+            // If the output is unwritable
+            if (!output.CanWrite)
+                return false;
 
             // If the operation is not defined
             if (!Enum.IsDefined(typeof(SwapOperation), operation))
-                return null;
+                return false;
 
             try
             {
-                // Create an output stream
-                var output = new MemoryStream();
-
                 // Determine the cutoff boundary for the operation
                 long endBoundary = operation switch
                 {
@@ -465,13 +447,12 @@ namespace SabreTools.IO
                     output.Flush();
                 }
 
-                output.Seek(0, SeekOrigin.Begin);
-                return output;
+                return true;
             }
             catch
             {
                 // Absorb all errors for now
-                return null;
+                return false;
             }
         }
 
