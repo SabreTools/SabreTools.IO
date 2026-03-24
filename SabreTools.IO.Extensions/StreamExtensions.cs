@@ -34,6 +34,54 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Block-copy an input stream to an output stream, absorbing any errors
+        /// </summary>
+        /// <param name="input">Input stream to copy from</param>
+        /// <param name="output">Ouput stream to copy to</param>
+        /// <param name="blockSize">Number of bytes to read at a time, default 8192</param>
+        /// <returns>True if the copy succeeded without an exception, false otherwise</returns>
+        /// <remarks>This may result in incomplete outputs if an exception occurs</remarks>
+        public static bool BlockCopy(this Stream? input, Stream? output, int blockSize = 8192)
+        {
+            // If either stream is invalid
+            if (input is null || output is null)
+                return false;
+
+            // If the input is unreadable
+            if (!input.CanRead)
+                return false;
+
+            // If the output is not writable
+            if (!output.CanWrite)
+                return false;
+
+            // If the block size is invalid in some way
+            if (blockSize <= 0)
+                return false;
+
+            try
+            {
+                // Copy the array in blocks
+                byte[] buffer = new byte[blockSize];
+                while (true)
+                {
+                    int read = input.Read(buffer, 0, blockSize);
+                    if (read <= 0)
+                        break;
+
+                    output.Write(buffer, 0, read);
+                }
+
+                return true;
+            }
+            catch
+            {
+                // Absorb the error
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Read a number of bytes from an offset in a stream, if possible
         /// </summary>
         /// <param name="input">Input stream to read from</param>

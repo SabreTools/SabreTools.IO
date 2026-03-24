@@ -2,7 +2,7 @@ using System;
 using SabreTools.Core.Tools;
 using Xunit;
 
-namespace SabreTools.Core.Test.Tools
+namespace SabreTools.IO.Extensions.Test
 {
     public class DateTimeExtensionsTests
     {

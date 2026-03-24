@@ -63,6 +63,80 @@ namespace SabreTools.IO.Extensions.Test
 
         #endregion
 
+        #region BlockCopy
+
+        [Fact]
+        public void BlockCopy_NullInput_False()
+        {
+            Stream? input = null;
+            Stream? output = new MemoryStream();
+            int blockSize = 8192;
+
+            bool actual = input.BlockCopy(output, blockSize);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void BlockCopy_NullOutput_False()
+        {
+            Stream? input = new MemoryStream();
+            Stream? output = null;
+            int blockSize = 8192;
+
+            bool actual = input.BlockCopy(output, blockSize);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void BlockCopy_UnreadableInput_False()
+        {
+            Stream? input = new MemoryStream();
+            input.Close();
+            Stream? output = new MemoryStream();
+            int blockSize = 8192;
+
+            bool actual = input.BlockCopy(output, blockSize);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void BlockCopy_UnwritableOutput_False()
+        {
+            Stream? input = new MemoryStream();
+            Stream? output = new MemoryStream([], writable: false);
+            int blockSize = 8192;
+
+            bool actual = input.BlockCopy(output, blockSize);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void BlockCopy_InvalidBlockSize_False()
+        {
+            Stream? input = new MemoryStream();
+            Stream? output = new MemoryStream();
+            int blockSize = -1;
+
+            bool actual = input.BlockCopy(output, blockSize);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void BlockCopy_ValidInputs_True()
+        {
+            byte[] inputBytes = [0x00, 0x01, 0x02, 0x03];
+            Stream? input = new MemoryStream(inputBytes);
+            MemoryStream? output = new MemoryStream();
+            int blockSize = 8192;
+
+            bool actual = input.BlockCopy(output, blockSize);
+            Assert.True(actual);
+            byte[] actualBytes = output.ToArray();
+            Assert.True(actualBytes.SequenceEqual(inputBytes));
+        }
+
+        #endregion
+
         #region ReadFrom
 
         [Theory]
