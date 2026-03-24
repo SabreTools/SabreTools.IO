@@ -5,7 +5,7 @@ using Xunit;
 #pragma warning disable IDE0017 // Object initialization can be simplified
 namespace SabreTools.IO.Test
 {
-    public class ViewStreamTests
+    public class ReadOnlyViewStreamTests
     {
         #region Constructor
 
@@ -16,7 +16,7 @@ namespace SabreTools.IO.Test
         public void Constructor_Array(int size, long offset, long expectedLength)
         {
             byte[] data = new byte[size];
-            var stream = new ViewStream(data, offset);
+            var stream = new ReadOnlyViewStream(data, offset);
             Assert.Equal(expectedLength, stream.Length);
             Assert.Equal(0, stream.Position);
         }
@@ -28,7 +28,7 @@ namespace SabreTools.IO.Test
         public void Constructor_Array_Length(int size, long offset, long length, long expectedLength)
         {
             byte[] data = new byte[size];
-            var stream = new ViewStream(data, offset, length);
+            var stream = new ReadOnlyViewStream(data, offset, length);
             Assert.Equal(expectedLength, stream.Length);
             Assert.Equal(0, stream.Position);
         }
@@ -43,7 +43,7 @@ namespace SabreTools.IO.Test
         public void Constructor_Array_InvalidOffset(int size, long offset, long length)
         {
             byte[] data = new byte[size];
-            Assert.Throws<ArgumentOutOfRangeException>(() => _ = new ViewStream(data, offset, length));
+            Assert.Throws<ArgumentOutOfRangeException>(() => _ = new ReadOnlyViewStream(data, offset, length));
         }
 
         [Theory]
@@ -56,7 +56,7 @@ namespace SabreTools.IO.Test
         public void Constructor_Array_InvalidLength(int size, long offset, long length)
         {
             byte[] data = new byte[size];
-            Assert.Throws<ArgumentOutOfRangeException>(() => _ = new ViewStream(data, offset, length));
+            Assert.Throws<ArgumentOutOfRangeException>(() => _ = new ReadOnlyViewStream(data, offset, length));
         }
 
         [Theory]
@@ -66,7 +66,7 @@ namespace SabreTools.IO.Test
         public void Constructor_Stream(int size, long offset, long expectedLength)
         {
             Stream data = new MemoryStream(new byte[size]);
-            var stream = new ViewStream(data, offset);
+            var stream = new ReadOnlyViewStream(data, offset);
             Assert.Equal(expectedLength, stream.Length);
             Assert.Equal(0, stream.Position);
         }
@@ -78,7 +78,7 @@ namespace SabreTools.IO.Test
         public void Constructor_Stream_Length(int size, long offset, long length, long expectedLength)
         {
             Stream data = new MemoryStream(new byte[size]);
-            var stream = new ViewStream(data, offset, length);
+            var stream = new ReadOnlyViewStream(data, offset, length);
             Assert.Equal(expectedLength, stream.Length);
             Assert.Equal(0, stream.Position);
         }
@@ -93,7 +93,7 @@ namespace SabreTools.IO.Test
         public void Constructor_Stream_InvalidOffset(int size, long offset, long length)
         {
             Stream data = new MemoryStream(new byte[size]);
-            Assert.Throws<ArgumentOutOfRangeException>(() => _ = new ViewStream(data, offset, length));
+            Assert.Throws<ArgumentOutOfRangeException>(() => _ = new ReadOnlyViewStream(data, offset, length));
         }
 
         [Theory]
@@ -106,7 +106,7 @@ namespace SabreTools.IO.Test
         public void Constructor_Stream_InvalidLength(int size, long offset, long length)
         {
             Stream data = new MemoryStream(new byte[size]);
-            Assert.Throws<ArgumentOutOfRangeException>(() => _ = new ViewStream(data, offset, length));
+            Assert.Throws<ArgumentOutOfRangeException>(() => _ = new ReadOnlyViewStream(data, offset, length));
         }
 
         #endregion
@@ -129,7 +129,7 @@ namespace SabreTools.IO.Test
         public void Position_Array(int size, long offset, long length, long position, long expectedPosition)
         {
             byte[] data = new byte[size];
-            var stream = new ViewStream(data, offset, length);
+            var stream = new ReadOnlyViewStream(data, offset, length);
             stream.Position = position;
             Assert.Equal(expectedPosition, stream.Position);
         }
@@ -150,7 +150,7 @@ namespace SabreTools.IO.Test
         public void Position_Stream(int size, long offset, long length, long position, long expectedPosition)
         {
             Stream data = new MemoryStream(new byte[size]);
-            var stream = new ViewStream(data, offset, length);
+            var stream = new ReadOnlyViewStream(data, offset, length);
             stream.Position = position;
             Assert.Equal(expectedPosition, stream.Position);
         }
@@ -182,7 +182,7 @@ namespace SabreTools.IO.Test
         public void SegmentValid_Array(int size, long offset, long length, int segmentStart, int segmentLength, bool expected)
         {
             byte[] data = new byte[size];
-            var stream = new ViewStream(data, offset, length);
+            var stream = new ReadOnlyViewStream(data, offset, length);
             bool actual = stream.SegmentValid(segmentStart, segmentLength);
             Assert.Equal(expected, actual);
         }
@@ -210,7 +210,7 @@ namespace SabreTools.IO.Test
         public void SegmentValid_Stream(int size, long offset, long length, int segmentStart, int segmentLength, bool expected)
         {
             Stream data = new MemoryStream(new byte[size]);
-            var stream = new ViewStream(data, offset, length);
+            var stream = new ReadOnlyViewStream(data, offset, length);
             bool actual = stream.SegmentValid(segmentStart, segmentLength);
             Assert.Equal(expected, actual);
         }
@@ -236,7 +236,7 @@ namespace SabreTools.IO.Test
         public void Read_Array(int size, long offset, long length, int count, int expectedRead)
         {
             byte[] data = new byte[size];
-            var stream = new ViewStream(data, offset, length);
+            var stream = new ReadOnlyViewStream(data, offset, length);
 
             byte[] buffer = new byte[1024];
             int actual = stream.Read(buffer, 0, count);
@@ -260,7 +260,7 @@ namespace SabreTools.IO.Test
         public void Read_Stream(int size, long offset, long length, int count, int expectedRead)
         {
             Stream data = new MemoryStream(new byte[size]);
-            var stream = new ViewStream(data, offset, length);
+            var stream = new ReadOnlyViewStream(data, offset, length);
 
             byte[] buffer = new byte[1024];
             int actual = stream.Read(buffer, 0, count);
@@ -311,7 +311,7 @@ namespace SabreTools.IO.Test
         public void Seek_Array(int size, long offset, long length, long position, SeekOrigin seekOrigin, long expectedPosition)
         {
             byte[] data = new byte[size];
-            var stream = new ViewStream(data, offset, length);
+            var stream = new ReadOnlyViewStream(data, offset, length);
             stream.Seek(position, seekOrigin);
             Assert.Equal(expectedPosition, stream.Position);
         }
@@ -356,7 +356,7 @@ namespace SabreTools.IO.Test
         public void Seek_Stream(int size, long offset, long length, long position, SeekOrigin seekOrigin, long expectedPosition)
         {
             Stream data = new MemoryStream(new byte[size]);
-            var stream = new ViewStream(data, offset, length);
+            var stream = new ReadOnlyViewStream(data, offset, length);
             stream.Seek(position, seekOrigin);
             Assert.Equal(expectedPosition, stream.Position);
         }
@@ -369,7 +369,7 @@ namespace SabreTools.IO.Test
         public void Flush_Array_Throws()
         {
             byte[] data = new byte[1024];
-            var stream = new ViewStream(data, 0, 1024);
+            var stream = new ReadOnlyViewStream(data, 0, 1024);
             Assert.Throws<NotImplementedException>(() => stream.Flush());
         }
 
@@ -377,7 +377,7 @@ namespace SabreTools.IO.Test
         public void Flush_Stream_Throws()
         {
             Stream data = new MemoryStream(new byte[1024]);
-            var stream = new ViewStream(data, 0, 1024);
+            var stream = new ReadOnlyViewStream(data, 0, 1024);
             Assert.Throws<NotImplementedException>(() => stream.Flush());
         }
 
@@ -385,7 +385,7 @@ namespace SabreTools.IO.Test
         public void SetLength_Array_Throws()
         {
             byte[] data = new byte[1024];
-            var stream = new ViewStream(data, 0, 1024);
+            var stream = new ReadOnlyViewStream(data, 0, 1024);
             Assert.Throws<NotImplementedException>(() => stream.SetLength(0));
         }
 
@@ -393,7 +393,7 @@ namespace SabreTools.IO.Test
         public void SetLength_Stream_Throws()
         {
             Stream data = new MemoryStream(new byte[1024]);
-            var stream = new ViewStream(data, 0, 1024);
+            var stream = new ReadOnlyViewStream(data, 0, 1024);
             Assert.Throws<NotImplementedException>(() => stream.SetLength(0));
         }
 
@@ -401,7 +401,7 @@ namespace SabreTools.IO.Test
         public void Write_Array_Throws()
         {
             byte[] data = new byte[1024];
-            var stream = new ViewStream(data, 0, 1024);
+            var stream = new ReadOnlyViewStream(data, 0, 1024);
             Assert.Throws<NotImplementedException>(() => stream.Write([], 0, 0));
         }
 
@@ -409,7 +409,7 @@ namespace SabreTools.IO.Test
         public void Write_Stream_Throws()
         {
             Stream data = new MemoryStream(new byte[1024]);
-            var stream = new ViewStream(data, 0, 1024);
+            var stream = new ReadOnlyViewStream(data, 0, 1024);
             Assert.Throws<NotImplementedException>(() => stream.Write([], 0, 0));
         }
 

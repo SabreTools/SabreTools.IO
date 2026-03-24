@@ -4,9 +4,9 @@ using System.IO;
 namespace SabreTools.IO
 {
     /// <summary>
-    /// Stream representing a view into a source
+    /// Stream representing a read-only view into a source
     /// </summary>
-    public class ViewStream : Stream
+    public class ReadOnlyViewStream : Stream
     {
         #region Properties
 
@@ -29,7 +29,7 @@ namespace SabreTools.IO
                 // A subset of streams have a filename
                 if (_source is FileStream fs)
                     return fs.Name;
-                else if (_source is ViewStream vs)
+                else if (_source is ReadOnlyViewStream vs)
                     return vs.Filename;
 
                 return null;
@@ -100,7 +100,7 @@ namespace SabreTools.IO
         #region Constructors
 
         /// <summary>
-        /// Construct a new ViewStream from a Stream
+        /// Construct a new ReadOnlyViewStream from a Stream
         /// </summary>
         /// <param name="source">Source stream</param>
         /// <param name="offset">Offset in the source to use as the starting index</param>
@@ -110,7 +110,7 @@ namespace SabreTools.IO
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if <paramref name="offset"/> is invalid.
         /// </exception>
-        public ViewStream(Stream source, long offset)
+        public ReadOnlyViewStream(Stream source, long offset)
         {
             if (!source.CanRead)
                 throw new ArgumentException(nameof(source));
@@ -125,7 +125,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Construct a new ViewStream from a Stream
+        /// Construct a new ReadOnlyViewStream from a Stream
         /// </summary>
         /// <param name="source">Source stream</param>
         /// <param name="offset">Offset in the source to use as the starting index</param>
@@ -136,7 +136,7 @@ namespace SabreTools.IO
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if <paramref name="offset"/> or <paramref name="length"/> are invalid.
         /// </exception>
-        public ViewStream(Stream source, long offset, long length)
+        public ReadOnlyViewStream(Stream source, long offset, long length)
         {
             if (!source.CanRead)
                 throw new ArgumentException(nameof(source));
@@ -153,14 +153,14 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Construct a new ViewStream from a byte array
+        /// Construct a new ReadOnlyViewStream from a byte array
         /// </summary>
         /// <param name="source">Source array</param>
         /// <param name="offset">Offset in the source to use as the starting index</param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if <paramref name="offset"/> is invalid.
         /// </exception>
-        public ViewStream(byte[] source, long offset)
+        public ReadOnlyViewStream(byte[] source, long offset)
         {
             if (offset < 0 || offset > source.Length)
                 throw new ArgumentOutOfRangeException(nameof(offset));
@@ -174,7 +174,7 @@ namespace SabreTools.IO
         }
 
         /// <summary>
-        /// Construct a new ViewStream from a byte array
+        /// Construct a new ReadOnlyViewStream from a byte array
         /// </summary>
         /// <param name="source">Source array</param>
         /// <param name="offset">Offset in the source to use as the starting index</param>
@@ -182,7 +182,7 @@ namespace SabreTools.IO
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown if <paramref name="offset"/> or <paramref name="length"/> are invalid.
         /// </exception>
-        public ViewStream(byte[] source, long offset, long length)
+        public ReadOnlyViewStream(byte[] source, long offset, long length)
         {
             if (offset < 0 || offset > source.Length)
                 throw new ArgumentOutOfRangeException(nameof(offset));

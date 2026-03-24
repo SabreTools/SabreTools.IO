@@ -11,7 +11,7 @@ This library contains both custom stream implementations and utility classes for
 | `BufferedStream` | Not a true stream implementation used for buffered, single-byte reads |
 | `ReadOnlyBitStream` | Read-only stream implementation allowing bitwise reading |
 | `ReadOnlyCompositeStream` | Read-only stream implementation that wraps multiple source streams in a set order |
-| `ViewStream` | Read-only stream implementation representing a view into source data |
+| `ReadOnlyViewStream` | Read-only stream implementation representing a view into source data |
 
 ## Utility Classes
 
