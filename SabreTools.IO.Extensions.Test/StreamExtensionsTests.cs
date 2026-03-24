@@ -551,6 +551,79 @@ namespace SabreTools.IO.Extensions.Test
 
         #endregion
 
+        #region SplitToEvenOdd
+
+        [Fact]
+        public void SplitToEvenOdd_EmptyFileName_False()
+        {
+            string input = string.Empty;
+            string even = string.Empty;
+            string odd = string.Empty;
+            bool actual = input.SplitToEvenOdd(even, odd, 1);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void SplitToEvenOdd_InvalidFile_False()
+        {
+            string input = "INVALID";
+            string even = string.Empty;
+            string odd = string.Empty;
+            bool actual = input.SplitToEvenOdd(even, odd, 1);
+            Assert.False(actual);
+        }
+
+        [Fact]
+        public void SplitToEvenOdd_InvalidValue_False()
+        {
+            string input = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
+            string baseFileName = Guid.NewGuid().ToString();
+            string even = $"{baseFileName}.even";
+            string odd = $"{baseFileName}.odd";
+
+            bool actual = input.SplitToEvenOdd(even, odd, -1);
+            Assert.False(actual);
+        }
+
+        [Theory]
+        [InlineData(1, "Ti os' ac ntig", "hsdentmthayhn")]
+        [InlineData(2, "Th dsn mchnyin", "isoe'tat athg")]
+        [InlineData(4, "Thissn'tch aing", " doe matnyth")]
+        [InlineData(8, "This doech anyth", "sn't mating")]
+        public void SplitToEvenOdd_ValidFile_True(int blockSize, string expectedEven, string expectedOdd)
+        {
+            string input = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
+            string baseFileName = Guid.NewGuid().ToString();
+            string even = $"{baseFileName}.even";
+            string odd = $"{baseFileName}.odd";
+
+            bool actual = input.SplitToEvenOdd(even, odd, blockSize);
+            Assert.True(actual);
+
+            string text = File.ReadAllText(even);
+            Assert.Equal(expectedEven, text);
+            text = File.ReadAllText(odd);
+            Assert.Equal(expectedOdd, text);
+
+            File.Delete(even);
+            File.Delete(odd);
+        }
+
+        [Fact]
+        public void SplitToEvenOdd_ValidFile_SameEvenOdd_False()
+        {
+            string input = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
+            string baseFileName = Guid.NewGuid().ToString();
+            string evenOdd = $"{baseFileName}.all";
+
+            bool actual = input.SplitToEvenOdd(evenOdd, evenOdd, 4);
+            Assert.False(actual);
+
+            File.Delete(evenOdd);
+        }
+
+        #endregion
+
         #region Swap
 
         [Fact]
