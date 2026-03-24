@@ -140,6 +140,47 @@ namespace SabreTools.IO.Extensions
         #region File
 
         /// <summary>
+        /// Concatenate all files in the order provided, if possible
+        /// </summary>
+        /// <param name="paths">List of paths to combine</param>
+        /// <param name="output">Path to the output file</param>
+        /// <returns>True if the files were concatenated successfully, false otherwise</returns>
+        public static bool Concatenate(List<string> paths, string output)
+        {
+            // If the path list is empty
+            if (paths.Count == 0)
+                return false;
+
+            // If the output filename is invalid
+            if (string.IsNullOrEmpty(output))
+                return false;
+
+            try
+            {
+                // Try to build the new output file
+                using var ofs = File.Open(output, FileMode.Create, FileAccess.Write, FileShare.None);
+                for (int i = 0; i < paths.Count; i++)
+                {
+                    // Get the next file
+                    string next = paths[i];
+                    if (!File.Exists(next))
+                        break;
+
+                    // Copy the next input to the output
+                    using var ifs = File.Open(next, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    ifs.BlockCopy(ofs, blockSize: 3 * 1024 * 1024);
+                }
+
+                return true;
+            }
+            catch
+            {
+                // Absorb the exception right now
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Determines a text file's encoding by analyzing its byte order mark (BOM).
         /// Defaults to ASCII when detection of the text file's endianness fails.
         /// </summary>
