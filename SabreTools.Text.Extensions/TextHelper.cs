@@ -230,7 +230,7 @@ namespace SabreTools.Text.Extensions
         /// <summary>
         /// Normalize a hash string and pad to the correct size
         /// </summary>
-        private static string? NormalizeHashData(string? hash, int expectedLength)
+        public static string? NormalizeHashData(string? hash, int expectedLength)
         {
             // If we have a known blank hash, return blank
             if (hash is null)
