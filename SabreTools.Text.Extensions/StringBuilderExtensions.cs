@@ -12,8 +12,8 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static StringBuilder AppendLine(this StringBuilder sb, bool? value, string prefixString)
         {
-            value ??= false;
-            return sb.AppendLine($"{prefixString}: {value}");
+            string valueString = value is null ? "[NULL]" : value.Value.ToString();
+            return sb.AppendLine($"{prefixString}: {valueString}");
         }
 
         /// <summary>
@@ -30,8 +30,7 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static StringBuilder AppendLine(this StringBuilder sb, sbyte? value, string prefixString)
         {
-            value ??= 0;
-            string valueString = $"{value} (0x{value:X2})";
+            string valueString = value is null ? "[NULL]" : $"{value} (0x{value:X2})";
             return sb.AppendLine($"{prefixString}: {valueString}");
         }
 
@@ -40,7 +39,9 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static StringBuilder AppendLineBothEndian(this StringBuilder sb, BothInt8? value, string prefixString)
         {
-            value ??= 0;
+            if (value is null)
+                return sb.AppendLine($"{prefixString}: [NULL]");
+
             if (value.IsValid)
                 return sb.AppendLine(value, prefixString);
 
@@ -53,8 +54,7 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static StringBuilder AppendLine(this StringBuilder sb, byte? value, string prefixString)
         {
-            value ??= 0;
-            string valueString = $"{value} (0x{value:X2})";
+            string valueString = value is null ? "[NULL]" : $"{value} (0x{value:X2})";
             return sb.AppendLine($"{prefixString}: {valueString}");
         }
 
@@ -63,7 +63,9 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static StringBuilder AppendLineBothEndian(this StringBuilder sb, BothUInt8? value, string prefixString)
         {
-            value ??= 0;
+            if (value is null)
+                return sb.AppendLine($"{prefixString}: [NULL]");
+
             if (value.IsValid)
                 return sb.AppendLine(value, prefixString);
 
@@ -76,8 +78,7 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static StringBuilder AppendLine(this StringBuilder sb, short? value, string prefixString)
         {
-            value ??= 0;
-            string valueString = $"{value} (0x{value:X4})";
+            string valueString = value is null ? "[NULL]" : $"{value} (0x{value:X4})";
             return sb.AppendLine($"{prefixString}: {valueString}");
         }
 
@@ -86,7 +87,9 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static StringBuilder AppendLineBothEndian(this StringBuilder sb, BothInt16? value, string prefixString)
         {
-            value ??= 0;
+            if (value is null)
+                return sb.AppendLine($"{prefixString}: [NULL]");
+
             if (value.IsValid)
                 return sb.AppendLine(value, prefixString);
 
@@ -99,8 +102,7 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static StringBuilder AppendLine(this StringBuilder sb, ushort? value, string prefixString)
         {
-            value ??= 0;
-            string valueString = $"{value} (0x{value:X4})";
+            string valueString = value is null ? "[NULL]" : $"{value} (0x{value:X4})";
             return sb.AppendLine($"{prefixString}: {valueString}");
         }
 
@@ -109,7 +111,9 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static StringBuilder AppendLineBothEndian(this StringBuilder sb, BothUInt16? value, string prefixString)
         {
-            value ??= 0;
+            if (value is null)
+                return sb.AppendLine($"{prefixString}: [NULL]");
+
             if (value.IsValid)
                 return sb.AppendLine(value, prefixString);
 
@@ -117,13 +121,43 @@ namespace SabreTools.Text.Extensions
             return sb.AppendLine(value.BigEndian, $"{prefixString} (Big-Endian)");
         }
 
+#if NET5_0_OR_GREATER
+        /// <summary>
+        /// Append a line containing a Half to a StringBuilder
+        /// </summary>
+        public static StringBuilder AppendLine(this StringBuilder sb, Half? value, string prefixString)
+        {
+            string valueString = value is null ? "[NULL]" : $"{value}";
+            return sb.AppendLine($"{prefixString}: {valueString}");
+        }
+#endif
+
+        /// <summary>
+        /// Append a line containing a Int24 to a StringBuilder
+        /// </summary>
+        public static StringBuilder AppendLine(this StringBuilder sb, Int24? value, string prefixString)
+        {
+            string hexValue = value is null ? string.Empty : $"{(int)value:X8}".Substring(2, 6);
+            string valueString = value is null ? "[NULL]" : $"{(int)value} (0x{hexValue})";
+            return sb.AppendLine($"{prefixString}: {valueString}");
+        }
+
+        /// <summary>
+        /// Append a line containing a UInt24 to a StringBuilder
+        /// </summary>
+        public static StringBuilder AppendLine(this StringBuilder sb, UInt24? value, string prefixString)
+        {
+            string hexValue = value is null ? string.Empty : $"{(uint)value:X8}".Substring(2, 6);
+            string valueString = value is null ? "[NULL]" : $"{(uint)value} (0x{hexValue})";
+            return sb.AppendLine($"{prefixString}: {valueString}");
+        }
+
         /// <summary>
         /// Append a line containing a Int32 to a StringBuilder
         /// </summary>
         public static StringBuilder AppendLine(this StringBuilder sb, int? value, string prefixString)
         {
-            value ??= 0;
-            string valueString = $"{value} (0x{value:X8})";
+            string valueString = value is null ? "[NULL]" : $"{value} (0x{value:X8})";
             return sb.AppendLine($"{prefixString}: {valueString}");
         }
 
@@ -132,7 +166,9 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static StringBuilder AppendLineBothEndian(this StringBuilder sb, BothInt32? value, string prefixString)
         {
-            value ??= 0;
+            if (value is null)
+                return sb.AppendLine($"{prefixString}: [NULL]");
+
             if (value.IsValid)
                 return sb.AppendLine(value, prefixString);
 
@@ -145,8 +181,7 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static StringBuilder AppendLine(this StringBuilder sb, uint? value, string prefixString)
         {
-            value ??= 0;
-            string valueString = $"{value} (0x{value:X8})";
+            string valueString = value is null ? "[NULL]" : $"{value} (0x{value:X8})";
             return sb.AppendLine($"{prefixString}: {valueString}");
         }
 
@@ -155,7 +190,9 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static StringBuilder AppendLineBothEndian(this StringBuilder sb, BothUInt32? value, string prefixString)
         {
-            value ??= 0;
+            if (value is null)
+                return sb.AppendLine($"{prefixString}: [NULL]");
+
             if (value.IsValid)
                 return sb.AppendLine(value, prefixString);
 
@@ -168,8 +205,27 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static StringBuilder AppendLine(this StringBuilder sb, float? value, string prefixString)
         {
-            value ??= 0;
-            string valueString = $"{value}";
+            string valueString = value is null ? "[NULL]" : $"{value}";
+            return sb.AppendLine($"{prefixString}: {valueString}");
+        }
+
+        /// <summary>
+        /// Append a line containing a Int48 to a StringBuilder
+        /// </summary>
+        public static StringBuilder AppendLine(this StringBuilder sb, Int48? value, string prefixString)
+        {
+            string hexValue = value is null ? string.Empty : $"{(long)value:X16}".Substring(4, 12);
+            string valueString = value is null ? "[NULL]" : $"{(long)value} (0x{hexValue})";
+            return sb.AppendLine($"{prefixString}: {valueString}");
+        }
+
+        /// <summary>
+        /// Append a line containing a UInt48 to a StringBuilder
+        /// </summary>
+        public static StringBuilder AppendLine(this StringBuilder sb, UInt48? value, string prefixString)
+        {
+            string hexValue = value is null ? string.Empty : $"{(ulong)value:X16}".Substring(4, 12);
+            string valueString = value is null ? "[NULL]" : $"{(ulong)value} (0x{hexValue})";
             return sb.AppendLine($"{prefixString}: {valueString}");
         }
 
@@ -178,8 +234,7 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static StringBuilder AppendLine(this StringBuilder sb, long? value, string prefixString)
         {
-            value ??= 0;
-            string valueString = $"{value} (0x{value:X16})";
+            string valueString = value is null ? "[NULL]" : $"{value} (0x{value:X16})";
             return sb.AppendLine($"{prefixString}: {valueString}");
         }
 
@@ -188,7 +243,9 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static StringBuilder AppendLineBothEndian(this StringBuilder sb, BothInt64? value, string prefixString)
         {
-            value ??= 0;
+            if (value is null)
+                return sb.AppendLine($"{prefixString}: [NULL]");
+
             if (value.IsValid)
                 return sb.AppendLine(value, prefixString);
 
@@ -201,8 +258,7 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static StringBuilder AppendLine(this StringBuilder sb, ulong? value, string prefixString)
         {
-            value ??= 0;
-            string valueString = $"{value} (0x{value:X16})";
+            string valueString = value is null ? "[NULL]" : $"{value} (0x{value:X16})";
             return sb.AppendLine($"{prefixString}: {valueString}");
         }
 
@@ -211,7 +267,9 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static StringBuilder AppendLineBothEndian(this StringBuilder sb, BothUInt64? value, string prefixString)
         {
-            value ??= 0;
+            if (value is null)
+                return sb.AppendLine($"{prefixString}: [NULL]");
+
             if (value.IsValid)
                 return sb.AppendLine(value, prefixString);
 
@@ -224,8 +282,36 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static StringBuilder AppendLine(this StringBuilder sb, double? value, string prefixString)
         {
-            value ??= 0;
-            string valueString = $"{value}";
+            string valueString = value is null ? "[NULL]" : $"{value}";
+            return sb.AppendLine($"{prefixString}: {valueString}");
+        }
+
+#if NET7_0_OR_GREATER
+        /// <summary>
+        /// Append a line containing a Int128 to a StringBuilder
+        /// </summary>
+        public static StringBuilder AppendLine(this StringBuilder sb, Int128? value, string prefixString)
+        {
+            string valueString = value is null ? "[NULL]" : $"{value} (0x{value:X32})";
+            return sb.AppendLine($"{prefixString}: {valueString}");
+        }
+
+        /// <summary>
+        /// Append a line containing a UInt128 to a StringBuilder
+        /// </summary>
+        public static StringBuilder AppendLine(this StringBuilder sb, UInt128? value, string prefixString)
+        {
+            string valueString = value is null ? "[NULL]" : $"{value} (0x{value:X32})";
+            return sb.AppendLine($"{prefixString}: {valueString}");
+        }
+#endif
+
+        /// <summary>
+        /// Append a line containing a Decimal to a StringBuilder
+        /// </summary>
+        public static StringBuilder AppendLine(this StringBuilder sb, decimal? value, string prefixString)
+        {
+            string valueString = value is null ? "[NULL]" : $"{value}";
             return sb.AppendLine($"{prefixString}: {valueString}");
         }
 
@@ -246,8 +332,20 @@ namespace SabreTools.Text.Extensions
         /// </summary>
         public static StringBuilder AppendLine(this StringBuilder sb, Guid? value, string prefixString)
         {
-            value ??= Guid.Empty;
-            string valueString = value.Value.ToString();
+            string valueString = value is null ? "[NULL]" : value.Value.ToString();
+            return sb.AppendLine($"{prefixString}: {valueString}");
+        }
+
+        /// <summary>
+        /// Append a line containing a UInt8[] value to a StringBuilder
+        /// </summary>
+        public static StringBuilder AppendLine(this StringBuilder sb, sbyte[]? value, string prefixString)
+        {
+            byte[]? valueArray = value is null ? null : Array.ConvertAll(value, b => (byte)b);
+            string valueString = valueArray is null ? "[NULL]" : BitConverter.ToString(valueArray).Replace('-', ' ');
+            if (valueString.Length == 0)
+                return sb.AppendLine($"{prefixString}: [EMPTY]");
+
             return sb.AppendLine($"{prefixString}: {valueString}");
         }
 
@@ -347,6 +445,62 @@ namespace SabreTools.Text.Extensions
             return sb.AppendLine($"{prefixString}: {valueString}");
         }
 
+#if NET5_0_OR_GREATER
+        /// <summary>
+        /// Append a line containing a Half[] value to a StringBuilder
+        /// </summary>
+        public static StringBuilder AppendLine(this StringBuilder sb, Half[]? value, string prefixString)
+        {
+            string valueString = "[NULL]";
+            if (value is not null)
+            {
+                var valueArr = Array.ConvertAll(value, u => u.ToString());
+                valueString = string.Join(", ", valueArr);
+            }
+
+            if (valueString.Length == 0)
+                return sb.AppendLine($"{prefixString}: [EMPTY]");
+
+            return sb.AppendLine($"{prefixString}: {valueString}");
+        }
+#endif
+
+        /// <summary>
+        /// Append a line containing a Int24[] value to a StringBuilder
+        /// </summary>
+        public static StringBuilder AppendLine(this StringBuilder sb, Int24[]? value, string prefixString)
+        {
+            string valueString = "[NULL]";
+            if (value is not null)
+            {
+                var valueArr = Array.ConvertAll(value, i => i.ToString());
+                valueString = string.Join(", ", valueArr);
+            }
+
+            if (valueString.Length == 0)
+                return sb.AppendLine($"{prefixString}: [EMPTY]");
+
+            return sb.AppendLine($"{prefixString}: {valueString}");
+        }
+
+        /// <summary>
+        /// Append a line containing a UInt24[] value to a StringBuilder
+        /// </summary>
+        public static StringBuilder AppendLine(this StringBuilder sb, UInt24[]? value, string prefixString)
+        {
+            string valueString = "[NULL]";
+            if (value is not null)
+            {
+                var valueArr = Array.ConvertAll(value, u => u.ToString());
+                valueString = string.Join(", ", valueArr);
+            }
+
+            if (valueString.Length == 0)
+                return sb.AppendLine($"{prefixString}: [EMPTY]");
+
+            return sb.AppendLine($"{prefixString}: {valueString}");
+        }
+
         /// <summary>
         /// Append a line containing a Int32[] value to a StringBuilder
         /// </summary>
@@ -402,6 +556,42 @@ namespace SabreTools.Text.Extensions
         }
 
         /// <summary>
+        /// Append a line containing a Int48[] value to a StringBuilder
+        /// </summary>
+        public static StringBuilder AppendLine(this StringBuilder sb, Int48[]? value, string prefixString)
+        {
+            string valueString = "[NULL]";
+            if (value is not null)
+            {
+                var valueArr = Array.ConvertAll(value, l => l.ToString());
+                valueString = string.Join(", ", valueArr);
+            }
+
+            if (valueString.Length == 0)
+                return sb.AppendLine($"{prefixString}: [EMPTY]");
+
+            return sb.AppendLine($"{prefixString}: {valueString}");
+        }
+
+        /// <summary>
+        /// Append a line containing a UInt48[] value to a StringBuilder
+        /// </summary>
+        public static StringBuilder AppendLine(this StringBuilder sb, UInt48[]? value, string prefixString)
+        {
+            string valueString = "[NULL]";
+            if (value is not null)
+            {
+                var valueArr = Array.ConvertAll(value, u => u.ToString());
+                valueString = string.Join(", ", valueArr);
+            }
+
+            if (valueString.Length == 0)
+                return sb.AppendLine($"{prefixString}: [EMPTY]");
+
+            return sb.AppendLine($"{prefixString}: {valueString}");
+        }
+
+        /// <summary>
         /// Append a line containing a Int64[] value to a StringBuilder
         /// </summary>
         public static StringBuilder AppendLine(this StringBuilder sb, long[]? value, string prefixString)
@@ -441,6 +631,62 @@ namespace SabreTools.Text.Extensions
         /// Append a line containing a Double[] value to a StringBuilder
         /// </summary>
         public static StringBuilder AppendLine(this StringBuilder sb, double[]? value, string prefixString)
+        {
+            string valueString = "[NULL]";
+            if (value is not null)
+            {
+                var valueArr = Array.ConvertAll(value, u => u.ToString());
+                valueString = string.Join(", ", valueArr);
+            }
+
+            if (valueString.Length == 0)
+                return sb.AppendLine($"{prefixString}: [EMPTY]");
+
+            return sb.AppendLine($"{prefixString}: {valueString}");
+        }
+
+#if NET7_0_OR_GREATER
+        /// <summary>
+        /// Append a line containing a Int64[] value to a StringBuilder
+        /// </summary>
+        public static StringBuilder AppendLine(this StringBuilder sb, Int128[]? value, string prefixString)
+        {
+            string valueString = "[NULL]";
+            if (value is not null)
+            {
+                var valueArr = Array.ConvertAll(value, l => l.ToString());
+                valueString = string.Join(", ", valueArr);
+            }
+
+            if (valueString.Length == 0)
+                return sb.AppendLine($"{prefixString}: [EMPTY]");
+
+            return sb.AppendLine($"{prefixString}: {valueString}");
+        }
+
+        /// <summary>
+        /// Append a line containing a UInt64[] value to a StringBuilder
+        /// </summary>
+        public static StringBuilder AppendLine(this StringBuilder sb, UInt128[]? value, string prefixString)
+        {
+            string valueString = "[NULL]";
+            if (value is not null)
+            {
+                var valueArr = Array.ConvertAll(value, u => u.ToString());
+                valueString = string.Join(", ", valueArr);
+            }
+
+            if (valueString.Length == 0)
+                return sb.AppendLine($"{prefixString}: [EMPTY]");
+
+            return sb.AppendLine($"{prefixString}: {valueString}");
+        }
+#endif
+
+        /// <summary>
+        /// Append a line containing a Decimal[] value to a StringBuilder
+        /// </summary>
+        public static StringBuilder AppendLine(this StringBuilder sb, decimal[]? value, string prefixString)
         {
             string valueString = "[NULL]";
             if (value is not null)
