@@ -7,10 +7,14 @@
 # in an unpredictable way and result in an incomplete output.
 
 # Optional parameters
+INCLUDE_UNPUBLISHED=false
 NO_BUILD=false
-while getopts "b" OPTION
+while getopts "pb" OPTION
 do
     case $OPTION in
+    p)
+        INCLUDE_UNPUBLISHED=true
+        ;;
     b)
         NO_BUILD=true
         ;;
@@ -24,6 +28,12 @@ done
 # Set the current directory as a variable
 BUILD_FOLDER=$PWD
 
+# Output the selected options
+echo "Selected Options:"
+echo "  Include unpublished packages (-p)     $INCLUDE_UNPUBLISHED"
+echo "  No build (-b)                         $NO_BUILD"
+echo " "
+
 # Only build if requested
 if [ $NO_BUILD = false ]
 then
@@ -35,18 +45,20 @@ then
     dotnet pack SabreTools.IO.Meta/SabreTools.IO.Meta.csproj --output $BUILD_FOLDER
 
     # Create unpublished Nuget Packages
-    dotnet pack SabreTools.Collections.Extensions/SabreTools.Collections.Extensions.csproj --output $BUILD_FOLDER
-    dotnet pack SabreTools.IO/SabreTools.IO.csproj --output $BUILD_FOLDER
-    dotnet pack SabreTools.IO.Compression/SabreTools.IO.Compression.csproj --output $BUILD_FOLDER
-    dotnet pack SabreTools.IO.Extensions/SabreTools.IO.Extensions.csproj --output $BUILD_FOLDER
-    dotnet pack SabreTools.Logging/SabreTools.Logging.csproj --output $BUILD_FOLDER
-    dotnet pack SabreTools.Matching/SabreTools.Matching.csproj --output $BUILD_FOLDER
-    dotnet pack SabreTools.Numerics/SabreTools.Numerics.csproj --output $BUILD_FOLDER
-    dotnet pack SabreTools.Numerics.Extensions/SabreTools.Numerics.Extensions.csproj --output $BUILD_FOLDER
-    dotnet pack SabreTools.Security.Cryptography/SabreTools.Security.Cryptography.csproj --output $BUILD_FOLDER
-    dotnet pack SabreTools.Text.ClrMamePro/SabreTools.Text.ClrMamePro.csproj --output $BUILD_FOLDER
-    dotnet pack SabreTools.Text.Compare/SabreTools.Text.Compare.csproj --output $BUILD_FOLDER
-    dotnet pack SabreTools.Text.Extensions/SabreTools.Text.Extensions.csproj --output $BUILD_FOLDER
-    dotnet pack SabreTools.Text.INI/SabreTools.Text.INI.csproj --output $BUILD_FOLDER
-    dotnet pack SabreTools.Text.SeparatedValue/SabreTools.Text.SeparatedValue.csproj --output $BUILD_FOLDER
+    if [ $INCLUDE_UNPUBLISHED = true ]; then
+        dotnet pack SabreTools.Collections.Extensions/SabreTools.Collections.Extensions.csproj --output $BUILD_FOLDER
+        dotnet pack SabreTools.IO/SabreTools.IO.csproj --output $BUILD_FOLDER
+        dotnet pack SabreTools.IO.Compression/SabreTools.IO.Compression.csproj --output $BUILD_FOLDER
+        dotnet pack SabreTools.IO.Extensions/SabreTools.IO.Extensions.csproj --output $BUILD_FOLDER
+        dotnet pack SabreTools.Logging/SabreTools.Logging.csproj --output $BUILD_FOLDER
+        dotnet pack SabreTools.Matching/SabreTools.Matching.csproj --output $BUILD_FOLDER
+        dotnet pack SabreTools.Numerics/SabreTools.Numerics.csproj --output $BUILD_FOLDER
+        dotnet pack SabreTools.Numerics.Extensions/SabreTools.Numerics.Extensions.csproj --output $BUILD_FOLDER
+        dotnet pack SabreTools.Security.Cryptography/SabreTools.Security.Cryptography.csproj --output $BUILD_FOLDER
+        dotnet pack SabreTools.Text.ClrMamePro/SabreTools.Text.ClrMamePro.csproj --output $BUILD_FOLDER
+        dotnet pack SabreTools.Text.Compare/SabreTools.Text.Compare.csproj --output $BUILD_FOLDER
+        dotnet pack SabreTools.Text.Extensions/SabreTools.Text.Extensions.csproj --output $BUILD_FOLDER
+        dotnet pack SabreTools.Text.INI/SabreTools.Text.INI.csproj --output $BUILD_FOLDER
+        dotnet pack SabreTools.Text.SeparatedValue/SabreTools.Text.SeparatedValue.csproj --output $BUILD_FOLDER
+    fi
 fi
