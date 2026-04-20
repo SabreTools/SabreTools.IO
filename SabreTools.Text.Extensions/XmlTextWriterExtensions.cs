@@ -45,7 +45,12 @@ namespace SabreTools.Text.Extensions
             if (value is null && throwOnError)
                 throw new ArgumentNullException(nameof(value));
 
-            writer.WriteElementString(localName, value ?? string.Empty);
+            writer.WriteStartElement(localName);
+            if (value is null)
+                writer.WriteRaw(string.Empty);
+            else
+                writer.WriteString(value);
+            writer.WriteFullEndElement();
         }
 
         /// <summary>
