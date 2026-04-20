@@ -1,5 +1,4 @@
 using System;
-using SabreTools.Core.Tools;
 using Xunit;
 
 namespace SabreTools.IO.Extensions.Test

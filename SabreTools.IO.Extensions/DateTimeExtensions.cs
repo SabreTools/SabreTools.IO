@@ -1,6 +1,6 @@
 using System;
 
-namespace SabreTools.Core.Tools
+namespace SabreTools.IO.Extensions
 {
     public static class DateTimeExtensions
     {
