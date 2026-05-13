@@ -277,7 +277,7 @@ namespace SabreTools.Security.Cryptography
         /// </summary>
         /// <param name="key">Key to test</param>
         /// <returns>True if the key was valid, false otherwise</returns>
-        public bool ValidateKeyX0x18(byte[]? key)
+        public static bool ValidateKeyX0x18(byte[]? key)
         {
             // Missing key data is considered invalid
             if (key is null || key.Length == 0)
@@ -294,7 +294,7 @@ namespace SabreTools.Security.Cryptography
         /// </summary>
         /// <param name="key">Key to test</param>
         /// <returns>True if the key was valid, false otherwise</returns>
-        public bool ValidateDevKeyX0x18(byte[]? key)
+        public static bool ValidateDevKeyX0x18(byte[]? key)
         {
             // Missing key data is considered invalid
             if (key is null || key.Length == 0)
@@ -311,7 +311,7 @@ namespace SabreTools.Security.Cryptography
         /// </summary>
         /// <param name="key">Key to test</param>
         /// <returns>True if the key was valid, false otherwise</returns>
-        public bool ValidateKeyX0x1B(byte[]? key)
+        public static bool ValidateKeyX0x1B(byte[]? key)
         {
             // Missing key data is considered invalid
             if (key is null || key.Length == 0)
@@ -328,7 +328,7 @@ namespace SabreTools.Security.Cryptography
         /// </summary>
         /// <param name="key">Key to test</param>
         /// <returns>True if the key was valid, false otherwise</returns>
-        public bool ValidateDevKeyX0x1B(byte[]? key)
+        public static bool ValidateDevKeyX0x1B(byte[]? key)
         {
             // Missing key data is considered invalid
             if (key is null || key.Length == 0)
@@ -345,7 +345,7 @@ namespace SabreTools.Security.Cryptography
         /// </summary>
         /// <param name="key">Key to test</param>
         /// <returns>True if the key was valid, false otherwise</returns>
-        public bool ValidateKeyX0x25(byte[]? key)
+        public static bool ValidateKeyX0x25(byte[]? key)
         {
             // Missing key data is considered invalid
             if (key is null || key.Length == 0)
@@ -362,7 +362,7 @@ namespace SabreTools.Security.Cryptography
         /// </summary>
         /// <param name="key">Key to test</param>
         /// <returns>True if the key was valid, false otherwise</returns>
-        public bool ValidateDevKeyX0x25(byte[]? key)
+        public static bool ValidateDevKeyX0x25(byte[]? key)
         {
             // Missing key data is considered invalid
             if (key is null || key.Length == 0)
@@ -379,7 +379,7 @@ namespace SabreTools.Security.Cryptography
         /// </summary>
         /// <param name="key">Key to test</param>
         /// <returns>True if the key was valid, false otherwise</returns>
-        public bool ValidateKeyX0x2C(byte[]? key)
+        public static bool ValidateKeyX0x2C(byte[]? key)
         {
             // Missing key data is considered invalid
             if (key is null || key.Length == 0)
@@ -396,7 +396,7 @@ namespace SabreTools.Security.Cryptography
         /// </summary>
         /// <param name="key">Key to test</param>
         /// <returns>True if the key was valid, false otherwise</returns>
-        public bool ValidateDevKeyX0x2C(byte[]? key)
+        public static bool ValidateDevKeyX0x2C(byte[]? key)
         {
             // Missing key data is considered invalid
             if (key is null || key.Length == 0)
