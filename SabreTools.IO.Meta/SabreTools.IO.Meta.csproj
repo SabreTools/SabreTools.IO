@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <!-- Assembly Properties -->
@@ -46,7 +46,7 @@
         <Compile Include="..\SabreTools.Logging\*.cs" Exclude="..\SabreTools.Logging\ExtensionAttribute.cs" />
         <Compile Include="..\SabreTools.Matching\*.cs" Exclude="..\SabreTools.Matching\ExtensionAttribute.cs" />
         <Compile Include="..\SabreTools.Numerics\*.cs" />
-        <Compile Include="..\SabreTools.Numerics.Extensions\*.cs"  Exclude="..\SabreTools.Numerics.Extensions\ExtensionAttribute.cs" />
+        <Compile Include="..\SabreTools.Numerics.Extensions\*.cs" Exclude="..\SabreTools.Numerics.Extensions\ExtensionAttribute.cs" />
         <Compile Include="..\SabreTools.Security.Cryptography\*.cs" />
         <Compile Include="..\SabreTools.Text.ClrMamePro\*.cs" />
         <Compile Include="..\SabreTools.Text.Compare\*.cs" />
@@ -59,7 +59,7 @@
         <PackageReference Include="BouncyCastle.NetCore" Version="1.9.0" Condition="$(TargetFramework.StartsWith(`net2`)) OR $(TargetFramework.StartsWith(`net3`)) OR $(TargetFramework.StartsWith(`net40`))" />
         <PackageReference Include="BouncyCastle.NetCore" Version="2.2.1" Condition="!$(TargetFramework.StartsWith(`net2`)) AND !$(TargetFramework.StartsWith(`net3`)) AND !$(TargetFramework.StartsWith(`net40`))" />
         <PackageReference Include="SabreTools.Hashing" Version="[2.0.0]" />
-        <PackageReference Include="GrindCore" Version="0.7.0" Condition="!$(TargetFramework.StartsWith(`net2`))" />
+        <PackageReference Include="GrindCore" Version="0.7.1" Condition="!$(TargetFramework.StartsWith(`net2`))" />
     </ItemGroup>
 
 </Project>
