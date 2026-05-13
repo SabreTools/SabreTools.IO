@@ -39,7 +39,9 @@
         <Compile Include="..\SabreTools.IO.Compression\Deflate\*.cs" />
         <Compile Include="..\SabreTools.IO.Compression\LZX\*.cs" />
         <Compile Include="..\SabreTools.IO.Compression\MSZIP\*.cs" />
+        <Compile Include="..\SabreTools.IO.Compression\PURGE\*.cs" />
         <Compile Include="..\SabreTools.IO.Compression\Quantum\*.cs" />
+        <Compile Include="..\SabreTools.IO.Compression\RVZPack\*.cs" />
         <Compile Include="..\SabreTools.IO.Compression\SZDD\*.cs" />
         <Compile Include="..\SabreTools.IO.Compression\zlib\**\*.cs" />
         <Compile Include="..\SabreTools.IO.Extensions\*.cs" Exclude="..\SabreTools.IO.Extensions\ExtensionAttribute.cs" />
