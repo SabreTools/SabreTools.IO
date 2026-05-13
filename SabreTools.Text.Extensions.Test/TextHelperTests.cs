@@ -65,6 +65,30 @@ namespace SabreTools.Text.Extensions.Test
 
         #endregion
 
+        #region NormalizeCRC16
+
+        [Theory]
+        [InlineData(null, null)]
+        [InlineData("", "")]
+        [InlineData("-", "")]
+        [InlineData("_", "")]
+        [InlineData("0x", "")]
+        [InlineData("12", "0012")]
+        [InlineData("0x12", "0012")]
+        [InlineData("12ABC", "")]
+        [InlineData("0x12ABC", "")]
+        [InlineData("12AB", "12ab")]
+        [InlineData("0x12AB", "12ab")]
+        [InlineData("aceg", "")]
+        [InlineData("0xaceg", "")]
+        public void NormalizeCRC16Test(string? hash, string? expected)
+        {
+            string? actual = TextHelper.NormalizeCRC16(hash);
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion
+
         #region NormalizeCRC32
 
         [Theory]
@@ -84,6 +108,30 @@ namespace SabreTools.Text.Extensions.Test
         public void NormalizeCRC32Test(string? hash, string? expected)
         {
             string? actual = TextHelper.NormalizeCRC32(hash);
+            Assert.Equal(expected, actual);
+        }
+
+        #endregion
+
+        #region NormalizeCRC64
+
+        [Theory]
+        [InlineData(null, null)]
+        [InlineData("", "")]
+        [InlineData("-", "")]
+        [InlineData("_", "")]
+        [InlineData("0x", "")]
+        [InlineData("1234", "0000000000001234")]
+        [InlineData("0x1234", "0000000000001234")]
+        [InlineData("1234ABCD1234ABCDE", "")]
+        [InlineData("0x1234ABCD1234ABCDE", "")]
+        [InlineData("1234ABCD1234ABCD", "1234abcd1234abcd")]
+        [InlineData("0x1234ABCD1234ABCD", "1234abcd1234abcd")]
+        [InlineData("abcdefghabcdefgh", "")]
+        [InlineData("0xabcdefghabcdefgh", "")]
+        public void NormalizeCRC64Test(string? hash, string? expected)
+        {
+            string? actual = TextHelper.NormalizeCRC64(hash);
             Assert.Equal(expected, actual);
         }
 

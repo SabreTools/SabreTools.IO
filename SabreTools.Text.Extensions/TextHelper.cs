@@ -70,11 +70,25 @@ namespace SabreTools.Text.Extensions
         }
 
         /// <summary>
-        /// Normalize a CRC32 string and pad to the correct size
+        /// Normalize a CRC-16 string and pad to the correct size
+        /// </summary>
+        /// <remarks>4 characters long</remarks>
+        public static string? NormalizeCRC16(string? hash)
+            => NormalizeHashData(hash, 4);
+
+        /// <summary>
+        /// Normalize a CRC-32 string and pad to the correct size
         /// </summary>
         /// <remarks>8 characters long</remarks>
         public static string? NormalizeCRC32(string? hash)
             => NormalizeHashData(hash, 8);
+
+        /// <summary>
+        /// Normalize a CRC-64 string and pad to the correct size
+        /// </summary>
+        /// <remarks>16 characters long</remarks>
+        public static string? NormalizeCRC64(string? hash)
+            => NormalizeHashData(hash, 16);
 
         /// <summary>
         /// Normalize a MD2 string and pad to the correct size
@@ -112,28 +126,28 @@ namespace SabreTools.Text.Extensions
             => NormalizeHashData(hash, 40);
 
         /// <summary>
-        /// Normalize a SHA1 string and pad to the correct size
+        /// Normalize a SHA-1 string and pad to the correct size
         /// </summary>
         /// <remarks>40 characters long</remarks>
         public static string? NormalizeSHA1(string? hash)
             => NormalizeHashData(hash, 40);
 
         /// <summary>
-        /// Normalize a SHA256 string and pad to the correct size
+        /// Normalize a SHA-256 string and pad to the correct size
         /// </summary>
         /// <remarks>64 characters long</remarks>
         public static string? NormalizeSHA256(string? hash)
             => NormalizeHashData(hash, 64);
 
         /// <summary>
-        /// Normalize a SHA384 string and pad to the correct size
+        /// Normalize a SHA-384 string and pad to the correct size
         /// </summary>
         /// <remarks>96 characters long</remarks>
         public static string? NormalizeSHA384(string? hash)
             => NormalizeHashData(hash, 96);
 
         /// <summary>
-        /// Normalize a SHA512 string and pad to the correct size
+        /// Normalize a SHA-512 string and pad to the correct size
         /// </summary>
         /// <remarks>128 characters long</remarks>
         public static string? NormalizeSHA512(string? hash)
