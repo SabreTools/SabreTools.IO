@@ -11,7 +11,7 @@ namespace SabreTools.Security.Cryptography
     public static class AESCTR
     {
         /// <summary>
-        /// Create AES decryption cipher and intialize
+        /// Create AES/CTR decryption cipher and intialize
         /// </summary>
         /// <param name="key">Byte array representation of 128-bit encryption key</param>
         /// <param name="iv">AES initial value for counter</param>
@@ -31,7 +31,7 @@ namespace SabreTools.Security.Cryptography
         }
 
         /// <summary>
-        /// Create AES encryption cipher and intialize
+        /// Create AES/CTR encryption cipher and intialize
         /// </summary>
         /// <param name="key">Byte array representation of 128-bit encryption key</param>
         /// <param name="iv">AES initial value for counter</param>
