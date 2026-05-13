@@ -1,7 +1,7 @@
 using System;
 using SabreTools.Numerics.Extensions;
 
-namespace SabreTools.Security.Cryptography
+namespace SabreTools.IO.Compression.RVZPack
 {
     /// <summary>
     /// Lagged Fibonacci Generator matching Dolphin's LaggedFibonacciGenerator exactly.
