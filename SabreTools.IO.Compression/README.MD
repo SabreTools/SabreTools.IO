@@ -14,7 +14,9 @@ Relies on functionality found in `SabreTools.Hashing`, `SabreTools.IO`, `SabreTo
 | LZ | Yes | No | KWAJ, QBasic 4.5, and SZDD variants; KWAJ incomplete |
 | LZX | No | No | |
 | MSZIP | Yes | No | |
+| PURGE | Yes | Yes | Used by the WIA and RVZ image formats |
 | Quantum | Yes* | No | Partial implementation based on standalone archives; not working |
+| RVZ-Pack | Yes | Yes | Used by the WIA and RVZ image formats |
 
 **Note:** If something is marked with a `*` it means that it need testing.
 

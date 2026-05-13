@@ -8,6 +8,7 @@ Relies on functionality found in `SabreTools.Hashing`, `SabreTools.IO.Extensions
 
 | Encryption Scheme | Encrypt | Decrypt | Notes |
 | --- | --- | --- | --- |
+| AES/CBC | Yes | Yes | Subset of functionality exposed from [The Bouncy Castle Cryptography Library For .NET](https://github.com/bcgit/bc-csharp) |
 | AES/CTR | Yes | Yes | Subset of functionality exposed from [The Bouncy Castle Cryptography Library For .NET](https://github.com/bcgit/bc-csharp) |
 | MoPaQ | No | Yes | Used to encrypt and decrypt MoPaQ tables for processing |
 
@@ -17,5 +18,6 @@ Relies on functionality found in `SabreTools.Hashing`, `SabreTools.IO.Extensions
 | --- | --- |
 | `N3DSEncryptionSettings` | Common encryption settings for 3DS, including validators for known keys |
 | `N3DSPartitionKeys` | Per-partition keys that are generated based on provided values |
+| `WiiDecrypter` | Wii title key and block decryption, requires external keys |
 
 **Note:** No encryption keys are provided as a part of this package.
