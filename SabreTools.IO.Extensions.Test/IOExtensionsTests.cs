@@ -355,6 +355,106 @@ namespace SabreTools.IO.Extensions.Test
 
         #endregion
 
+        #region ResolvePath
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void ResolvePath_NullOrEmpty_ReturnsNull(string? path)
+        {
+            string? actual = path.ResolvePath();
+            Assert.Null(actual);
+        }
+
+        // TODO: Add tests for home path without modifying the runner's home path
+
+        [Fact]
+        public void ResolvePath_AbsolutePath_Exists_ReturnsAsIs()
+        {
+            string path = typeof(IOExtensionsTests).Assembly.Location;
+
+            string? actual = path.ResolvePath();
+            Assert.Equal(path, actual);
+        }
+
+        [Fact]
+        public void ResolvePath_AbsolutePath_Missing_ReturnsNull()
+        {
+            string path = Path.Combine(Path.GetTempPath(), "fake-path.bin");
+
+            string? actual = path.ResolvePath();
+            Assert.Null(actual);
+        }
+
+        // TODO: Add ResolvePath_RelativePath_Exists_ReturnsAsIs
+
+        [Fact]
+        public void ResolvePath_RelativePath_Missing_ReturnsNull()
+        {
+            string path = Path.Combine("INVALID", "fake-path.bin");
+
+            string? actual = path.ResolvePath();
+            Assert.Null(actual);
+        }
+
+        [Fact]
+        public void ResolvePath_BareName_RuntimeDirectory_ReturnsFullPath()
+        {
+            // Create a file in the test assembly's runtime directory
+            string filename = "fake-path.bin";
+            string path = Path.Combine(AppContext.BaseDirectory, filename);
+
+            File.WriteAllBytes(path, []);
+            try
+            {
+                string? actual = filename.ResolvePath();
+                Assert.Equal(path, actual);
+            }
+            finally
+            {
+                File.Delete(path);
+            }
+        }
+
+        [Fact]
+        public void ResolvePath_BareName_Path_ReturnsFullPath()
+        {
+            // Create a temporary directory for testing
+            string tempDir = Path.Combine(Path.GetTempPath(), "fake-path");
+            Directory.CreateDirectory(tempDir);
+
+            // Create a file in the temporary directory
+            string filename = "fake-path.bin";
+            string path = Path.Combine(tempDir, filename);
+            File.WriteAllBytes(path, []);
+
+            // Prepend the temp directory to PATH and check it exists
+            // TODO: See if there's a way around changing the actual environment variables
+            string? originalPath = Environment.GetEnvironmentVariable("PATH");
+            try
+            {
+                Environment.SetEnvironmentVariable("PATH", tempDir + Path.PathSeparator + (originalPath ?? string.Empty));
+                string? actual = filename.ResolvePath();
+                Assert.Equal(path, actual);
+            }
+            finally
+            {
+                Environment.SetEnvironmentVariable("PATH", originalPath);
+                Directory.Delete(tempDir, recursive: true);
+            }
+        }
+
+        [Fact]
+        public void ResolvePath_BareName_Missing_ReturnsNull()
+        {
+            string filename = "fake-path.bin";
+
+            string? actual = filename.ResolvePath();
+            Assert.Null(actual);
+        }
+
+        #endregion
+
         #region SafeGetDirectories
 
         [Fact]

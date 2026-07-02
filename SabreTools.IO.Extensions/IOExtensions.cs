@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -415,6 +416,67 @@ namespace SabreTools.IO.Extensions
             catch { }
 
             return path ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Resolve a file path that may be relative or contained within a PATH directory.
+        /// </summary>
+        /// <param name="path">Raw value from the user's options</param>
+        /// <returns>The absolute path of the located files, or null on failure</returns>
+        /// <remarks>
+        /// A value containing a path separator is treated as an explicit location and
+        /// returned as-is when it exists. A bare name (no separator) is searched in the
+        /// runtime directory first, then in each PATH entry.
+        /// </remarks>
+        public static string? ResolvePath(this string? path)
+        {
+            // Invalid paths always return null
+            if (string.IsNullOrEmpty(path))
+                return null;
+
+            // If the configured path starts with a home character
+            if (path!.StartsWith("~/") || path.StartsWith("~\\"))
+            {
+                string homeDirectory = PathTool.GetHomeDirectory();
+
+                path = path.Substring(2);
+                path = Path.Combine(homeDirectory, path);
+
+                return File.Exists(path) ? path : null;
+            }
+
+            // Explicit location (absolute or relative path)
+            if (path.Contains("/") || path.Contains("\\"))
+                return File.Exists(path) ? path : null;
+
+            // Check the runtime directory if no directory path is provided
+            string runtimeDir = PathTool.GetRuntimeDirectory();
+            if (!string.IsNullOrEmpty(runtimeDir))
+            {
+                string candidate = Path.Combine(runtimeDir, path);
+                if (File.Exists(candidate))
+                    return candidate;
+            }
+
+            // Attempt to get the PATH variable for searching
+            string? pathEnv = Environment.GetEnvironmentVariable("PATH");
+            if (string.IsNullOrEmpty(pathEnv))
+                return null;
+
+            // Loop through all entries in PATH
+            var pathParts = pathEnv!.Split(Path.PathSeparator);
+            foreach (string dir in pathParts)
+            {
+                if (string.IsNullOrEmpty(dir))
+                    continue;
+
+                string candidate = Path.Combine(dir, path);
+                if (File.Exists(candidate))
+                    return candidate;
+            }
+
+            // All options failed
+            return null;
         }
 
         #endregion
