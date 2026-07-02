@@ -369,29 +369,60 @@ namespace SabreTools.IO.Extensions.Test
         // TODO: Add tests for home path without modifying the runner's home path
 
         [Fact]
-        public void ResolvePath_AbsolutePath_Exists_ReturnsAsIs()
+        public void ResolvePath_AbsolutePath_Exists_ReturnsFullPath()
         {
-            string path = typeof(IOExtensionsTests).Assembly.Location;
+            string filename = Guid.NewGuid().ToString();
+            string path = Path.Combine(Environment.CurrentDirectory, filename);
 
-            string? actual = path.ResolvePath();
-            Assert.Equal(path, actual);
+            File.WriteAllBytes(path, []);
+            try
+            {
+                string? actual = filename.ResolvePath();
+                Assert.Equal(path, actual);
+            }
+            finally
+            {
+                File.Delete(path);
+            }
         }
 
         [Fact]
         public void ResolvePath_AbsolutePath_Missing_ReturnsNull()
         {
-            string path = Path.Combine(Path.GetTempPath(), "fake-path.bin");
+            string filename = Guid.NewGuid().ToString();
+            string path = Path.Combine(Environment.CurrentDirectory, filename);
 
             string? actual = path.ResolvePath();
             Assert.Null(actual);
         }
 
-        // TODO: Add ResolvePath_RelativePath_Exists_ReturnsAsIs
+        [Fact]
+        public void ResolvePath_RelativePath_Exists_ReturnsFullPath()
+        {
+            string filename = Guid.NewGuid().ToString();
+            string subDir = "RELATIVE";
+            string path = Path.Combine(subDir, filename);
+            string expected = Path.Combine(Environment.CurrentDirectory, path);
+
+            Directory.CreateDirectory(subDir);
+            File.WriteAllBytes(path, []);
+            try
+            {
+                string? actual = path.ResolvePath();
+                Assert.Equal(expected, actual);
+            }
+            finally
+            {
+                Directory.Delete(subDir, recursive: true);
+            }
+        }
 
         [Fact]
         public void ResolvePath_RelativePath_Missing_ReturnsNull()
         {
-            string path = Path.Combine("INVALID", "fake-path.bin");
+            string filename = Guid.NewGuid().ToString();
+            string subDir = "INVALID";
+            string path = Path.Combine(subDir, filename);
 
             string? actual = path.ResolvePath();
             Assert.Null(actual);
@@ -400,8 +431,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void ResolvePath_BareName_RuntimeDirectory_ReturnsFullPath()
         {
-            // Create a file in the test assembly's runtime directory
-            string filename = "fake-path.bin";
+            string filename = Guid.NewGuid().ToString();
             string path = Path.Combine(AppContext.BaseDirectory, filename);
 
             File.WriteAllBytes(path, []);
@@ -419,13 +449,12 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void ResolvePath_BareName_Path_ReturnsFullPath()
         {
-            // Create a temporary directory for testing
-            string tempDir = Path.Combine(Path.GetTempPath(), "fake-path");
-            Directory.CreateDirectory(tempDir);
+            string filename = Guid.NewGuid().ToString();
+            string subDir = Path.GetFullPath("TEMP");
+            string path = Path.Combine(subDir, filename);
+            string expected = Path.Combine(Environment.CurrentDirectory, path);
 
-            // Create a file in the temporary directory
-            string filename = "fake-path.bin";
-            string path = Path.Combine(tempDir, filename);
+            Directory.CreateDirectory(subDir);
             File.WriteAllBytes(path, []);
 
             // Prepend the temp directory to PATH and check it exists
@@ -433,21 +462,21 @@ namespace SabreTools.IO.Extensions.Test
             string? originalPath = Environment.GetEnvironmentVariable("PATH");
             try
             {
-                Environment.SetEnvironmentVariable("PATH", tempDir + Path.PathSeparator + (originalPath ?? string.Empty));
+                Environment.SetEnvironmentVariable("PATH", subDir + Path.PathSeparator + (originalPath ?? string.Empty));
                 string? actual = filename.ResolvePath();
-                Assert.Equal(path, actual);
+                Assert.Equal(expected, actual);
             }
             finally
             {
                 Environment.SetEnvironmentVariable("PATH", originalPath);
-                Directory.Delete(tempDir, recursive: true);
+                Directory.Delete(subDir, recursive: true);
             }
         }
 
         [Fact]
         public void ResolvePath_BareName_Missing_ReturnsNull()
         {
-            string filename = "fake-path.bin";
+            string filename = Guid.NewGuid().ToString();
 
             string? actual = filename.ResolvePath();
             Assert.Null(actual);

@@ -419,15 +419,11 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Resolve a file path that may be relative or contained within a PATH directory.
+        /// Resolve a file path that may be absolute, relative,
+        /// within the runtime directory, or contained within a PATH directory.
         /// </summary>
         /// <param name="path">Raw value from the user's options</param>
         /// <returns>The absolute path of the located files, or null on failure</returns>
-        /// <remarks>
-        /// A value containing a path separator is treated as an explicit location and
-        /// returned as-is when it exists. A bare name (no separator) is searched in the
-        /// runtime directory first, then in each PATH entry.
-        /// </remarks>
         public static string? ResolvePath(this string? path)
         {
             // Invalid paths always return null
@@ -442,12 +438,12 @@ namespace SabreTools.IO.Extensions
                 path = path.Substring(2);
                 path = Path.Combine(homeDirectory, path);
 
-                return File.Exists(path) ? path : null;
+                return File.Exists(path) ? Path.GetFullPath(path) : null;
             }
 
             // Explicit location (absolute or relative path)
             if (path.Contains("/") || path.Contains("\\"))
-                return File.Exists(path) ? path : null;
+                return File.Exists(path) ? Path.GetFullPath(path) : null;
 
             // Check the runtime directory if no directory path is provided
             string runtimeDir = PathTool.GetRuntimeDirectory();
@@ -940,7 +936,7 @@ namespace SabreTools.IO.Extensions
         private static EnumerationOptions FromSearchOption(SearchOption searchOption)
         {
             if ((searchOption != SearchOption.TopDirectoryOnly) && (searchOption != SearchOption.AllDirectories))
-                throw new System.ArgumentOutOfRangeException(nameof(searchOption));
+                throw new ArgumentOutOfRangeException(nameof(searchOption));
 
             return searchOption == SearchOption.AllDirectories
                 ? new EnumerationOptions { RecurseSubdirectories = true, MatchType = MatchType.Win32, AttributesToSkip = 0, IgnoreInaccessible = false }
