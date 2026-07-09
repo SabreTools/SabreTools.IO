@@ -1104,78 +1104,6 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Read the sysfs "removable" flag for a block device
-        /// </summary>
-        /// <param name="sysBlockEntry">Path to the device directory under the sysfs block root</param>
-        /// <returns>True when the device reports itself as removable, false otherwise</returns>
-        public static bool ReadUnixRemovableFlag(string sysBlockEntry)
-        {
-            string removablePath = Path.Combine(sysBlockEntry, "removable");
-            try
-            {
-                if (!File.Exists(removablePath))
-                    return false;
-
-                string removableString = File.ReadAllText(removablePath).Trim();
-                return removableString == "1";
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Read the device size from sysfs (reported in 512-byte sectors) and convert to bytes
-        /// </summary>
-        /// <param name="sysBlockEntry">Path to the device directory under the sysfs block root</param>
-        /// <returns>The device size in bytes, 0 on error</returns>
-        public static long ReadUnixBlockDeviceSize(string sysBlockEntry)
-        {
-            string sizePath = Path.Combine(sysBlockEntry, "size");
-            try
-            {
-                if (!File.Exists(sizePath))
-                    return 0;
-
-                string sizeString = File.ReadAllText(sizePath).Trim();
-                if (long.TryParse(sizeString, out long sectors) && sectors > 0)
-                    return sectors * 512;
-            }
-            catch
-            {
-                // Unreadable size; report it as unknown
-            }
-
-            return 0;
-        }
-
-        /// <summary>
-        /// Read the device size from sysfs (reported in 512-byte sectors) and convert to bytes
-        /// </summary>
-        /// <param name="sysGenericEntry">Path to the device directory under the sysfs block root</param>
-        /// <returns>The device size in bytes, 0 on error</returns>
-        public static int ReadUnixBlockDeviceType(string sysGenericEntry)
-        {
-            string typePath = Path.Combine(Path.Combine(sysGenericEntry, "device"), "type");
-            try
-            {
-                if (!File.Exists(typePath))
-                    return 0;
-
-                string typeString = File.ReadAllText(typePath).Trim();
-                if (int.TryParse(typeString, out int scsiType))
-                    return scsiType;
-            }
-            catch
-            {
-                // Unreadable type; report it as unknown
-            }
-
-            return 0;
-        }
-
-        /// <summary>
         /// Check that a device node name is the given prefix followed by one or more digits
         /// (e.g. "sr0", "sg12"), rejecting names with trailing or embedded non-digit characters.
         /// </summary>
@@ -1200,6 +1128,78 @@ namespace SabreTools.IO.Extensions
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Read the sysfs "removable" flag for a block device
+        /// </summary>
+        /// <param name="sysBlockEntry">Path to the device directory under the sysfs block root</param>
+        /// <returns>True when the device reports itself as removable, false otherwise</returns>
+        private static bool ReadUnixRemovableFlag(string sysBlockEntry)
+        {
+            string removablePath = Path.Combine(sysBlockEntry, "removable");
+            try
+            {
+                if (!File.Exists(removablePath))
+                    return false;
+
+                string removableString = File.ReadAllText(removablePath).Trim();
+                return removableString == "1";
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Read the device size from sysfs (reported in 512-byte sectors) and convert to bytes
+        /// </summary>
+        /// <param name="sysBlockEntry">Path to the device directory under the sysfs block root</param>
+        /// <returns>The device size in bytes, 0 on error</returns>
+        private static long ReadUnixBlockDeviceSize(string sysBlockEntry)
+        {
+            string sizePath = Path.Combine(sysBlockEntry, "size");
+            try
+            {
+                if (!File.Exists(sizePath))
+                    return 0;
+
+                string sizeString = File.ReadAllText(sizePath).Trim();
+                if (long.TryParse(sizeString, out long sectors) && sectors > 0)
+                    return sectors * 512;
+            }
+            catch
+            {
+                // Unreadable size; report it as unknown
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Read the device size from sysfs (reported in 512-byte sectors) and convert to bytes
+        /// </summary>
+        /// <param name="sysGenericEntry">Path to the device directory under the sysfs block root</param>
+        /// <returns>The device size in bytes, 0 on error</returns>
+        private static int ReadUnixBlockDeviceType(string sysGenericEntry)
+        {
+            string typePath = Path.Combine(Path.Combine(sysGenericEntry, "device"), "type");
+            try
+            {
+                if (!File.Exists(typePath))
+                    return 0;
+
+                string typeString = File.ReadAllText(typePath).Trim();
+                if (int.TryParse(typeString, out int scsiType))
+                    return scsiType;
+            }
+            catch
+            {
+                // Unreadable type; report it as unknown
+            }
+
+            return 0;
         }
 
         #endregion
