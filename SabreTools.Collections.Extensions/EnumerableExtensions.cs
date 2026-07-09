@@ -12,7 +12,7 @@ namespace SabreTools.Collections.Extensions
         /// .NET Frameworks 2.0 and 3.5 process in series.
         /// .NET Frameworks 4.0 onward process in parallel.
         /// </remarks>
-        public static void IterateWithAction<T>(this IEnumerable<T> source, Action<T> action)
+        public static void IterateWithAction<TValue>(this IEnumerable<TValue> source, Action<TValue> action)
         {
 #if NET20 || NET35
             foreach (var item in source)
@@ -27,10 +27,10 @@ namespace SabreTools.Collections.Extensions
         /// <summary>
         /// Safely iterate through an enumerable, skipping any errors
         /// </summary>
-        public static IEnumerable<T> SafeEnumerate<T>(this IEnumerable<T> enumerable)
+        public static IEnumerable<TValue> SafeEnumerate<TValue>(this IEnumerable<TValue> enumerable)
         {
             // Get the enumerator for the enumerable
-            IEnumerator<T> enumerator;
+            IEnumerator<TValue> enumerator;
             try
             {
                 enumerator = enumerable.GetEnumerator();

@@ -6,8 +6,8 @@ This library contains classes designed to make matching contents and paths easie
 
 | Interface | Notes |
 | --- | --- |
-| `IMatch<T>` | Represents a matcher for a generic type |
-| `IMatchSet<T, U>` | Represents a set of `IMatch<T>` types |
+| `IMatch<TNeedle>` | Represents a matcher for a generic type |
+| `IMatchSet<TMatcher, TNeedle>` | Represents a set of `IMatch<TNeedle>` types |
 
 ## Matching Classes
 

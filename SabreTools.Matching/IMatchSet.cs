@@ -5,12 +5,12 @@ namespace SabreTools.Matching
     /// <summary>
     /// Wrapper for a single set of matching criteria
     /// </summary>
-    public interface IMatchSet<T, U> where T : IMatch<U>
+    public interface IMatchSet<TMatcher, TNeedle> where TMatcher : IMatch<TNeedle>
     {
         /// <summary>
         /// Set of all matchers
         /// </summary>
-        public List<T> Matchers { get; }
+        public List<TMatcher> Matchers { get; }
 
         /// <summary>
         /// Unique name for the match set

@@ -3,11 +3,11 @@
     /// <summary>
     /// Represents a matcher for a particular type
     /// </summary>
-    public interface IMatch<T>
+    public interface IMatch<TNeedle>
     {
         /// <summary>
         /// Nullable typed data to be matched
         /// </summary>
-        public T? Needle { get; }
+        public TNeedle? Needle { get; }
     }
 }
