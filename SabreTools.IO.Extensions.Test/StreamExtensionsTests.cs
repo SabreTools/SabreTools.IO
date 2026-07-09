@@ -145,7 +145,7 @@ namespace SabreTools.IO.Extensions.Test
         public void Interleave_EvenNotExists_False()
         {
             string even = "NOT A REAL PATH";
-            string odd = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
+            string odd = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "ascii.txt");
             string output = Guid.NewGuid().ToString();
 
             bool actual = even.InterleaveWith(odd, output, 1);
@@ -155,7 +155,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void Interleave_OddNotExists_False()
         {
-            string even = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
+            string even = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "ascii.txt");
             string odd = "NOT A REAL PATH";
             string output = Guid.NewGuid().ToString();
 
@@ -166,8 +166,8 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void Interleave_InvalidValue_False()
         {
-            string even = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
-            string odd = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
+            string even = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "ascii.txt");
+            string odd = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "ascii.txt");
             string output = Guid.NewGuid().ToString();
 
             bool actual = even.InterleaveWith(odd, output, -1);
@@ -181,8 +181,8 @@ namespace SabreTools.IO.Extensions.Test
         [InlineData(8, "This doeThis doesn't matsn't match anythch anythinging")]
         public void Interleave_SameLength_True(int blockSize, string expected)
         {
-            string even = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
-            string odd = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
+            string even = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "ascii.txt");
+            string odd = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "ascii.txt");
             string output = Guid.NewGuid().ToString();
 
             bool actual = even.InterleaveWith(odd, output, blockSize);
@@ -197,8 +197,8 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void Interleave_DifferentLength_True()
         {
-            string even = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
-            string odd = Path.Combine(Environment.CurrentDirectory, "TestData", "file-to-compress.bin");
+            string even = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "ascii.txt");
+            string odd = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "file-to-compress.bin");
 
             string output = Guid.NewGuid().ToString();
 
@@ -578,7 +578,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SplitToChunks_InvalidSize_False()
         {
-            string input = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
+            string input = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "ascii.txt");
             string outputDir = string.Empty;
             int size = 0;
 
@@ -589,7 +589,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SplitToChunks_Valid_True()
         {
-            string input = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
+            string input = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "ascii.txt");
             string outputDir = Guid.NewGuid().ToString();
             int size = 16;
 
@@ -635,7 +635,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SplitToEvenOdd_InvalidValue_False()
         {
-            string input = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
+            string input = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "ascii.txt");
             string baseFileName = Guid.NewGuid().ToString();
             string even = $"{baseFileName}.even";
             string odd = $"{baseFileName}.odd";
@@ -651,7 +651,7 @@ namespace SabreTools.IO.Extensions.Test
         [InlineData(8, "This doech anyth", "sn't mating")]
         public void SplitToEvenOdd_ValidFile_True(int blockSize, string expectedEven, string expectedOdd)
         {
-            string input = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
+            string input = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "ascii.txt");
             string baseFileName = Guid.NewGuid().ToString();
             string even = $"{baseFileName}.even";
             string odd = $"{baseFileName}.odd";
@@ -671,7 +671,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SplitToEvenOdd_ValidFile_SameEvenOdd_False()
         {
-            string input = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
+            string input = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "ascii.txt");
             string baseFileName = Guid.NewGuid().ToString();
             string evenOdd = $"{baseFileName}.all";
 
@@ -706,7 +706,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void Swap_InvalidType_False()
         {
-            string input = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
+            string input = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "ascii.txt");
             string output = Guid.NewGuid().ToString();
 
             bool actual = input.Swap(output, (SwapOperation)int.MaxValue);
@@ -716,7 +716,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void Swap_Valid_True()
         {
-            string input = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
+            string input = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "ascii.txt");
             string output = Guid.NewGuid().ToString();
 
             // Bitswap

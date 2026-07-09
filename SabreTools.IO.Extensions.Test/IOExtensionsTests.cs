@@ -126,8 +126,8 @@ namespace SabreTools.IO.Extensions.Test
         public void Concatenate_FilledList_True()
         {
             List<string> paths = [
-                Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt"),
-                Path.Combine(Environment.CurrentDirectory, "TestData", "file-to-compress.bin"),
+                Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "ascii.txt"),
+                Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "file-to-compress.bin"),
             ];
             string output = Guid.NewGuid().ToString();
             bool actual = IOExtensions.Concatenate(paths, output);
@@ -156,7 +156,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void GetEncoding_InvalidPath()
         {
-            string path = Path.Combine(Environment.CurrentDirectory, "TestData", "INVALID");
+            string path = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "INVALID");
             Encoding expected = Encoding.Default;
 
             var actual = path.GetEncoding();
@@ -168,7 +168,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void GetEncoding_UTF7()
         {
-            string path = Path.Combine(Environment.CurrentDirectory, "TestData", "utf7bom.txt");
+            string path = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "utf7bom.txt");
             Encoding expected = Encoding.UTF7;
 
             var actual = path.GetEncoding();
@@ -179,7 +179,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void GetEncoding_UTF8()
         {
-            string path = Path.Combine(Environment.CurrentDirectory, "TestData", "utf8bom.txt");
+            string path = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "utf8bom.txt");
             Encoding expected = Encoding.UTF8;
 
             var actual = path.GetEncoding();
@@ -189,7 +189,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void GetEncoding_Unicode()
         {
-            string path = Path.Combine(Environment.CurrentDirectory, "TestData", "utf16lebom.txt");
+            string path = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "utf16lebom.txt");
             Encoding expected = Encoding.Unicode;
 
             var actual = path.GetEncoding();
@@ -199,7 +199,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void GetEncoding_BigEndianUnicode()
         {
-            string path = Path.Combine(Environment.CurrentDirectory, "TestData", "utf16bebom.txt");
+            string path = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "utf16bebom.txt");
             Encoding expected = Encoding.BigEndianUnicode;
 
             var actual = path.GetEncoding();
@@ -209,7 +209,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void GetEncoding_UTF32()
         {
-            string path = Path.Combine(Environment.CurrentDirectory, "TestData", "utf32bom.txt");
+            string path = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "utf32bom.txt");
             Encoding expected = Encoding.UTF32;
 
             var actual = path.GetEncoding();
@@ -219,7 +219,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void GetEncoding_ASCII()
         {
-            string path = Path.Combine(Environment.CurrentDirectory, "TestData", "ascii.txt");
+            string path = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "ascii.txt");
             Encoding expected = Encoding.Default;
 
             var actual = path.GetEncoding();
@@ -781,6 +781,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void EnumerateUnixOpticalGenericPaths_OnlyMatchesOpticalSgNodes()
         {
+            string devRoot = "/dev";
             string sysfsScsiGenericRoot = Path.Combine(Environment.CurrentDirectory, "TestData", "sys", "class", "scsi_generic");
 
             // sg0 - Optical, kept
@@ -790,9 +791,9 @@ namespace SabreTools.IO.Extensions.Test
             // sg10 - Optical (multi-digit), kept
             // sga - Name not all-digits, skipped
             // sgX - Name not all-digits, skipped
-            string[] expected = ["sg0", "sg10", "sg2"];
+            List<string> expected = ["sg0", "sg10", "sg2"];
 
-            var actual = IOExtensions.EnumerateUnixOpticalGenericPaths("/dev", sysfsScsiGenericRoot);
+            var actual = IOExtensions.EnumerateUnixOpticalGenericPaths(devRoot, sysfsScsiGenericRoot);
 
             var actualNames = new List<string>();
             foreach (var p in actual)
@@ -848,6 +849,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void EnumerateUnixUsbFloppyBlockPaths_OnlyMatchesRemovableFloppySizedDisks()
         {
+            string devRoot = "/dev";
             string sysBlockRoot = Path.Combine(Environment.CurrentDirectory, "TestData", "sys", "block");
 
             // nvme0n1 - Not an sd* device, not scanned
@@ -856,9 +858,9 @@ namespace SabreTools.IO.Extensions.Test
             // sdc - Empty floppy drive (no media), skipped
             // sdh - USB floppy, 1.44 MB, matched
             // sdi - USB floppy, 720 KB (trailing newline), matched
-            string[] expected = ["sdh", "sdi"];
+            List<string> expected = ["sdh", "sdi"];
 
-            var actual = IOExtensions.EnumerateUnixUsbFloppyBlockPaths(sysBlockRoot, "/dev");
+            var actual = IOExtensions.EnumerateUnixUsbFloppyBlockPaths(devRoot, sysBlockRoot);
 
             var actualNames = new List<string>();
             foreach (var p in actual)
