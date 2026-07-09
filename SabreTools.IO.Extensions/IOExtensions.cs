@@ -975,7 +975,7 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         /// <param name="devRoot">Root directory to scan (typically "/dev")</param>
         /// <returns>Device paths, or an empty list when the directory is unreadable</returns>
-        public static List<string> EnumerateUnixFloppyBlockPaths(string? devRoot)
+        public static List<string> EnumerateUnixFloppyBlockPaths(string? devRoot = "/dev")
         {
             // If the device root is invalid
             if (string.IsNullOrEmpty(devRoot) || !Directory.Exists(devRoot))
@@ -1001,7 +1001,7 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         /// <param name="devRoot">Root directory to scan (typically "/dev")</param>
         /// <returns>Device paths, or an empty list when the directory is unreadable</returns>
-        public static List<string> EnumerateUnixOpticalBlockPaths(string? devRoot)
+        public static List<string> EnumerateUnixOpticalBlockPaths(string? devRoot = "/dev")
         {
             // If the device root is invalid
             if (string.IsNullOrEmpty(devRoot) || !Directory.Exists(devRoot))
@@ -1029,7 +1029,7 @@ namespace SabreTools.IO.Extensions
         /// <param name="devRoot">Root directory the nodes live under (typically "/dev")</param>
         /// <param name="sysfsScsiGenericRoot">sysfs class directory (typically "/sys/class/scsi_generic")</param>
         /// <returns>Device paths, or an empty list when the sysfs directory is unreadable</returns>
-        public static List<string> EnumerateUnixOpticalGenericPaths(string? devRoot, string? sysfsScsiGenericRoot)
+        public static List<string> EnumerateUnixOpticalGenericPaths(string? devRoot = "/dev", string? sysfsScsiGenericRoot = "/sys/class/scsi_generic")
         {
             // If the device root is invalid
             if (string.IsNullOrEmpty(devRoot) || !Directory.Exists(devRoot))
@@ -1071,7 +1071,7 @@ namespace SabreTools.IO.Extensions
         /// <param name="devRoot">Root directory device nodes live under (typically "/dev")</param>
         /// <param name="sysBlockRoot">sysfs block directory (typically "/sys/block")</param>
         /// <returns>Device paths, or an empty list when the directory is unreadable</returns>
-        public static List<string> EnumerateUnixUsbFloppyBlockPaths(string? devRoot, string? sysBlockRoot)
+        public static List<string> EnumerateUnixUsbFloppyBlockPaths(string? devRoot = "/dev", string? sysBlockRoot = "/sys/block")
         {
             // If the device root is invalid
             if (string.IsNullOrEmpty(devRoot) || !Directory.Exists(devRoot))
