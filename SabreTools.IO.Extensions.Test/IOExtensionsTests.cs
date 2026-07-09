@@ -34,14 +34,14 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void GetDirectoriesOnly_NoAppendParent()
         {
-            string expectedParent = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string expectedParent = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             string expectedCurrent = Path.Combine(expectedParent, "Subdirectory");
 
             List<string> inputs =
             [
                 string.Empty,
-                Path.Combine(Environment.CurrentDirectory, "TestData"),
-                Path.Combine(Environment.CurrentDirectory, "TestData", "Subdir*"),
+                Path.Combine(Environment.CurrentDirectory, "TestData", "Path"),
+                Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "Subdir*"),
             ];
             var actual = IOExtensions.GetDirectoriesOnly(inputs, appendParent: true);
             Assert.NotEmpty(actual);
@@ -54,14 +54,14 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void GetDirectoriesOnly_AppendParent()
         {
-            string expectedParent = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string expectedParent = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             string expectedCurrent = Path.Combine(expectedParent, "Subdirectory");
 
             List<string> inputs =
             [
                 string.Empty,
-                Path.Combine(Environment.CurrentDirectory, "TestData"),
-                Path.Combine(Environment.CurrentDirectory, "TestData", "Subdir*"),
+                Path.Combine(Environment.CurrentDirectory, "TestData", "Path"),
+                Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "Subdir*"),
             ];
             var actual = IOExtensions.GetDirectoriesOnly(inputs, appendParent: false);
             Assert.NotEmpty(actual);
@@ -86,7 +86,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void ListEmpty_InvalidDirectory()
         {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "INVALID");
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "INVALID");
             var empty = dir.ListEmpty();
             Assert.Null(empty);
         }
@@ -94,7 +94,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void ListEmpty_ValidDirectory()
         {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var empty = dir.ListEmpty();
             Assert.NotNull(empty);
             Assert.Empty(empty);
@@ -233,15 +233,15 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void GetFilesOnly_NoAppendParent()
         {
-            string expectedParent = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string expectedParent = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             string expectedCurrent = Path.Combine(expectedParent, "ascii.txt");
 
             List<string> inputs =
             [
                 string.Empty,
-                Path.Combine(Environment.CurrentDirectory, "TestData"),
-                Path.Combine(Environment.CurrentDirectory, "TestData", "Subdir*"),
-                Path.Combine(Environment.CurrentDirectory, "TestData", "utf8bom.txt"),
+                Path.Combine(Environment.CurrentDirectory, "TestData", "Path"),
+                Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "Subdir*"),
+                Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "utf8bom.txt"),
             ];
             var actual = IOExtensions.GetFilesOnly(inputs, appendParent: true);
             Assert.NotEmpty(actual);
@@ -254,15 +254,15 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void GetFilesOnly_AppendParent()
         {
-            string expectedParent = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string expectedParent = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             string expectedCurrent = Path.Combine(expectedParent, "ascii.txt");
 
             List<string> inputs =
             [
                 string.Empty,
-                Path.Combine(Environment.CurrentDirectory, "TestData"),
-                Path.Combine(Environment.CurrentDirectory, "TestData", "Subdir*"),
-                Path.Combine(Environment.CurrentDirectory, "TestData", "utf8bom.txt"),
+                Path.Combine(Environment.CurrentDirectory, "TestData", "Path"),
+                Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "Subdir*"),
+                Path.Combine(Environment.CurrentDirectory, "TestData", "Path", "utf8bom.txt"),
             ];
             var actual = IOExtensions.GetFilesOnly(inputs, appendParent: false);
             Assert.NotEmpty(actual);
@@ -489,7 +489,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SafeGetDirectories_ValidDirectory()
         {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var dirs = dir.SafeGetDirectories();
             Assert.Single(dirs);
         }
@@ -497,7 +497,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SafeGetDirectories_ValidDirectory_Pattern()
         {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var dirs = dir.SafeGetDirectories("*");
             Assert.Single(dirs);
         }
@@ -505,7 +505,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SafeGetDirectories_ValidDirectory_PatternOption()
         {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var dirs = dir.SafeGetDirectories("*", SearchOption.AllDirectories);
             Assert.Single(dirs);
         }
@@ -517,7 +517,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SafeGetFiles_ValidDirectory()
         {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var files = dir.SafeGetFiles();
             Assert.NotEmpty(files);
         }
@@ -525,7 +525,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SafeGetFiles_ValidDirectory_Pattern()
         {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var files = dir.SafeGetFiles("*");
             Assert.NotEmpty(files);
         }
@@ -533,7 +533,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SafeGetFiles_ValidDirectory_PatternOption()
         {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var files = dir.SafeGetFiles("*", SearchOption.AllDirectories);
             Assert.NotEmpty(files);
         }
@@ -545,7 +545,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SafeGetFileSystemEntries_ValidDirectory()
         {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var entries = dir.SafeGetFileSystemEntries();
             Assert.NotEmpty(entries);
         }
@@ -553,7 +553,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SafeGetFileSystemEntries_ValidDirectory_Pattern()
         {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var entries = dir.SafeGetFileSystemEntries("*");
             Assert.NotEmpty(entries);
         }
@@ -561,7 +561,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SafeGetFileSystemEntries_ValidDirectory_PatternOption()
         {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var entries = dir.SafeGetFileSystemEntries("*", SearchOption.AllDirectories);
             Assert.NotEmpty(entries);
         }
@@ -573,7 +573,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SafeEnumerateDirectories_ValidDirectory()
         {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var dirs = dir.SafeEnumerateDirectories();
             Assert.Single(dirs);
         }
@@ -581,7 +581,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SafeEnumerateDirectories_ValidDirectory_Pattern()
         {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var dirs = dir.SafeEnumerateDirectories("*");
             Assert.Single(dirs);
         }
@@ -589,7 +589,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SafeEnumerateDirectories_ValidDirectory_PatternOption()
         {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var dirs = dir.SafeEnumerateDirectories("*", SearchOption.AllDirectories);
             Assert.Single(dirs);
         }
@@ -601,7 +601,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SafeEnumerateFiles_ValidDirectory()
         {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var files = dir.SafeEnumerateFiles();
             Assert.NotEmpty(files);
         }
@@ -609,7 +609,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SafeEnumerateFiles_ValidDirectory_Pattern()
         {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var files = dir.SafeEnumerateFiles("*");
             Assert.NotEmpty(files);
         }
@@ -617,7 +617,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SafeEnumerateFiles_ValidDirectory_PatternOption()
         {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var files = dir.SafeEnumerateFiles("*", SearchOption.AllDirectories);
             Assert.NotEmpty(files);
         }
@@ -629,7 +629,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SafeEnumerateFileSystemEntries_ValidDirectory()
         {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var entries = dir.SafeEnumerateFileSystemEntries();
             Assert.NotEmpty(entries);
         }
@@ -637,7 +637,7 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SafeEnumerateFileSystemEntries_ValidDirectory_Pattern()
         {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var entries = dir.SafeEnumerateFileSystemEntries("*");
             Assert.NotEmpty(entries);
         }
@@ -645,9 +645,230 @@ namespace SabreTools.IO.Extensions.Test
         [Fact]
         public void SafeEnumerateFileSystemEntries_ValidDirectory_PatternOption()
         {
-            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var entries = dir.SafeEnumerateFileSystemEntries("*", SearchOption.AllDirectories);
             Assert.NotEmpty(entries);
+        }
+
+        #endregion
+
+        #region EnumerateUnixFloppyBlockPaths
+
+        [Fact]
+        public void EnumerateUnixFloppyBlockPaths_Null_ReturnsEmpty()
+        {
+            var actual = IOExtensions.EnumerateUnixFloppyBlockPaths(null);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public void EnumerateUnixFloppyBlockPaths_Empty_ReturnsEmpty()
+        {
+            var actual = IOExtensions.EnumerateUnixFloppyBlockPaths(string.Empty);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public void EnumerateUnixFloppyBlockPaths_MissingDirectory_ReturnsEmpty()
+        {
+            string devRoot = "INVALID";
+            var actual = IOExtensions.EnumerateUnixFloppyBlockPaths(devRoot);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public void EnumerateUnixFloppyBlockPaths_OnlyMatchesFdFollowedByDigits()
+        {
+            string devRoot = Path.Combine(Environment.CurrentDirectory, "TestData", "dev");
+            string[] expected = ["fd0", "fd1", "fd7"];
+
+            var actual = IOExtensions.EnumerateUnixFloppyBlockPaths(devRoot);
+
+            var actualNames = new List<string>();
+            foreach (var p in actual)
+            {
+                actualNames.Add(Path.GetFileName(p));
+            }
+
+            actualNames.Sort(StringComparer.Ordinal);
+            Assert.Equal(expected, actualNames);
+        }
+
+        #endregion
+
+        #region EnumerateUnixOpticalBlockPaths
+
+        [Fact]
+        public void EnumerateUnixOpticalBlockPaths_Null_ReturnsEmpty()
+        {
+            var actual = IOExtensions.EnumerateUnixOpticalBlockPaths(null);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public void EnumerateUnixOpticalBlockPaths_Empty_ReturnsEmpty()
+        {
+            var actual = IOExtensions.EnumerateUnixOpticalBlockPaths(string.Empty);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public void EnumerateUnixOpticalBlockPaths_MissingDirectory_ReturnsEmpty()
+        {
+            string devRoot = "INVALID";
+            var actual = IOExtensions.EnumerateUnixOpticalBlockPaths(devRoot);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public void EnumerateUnixOpticalBlockPaths_OnlyMatchesSrFollowedByDigits()
+        {
+            string devRoot = Path.Combine(Environment.CurrentDirectory, "TestData", "dev");
+            string[] expected = ["sr0", "sr1", "sr15"];
+
+            var actual = IOExtensions.EnumerateUnixOpticalBlockPaths(devRoot);
+
+            var actualNames = new List<string>();
+            foreach (var p in actual)
+            {
+                actualNames.Add(Path.GetFileName(p));
+            }
+
+            actualNames.Sort(StringComparer.Ordinal);
+            Assert.Equal(expected, actualNames);
+        }
+
+        #endregion
+
+        #region EnumerateUnixOpticalGenericPaths
+
+        [Fact]
+        public void EnumerateUnixOpticalGenericPaths_DevRootNull_ReturnsEmpty()
+        {
+            var actual = IOExtensions.EnumerateUnixOpticalGenericPaths(null, "/sys/class/scsi_generic");
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public void EnumerateUnixOpticalGenericPaths_DevRootEmpty_ReturnsEmpty()
+        {
+            var actual = IOExtensions.EnumerateUnixOpticalGenericPaths(string.Empty, "/sys/class/scsi_generic");
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public void EnumerateUnixOpticalGenericPaths_SysBlockRootNull_ReturnsEmpty()
+        {
+            var actual = IOExtensions.EnumerateUnixOpticalGenericPaths("/dev", null);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public void EnumerateUnixOpticalGenericPaths_SysBlockRootEmpty_ReturnsEmpty()
+        {
+            var actual = IOExtensions.EnumerateUnixOpticalGenericPaths("/dev", string.Empty);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public void EnumerateUnixOpticalGenericPaths_MissingDirectory_ReturnsEmpty()
+        {
+            string sysfsScsiGenericRoot = "INVALID";
+            var actual = IOExtensions.EnumerateUnixOpticalGenericPaths("/dev/", sysfsScsiGenericRoot);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public void EnumerateUnixOpticalGenericPaths_OnlyMatchesOpticalSgNodes()
+        {
+            string sysfsScsiGenericRoot = Path.Combine(Environment.CurrentDirectory, "TestData", "sys", "class", "scsi_generic");
+
+            // sg0 - Optical, kept
+            // sg1 - Direct-access disk, skipped
+            // sg2 - Optical (trailing newline), kept
+            // sg3 - Sequential tape, skipped
+            // sg10 - Optical (multi-digit), kept
+            // sga - Name not all-digits, skipped
+            // sgX - Name not all-digits, skipped
+            string[] expected = ["sg0", "sg10", "sg2"];
+
+            var actual = IOExtensions.EnumerateUnixOpticalGenericPaths("/dev", sysfsScsiGenericRoot);
+
+            var actualNames = new List<string>();
+            foreach (var p in actual)
+            {
+                actualNames.Add(Path.GetFileName(p));
+            }
+
+            actualNames.Sort(StringComparer.Ordinal);
+
+            Assert.Equal(expected, actualNames);
+        }
+
+        #endregion
+
+        #region EnumerateUnixUsbFloppyBlockPaths
+
+        [Fact]
+        public void EnumerateUnixUsbFloppyBlockPaths_DevRootNull_ReturnsEmpty()
+        {
+            var actual = IOExtensions.EnumerateUnixUsbFloppyBlockPaths(null, "/sys/block");
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public void EnumerateUnixUsbFloppyBlockPaths_DevRootEmpty_ReturnsEmpty()
+        {
+            var actual = IOExtensions.EnumerateUnixUsbFloppyBlockPaths(string.Empty, "/sys/block");
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public void EnumerateUnixUsbFloppyBlockPaths_SysBlockRootNull_ReturnsEmpty()
+        {
+            var actual = IOExtensions.EnumerateUnixUsbFloppyBlockPaths("/dev", null);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public void EnumerateUnixUsbFloppyBlockPaths_SysBlockRootEmpty_ReturnsEmpty()
+        {
+            var actual = IOExtensions.EnumerateUnixUsbFloppyBlockPaths("/dev", string.Empty);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public void EnumerateUnixUsbFloppyBlockPaths_MissingDirectory_ReturnsEmpty()
+        {
+            string sysBlockRoot = "INVALID";
+            var actual = IOExtensions.EnumerateUnixUsbFloppyBlockPaths("/dev/", sysBlockRoot);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
+        public void EnumerateUnixUsbFloppyBlockPaths_OnlyMatchesRemovableFloppySizedDisks()
+        {
+            string sysBlockRoot = Path.Combine(Environment.CurrentDirectory, "TestData", "sys", "block");
+
+            // nvme0n1 - Not an sd* device, not scanned
+            // sda - Fixed disk of floppy size, not removable, skipped
+            // sdb - USB flash drive, not a floppy size, skipped
+            // sdc - Empty floppy drive (no media), skipped
+            // sdh - USB floppy, 1.44 MB, matched
+            // sdi - USB floppy, 720 KB (trailing newline), matched
+            string[] expected = ["sdh", "sdi"];
+
+            var actual = IOExtensions.EnumerateUnixUsbFloppyBlockPaths(sysBlockRoot, "/dev");
+
+            var actualNames = new List<string>();
+            foreach (var p in actual)
+            {
+                actualNames.Add(Path.GetFileName(p));
+            }
+
+            actualNames.Sort(StringComparer.Ordinal);
+
+            Assert.Equal(expected, actualNames);
         }
 
         #endregion
