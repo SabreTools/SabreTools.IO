@@ -47,7 +47,7 @@ namespace SabreTools.IO.Compression.RVZPack
         /// </summary>
         public void SetSeed(uint[] seed)
         {
-            if (seed == null || seed.Length < SEED_SIZE)
+            if (seed is null || seed.Length < SEED_SIZE)
                 throw new ArgumentException($"Seed must contain at least {SEED_SIZE} uint values.", nameof(seed));
 
             // Reinterpret LE bytes as BE (Dolphin swap32)
@@ -66,7 +66,7 @@ namespace SabreTools.IO.Compression.RVZPack
         /// <remarks>Matches Dolphin: m_buffer[i] = Common::swap32(seed + i * 4).</remarks>
         public void SetSeed(byte[] seedBytes)
         {
-            if (seedBytes == null || seedBytes.Length < SEED_SIZE * 4)
+            if (seedBytes is null || seedBytes.Length < SEED_SIZE * 4)
                 throw new ArgumentException($"Seed must be {SEED_SIZE * 4} bytes.", nameof(seedBytes));
 
             _position = 0;

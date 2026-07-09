@@ -260,7 +260,7 @@ namespace SabreTools.IO.Compression.RVZPack
                     currentOffset += junkBytes;
                 }
 
-                if (junkSeed == null)
+                if (junkSeed is null)
                     break;
             }
 

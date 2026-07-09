@@ -145,7 +145,7 @@ namespace SabreTools.IO.Compression.RVZPack
                 if (start <= discOffset)
                     continue;
 
-                if (best == null || start < best.Value)
+                if (best is null || start < best.Value)
                     best = start;
             }
 
