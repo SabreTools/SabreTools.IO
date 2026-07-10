@@ -8,21 +8,21 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Reverse endianness of each byte
         /// </summary>
-        Bitswap,
+        Bitswap = 0,
 
         /// <summary>
         /// Swap every 1 byte
         /// </summary>
-        Byteswap,
+        Byteswap = 1,
 
         /// <summary>
         /// Swap every 2 bytes
         /// </summary>
-        Wordswap,
+        Wordswap = 2,
 
         /// <summary>
         /// Swap every 2 bytes and bytes within the 2 bytes
         /// </summary>
-        WordByteswap,
+        WordByteswap = 3,
     }
 }

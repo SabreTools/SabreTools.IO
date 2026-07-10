@@ -6,8 +6,8 @@
     public enum LogLevel
     {
         VERBOSE = 0,
-        USER,
-        WARNING,
-        ERROR,
+        USER = 1,
+        WARNING = 2,
+        ERROR = 3,
     }
 }

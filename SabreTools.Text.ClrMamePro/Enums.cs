@@ -5,11 +5,11 @@
     /// </summary>
     public enum CmpRowType
     {
-        None,
-        TopLevel,
-        Standalone,
-        Internal,
-        Comment,
-        EndTopLevel,
+        None = 0,
+        TopLevel = 1,
+        Standalone = 2,
+        Internal = 3,
+        Comment = 4,
+        EndTopLevel = 5,
     }
 }

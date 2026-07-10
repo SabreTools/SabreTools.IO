@@ -17,15 +17,15 @@ namespace SabreTools.Text.ClrMamePro
         /// </summary>
         private enum State
         {
-            Start,
-            Prolog,
-            Element,
-            Attribute,
-            Content,
-            AttrOnly,
-            Epilog,
-            Error,
-            Closed,
+            Start = 0,
+            Prolog = 1,
+            Element = 2,
+            Attribute = 3,
+            Content = 4,
+            AttrOnly = 5,
+            Epilog = 6,
+            Error = 7,
+            Closed = 8,
         }
 
         /// <summary>
@@ -33,14 +33,14 @@ namespace SabreTools.Text.ClrMamePro
         /// </summary>
         private enum Token
         {
-            None,
-            Standalone,
-            StartElement,
-            EndElement,
-            LongEndElement,
-            StartAttribute,
-            EndAttribute,
-            Content,
+            None = 0,
+            Standalone = 1,
+            StartElement = 2,
+            EndElement = 3,
+            LongEndElement = 4,
+            StartAttribute = 5,
+            EndAttribute = 6,
+            Content = 7,
         }
 
         /// <summary>

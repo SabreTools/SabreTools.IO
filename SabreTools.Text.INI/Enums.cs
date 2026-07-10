@@ -5,10 +5,10 @@ namespace SabreTools.Text.INI
     /// </summary>
     public enum RowType
     {
-        None,
-        SectionHeader,
-        KeyValue,
-        Comment,
-        Invalid,
+        None = 0,
+        SectionHeader = 1,
+        KeyValue = 2,
+        Comment = 3,
+        Invalid = 4,
     }
 }
