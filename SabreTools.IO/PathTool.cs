@@ -20,6 +20,18 @@ namespace SabreTools.IO
         }
 
         /// <summary>
+        /// Get the local appdata directory for the current user
+        /// </summary>
+        public static string GetLocalAppDataDirectory()
+        {
+#if NET20 || NET35
+            return Environment.ExpandEnvironmentVariables("%LOCALAPPDATA%");
+#else
+            return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+#endif
+        }
+
+        /// <summary>
         /// Get the runtime directory
         /// </summary>
         public static string GetRuntimeDirectory()
