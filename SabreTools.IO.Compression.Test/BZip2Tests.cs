@@ -1,7 +1,8 @@
 using System;
 using System.IO;
 using System.Text;
-using SabreTools.IO.Compression.BZip2;
+using Nanook.GrindCore;
+using Nanook.GrindCore.BZip2;
 using Xunit;
 
 namespace SabreTools.IO.Compression.Test
@@ -15,7 +16,7 @@ namespace SabreTools.IO.Compression.Test
             Stream input = File.OpenRead(path);
             byte[] output = new byte[1024];
 
-            var bzip = new BZip2InputStream(input);
+            var bzip = new BZip2Stream(input, new CompressionOptions { Type = CompressionType.Decompress });
             int actual = bzip.Read(output, 0, output.Length);
             bzip.Close();
 
@@ -31,7 +32,7 @@ namespace SabreTools.IO.Compression.Test
             byte[] input = File.ReadAllBytes(path);
             var output = new MemoryStream();
 
-            var bzip = new BZip2OutputStream(output, leaveOpen: true);
+            var bzip = new BZip2Stream(output, new CompressionOptions { LeaveOpen = true });
             bzip.Write(input, 0, input.Length);
             bzip.Close();
 
