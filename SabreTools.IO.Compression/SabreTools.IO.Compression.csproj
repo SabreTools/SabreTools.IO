@@ -30,7 +30,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="GrindCore" Version="0.8.0" Condition="!$(TargetFramework.StartsWith(`net2`))" />
+        <PackageReference Include="GrindCore" Version="0.9.0" />
         <PackageReference Include="SabreTools.Hashing" Version="2.0.0" />
     </ItemGroup>
 
