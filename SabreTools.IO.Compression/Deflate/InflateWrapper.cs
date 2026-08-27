@@ -455,8 +455,8 @@ namespace SabreTools.IO.Compression.Deflate
                 // Save the deflate values
                 return new DeflateInfo
                 {
-                    InputSize = ds.TotalIn,
-                    OutputSize = ds.TotalOut,
+                    InputSize = ds.TotalIn, // GrindCore property : Position
+                    OutputSize = ds.TotalOut, // GrindCore property : PositionFullSize
                     Crc32 = BitConverter.ToUInt32(hashBytes, 0),
                 };
             }
