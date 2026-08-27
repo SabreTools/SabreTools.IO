@@ -23,4 +23,4 @@ Relies on functionality found in `SabreTools.Hashing`, `SabreTools.IO`, `SabreTo
 
 | Library Name | Use |
 | --- | --- |
-| [DotNetZip](https://github.com/DinoChiesa/DotNetZip) | BZip2 and DEFLATE implementations; minor edits have been made |
+| [DotNetZip](https://github.com/DinoChiesa/DotNetZip) | DEFLATE implementation; minor edits have been made |
