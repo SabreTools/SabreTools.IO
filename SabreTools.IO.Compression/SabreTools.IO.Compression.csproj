@@ -21,7 +21,7 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <RepositoryUrl>https://github.com/SabreTools/SabreTools.IO</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <PackageTags>compression blast bzip2 deflate lzx mszip quantum szdd zlib</PackageTags>
+        <PackageTags>compression blast deflate lzx mszip quantum szdd</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 

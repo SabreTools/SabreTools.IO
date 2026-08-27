@@ -35,7 +35,6 @@
         <Compile Include="..\SabreTools.Collections.Extensions\*.cs" />
         <Compile Include="..\SabreTools.IO\*.cs" />
         <Compile Include="..\SabreTools.IO.Compression\Blast\*.cs" />
-        <Compile Include="..\SabreTools.IO.Compression\BZip2\*.cs" />
         <Compile Include="..\SabreTools.IO.Compression\Deflate\*.cs" />
         <Compile Include="..\SabreTools.IO.Compression\LZX\*.cs" />
         <Compile Include="..\SabreTools.IO.Compression\MSZIP\*.cs" />
@@ -43,7 +42,6 @@
         <Compile Include="..\SabreTools.IO.Compression\Quantum\*.cs" />
         <Compile Include="..\SabreTools.IO.Compression\RVZPack\*.cs" />
         <Compile Include="..\SabreTools.IO.Compression\SZDD\*.cs" />
-        <Compile Include="..\SabreTools.IO.Compression\zlib\**\*.cs" />
         <Compile Include="..\SabreTools.IO.Extensions\*.cs" Exclude="..\SabreTools.IO.Extensions\ExtensionAttribute.cs" />
         <Compile Include="..\SabreTools.Logging\*.cs" Exclude="..\SabreTools.Logging\ExtensionAttribute.cs" />
         <Compile Include="..\SabreTools.Matching\*.cs" Exclude="..\SabreTools.Matching\ExtensionAttribute.cs" />

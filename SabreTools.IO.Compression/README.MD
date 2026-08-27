@@ -9,7 +9,6 @@ Relies on functionality found in `SabreTools.Hashing`, `SabreTools.IO`, `SabreTo
 | Compression Name | Decompress | Compress | Notes |
 | --- | --- | --- | --- |
 | Blast | Yes | No | |
-| BZip2 | Yes | Yes | Sourced from DotNetZip |
 | Deflate | Yes | Yes | Sourced from DotNetZip |
 | LZ | Yes | No | KWAJ, QBasic 4.5, and SZDD variants; KWAJ incomplete |
 | LZX | No | No | |
@@ -25,4 +24,3 @@ Relies on functionality found in `SabreTools.Hashing`, `SabreTools.IO`, `SabreTo
 | Library Name | Use |
 | --- | --- |
 | [DotNetZip](https://github.com/DinoChiesa/DotNetZip) | BZip2 and DEFLATE implementations; minor edits have been made |
-| [ZLibPort](https://github.com/Nanook/zlib-C-To-CSharp-Port) | Adds zlib code for internal and external use; minor edits have been made |
