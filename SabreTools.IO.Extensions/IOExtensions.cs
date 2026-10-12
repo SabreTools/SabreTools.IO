@@ -949,6 +949,25 @@ namespace SabreTools.IO.Extensions
         #region Unix
 
         /// <summary>
+        /// sysfs block-device name prefixes that the fixed-drive enumerator does not surface:
+        /// loopback images, ramdisks, device-mapper and software RAID virtual devices, network
+        /// block devices, ZFS volumes, and the floppy and optical drives (each surfaced
+        /// separately by its own enumerator rather than as a fixed or removable disk).
+        /// </summary>
+        private static readonly string[] _excludedUnixBlockPrefixes =
+        [
+            "dm-",  // device-mapper (LVM/LUKS, etc.) virtual devices
+            "fd",   // floppy drive (surfaced separately by the floppy enumerator)
+            "loop", // loopback-mounted image
+            "md",   // software RAID (mdadm)
+            "nbd",  // network block device
+            "ram",  // ramdisk
+            "sr",   // optical drive (surfaced separately by the optical enumerator)
+            "zd",   // ZFS volume (zvol)
+            "zram", // compressed ramdisk
+        ];
+
+        /// <summary>
         /// Floppy media sizes in bytes for the standard 5.25" and 3.5" PC formats
         /// (360 KB, 720 KB, 1.2 MB, 1.44 MB, 2.88 MB). A removable SCSI disk reporting one of
         /// these exact capacities is a USB floppy with media inserted; no other removable
@@ -1104,52 +1123,23 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
-        /// Check that a device node name is the given prefix followed by one or more digits
-        /// (e.g. "sr0", "sg12"), rejecting names with trailing or embedded non-digit characters.
+        /// Check whether a sysfs block-device name is a virtual or non-target device that
+        /// should not be surfaced as a dump target.
         /// </summary>
-        /// <param name="name">Device node name to check</param>
-        /// <param name="prefix">Required leading text (e.g. "sr", "sg")</param>
-        /// <returns>True when the name is the prefix followed only by digits</returns>
-        private static bool HasDeviceIndexSuffix(string name, string prefix)
+        /// <param name="name">Block-device name (e.g. "sda", "loop0")</param>
+        /// <returns>True when the device should be skipped</returns>
+        public static bool IsExcludedUnixBlockDevice(string name)
         {
-            // If the prefix is longer than the name
-            if (name.Length <= prefix.Length)
-                return false;
+            if (string.IsNullOrEmpty(name))
+                return true;
 
-            // If the prefix is invalid for the provided name
-            if (!name.StartsWith(prefix, StringComparison.Ordinal))
-                return false;
-
-            // Check that all following characters are numeric
-            for (int i = prefix.Length; i < name.Length; i++)
+            foreach (var prefix in _excludedUnixBlockPrefixes)
             {
-                if (!char.IsDigit(name[i]))
-                    return false;
+                if (name.StartsWith(prefix, StringComparison.Ordinal))
+                    return true;
             }
 
-            return true;
-        }
-
-        /// <summary>
-        /// Read the sysfs "removable" flag for a block device
-        /// </summary>
-        /// <param name="sysBlockEntry">Path to the device directory under the sysfs block root</param>
-        /// <returns>True when the device reports itself as removable, false otherwise</returns>
-        private static bool ReadUnixRemovableFlag(string sysBlockEntry)
-        {
-            string removablePath = Path.Combine(sysBlockEntry, "removable");
-            try
-            {
-                if (!File.Exists(removablePath))
-                    return false;
-
-                string removableString = File.ReadAllText(removablePath).Trim();
-                return removableString == "1";
-            }
-            catch
-            {
-                return false;
-            }
+            return false;
         }
 
         /// <summary>
@@ -1157,7 +1147,7 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         /// <param name="sysBlockEntry">Path to the device directory under the sysfs block root</param>
         /// <returns>The device size in bytes, 0 on error</returns>
-        private static long ReadUnixBlockDeviceSize(string sysBlockEntry)
+        public static long ReadUnixBlockDeviceSize(string sysBlockEntry)
         {
             string sizePath = Path.Combine(sysBlockEntry, "size");
             try
@@ -1182,7 +1172,7 @@ namespace SabreTools.IO.Extensions
         /// </summary>
         /// <param name="sysGenericEntry">Path to the device directory under the sysfs block root</param>
         /// <returns>The device size in bytes, 0 on error</returns>
-        private static int ReadUnixBlockDeviceType(string sysGenericEntry)
+        public static int ReadUnixBlockDeviceType(string sysGenericEntry)
         {
             string typePath = Path.Combine(Path.Combine(sysGenericEntry, "device"), "type");
             try
@@ -1200,6 +1190,55 @@ namespace SabreTools.IO.Extensions
             }
 
             return 0;
+        }
+
+        /// <summary>
+        /// Read the sysfs "removable" flag for a block device
+        /// </summary>
+        /// <param name="sysBlockEntry">Path to the device directory under the sysfs block root</param>
+        /// <returns>True when the device reports itself as removable, false otherwise</returns>
+        public static bool ReadUnixRemovableFlag(string sysBlockEntry)
+        {
+            string removablePath = Path.Combine(sysBlockEntry, "removable");
+            try
+            {
+                if (!File.Exists(removablePath))
+                    return false;
+
+                string removableString = File.ReadAllText(removablePath).Trim();
+                return removableString == "1";
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Check that a device node name is the given prefix followed by one or more digits
+        /// (e.g. "sr0", "sg12"), rejecting names with trailing or embedded non-digit characters.
+        /// </summary>
+        /// <param name="name">Device node name to check</param>
+        /// <param name="prefix">Required leading text (e.g. "sr", "sg")</param>
+        /// <returns>True when the name is the prefix followed only by digits</returns>
+        private static bool HasDeviceIndexSuffix(string name, string prefix)
+        {
+            // If the prefix is longer than the name
+            if (name.Length <= prefix.Length)
+                return false;
+
+            // If the prefix is invalid for the provided name
+            if (!name.StartsWith(prefix, StringComparison.Ordinal))
+                return false;
+
+            // Check that all following characters are numeric
+            for (int i = prefix.Length; i < name.Length; i++)
+            {
+                if (!char.IsDigit(name[i]))
+                    return false;
+            }
+
+            return true;
         }
 
         #endregion
