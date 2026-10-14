@@ -71,6 +71,31 @@ namespace SabreTools.Numerics.Extensions.Test
         }
 
         [Fact]
+        public void ReadBytesZeroLengthAtEndTest()
+        {
+            int offset = _bytes.Length;
+            byte[] read = _bytes.ReadBytes(ref offset, 0);
+            Assert.Empty(read);
+            Assert.Equal(_bytes.Length, offset);
+        }
+
+        [Fact]
+        public void ReadBytesZeroLengthEmptyArrayTest()
+        {
+            int offset = 0;
+            byte[] read = Array.Empty<byte>().ReadBytes(ref offset, 0);
+            Assert.Empty(read);
+            Assert.Equal(0, offset);
+        }
+
+        [Fact]
+        public void ReadBytesPastEndTest()
+        {
+            int offset = _bytes.Length;
+            Assert.Throws<ArgumentOutOfRangeException>(() => _bytes.ReadBytes(ref offset, 1));
+        }
+
+        [Fact]
         public void ReadSByteTest()
         {
             int offset = 0;
@@ -1440,6 +1465,15 @@ namespace SabreTools.Numerics.Extensions.Test
             int offset = 0, length = 4;
             bool actual = Array.Empty<byte>().TryReadBytes(ref offset, length, out byte[] read);
             Assert.False(actual);
+            Assert.Empty(read);
+        }
+
+        [Fact]
+        public void TryReadBytesZeroLengthAtEndTest()
+        {
+            int offset = _bytes.Length;
+            bool actual = _bytes.TryReadBytes(ref offset, 0, out byte[] read);
+            Assert.True(actual);
             Assert.Empty(read);
         }
 
