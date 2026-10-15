@@ -782,10 +782,6 @@ namespace SabreTools.Numerics.Extensions
         /// </exception>
         private static byte[] ReadExactlyToBuffer(byte[] content, ref int offset, int length)
         {
-            // If we have an invalid offset
-            if (offset < 0 || offset >= content.Length)
-                throw new ArgumentOutOfRangeException($"{nameof(offset)} must be between 0 and {content.Length}, {offset} provided");
-
             // If we have an invalid length
             if (length < 0)
                 throw new ArgumentOutOfRangeException($"{nameof(length)} must be 0 or a positive value, {length} requested");
@@ -793,6 +789,10 @@ namespace SabreTools.Numerics.Extensions
             // Handle the 0-byte case
             if (length == 0)
                 return [];
+
+            // If we have an invalid offset
+            if (offset < 0 || offset >= content.Length)
+                throw new ArgumentOutOfRangeException($"{nameof(offset)} must be between 0 and {content.Length}, {offset} provided");
 
             // If there are not enough bytes
             if (offset + length > content.Length)
