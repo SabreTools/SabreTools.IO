@@ -38,17 +38,9 @@ namespace SabreTools.Text.Extensions.Test
         [InlineData("fr-FR")]
         public void ConvertToDoubleTest_CurrentCultureIgnored(string culture)
         {
-            var original = CultureInfo.CurrentCulture;
-            try
-            {
-                CultureInfo.CurrentCulture = new CultureInfo(culture);
-                double? actual = NumberHelper.ConvertToDouble("59.940000");
-                Assert.Equal(59.94, actual);
-            }
-            finally
-            {
-                CultureInfo.CurrentCulture = original;
-            }
+            CultureInfo.CurrentCulture = new CultureInfo(culture);
+            double? actual = NumberHelper.ConvertToDouble("59.940000");
+            Assert.Equal(59.94, actual);
         }
 
         #endregion
