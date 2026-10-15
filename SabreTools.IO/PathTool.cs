@@ -8,6 +8,18 @@ namespace SabreTools.IO
     public static class PathTool
     {
         /// <summary>
+        /// Get the appdata directory
+        /// </summary>
+        public static string GetAppDataDirectory()
+        {
+#if NET20 || NET35
+            return Environment.ExpandEnvironmentVariables("%APPDATA%");
+#else
+            return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+#endif
+        }
+
+        /// <summary>
         /// Get the home directory for the current user
         /// </summary>
         public static string GetHomeDirectory()
