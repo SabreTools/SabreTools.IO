@@ -64,6 +64,46 @@ namespace SabreTools.Text.Extensions.Test
 
         #endregion
 
+        #region ReadPrefixedString
+
+        [Fact]
+        public void ReadPrefixedAnsiStringTest()
+        {
+            int offset = 0;
+            byte[] bytes = [0x03, 0x41, 0x42, 0x43];
+            string? actual = bytes.ReadPrefixedAnsiString(ref offset);
+            Assert.Equal("ABC", actual);
+        }
+
+        [Fact]
+        public void ReadPrefixedLatin1StringTest()
+        {
+            int offset = 0;
+            byte[] bytes = [0x03, 0x41, 0x42, 0x43];
+            string? actual = bytes.ReadPrefixedLatin1String(ref offset);
+            Assert.Equal("ABC", actual);
+        }
+
+        [Fact]
+        public void ReadPrefixedUnicodeStringTest()
+        {
+            int offset = 0;
+            byte[] bytes = [0x03, 0x00, 0x41, 0x00, 0x42, 0x00, 0x43, 0x00];
+            string? actual = bytes.ReadPrefixedUnicodeString(ref offset);
+            Assert.Equal("ABC", actual);
+        }
+
+        [Fact]
+        public void ReadPrefixedBigEndianUnicodeStringTest()
+        {
+            int offset = 0;
+            byte[] bytes = [0x00, 0x03, 0x00, 0x41, 0x00, 0x42, 0x00, 0x43];
+            string? actual = bytes.ReadPrefixedBigEndianUnicodeString(ref offset);
+            Assert.Equal("ABC", actual);
+        }
+
+        #endregion
+
         #region ReadStringsFrom
 
         [Fact]
@@ -443,6 +483,5 @@ namespace SabreTools.Text.Extensions.Test
         }
 
         #endregion
-
     }
 }

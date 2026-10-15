@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using SabreTools.Numerics.Extensions;
 
 namespace SabreTools.Text.Extensions
 {
@@ -136,12 +137,30 @@ namespace SabreTools.Text.Extensions
                 return null;
 
             byte size = reader.ReadByte();
-            if (reader.BaseStream.Position + size >= reader.BaseStream.Length)
+            if (reader.BaseStream.Position + size > reader.BaseStream.Length)
                 return null;
 
             byte[] buffer = reader.ReadBytes(size);
             return Encoding.ASCII.GetString(buffer);
         }
+
+#if NET5_0_OR_GREATER
+        /// <summary>
+        /// Read a byte-prefixed Latin1 string from the underlying stream
+        /// </summary>
+        public static string? ReadPrefixedLatin1String(this BinaryReader reader)
+        {
+            if (reader.BaseStream.Position >= reader.BaseStream.Length)
+                return null;
+
+            byte size = reader.ReadByte();
+            if (reader.BaseStream.Position + size > reader.BaseStream.Length)
+                return null;
+
+            byte[] buffer = reader.ReadBytes(size);
+            return Encoding.Latin1.GetString(buffer);
+        }
+#endif
 
         /// <summary>
         /// Read a ushort-prefixed Unicode string from the underlying stream
@@ -151,8 +170,8 @@ namespace SabreTools.Text.Extensions
             if (reader.BaseStream.Position >= reader.BaseStream.Length)
                 return null;
 
-            ushort size = reader.ReadUInt16();
-            if (reader.BaseStream.Position + (size * 2) >= reader.BaseStream.Length)
+            ushort size = reader.ReadUInt16LittleEndian();
+            if (reader.BaseStream.Position + (size * 2) > reader.BaseStream.Length)
                 return null;
 
             byte[] buffer = reader.ReadBytes(size * 2);
@@ -167,8 +186,8 @@ namespace SabreTools.Text.Extensions
             if (reader.BaseStream.Position >= reader.BaseStream.Length)
                 return null;
 
-            ushort size = reader.ReadUInt16();
-            if (reader.BaseStream.Position + (size * 2) >= reader.BaseStream.Length)
+            ushort size = reader.ReadUInt16BigEndian();
+            if (reader.BaseStream.Position + (size * 2) > reader.BaseStream.Length)
                 return null;
 
             byte[] buffer = reader.ReadBytes(size * 2);

@@ -137,7 +137,7 @@ namespace SabreTools.Text.Extensions
                 return null;
 
             byte size = stream.ReadByteValue();
-            if (stream.Position + size >= stream.Length)
+            if (stream.Position + size > stream.Length)
                 return null;
 
             byte[] buffer = stream.ReadBytes(size);
@@ -154,7 +154,7 @@ namespace SabreTools.Text.Extensions
                 return null;
 
             byte size = stream.ReadByteValue();
-            if (stream.Position + size >= stream.Length)
+            if (stream.Position + size > stream.Length)
                 return null;
 
             byte[] buffer = stream.ReadBytes(size);
@@ -170,8 +170,8 @@ namespace SabreTools.Text.Extensions
             if (stream.Position >= stream.Length)
                 return null;
 
-            ushort size = stream.ReadUInt16();
-            if (stream.Position + (size * 2) >= stream.Length)
+            ushort size = stream.ReadUInt16LittleEndian();
+            if (stream.Position + (size * 2) > stream.Length)
                 return null;
 
             byte[] buffer = stream.ReadBytes(size * 2);
@@ -186,8 +186,8 @@ namespace SabreTools.Text.Extensions
             if (stream.Position >= stream.Length)
                 return null;
 
-            ushort size = stream.ReadUInt16();
-            if (stream.Position + (size * 2) >= stream.Length)
+            ushort size = stream.ReadUInt16BigEndian();
+            if (stream.Position + (size * 2) > stream.Length)
                 return null;
 
             byte[] buffer = stream.ReadBytes(size * 2);

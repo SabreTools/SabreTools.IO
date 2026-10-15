@@ -137,7 +137,7 @@ namespace SabreTools.Text.Extensions
                 return null;
 
             byte size = content.ReadByteValue(ref offset);
-            if (offset + size >= content.Length)
+            if (offset + size > content.Length)
                 return null;
 
             byte[] buffer = content.ReadBytes(ref offset, size);
@@ -154,7 +154,7 @@ namespace SabreTools.Text.Extensions
                 return null;
 
             byte size = content.ReadByteValue(ref offset);
-            if (offset + size >= content.Length)
+            if (offset + size > content.Length)
                 return null;
 
             byte[] buffer = content.ReadBytes(ref offset, size);
@@ -170,8 +170,8 @@ namespace SabreTools.Text.Extensions
             if (offset >= content.Length)
                 return null;
 
-            ushort size = content.ReadUInt16(ref offset);
-            if (offset + (size * 2) >= content.Length)
+            ushort size = content.ReadUInt16LittleEndian(ref offset);
+            if (offset + (size * 2) > content.Length)
                 return null;
 
             byte[] buffer = content.ReadBytes(ref offset, size * 2);
@@ -186,8 +186,8 @@ namespace SabreTools.Text.Extensions
             if (offset >= content.Length)
                 return null;
 
-            ushort size = content.ReadUInt16(ref offset);
-            if (offset + (size * 2) >= content.Length)
+            ushort size = content.ReadUInt16BigEndian(ref offset);
+            if (offset + (size * 2) > content.Length)
                 return null;
 
             byte[] buffer = content.ReadBytes(ref offset, size * 2);
