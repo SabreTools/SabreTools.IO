@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using Xunit;
 
 namespace SabreTools.Text.Extensions.Test
@@ -29,6 +30,25 @@ namespace SabreTools.Text.Extensions.Test
             Assert.NotNull(actual);
             double variance = Math.Abs(expected - actual.Value);
             Assert.True(variance < 0.1f);
+        }
+
+        [Theory]
+        [InlineData("en-US")]
+        [InlineData("de-DE")]
+        [InlineData("fr-FR")]
+        public void ConvertToDoubleTest_CurrentCultureIgnored(string culture)
+        {
+            var original = CultureInfo.CurrentCulture;
+            try
+            {
+                CultureInfo.CurrentCulture = new CultureInfo(culture);
+                double? actual = NumberHelper.ConvertToDouble("59.940000");
+                Assert.Equal(59.94, actual);
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = original;
+            }
         }
 
         #endregion
