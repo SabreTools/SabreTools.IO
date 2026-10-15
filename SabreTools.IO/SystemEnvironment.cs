@@ -1,7 +1,7 @@
 #if NET5_0_OR_GREATER
 using System;
 #endif
-#if NETCOREAPP3_1
+#if NETCOREAPP3_1 || NETSTANDARD
 using System.Runtime.InteropServices;
 #endif
 
@@ -20,7 +20,7 @@ namespace SabreTools.IO
 #if NETFRAMEWORK
             // .NET Framework can never be Linux
             return false;
-#elif NETCOREAPP3_1
+#elif NETCOREAPP3_1 || NETSTANDARD
             return RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
 #else
             return OperatingSystem.IsLinux();
@@ -35,7 +35,7 @@ namespace SabreTools.IO
 #if NETFRAMEWORK
             // .NET Framework can never be MacOS
             return false;
-#elif NETCOREAPP3_1
+#elif NETCOREAPP3_1 || NETSTANDARD
             return RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 #else
             return OperatingSystem.IsMacOS();
@@ -50,7 +50,7 @@ namespace SabreTools.IO
 #if NETFRAMEWORK
             // .NET Framework is always Windows
             return true;
-#elif NETCOREAPP3_1
+#elif NETCOREAPP3_1 || NETSTANDARD
             return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 #else
             return OperatingSystem.IsWindows();
