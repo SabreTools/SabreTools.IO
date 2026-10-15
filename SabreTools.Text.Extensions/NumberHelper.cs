@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 
 namespace SabreTools.Text.Extensions
 {
@@ -47,7 +48,7 @@ namespace SabreTools.Text.Extensions
             if (string.IsNullOrEmpty(numeric))
                 return null;
 
-            if (!double.TryParse(numeric, out double doubleValue))
+            if (!double.TryParse(numeric, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out double doubleValue))
                 return null;
 
             return doubleValue;
