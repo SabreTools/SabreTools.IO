@@ -164,6 +164,20 @@ namespace SabreTools.IO
         #region Stream Implementations
 
         /// <inheritdoc/>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                foreach (var stream in _streams)
+                {
+                    stream.Dispose();
+                }
+            }
+
+            base.Dispose(disposing);
+        }
+
+        /// <inheritdoc/>
         public override void Flush()
             => throw new NotImplementedException();
 
