@@ -158,6 +158,24 @@ namespace SabreTools.IO.Test
 
         #endregion
 
+        #region Dispose
+
+        [Fact]
+        public void Dispose_DisposesStreams()
+        {
+            var first = new MemoryStream(new byte[128]);
+            var second = new MemoryStream(new byte[128]);
+            var stream = new ReadOnlyCompositeStream(first);
+            stream.AddStream(second);
+
+            stream.Dispose();
+
+            Assert.False(first.CanRead);
+            Assert.False(second.CanRead);
+        }
+
+        #endregion
+
         #region Unimplemented
 
         [Fact]
