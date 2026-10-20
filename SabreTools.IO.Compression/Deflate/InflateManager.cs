@@ -383,9 +383,9 @@ namespace SabreTools.IO.Compression.Deflate
 
             _codec._Adler32 = Adler.Adler32(0, null, 0, 0);
 
-            if (length >= (1 << wbits))
+            if (length > (1 << wbits))
             {
-                length = (1 << wbits) - 1;
+                length = 1 << wbits;
                 index = dictionary.Length - length;
             }
             blocks.SetDictionary(dictionary, index, length);

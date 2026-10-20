@@ -74,5 +74,38 @@ namespace SabreTools.IO.Compression.Test
                 Assert.Equal(0x41, data[i]);
             }
         }
+
+        [Fact]
+        public void DecompressorFullHistoryTest()
+        {
+            // First block: 32 KiB of data in a stored deflate block
+            byte[] first = new byte[7 + 0x8000];
+            first[0] = 0x43;
+            first[1] = 0x4B;
+            first[2] = 0x01;
+            first[3] = 0x00;
+            first[4] = 0x80;
+            first[5] = 0xFF;
+            first[6] = 0x7F;
+            for (int i = 0; i < 0x8000; i++)
+            {
+                first[7 + i] = (byte)((i % 251) + 1);
+            }
+
+            // Second block: one match of 258 bytes at a distance of 32768,
+            // which starts with the first byte of the first block
+            byte[] second = [0x43, 0x4B, 0x1B, 0xBD, 0xFF, 0x1F, 0x00];
+
+            var output = new MemoryStream();
+            var decompressor = Decompressor.Create();
+            decompressor.CopyTo(first, output);
+            decompressor.CopyTo(second, output);
+
+            byte[] data = output.ToArray();
+            for (int i = 0; i < 258; i++)
+            {
+                Assert.Equal(data[i], data[0x8000 + i]);
+            }
+        }
     }
 }

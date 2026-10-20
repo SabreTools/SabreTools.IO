@@ -671,7 +671,10 @@ namespace SabreTools.IO.Compression.Deflate
         internal void SetDictionary(byte[] d, int start, int n)
         {
             Array.Copy(d, start, window, 0, n);
-            readAt = writeAt = n;
+
+            // a dictionary that fills the window wraps around to its start,
+            // so that a distance of the full window size can still be copied
+            readAt = writeAt = n == end ? 0 : n;
         }
 
         // Returns true if inflate is currently at the end of a block generated
