@@ -192,6 +192,11 @@ namespace SabreTools.IO.Compression.Deflate
                                 r = ZlibConstants.Z_OK;
                             else
                             {
+                                // the input can end with a code that is shorter than the table bits
+                                tindex = (tree_index + (b & InternalInflateConstants.InflateMask[k])) * 3;
+                                if (tree[tindex + 1] <= k)
+                                    break;
+
                                 blocks.bitb = b; blocks.bitk = k;
                                 z.AvailableBytesIn = n;
                                 z.TotalBytesIn += p - z.NextIn;
@@ -289,6 +294,11 @@ namespace SabreTools.IO.Compression.Deflate
                                 r = ZlibConstants.Z_OK;
                             else
                             {
+                                // the input can end with a code that is shorter than the table bits
+                                tindex = (tree_index + (b & InternalInflateConstants.InflateMask[k])) * 3;
+                                if (tree[tindex + 1] <= k)
+                                    break;
+
                                 blocks.bitb = b; blocks.bitk = k;
                                 z.AvailableBytesIn = n; z.TotalBytesIn += p - z.NextIn; z.NextIn = p;
                                 blocks.writeAt = q;
