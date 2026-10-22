@@ -555,12 +555,53 @@ namespace SabreTools.IO.Extensions
         {
             try
             {
+                // Outside of Windows, linked directories are not followed
+                if (searchOption == SearchOption.AllDirectories && !SystemEnvironment.IsWindows())
+                    return GetFilesWithoutLinkedDirectories(path, searchPattern);
+
                 return Directory.GetFiles(path, searchPattern, searchOption);
             }
             catch
             {
                 return [];
             }
+        }
+
+        /// <summary>
+        /// Get the files of a directory and all subdirectories without following linked directories
+        /// </summary>
+        /// <param name="path">Directory to search</param>
+        /// <param name="searchPattern">Pattern to match the file names against</param>
+        /// <returns>The same files in the same order as Directory.GetFiles, minus those under linked directories</returns>
+        /// <remarks>
+        /// A linked directory that points back into the tree, such as a UDF symlink whose
+        /// target reads as empty on Linux, makes Directory.GetFiles recurse without end
+        /// </remarks>
+        private static string[] GetFilesWithoutLinkedDirectories(string path, string searchPattern)
+        {
+            // A pattern with a directory part keeps the default behavior
+            if (!string.IsNullOrEmpty(Path.GetDirectoryName(searchPattern)))
+                return Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories);
+
+            List<string> files = [];
+            var pending = new Queue<string>();
+            pending.Enqueue(path);
+            while (pending.Count > 0)
+            {
+                string directory = pending.Dequeue();
+                foreach (string file in Directory.GetFiles(directory, searchPattern))
+                {
+                    files.Add(file);
+                }
+
+                foreach (string subdirectory in Directory.GetDirectories(directory))
+                {
+                    if ((File.GetAttributes(subdirectory) & FileAttributes.ReparsePoint) == 0)
+                        pending.Enqueue(subdirectory);
+                }
+            }
+
+            return [.. files];
         }
 
         /// <inheritdoc cref="Directory.GetFileSystemEntries(string)"/>

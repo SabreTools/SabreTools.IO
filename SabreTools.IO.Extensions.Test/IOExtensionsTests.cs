@@ -538,6 +538,47 @@ namespace SabreTools.IO.Extensions.Test
             Assert.NotEmpty(files);
         }
 
+        [Fact]
+        public void SafeGetFiles_ValidDirectory_PatternTopDirectoryOnly()
+        {
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
+            var files = dir.SafeGetFiles("*", SearchOption.TopDirectoryOnly);
+            Assert.Equal(11, files.Length);
+        }
+
+        [Fact]
+        public void SafeGetFiles_ValidDirectory_PatternWithDirectory()
+        {
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            var files = dir.SafeGetFiles(Path.Combine("Path", "Subdirectory", "*"), SearchOption.AllDirectories);
+            Assert.Single(files);
+        }
+
+        [Fact]
+        public void SafeGetFiles_LinkedDirectory_NotFollowed()
+        {
+            // Linked directories are only skipped outside of Windows
+            if (SystemEnvironment.IsWindows())
+                return;
+
+            string root = Path.Combine(Environment.CurrentDirectory, Guid.NewGuid().ToString());
+            string subdir = Path.Combine(root, "Subdirectory");
+            Directory.CreateDirectory(subdir);
+            File.WriteAllBytes(Path.Combine(root, "file.bin"), []);
+            File.WriteAllBytes(Path.Combine(subdir, "file.bin"), []);
+            File.CreateSymbolicLink(Path.Combine(subdir, "link.bin"), "file.bin");
+            Directory.CreateSymbolicLink(Path.Combine(subdir, "self"), ".");
+            try
+            {
+                var files = root.SafeGetFiles("*", SearchOption.AllDirectories);
+                Assert.Equal(3, files.Length);
+            }
+            finally
+            {
+                Directory.Delete(root, recursive: true);
+            }
+        }
+
         #endregion
 
         #region SafeGetFileSystemEntries
