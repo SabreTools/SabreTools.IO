@@ -513,6 +513,10 @@ namespace SabreTools.IO.Extensions
         {
             try
             {
+                // Outside of Windows, linked directories are not followed
+                if (SkipLinkedDirectories(searchPattern, searchOption))
+                    return [.. WalkWithoutLinkedDirectories(path, searchPattern, Directory.GetDirectories, Directory.GetDirectories)];
+
                 return Directory.GetDirectories(path, searchPattern, searchOption);
             }
             catch
@@ -556,8 +560,8 @@ namespace SabreTools.IO.Extensions
             try
             {
                 // Outside of Windows, linked directories are not followed
-                if (searchOption == SearchOption.AllDirectories && !SystemEnvironment.IsWindows())
-                    return GetFilesWithoutLinkedDirectories(path, searchPattern);
+                if (SkipLinkedDirectories(searchPattern, searchOption))
+                    return [.. WalkWithoutLinkedDirectories(path, searchPattern, Directory.GetFiles, Directory.GetDirectories)];
 
                 return Directory.GetFiles(path, searchPattern, searchOption);
             }
@@ -565,43 +569,6 @@ namespace SabreTools.IO.Extensions
             {
                 return [];
             }
-        }
-
-        /// <summary>
-        /// Get the files of a directory and all subdirectories without following linked directories
-        /// </summary>
-        /// <param name="path">Directory to search</param>
-        /// <param name="searchPattern">Pattern to match the file names against</param>
-        /// <returns>The same files in the same order as Directory.GetFiles, minus those under linked directories</returns>
-        /// <remarks>
-        /// A linked directory that points back into the tree, such as a UDF symlink whose
-        /// target reads as empty on Linux, makes Directory.GetFiles recurse without end
-        /// </remarks>
-        private static string[] GetFilesWithoutLinkedDirectories(string path, string searchPattern)
-        {
-            // A pattern with a directory part keeps the default behavior
-            if (!string.IsNullOrEmpty(Path.GetDirectoryName(searchPattern)))
-                return Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories);
-
-            List<string> files = [];
-            var pending = new Queue<string>();
-            pending.Enqueue(path);
-            while (pending.Count > 0)
-            {
-                string directory = pending.Dequeue();
-                foreach (string file in Directory.GetFiles(directory, searchPattern))
-                {
-                    files.Add(file);
-                }
-
-                foreach (string subdirectory in Directory.GetDirectories(directory))
-                {
-                    if ((File.GetAttributes(subdirectory) & FileAttributes.ReparsePoint) == 0)
-                        pending.Enqueue(subdirectory);
-                }
-            }
-
-            return [.. files];
         }
 
         /// <inheritdoc cref="Directory.GetFileSystemEntries(string)"/>
@@ -726,6 +693,10 @@ namespace SabreTools.IO.Extensions
         {
             try
             {
+                // Outside of Windows, linked directories are not followed
+                if (SkipLinkedDirectories(searchPattern, searchOption))
+                    return WalkWithoutLinkedDirectories(path, searchPattern, SafeEnumerateDirectories, SafeEnumerateDirectories);
+
                 var enumerable = Directory.EnumerateDirectories(path, searchPattern, searchOption);
                 return enumerable.SafeEnumerate();
             }
@@ -768,6 +739,10 @@ namespace SabreTools.IO.Extensions
         {
             try
             {
+                // Outside of Windows, linked directories are not followed
+                if (SkipLinkedDirectories(searchPattern, searchOption))
+                    return WalkWithoutLinkedDirectories(path, searchPattern, SafeEnumerateFiles, SafeEnumerateDirectories);
+
                 var enumerable = Directory.EnumerateFiles(path, searchPattern, searchOption);
                 return enumerable.SafeEnumerate();
             }
@@ -810,6 +785,10 @@ namespace SabreTools.IO.Extensions
         {
             try
             {
+                // Outside of Windows, linked directories are not followed
+                if (SkipLinkedDirectories(searchPattern, searchOption))
+                    return WalkWithoutLinkedDirectories(path, searchPattern, SafeEnumerateFileSystemEntries, SafeEnumerateDirectories);
+
                 var enumerable = Directory.EnumerateFileSystemEntries(path, searchPattern, searchOption);
                 return enumerable.SafeEnumerate();
             }
@@ -859,6 +838,10 @@ namespace SabreTools.IO.Extensions
         {
             try
             {
+                // Outside of Windows, linked directories are not followed
+                if (SkipLinkedDirectories(searchPattern, searchOption))
+                    return WalkWithoutLinkedDirectories(path, searchPattern, SafeEnumerateDirectories, SafeEnumerateDirectories);
+
                 var enumerationOptions = FromSearchOption(searchOption);
                 enumerationOptions.IgnoreInaccessible = true;
                 var enumerable = Directory.EnumerateDirectories(path, searchPattern, enumerationOptions);
@@ -910,6 +893,10 @@ namespace SabreTools.IO.Extensions
         {
             try
             {
+                // Outside of Windows, linked directories are not followed
+                if (SkipLinkedDirectories(searchPattern, searchOption))
+                    return WalkWithoutLinkedDirectories(path, searchPattern, SafeEnumerateFiles, SafeEnumerateDirectories);
+
                 var enumerationOptions = FromSearchOption(searchOption);
                 enumerationOptions.IgnoreInaccessible = true;
                 var enumerable = Directory.EnumerateFiles(path, searchPattern, enumerationOptions);
@@ -961,6 +948,10 @@ namespace SabreTools.IO.Extensions
         {
             try
             {
+                // Outside of Windows, linked directories are not followed
+                if (SkipLinkedDirectories(searchPattern, searchOption))
+                    return WalkWithoutLinkedDirectories(path, searchPattern, SafeEnumerateFileSystemEntries, SafeEnumerateDirectories);
+
                 var enumerationOptions = FromSearchOption(searchOption);
                 enumerationOptions.IgnoreInaccessible = true;
                 var enumerable = Directory.EnumerateFileSystemEntries(path, searchPattern, enumerationOptions);
@@ -984,6 +975,78 @@ namespace SabreTools.IO.Extensions
                 : new EnumerationOptions { MatchType = MatchType.Win32, AttributesToSkip = 0, IgnoreInaccessible = false };
         }
 #endif
+
+        /// <summary>
+        /// Lists the entries of one directory that match a pattern
+        /// </summary>
+        private delegate IEnumerable<string> DirectoryListing(string directory, string searchPattern);
+
+        /// <summary>
+        /// Indicates if a path is a link
+        /// </summary>
+        /// <param name="path">Path to check</param>
+        /// <returns>True if the path carries FileAttributes.ReparsePoint, false otherwise</returns>
+        /// <remarks>
+        /// Returns false if the attributes cannot be read, such as below a directory without
+        /// execute permission, so the directory is entered and fails like in the recursive search
+        /// </remarks>
+        private static bool IsLink(string path)
+        {
+            try
+            {
+                return (File.GetAttributes(path) & FileAttributes.ReparsePoint) != 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Indicates if a search skips linked directories instead of following them
+        /// </summary>
+        /// <param name="searchPattern">Pattern to match the entry names against</param>
+        /// <param name="searchOption">Whether to search the top directory only or all subdirectories</param>
+        /// <returns>True outside of Windows when all subdirectories are searched, false otherwise</returns>
+        /// <remarks>A pattern with a directory part keeps the default behavior</remarks>
+        private static bool SkipLinkedDirectories(string searchPattern, SearchOption searchOption)
+        {
+            return searchOption == SearchOption.AllDirectories
+                && !SystemEnvironment.IsWindows()
+                && string.IsNullOrEmpty(Path.GetDirectoryName(searchPattern));
+        }
+
+        /// <summary>
+        /// Walk a directory and all subdirectories without following linked directories
+        /// </summary>
+        /// <param name="path">Directory to search</param>
+        /// <param name="searchPattern">Pattern to match the entry names against</param>
+        /// <param name="getEntries">Lists the matching entries of one directory</param>
+        /// <param name="getDirectories">Lists the subdirectories of one directory</param>
+        /// <returns>The same entries in the same order as the recursive search, minus those under linked directories</returns>
+        /// <remarks>
+        /// A linked directory that points back into the tree, such as a UDF symlink whose
+        /// target reads as empty on Linux, makes the recursive search run without end
+        /// </remarks>
+        private static IEnumerable<string> WalkWithoutLinkedDirectories(string path, string searchPattern, DirectoryListing getEntries, DirectoryListing getDirectories)
+        {
+            var pending = new Queue<string>();
+            pending.Enqueue(path);
+            while (pending.Count > 0)
+            {
+                string directory = pending.Dequeue();
+                foreach (string entry in getEntries(directory, searchPattern))
+                {
+                    yield return entry;
+                }
+
+                foreach (string subdirectory in getDirectories(directory, "*"))
+                {
+                    if (!IsLink(subdirectory))
+                        pending.Enqueue(subdirectory);
+                }
+            }
+        }
 
         #endregion
 
