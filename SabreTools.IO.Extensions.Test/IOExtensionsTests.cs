@@ -510,6 +510,25 @@ namespace SabreTools.IO.Extensions.Test
             Assert.Single(dirs);
         }
 
+        [Fact]
+        public void SafeGetDirectories_LinkedDirectory_NotFollowed()
+        {
+            // Linked directories are only skipped outside of Windows
+            if (SystemEnvironment.IsWindows())
+                return;
+
+            string root = CreateLinkedDirectoryTree();
+            try
+            {
+                var dirs = root.SafeGetDirectories("*", SearchOption.AllDirectories);
+                Assert.Equal(2, dirs.Length);
+            }
+            finally
+            {
+                Directory.Delete(root, recursive: true);
+            }
+        }
+
         #endregion
 
         #region SafeGetFiles
@@ -536,6 +555,41 @@ namespace SabreTools.IO.Extensions.Test
             string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var files = dir.SafeGetFiles("*", SearchOption.AllDirectories);
             Assert.NotEmpty(files);
+        }
+
+        [Fact]
+        public void SafeGetFiles_ValidDirectory_PatternTopDirectoryOnly()
+        {
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
+            var files = dir.SafeGetFiles("*", SearchOption.TopDirectoryOnly);
+            Assert.Equal(11, files.Length);
+        }
+
+        [Fact]
+        public void SafeGetFiles_ValidDirectory_PatternWithDirectory()
+        {
+            string dir = Path.Combine(Environment.CurrentDirectory, "TestData");
+            var files = dir.SafeGetFiles(Path.Combine("Path", "Subdirectory", "*"), SearchOption.AllDirectories);
+            Assert.Single(files);
+        }
+
+        [Fact]
+        public void SafeGetFiles_LinkedDirectory_NotFollowed()
+        {
+            // Linked directories are only skipped outside of Windows
+            if (SystemEnvironment.IsWindows())
+                return;
+
+            string root = CreateLinkedDirectoryTree();
+            try
+            {
+                var files = root.SafeGetFiles("*", SearchOption.AllDirectories);
+                Assert.Equal(3, files.Length);
+            }
+            finally
+            {
+                Directory.Delete(root, recursive: true);
+            }
         }
 
         #endregion
@@ -594,6 +648,25 @@ namespace SabreTools.IO.Extensions.Test
             Assert.Single(dirs);
         }
 
+        [Fact]
+        public void SafeEnumerateDirectories_LinkedDirectory_NotFollowed()
+        {
+            // Linked directories are only skipped outside of Windows
+            if (SystemEnvironment.IsWindows())
+                return;
+
+            string root = CreateLinkedDirectoryTree();
+            try
+            {
+                List<string> dirs = [.. root.SafeEnumerateDirectories("*", SearchOption.AllDirectories)];
+                Assert.Equal(2, dirs.Count);
+            }
+            finally
+            {
+                Directory.Delete(root, recursive: true);
+            }
+        }
+
         #endregion
 
         #region SafeEnumerateFiles
@@ -622,6 +695,53 @@ namespace SabreTools.IO.Extensions.Test
             Assert.NotEmpty(files);
         }
 
+        [Fact]
+        public void SafeEnumerateFiles_LinkedDirectory_NotFollowed()
+        {
+            // Linked directories are only skipped outside of Windows
+            if (SystemEnvironment.IsWindows())
+                return;
+
+            string root = CreateLinkedDirectoryTree();
+            try
+            {
+                List<string> files = [.. root.SafeEnumerateFiles("*", SearchOption.AllDirectories)];
+                Assert.Equal(3, files.Count);
+            }
+            finally
+            {
+                Directory.Delete(root, recursive: true);
+            }
+        }
+
+        [Fact]
+        public void SafeEnumerateFiles_DirectoryWithoutExecutePermission_Skipped()
+        {
+            // Execute permission on directories only exists outside of Windows
+            if (OperatingSystem.IsWindows())
+                return;
+
+            string root = Path.Combine(Environment.CurrentDirectory, Guid.NewGuid().ToString());
+            string locked = Path.Combine(root, "Locked");
+            string other = Path.Combine(root, "Other", "Subdirectory");
+            Directory.CreateDirectory(Path.Combine(locked, "Subdirectory"));
+            Directory.CreateDirectory(other);
+            File.WriteAllBytes(Path.Combine(locked, "file.bin"), []);
+            File.WriteAllBytes(Path.Combine(other, "file.bin"), []);
+            File.SetUnixFileMode(locked, UnixFileMode.UserRead | UnixFileMode.UserWrite);
+            try
+            {
+                // Only the subdirectory of the locked directory is left out
+                List<string> files = [.. root.SafeEnumerateFiles("*", SearchOption.AllDirectories)];
+                Assert.Equal(2, files.Count);
+            }
+            finally
+            {
+                File.SetUnixFileMode(locked, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+                Directory.Delete(root, recursive: true);
+            }
+        }
+
         #endregion
 
         #region SafeEnumerateFileSystemEntries
@@ -648,6 +768,25 @@ namespace SabreTools.IO.Extensions.Test
             string dir = Path.Combine(Environment.CurrentDirectory, "TestData", "Path");
             var entries = dir.SafeEnumerateFileSystemEntries("*", SearchOption.AllDirectories);
             Assert.NotEmpty(entries);
+        }
+
+        [Fact]
+        public void SafeEnumerateFileSystemEntries_LinkedDirectory_NotFollowed()
+        {
+            // Linked directories are only skipped outside of Windows
+            if (SystemEnvironment.IsWindows())
+                return;
+
+            string root = CreateLinkedDirectoryTree();
+            try
+            {
+                List<string> entries = [.. root.SafeEnumerateFileSystemEntries("*", SearchOption.AllDirectories)];
+                Assert.Equal(5, entries.Count);
+            }
+            finally
+            {
+                Directory.Delete(root, recursive: true);
+            }
         }
 
         #endregion
@@ -874,5 +1013,21 @@ namespace SabreTools.IO.Extensions.Test
         }
 
         #endregion
+
+        /// <summary>
+        /// Create a directory tree with a linked file and a directory linked to the directory it is in
+        /// </summary>
+        /// <returns>Root of the tree, to be deleted by the caller</returns>
+        private static string CreateLinkedDirectoryTree()
+        {
+            string root = Path.Combine(Environment.CurrentDirectory, Guid.NewGuid().ToString());
+            string subdir = Path.Combine(root, "Subdirectory");
+            Directory.CreateDirectory(subdir);
+            File.WriteAllBytes(Path.Combine(root, "file.bin"), []);
+            File.WriteAllBytes(Path.Combine(subdir, "file.bin"), []);
+            File.CreateSymbolicLink(Path.Combine(subdir, "link.bin"), "file.bin");
+            Directory.CreateSymbolicLink(Path.Combine(subdir, "self"), ".");
+            return root;
+        }
     }
 }
