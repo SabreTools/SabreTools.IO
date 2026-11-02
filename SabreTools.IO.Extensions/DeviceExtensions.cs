@@ -52,12 +52,15 @@ namespace SabreTools.IO.Extensions
 
         /// <summary>
         /// Enumerate Linux floppy block devices under a directory by matching the kernel
-        /// convention "fd" followed by one or more digits (fd0, fd1, ...). This deliberately
-        /// rejects the "/dev/fd" symlink (no trailing digits) and format-specific nodes such
-        /// as "fd0u1440" (embedded non-digit characters), which are not whole-device targets.
+        /// convention "fd" followed by one or more digits (fd0, fd1, ...).
         /// </summary>
         /// <param name="devRoot">Root directory to scan (typically "/dev")</param>
         /// <returns>Device paths, or an empty list when the directory is unreadable</returns>
+        /// <remarks>
+        /// This deliberately rejects the "/dev/fd" symlink (no trailing digits) and
+        /// format-specific nodes such as "fd0u1440" (embedded non-digit characters),
+        /// swhich are not whole-device targets.
+        /// </remarks>
         public static List<string> EnumerateUnixFloppyBlockPaths(string? devRoot = "/dev")
         {
             // If the device root is invalid
@@ -106,12 +109,14 @@ namespace SabreTools.IO.Extensions
 
         /// <summary>
         /// Enumerate Linux optical drives via their generic SCSI nodes (/dev/sg*).
-        /// Unlike the block nodes, "sg" is not optical-specific, so each candidate is
-        /// confirmed against sysfs: an optical drive reports SCSI peripheral device type 5.
         /// </summary>
         /// <param name="devRoot">Root directory the nodes live under (typically "/dev")</param>
         /// <param name="sysfsScsiGenericRoot">sysfs class directory (typically "/sys/class/scsi_generic")</param>
         /// <returns>Device paths, or an empty list when the sysfs directory is unreadable</returns>
+        /// <remarks>
+        /// Unlike the block nodes, "sg" is not optical-specific, so each candidate is
+        /// confirmed against sysfs: an optical drive reports SCSI peripheral device type 5.
+        /// </remarks>
         public static List<string> EnumerateUnixOpticalGenericPaths(string? devRoot = "/dev", string? sysfsScsiGenericRoot = "/sys/class/scsi_generic")
         {
             // If the device root is invalid
@@ -146,14 +151,17 @@ namespace SabreTools.IO.Extensions
 
         /// <summary>
         /// Enumerate USB floppy drives, which the kernel exposes as ordinary SCSI disks
-        /// (/dev/sd*) rather than /dev/fd* nodes. A disk is treated as a floppy when it reports
-        /// itself removable and its media is one of the standard floppy sizes. This mirrors how
-        /// Windows identifies a floppy from the inserted medium (Win32_LogicalDisk.MediaType)
-        /// and, like that path, only recognizes the drive while floppy media is present.
+        /// (/dev/sd*) rather than /dev/fd* nodes.
         /// </summary>
         /// <param name="devRoot">Root directory device nodes live under (typically "/dev")</param>
         /// <param name="sysBlockRoot">sysfs block directory (typically "/sys/block")</param>
         /// <returns>Device paths, or an empty list when the directory is unreadable</returns>
+        /// <remarks>
+        /// A disk is treated as a floppy when it reports itself removable and its media is one of
+        /// the standard floppy sizes. This mirrors how Windows identifies a floppy from the
+        /// inserted medium (Win32_LogicalDisk.MediaType) and, like that path, only recognizes the
+        /// drive while floppy media is present.
+        /// </remarks>
         public static List<string> EnumerateUnixUsbFloppyBlockPaths(string? devRoot = "/dev", string? sysBlockRoot = "/sys/block")
         {
             // If the device root is invalid
