@@ -1143,6 +1143,106 @@ namespace SabreTools.IO.Extensions
         }
 
         /// <summary>
+        /// Get the mount point based on the block device mapping for generic SCSI
+        /// </summary>
+        /// <param name="devicePath">Device path to check</param>
+        /// <returns>Mount point for the generic device on success, null otherwise</returns>
+        public static string? GetMountPointGeneric(string? devicePath)
+        {
+            // If the device path is invalid
+            if (devicePath is null)
+                return null;
+
+#pragma warning disable SYSLIB1045 // Convert to 'GeneratedRegexAttribute'.
+            // If the device does not match the generic pattern
+            if (!Regex.IsMatch(devicePath, @"/dev/sg.+"))
+                return null;
+#pragma warning restore SYSLIB1045 // Convert to 'GeneratedRegexAttribute'.
+
+            // Get the SCSI name from the path by trimming `/dev/`
+#if NETFRAMEWORK || NETSTANDARD
+            string scsiName = devicePath.Substring(5);
+#else
+            string scsiName = devicePath[5..];
+#endif
+
+            // Build the path to the block directory
+            string blockDirectory = $"/sys/class/scsi_generic/{scsiName}/device/block/";
+            if (!Directory.Exists(blockDirectory))
+                return null;
+
+            // If there are no block mappings
+            var blockDevices = SafeGetDirectories(blockDirectory);
+            if (blockDevices.Length == 0)
+                return null;
+
+            // Take the first found block mapping and reformat to `/dev/sr*`
+            string mappedDevice = blockDevices[0];
+#if NETFRAMEWORK || NETSTANDARD
+            mappedDevice = mappedDevice.Substring($"/sys/class/scsi_generic/{scsiName}/device/block/".Length);
+#else
+            mappedDevice = mappedDevice[$"/sys/class/scsi_generic/{scsiName}/device/block/".Length..];
+#endif
+            mappedDevice = $"/dev/{mappedDevice}";
+
+            // Return the mount point for that device
+            return GetMountPointMounts(mappedDevice);
+        }
+
+        /// <summary>
+        /// Get the mount point based a mapping to /proc/mounts
+        /// </summary>
+        /// <param name="devicePath">Device path to check</param>
+        /// <returns>Mount point for the device on success, null otherwise</returns>
+        public static string? GetMountPointMounts(string? devicePath)
+        {
+            // If the device path is invalid
+            if (devicePath is null)
+                return null;
+
+            // Try reading the mounts file for information
+            string mountsPath = "/proc/mounts";
+            try
+            {
+                if (!File.Exists(mountsPath))
+                    return null;
+
+                // Read all lines from the mounts file
+                string[] mountsLines = File.ReadAllLines(mountsPath);
+                foreach (string mount in mountsLines)
+                {
+                    // Split the whitespace-separated mount entry line
+#if NETFRAMEWORK || NETSTANDARD
+                    string[] entry = mount.Split(' ');
+#else
+                    string[] entry = mount.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+#endif
+                    if (entry.Length < 2)
+                        continue;
+
+                    // Extract the two required pieces
+                    string entryDevicePath = entry[0];
+                    string entryMountPoint = entry[1];
+
+                    // If the drive does not match
+                    if (!string.Equals(devicePath, entryDevicePath))
+                        continue;
+
+                    // Return the mount point
+                    return entryMountPoint;
+                }
+
+                // No matches were found
+                return null;
+            }
+            catch
+            {
+                // Absorb errors for now
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Read the device size from sysfs (reported in 512-byte sectors) and convert to bytes
         /// </summary>
         /// <param name="sysBlockEntry">Path to the device directory under the sysfs block root</param>
