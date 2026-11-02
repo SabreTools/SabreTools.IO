@@ -37,11 +37,7 @@ namespace SabreTools.IO.Extensions
         /// these exact capacities is a USB floppy with media inserted; no other removable
         /// storage uses these sizes, so this doubles as the floppy identity check.
         /// </summary>
-#if NET20
         private static readonly List<long> _unixFloppyMediaSizes =
-#else
-        private static readonly HashSet<long> _unixFloppyMediaSizes =
-#endif
         [
             368640,   // 360 KB (5.25" DD)
             737280,   // 720 KB (3.5" DD)
