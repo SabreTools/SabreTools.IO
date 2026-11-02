@@ -106,13 +106,12 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Enumerate Linux optical drives via their generic SCSI nodes (/dev/sg*).
         /// </summary>
-        /// <param name="sysfsScsiGenericRoot">sysfs class directory (typically "/sys/class/scsi_generic")</param>
         /// <returns>Device paths, or an empty list when the sysfs directory is unreadable</returns>
         /// <remarks>
         /// Unlike the block nodes, "sg" is not optical-specific, so each candidate is
         /// confirmed against sysfs: an optical drive reports SCSI peripheral device type 5.
         /// </remarks>
-        public static List<string> EnumerateUnixOpticalGenericPaths(string? sysfsScsiGenericRoot = "/sys/class/scsi_generic")
+        public static List<string> EnumerateUnixOpticalGenericPaths()
         {
             // If the device root is invalid
             string devRoot = "/dev";
@@ -120,11 +119,12 @@ namespace SabreTools.IO.Extensions
                 return [];
 
             // If the system generic root is invalid
-            if (string.IsNullOrEmpty(sysfsScsiGenericRoot) || !Directory.Exists(sysfsScsiGenericRoot))
+            string sysfsScsiGenericRoot = "/sys/class/scsi_generic";
+            if (!Directory.Exists(sysfsScsiGenericRoot))
                 return [];
 
             // Attempt to retrieve all matching devices
-            string[] entries = IOExtensions.SafeGetFileSystemEntries(sysfsScsiGenericRoot!, "sg*");
+            string[] entries = IOExtensions.SafeGetFileSystemEntries(sysfsScsiGenericRoot, "sg*");
 
             // Return only valid devices
             var result = new List<string>();
@@ -149,8 +149,6 @@ namespace SabreTools.IO.Extensions
         /// Enumerate USB floppy drives, which the kernel exposes as ordinary SCSI disks
         /// (/dev/sd*) rather than /dev/fd* nodes.
         /// </summary>
-        /// <param name="devRoot">Root directory device nodes live under (typically "/dev")</param>
-        /// <param name="sysBlockRoot">sysfs block directory (typically "/sys/block")</param>
         /// <returns>Device paths, or an empty list when the directory is unreadable</returns>
         /// <remarks>
         /// A disk is treated as a floppy when it reports itself removable and its media is one of
@@ -158,18 +156,20 @@ namespace SabreTools.IO.Extensions
         /// inserted medium (Win32_LogicalDisk.MediaType) and, like that path, only recognizes the
         /// drive while floppy media is present.
         /// </remarks>
-        public static List<string> EnumerateUnixUsbFloppyBlockPaths(string? devRoot = "/dev", string? sysBlockRoot = "/sys/block")
+        public static List<string> EnumerateUnixUsbFloppyBlockPaths()
         {
             // If the device root is invalid
-            if (string.IsNullOrEmpty(devRoot) || !Directory.Exists(devRoot))
+            string devRoot = "/dev";
+            if (!Directory.Exists(devRoot))
                 return [];
 
             // If the system block root is invalid
-            if (string.IsNullOrEmpty(sysBlockRoot) || !Directory.Exists(sysBlockRoot))
+            string sysBlockRoot = "/sys/block";
+            if (!Directory.Exists(sysBlockRoot))
                 return [];
 
             // Attempt to retrieve all matching devices
-            string[] entries = IOExtensions.SafeGetFileSystemEntries(sysBlockRoot!, "sd*");
+            string[] entries = IOExtensions.SafeGetFileSystemEntries(sysBlockRoot, "sd*");
 
             // Return only valid devices
             var result = new List<string>();
@@ -342,7 +342,11 @@ namespace SabreTools.IO.Extensions
         /// <returns>The device size in bytes, 0 on error</returns>
         public static int ReadUnixBlockDeviceType(string sysGenericEntry)
         {
+#if NET20 || NET35
             string typePath = Path.Combine(Path.Combine(sysGenericEntry, "device"), "type");
+#else
+            string typePath = Path.Combine(sysGenericEntry, "device", "type");
+#endif
             try
             {
                 if (!File.Exists(typePath))
