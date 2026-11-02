@@ -7,90 +7,28 @@ namespace SabreTools.IO.Extensions.Test
 {
     public class DeviceExtensionsTests
     {
-        #region EnumerateUnixFloppyBlockPaths
+        #region HasDeviceIndexSuffix
 
-        [Fact]
-        public void EnumerateUnixFloppyBlockPaths_Null_ReturnsEmpty()
+        [Theory]
+        // Floppy disk
+        [InlineData("fd", "fd", false)]
+        [InlineData("fd0", "fd", true)]
+        [InlineData("fd0u1440", "fd", false)]
+        [InlineData("fd1", "fd", true)]
+        [InlineData("fd7", "fd", true)]
+        [InlineData("fda", "fd", false)]
+        // Optical block
+        [InlineData("sr", "sr", false)]
+        [InlineData("sr0", "sr", true)]
+        [InlineData("sr0a", "sr", false)]
+        [InlineData("sr1", "sr", true)]
+        [InlineData("sr15", "sr", true)]
+        [InlineData("src", "sr", false)]
+        [InlineData("srm", "sr", false)]
+        public void HasDeviceIndexSuffixTest(string name, string prefix, bool expected)
         {
-            var actual = DeviceExtensions.EnumerateUnixFloppyBlockPaths(null);
-            Assert.Empty(actual);
-        }
-
-        [Fact]
-        public void EnumerateUnixFloppyBlockPaths_Empty_ReturnsEmpty()
-        {
-            var actual = DeviceExtensions.EnumerateUnixFloppyBlockPaths(string.Empty);
-            Assert.Empty(actual);
-        }
-
-        [Fact]
-        public void EnumerateUnixFloppyBlockPaths_MissingDirectory_ReturnsEmpty()
-        {
-            string devRoot = "INVALID";
-            var actual = DeviceExtensions.EnumerateUnixFloppyBlockPaths(devRoot);
-            Assert.Empty(actual);
-        }
-
-        [Fact]
-        public void EnumerateUnixFloppyBlockPaths_OnlyMatchesFdFollowedByDigits()
-        {
-            string devRoot = Path.Combine(Environment.CurrentDirectory, "TestData", "dev");
-            string[] expected = ["fd0", "fd1", "fd7"];
-
-            var actual = DeviceExtensions.EnumerateUnixFloppyBlockPaths(devRoot);
-
-            var actualNames = new List<string>();
-            foreach (var p in actual)
-            {
-                actualNames.Add(Path.GetFileName(p));
-            }
-
-            actualNames.Sort(StringComparer.Ordinal);
-            Assert.Equal(expected, actualNames);
-        }
-
-        #endregion
-
-        #region EnumerateUnixOpticalBlockPaths
-
-        [Fact]
-        public void EnumerateUnixOpticalBlockPaths_Null_ReturnsEmpty()
-        {
-            var actual = DeviceExtensions.EnumerateUnixOpticalBlockPaths(null);
-            Assert.Empty(actual);
-        }
-
-        [Fact]
-        public void EnumerateUnixOpticalBlockPaths_Empty_ReturnsEmpty()
-        {
-            var actual = DeviceExtensions.EnumerateUnixOpticalBlockPaths(string.Empty);
-            Assert.Empty(actual);
-        }
-
-        [Fact]
-        public void EnumerateUnixOpticalBlockPaths_MissingDirectory_ReturnsEmpty()
-        {
-            string devRoot = "INVALID";
-            var actual = DeviceExtensions.EnumerateUnixOpticalBlockPaths(devRoot);
-            Assert.Empty(actual);
-        }
-
-        [Fact]
-        public void EnumerateUnixOpticalBlockPaths_OnlyMatchesSrFollowedByDigits()
-        {
-            string devRoot = Path.Combine(Environment.CurrentDirectory, "TestData", "dev");
-            string[] expected = ["sr0", "sr1", "sr15"];
-
-            var actual = DeviceExtensions.EnumerateUnixOpticalBlockPaths(devRoot);
-
-            var actualNames = new List<string>();
-            foreach (var p in actual)
-            {
-                actualNames.Add(Path.GetFileName(p));
-            }
-
-            actualNames.Sort(StringComparer.Ordinal);
-            Assert.Equal(expected, actualNames);
+            bool actual = DeviceExtensions.HasDeviceIndexSuffix(name, prefix);
+            Assert.Equal(expected, actual);
         }
 
         #endregion
@@ -98,30 +36,16 @@ namespace SabreTools.IO.Extensions.Test
         #region EnumerateUnixOpticalGenericPaths
 
         [Fact]
-        public void EnumerateUnixOpticalGenericPaths_DevRootNull_ReturnsEmpty()
-        {
-            var actual = DeviceExtensions.EnumerateUnixOpticalGenericPaths(null, "/sys/class/scsi_generic");
-            Assert.Empty(actual);
-        }
-
-        [Fact]
-        public void EnumerateUnixOpticalGenericPaths_DevRootEmpty_ReturnsEmpty()
-        {
-            var actual = DeviceExtensions.EnumerateUnixOpticalGenericPaths(string.Empty, "/sys/class/scsi_generic");
-            Assert.Empty(actual);
-        }
-
-        [Fact]
         public void EnumerateUnixOpticalGenericPaths_SysBlockRootNull_ReturnsEmpty()
         {
-            var actual = DeviceExtensions.EnumerateUnixOpticalGenericPaths("/dev", null);
+            var actual = DeviceExtensions.EnumerateUnixOpticalGenericPaths(null);
             Assert.Empty(actual);
         }
 
         [Fact]
         public void EnumerateUnixOpticalGenericPaths_SysBlockRootEmpty_ReturnsEmpty()
         {
-            var actual = DeviceExtensions.EnumerateUnixOpticalGenericPaths("/dev", string.Empty);
+            var actual = DeviceExtensions.EnumerateUnixOpticalGenericPaths(string.Empty);
             Assert.Empty(actual);
         }
 
@@ -129,14 +53,13 @@ namespace SabreTools.IO.Extensions.Test
         public void EnumerateUnixOpticalGenericPaths_MissingDirectory_ReturnsEmpty()
         {
             string sysfsScsiGenericRoot = "INVALID";
-            var actual = DeviceExtensions.EnumerateUnixOpticalGenericPaths("/dev/", sysfsScsiGenericRoot);
+            var actual = DeviceExtensions.EnumerateUnixOpticalGenericPaths(sysfsScsiGenericRoot);
             Assert.Empty(actual);
         }
 
         [Fact]
         public void EnumerateUnixOpticalGenericPaths_OnlyMatchesOpticalSgNodes()
         {
-            string devRoot = "/dev";
             string sysfsScsiGenericRoot = Path.Combine(Environment.CurrentDirectory, "TestData", "sys", "class", "scsi_generic");
 
             // sg0 - Optical, kept
@@ -148,7 +71,7 @@ namespace SabreTools.IO.Extensions.Test
             // sgX - Name not all-digits, skipped
             List<string> expected = ["sg0", "sg10", "sg2"];
 
-            var actual = DeviceExtensions.EnumerateUnixOpticalGenericPaths(devRoot, sysfsScsiGenericRoot);
+            var actual = DeviceExtensions.EnumerateUnixOpticalGenericPaths(sysfsScsiGenericRoot);
 
             var actualNames = new List<string>();
             foreach (var p in actual)

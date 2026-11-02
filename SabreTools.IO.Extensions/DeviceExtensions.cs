@@ -50,21 +50,21 @@ namespace SabreTools.IO.Extensions
         /// Enumerate Linux floppy block devices under a directory by matching the kernel
         /// convention "fd" followed by one or more digits (fd0, fd1, ...).
         /// </summary>
-        /// <param name="devRoot">Root directory to scan (typically "/dev")</param>
         /// <returns>Device paths, or an empty list when the directory is unreadable</returns>
         /// <remarks>
         /// This deliberately rejects the "/dev/fd" symlink (no trailing digits) and
         /// format-specific nodes such as "fd0u1440" (embedded non-digit characters),
         /// swhich are not whole-device targets.
         /// </remarks>
-        public static List<string> EnumerateUnixFloppyBlockPaths(string? devRoot = "/dev")
+        public static List<string> EnumerateUnixFloppyBlockPaths()
         {
             // If the device root is invalid
-            if (string.IsNullOrEmpty(devRoot) || !Directory.Exists(devRoot))
+            string devRoot = "/dev";
+            if (!Directory.Exists(devRoot))
                 return [];
 
             // Attempt to retrieve all matching devices
-            string[] entries = IOExtensions.SafeGetFiles(devRoot!, "fd*");
+            string[] entries = IOExtensions.SafeGetFiles(devRoot, "fd*");
 
             // Return only valid devices
             var result = new List<string>();
@@ -81,16 +81,16 @@ namespace SabreTools.IO.Extensions
         /// Enumerate Linux optical block devices under a directory by matching
         /// the kernel convention "sr" followed by one or more digits (sr0, sr1, ...).
         /// </summary>
-        /// <param name="devRoot">Root directory to scan (typically "/dev")</param>
         /// <returns>Device paths, or an empty list when the directory is unreadable</returns>
-        public static List<string> EnumerateUnixOpticalBlockPaths(string? devRoot = "/dev")
+        public static List<string> EnumerateUnixOpticalBlockPaths()
         {
             // If the device root is invalid
-            if (string.IsNullOrEmpty(devRoot) || !Directory.Exists(devRoot))
+            string devRoot = "/dev";
+            if (!Directory.Exists(devRoot))
                 return [];
 
             // Attempt to retrieve all matching devices
-            string[] entries = IOExtensions.SafeGetFiles(devRoot!, "sr*");
+            string[] entries = IOExtensions.SafeGetFiles(devRoot, "sr*");
 
             // Return only valid devices
             var result = new List<string>();
@@ -106,17 +106,17 @@ namespace SabreTools.IO.Extensions
         /// <summary>
         /// Enumerate Linux optical drives via their generic SCSI nodes (/dev/sg*).
         /// </summary>
-        /// <param name="devRoot">Root directory the nodes live under (typically "/dev")</param>
         /// <param name="sysfsScsiGenericRoot">sysfs class directory (typically "/sys/class/scsi_generic")</param>
         /// <returns>Device paths, or an empty list when the sysfs directory is unreadable</returns>
         /// <remarks>
         /// Unlike the block nodes, "sg" is not optical-specific, so each candidate is
         /// confirmed against sysfs: an optical drive reports SCSI peripheral device type 5.
         /// </remarks>
-        public static List<string> EnumerateUnixOpticalGenericPaths(string? devRoot = "/dev", string? sysfsScsiGenericRoot = "/sys/class/scsi_generic")
+        public static List<string> EnumerateUnixOpticalGenericPaths(string? sysfsScsiGenericRoot = "/sys/class/scsi_generic")
         {
             // If the device root is invalid
-            if (string.IsNullOrEmpty(devRoot) || !Directory.Exists(devRoot))
+            string devRoot = "/dev";
+            if (!Directory.Exists(devRoot))
                 return [];
 
             // If the system generic root is invalid
@@ -389,7 +389,7 @@ namespace SabreTools.IO.Extensions
         /// <param name="name">Device node name to check</param>
         /// <param name="prefix">Required leading text (e.g. "sr", "sg")</param>
         /// <returns>True when the name is the prefix followed only by digits</returns>
-        private static bool HasDeviceIndexSuffix(string name, string prefix)
+        internal static bool HasDeviceIndexSuffix(string name, string prefix)
         {
             // If the prefix is longer than the name
             if (name.Length <= prefix.Length)

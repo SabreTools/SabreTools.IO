@@ -30,6 +30,10 @@
     </ItemGroup>
 
     <ItemGroup>
+        <InternalsVisibleTo Include="SabreTools.IO.Extensions.Test" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\SabreTools.Collections.Extensions\SabreTools.Collections.Extensions.csproj" />
         <ProjectReference Include="..\SabreTools.IO\SabreTools.IO.csproj" />
         <ProjectReference Include="..\SabreTools.Numerics.Extensions\SabreTools.Numerics.Extensions.csproj" />
