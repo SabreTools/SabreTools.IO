@@ -262,7 +262,7 @@ namespace SabreTools.IO.Extensions
                         continue;
 
                     // Reformat the link target based on relative paths
-                    linkTarget = Path.GetFullPath(linkTarget);
+                    linkTarget = linkTarget.Replace("/../../", "/dev/");
 
                     // If the drive does not match
                     if (!string.Equals(devicePath, linkTarget))
