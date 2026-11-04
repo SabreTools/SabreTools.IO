@@ -210,6 +210,79 @@ namespace SabreTools.IO.Extensions
             return false;
         }
 
+#if NET6_0_OR_GREATER
+        /// <summary>
+        /// Get the label based on the block device mapping for generic SCSI
+        /// </summary>
+        /// <param name="devicePath">Device path to check</param>
+        /// <returns>Label for the generic device on success, null otherwise</returns>
+        public static string? GetLabelGeneric(string? devicePath)
+        {
+            // If the device path is invalid
+            if (devicePath is null)
+                return null;
+
+            // Get the mapped device
+            var mappedDevice = GetMappedDeviceForGeneric(devicePath);
+            if (mappedDevice is null)
+                return null;
+
+            // Return the label for that device
+            return GetLabelLink(mappedDevice);
+        }
+
+        /// <summary>
+        /// Get the label based on the softlinks in /dev/disk/by-label/
+        /// </summary>
+        /// <param name="devicePath">Device path to check</param>
+        /// <returns>Label for the device on success, null otherwise</returns>
+        public static string? GetLabelLink(string? devicePath)
+        {
+            // If the device path is invalid
+            if (devicePath is null)
+                return null;
+
+            // Try looping through the by-label directory
+            string byLabelPath = "/dev/disk/by-label/";
+            try
+            {
+                if (!Directory.Exists(byLabelPath))
+                    return null;
+
+                var entries = Directory.GetFileSystemEntries("/dev/disk/by-label/");
+                foreach (var entry in entries)
+                {
+                    // Ensure the entry is a file
+                    if (!File.Exists(entry))
+                        continue;
+
+                    // Extract the link target from the file
+                    var linkTarget = new FileInfo(entry).LinkTarget;
+                    if (linkTarget is null)
+                        continue;
+
+                    // Reformat the link target based on relative paths
+                    linkTarget = Path.GetFullPath(linkTarget);
+
+                    // If the drive does not match
+                    if (!string.Equals(devicePath, linkTarget))
+                        continue;
+
+                    // Return the mount point
+                    return Path.GetFileName(entry);
+                }
+
+                // No matches were found
+                return null;
+            }
+            catch
+            {
+                // Absorb errors for now
+                return null;
+            }
+        }
+#endif
+
         /// <summary>
         /// Get the mount point based on the block device mapping for generic SCSI
         /// </summary>
@@ -221,37 +294,10 @@ namespace SabreTools.IO.Extensions
             if (devicePath is null)
                 return null;
 
-#pragma warning disable SYSLIB1045 // Convert to 'GeneratedRegexAttribute'.
-            // If the device does not match the generic pattern
-            if (!Regex.IsMatch(devicePath, @"/dev/sg.+"))
+            // Get the mapped device
+            var mappedDevice = GetMappedDeviceForGeneric(devicePath);
+            if (mappedDevice is null)
                 return null;
-#pragma warning restore SYSLIB1045 // Convert to 'GeneratedRegexAttribute'.
-
-            // Get the SCSI name from the path by trimming `/dev/`
-#if NETFRAMEWORK || NETSTANDARD
-            string scsiName = devicePath.Substring(5);
-#else
-            string scsiName = devicePath[5..];
-#endif
-
-            // Build the path to the block directory
-            string blockDirectory = $"/sys/class/scsi_generic/{scsiName}/device/block/";
-            if (!Directory.Exists(blockDirectory))
-                return null;
-
-            // If there are no block mappings
-            var blockDevices = IOExtensions.SafeGetDirectories(blockDirectory);
-            if (blockDevices.Length == 0)
-                return null;
-
-            // Take the first found block mapping and reformat to `/dev/sr*`
-            string mappedDevice = blockDevices[0];
-#if NETFRAMEWORK || NETSTANDARD
-            mappedDevice = mappedDevice.Substring($"/sys/class/scsi_generic/{scsiName}/device/block/".Length);
-#else
-            mappedDevice = mappedDevice[$"/sys/class/scsi_generic/{scsiName}/device/block/".Length..];
-#endif
-            mappedDevice = $"/dev/{mappedDevice}";
 
             // Return the mount point for that device
             return GetMountPointMounts(mappedDevice);
@@ -384,6 +430,50 @@ namespace SabreTools.IO.Extensions
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Map a generic (/dev/sg*) device to its corresponding block (/dev/sr*) device
+        /// </summary>
+        /// <param name="devicePath">Device path to check</param>
+        /// <returns>The mapped device path on success, null otherwise</returns>
+        internal static string? GetMappedDeviceForGeneric(string? devicePath)
+        {
+            // If the device path is invalid
+            if (devicePath is null)
+                return null;
+
+#pragma warning disable SYSLIB1045 // Convert to 'GeneratedRegexAttribute'.
+            // If the device does not match the generic pattern
+            if (!Regex.IsMatch(devicePath, @"/dev/sg.+"))
+                return null;
+#pragma warning restore SYSLIB1045 // Convert to 'GeneratedRegexAttribute'.
+
+            // Get the SCSI name from the path by trimming `/dev/`
+#if NETFRAMEWORK || NETSTANDARD
+            string scsiName = devicePath.Substring(5);
+#else
+            string scsiName = devicePath[5..];
+#endif
+
+            // Build the path to the block directory
+            string blockDirectory = $"/sys/class/scsi_generic/{scsiName}/device/block/";
+            if (!Directory.Exists(blockDirectory))
+                return null;
+
+            // If there are no block mappings
+            var blockDevices = IOExtensions.SafeGetDirectories(blockDirectory);
+            if (blockDevices.Length == 0)
+                return null;
+
+            // Take the first found block mapping and reformat to `/dev/sr*`
+            string mappedDevice = blockDevices[0];
+#if NETFRAMEWORK || NETSTANDARD
+            mappedDevice = mappedDevice.Substring($"/sys/class/scsi_generic/{scsiName}/device/block/".Length);
+#else
+            mappedDevice = mappedDevice[$"/sys/class/scsi_generic/{scsiName}/device/block/".Length..];
+#endif
+            return $"/dev/{mappedDevice}";
         }
 
         /// <summary>
