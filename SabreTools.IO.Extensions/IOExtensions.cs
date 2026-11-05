@@ -982,38 +982,49 @@ namespace SabreTools.IO.Extensions
         private delegate IEnumerable<string> DirectoryListing(string directory, string searchPattern);
 
         /// <summary>
-        /// Indicates if a path is a link
+        /// Indicates if a path is a linked directory
         /// </summary>
         /// <param name="path">Path to check</param>
-        /// <returns>True if the path carries FileAttributes.ReparsePoint, false otherwise</returns>
+        /// <returns>True if the path is a directory that carries FileAttributes.ReparsePoint, false otherwise</returns>
         /// <remarks>
-        /// Returns false if the attributes cannot be read, such as below a directory without
+        /// Returns false if the directory cannot be read, such as below a directory without
         /// execute permission, so the directory is entered and fails like in the recursive search
         /// </remarks>
-        private static bool IsLink(string path)
+        private static bool IsLinkedDirectory(string path)
         {
-            try
-            {
-                return (File.GetAttributes(path) & FileAttributes.ReparsePoint) != 0;
-            }
-            catch
-            {
+            // Exists returns false instead of throwing if the directory cannot be read
+            var info = new DirectoryInfo(path);
+            if (!info.Exists)
                 return false;
-            }
+
+#if NET20 || NET35
+            return (info.Attributes & FileAttributes.ReparsePoint) != 0;
+#else
+            return info.Attributes.HasFlag(FileAttributes.ReparsePoint);
+#endif
         }
 
         /// <summary>
-        /// Indicates if a search skips linked directories instead of following them
+        /// Indicates if a search walks the directories itself to skip linked directories
         /// </summary>
         /// <param name="searchPattern">Pattern to match the entry names against</param>
         /// <param name="searchOption">Whether to search the top directory only or all subdirectories</param>
-        /// <returns>True outside of Windows when all subdirectories are searched, false otherwise</returns>
-        /// <remarks>A pattern with a directory part keeps the default behavior</remarks>
+        /// <returns>True if the walk is used, false if the recursive search is used</returns>
         private static bool SkipLinkedDirectories(string searchPattern, SearchOption searchOption)
         {
-            return searchOption == SearchOption.AllDirectories
-                && !SystemEnvironment.IsWindows()
-                && string.IsNullOrEmpty(Path.GetDirectoryName(searchPattern));
+            // Only a search of all subdirectories enters subdirectories
+            if (searchOption != SearchOption.AllDirectories)
+                return false;
+
+            // Linked directories on discs are only read as links outside of Windows
+            if (SystemEnvironment.IsWindows())
+                return false;
+
+            // A directory part of the pattern is matched once from the top directory, but the walk would match it in each directory
+            if (!string.IsNullOrEmpty(Path.GetDirectoryName(searchPattern)))
+                return false;
+
+            return true;
         }
 
         /// <summary>
@@ -1042,7 +1053,7 @@ namespace SabreTools.IO.Extensions
 
                 foreach (string subdirectory in getDirectories(directory, "*"))
                 {
-                    if (!IsLink(subdirectory))
+                    if (!IsLinkedDirectory(subdirectory))
                         pending.Enqueue(subdirectory);
                 }
             }
